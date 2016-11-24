@@ -1,0 +1,37 @@
+  stylecop_tests:
+
+    name: 'StyleCop tests'
+    description: Ensure the source code complies with the coding conventions 
+    run-on: 
+      - type: branch
+        include-match: ^development$
+
+    context:
+      task-defaults:
+        max-auto-trials: 2
+        traits:
+          windows: true
+ 
+      _cider-ci_include:
+        - tests/cider-ci/tasks/stylecop/minary.yml
+        - tests/cider-ci/tasks/stylecop/tests_minary_attackservice.yml
+
+        - tests/cider-ci/tasks/stylecop/plugin_applications.yml
+        - tests/cider-ci/tasks/stylecop/plugin_browser_attack.yml
+        - tests/cider-ci/tasks/stylecop/plugin_dns_poisoning.yml
+        - tests/cider-ci/tasks/stylecop/plugin_dns_requests.yml
+        - tests/cider-ci/tasks/stylecop/plugin_firewall.yml
+        - tests/cider-ci/tasks/stylecop/plugin_http_accounts.yml
+        - tests/cider-ci/tasks/stylecop/plugin_http_requests.yml
+        - tests/cider-ci/tasks/stylecop/plugin_ipaccounting.yml
+        - tests/cider-ci/tasks/stylecop/plugin_sessions.yml 
+        - tests/cider-ci/tasks/stylecop/plugin_sslstrip.yml
+        - tests/cider-ci/tasks/stylecop/plugin_systems.yml
+
+        - tests/cider-ci/tasks/stylecop/http_reverse_proxy.yml
+        - tests/cider-ci/tasks/stylecop/tests_http_reverse_proxy.yml
+
+        - tests/cider-ci/tasks/stylecop/tests_host_mapping.yml
+        - tests/cider-ci/tasks/stylecop/tests_inject.yml
+        - tests/cider-ci/tasks/stylecop/tests_sslstrip.yml
+        - tests/cider-ci/tasks/stylecop/tests_weaken.yml

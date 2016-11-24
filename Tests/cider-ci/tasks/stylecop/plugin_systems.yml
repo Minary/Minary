@@ -1,0 +1,40 @@
+      tasks:
+        stylecop_plugin_systems:
+          timeout: 300
+          name: Style checks Systems plugin
+          
+          trial-attachments:
+            logs:
+             include-match: ^attachment[\w\d\-\_]*\.log$
+             content-type: text/plain
+          
+          scripts:
+            run_nuget_restore:
+              body: |
+                start /w .nuget\nuget.exe restore
+                echo nuget.exe error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+
+            build_plugin_systems: 
+              ignore-state: false
+              start-when:
+                - script: run_nuget_restore   
+                  states: [passed]   
+              body: |
+                start /w msbuild Plugin_Systems\Plugin_Systems.csproj /t:Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild-info_plugin_systems.log /flp1:logfile=attachment-msbuild-error_plugin_systems.log;errorsonly /flp2:logfile=attachment-msbuild-warning_plugin_systems.log;warningsonly
+                exit /b %ERRORLEVEL%
+
+            # Evaluate outputfiles, check for StyleCop records
+            codingconvenctions_plugin_systems:
+              ignore-state: false
+              start-when:
+                - script: build_plugin_systems   
+                  states: [passed]                
+              body: |
+                if not exist "attachment-msbuild-warning_plugin_systems.log" exit /b 1
+                type "attachment-msbuild-warning_plugin_systems.log" | find /c "warning : SA" > temp_systems.txt    
+                set /p VAR=<temp_systems.txt
+                del temp_systems.txt
+                if %VAR% gtr 0 exit /b 2
+                exit /b 0
+                

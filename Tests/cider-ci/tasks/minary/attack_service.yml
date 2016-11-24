@@ -1,0 +1,48 @@
+      tasks:
+        weaken:
+          timeout: 300
+          name: Minary attack service tests
+          
+          trial-attachments:
+            logs:
+             include-match: ^attachment[\w\d\-\_]*\.log$
+             content-type: text/plain
+          
+          scripts:
+            run_nuget_restore:   
+              body: |
+                start /w .nuget\nuget.exe restore
+                echo nuget.exe error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%  
+
+            build_tests_attackservice:  
+              ignore-state: false
+              start-when:
+                - script: run_nuget_restore   
+                  states: [passed]     
+              body: |
+                start /w msbuild tests\TestsMinaryAttackServices\TestsMinaryAttackServices.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild_tests_attackservice_info.log /flp1:logfile=attachment-msbuild_tests_attackservice_error.log;errorsonly /flp2:logfile=attachment-msbuild_tests_attackservice_warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+
+            build_minary:  
+              ignore-state: false
+              start-when:
+                - script: build_tests_attackservice   
+                  states: [passed]   
+              body: |
+                start /w msbuild Minary\Minary.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild_minary_info.log /flp1:logfile=attachment-msbuild_minary_error.log;errorsonly /flp2:logfile=attachment-msbuild_minary_warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                            
+              
+            tests_attackservice:
+              ignore-state: false
+              start-when:
+                - script: build_minary   
+                  states: [passed]                
+              body: |
+                start /w nunit3-console tests\TestsMinaryAttackServices\bin\debug\TestsMinaryAttackServices.dll --output=attachment-nunit-info-minary_attackservice.log --err=attachment-nunit-error-minary_attackservice.log --framework=4.0 --noresult --noheader --test=TestsMinaryAttackServices.AttackServiceParameters
+                echo msbuild error level is %errorlevel%
+                exit /b %errorlevel%
+                                       

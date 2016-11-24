@@ -1,0 +1,61 @@
+      tasks:
+        inject:
+          timeout: 300
+          name: Inject proxy plugin tests
+          
+          trial-attachments:
+            logs:
+             include-match: ^attachment[\w\d\-\_]*\.log$
+             content-type: text/plain
+          
+          scripts:
+            run_nuget_restore:   
+              body: |
+                start /w .nuget\nuget.exe restore
+                echo nuget.exe error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%  
+
+            build_testsinject:  
+              ignore-state: false
+              start-when:
+                - script: run_nuget_restore   
+                  states: [passed]      
+              body: |
+                start /w msbuild tests\TestsInject\TestsInject.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild_testsinject_info.log /flp1:logfile=attachment-msbuild_testsinject_error.log;errorsonly /flp2:logfile=attachment-msbuild_testsinject_warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+
+            build_inject:  
+              ignore-state: false
+              start-when:
+                - script: build_testsinject   
+                  states: [passed]   
+              body: |
+                start /w msbuild Inject\Inject.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild_inject_info.log /flp1:logfile=attachment-msbuild_inject_error.log;errorsonly /flp2:logfile=attachment-msbuild_inject_warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                            
+              
+            tests_onpostclientheadersrequest:
+              ignore-state: false
+              start-when:
+                - script: build_inject   
+                  states: [passed]                
+              body: |
+                start /w nunit3-console tests\TestsInject\bin\debug\TestsInject.dll --output=attachment-nunit-info-inject_onpostclientheadersrequest.log --err=attachment-nunit-error-inject_onpostclientheadersrequest.log --framework=4.0 --noresult --noheader --test=TestsInject.OnPostClientHeadersRequest
+                echo msbuild error level is %errorlevel%
+                exit /b %errorlevel%
+                                                
+              
+            tests_onpostserverheadersresponse:
+              ignore-state: false
+              start-when:
+                - script: build_inject  
+                  states: [passed]                
+              body: |
+                start /w nunit3-console tests\TestsInject\bin\debug\TestsInject.dll --output=attachment-nunit-info-inject_onpostserverheadersrequest.log --err=attachment-nunit-error-inject_onpostserverheadersrequest.log --framework=4.0 --noresult --noheader --test=TestsInject.OnPostServerHeadersResponse
+                echo msbuild error level is %errorlevel%
+                exit /b %errorlevel%
+                
+                
+                

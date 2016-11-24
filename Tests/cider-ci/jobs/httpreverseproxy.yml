@@ -1,0 +1,116 @@
+  httpreverseproxy:
+
+    name: HttpReverseProxy
+    description: Proxy tests 
+    run-on: 
+      - type: branch
+        include-match: ^development$
+
+    context:
+      task-defaults:
+        traits:
+          windows: true
+
+      tasks:
+        httpreverseproxy:
+          timeout: 300
+          name: HttpReverseProxy build
+          
+          trial-attachments:
+            logs:
+             include-match: ^attachment[\w\d\-\_]*\.log$
+             content-type: text/plain
+          
+          scripts:
+            run_nuget_restore:
+              body: |
+                start /w .nuget\nuget.exe restore
+                echo nuget.exe error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%  
+
+            build_testshttpreverseproxy:
+              ignore-state: false
+              start-when:
+                - script: run_nuget_restore   
+                  states: [passed]   
+              body: |
+                start /w msbuild tests\TestsHttpReverseProxy\TestsHttpReverseProxy.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild-info.log /flp1:logfile=attachment-msbuild-error.log;errorsonly /flp2:logfile=attachment-msbuild-warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                                
+              
+            tests_ConnectionType:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_ConnectionType-info.log /err=attachment-nunit-error-TestsHttpReverseProxy_ConnectionType.log --framework=4.0 --noresult --noheader --test=ConnectionType
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                
+              
+            tests_GETRequestChunkedResponse:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_GETRequestChunkedResponse-info.log /err=attachment-nunit-TestsHttpReverseProxy_GETRequestChunkedResponse-error.log --framework=4.0 --noresult --noheader --test=GETRequestChunkedResponse
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                                
+             
+            tests_GETRequestNonChunkedResponse:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_GETRequestNonChunkedResponse-info.log /err=attachment-nunit-TestsHttpReverseProxy_GETRequestNonChunkedResponse-error.log --framework=4.0 --noresult --noheader --test=GETRequestNonChunkedResponse
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                                             
+
+            tests_GETRequestWithRedirects:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_GETRequestWithRedirects-info.log /err=attachment-nunit-TestsHttpReverseProxy_GETRequestWithRedirects-error.log --framework=4.0 --noresult --noheader --test=GETRequestWithRedirects
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                                           
+
+            tests_POSTRequestChunked:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_POSTRequestChunked-info.log /err=attachment-nunit-TestsHttpReverseProxy_POSTRequestChunked-error.log --framework=4.0 --noresult --noheader --test=POSTRequestChunked
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%     
+                                           
+
+            tests_RequestMethods:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_RequestMethods-info.log /err=attachment-nunit-TestsHttpReverseProxy_RequestMethods-error.log --framework=4.0 --noresult --noheader --test=RequestMethods
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                                           
+
+            tests_URLSSLStripping:
+              ignore-state: false
+              start-when:
+                - script: build_testshttpreverseproxy   
+                  states: [passed]                
+              body: |
+                nunit3-console tests\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll --output=attachment-nunit-TestsHttpReverseProxy_URLSSLStripping-info.log /err=attachment-nunit-TestsHttpReverseProxy_URLSSLStripping-error.log --framework=4.0 --noresult --noheader --test=URLSSLStripping
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%

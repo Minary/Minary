@@ -1,0 +1,40 @@
+      tasks:
+        stylecop_plugin_host_mapping:
+          timeout: 300
+          name: Style checks Tests HostMapping plugin
+          
+          trial-attachments:
+            logs:
+             include-match: ^attachment[\w\d\-\_]*\.log$
+             content-type: text/plain
+          
+          scripts:
+            run_nuget_restore:   
+              body: |
+                start /w .nuget\nuget.exe restore
+                echo nuget.exe error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+
+            build_tests_host_mapping:  
+              ignore-state: false
+              start-when:
+                - script: run_nuget_restore   
+                  states: [passed]   
+              body: |
+                start /w msbuild tests\TestsHostMapping\TestsHostMapping.csproj /t:Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild-info_tests_host_mapping.log /flp1:logfile=attachment-msbuild-error_tests_host_mapping.log;errorsonly /flp2:logfile=attachment-msbuild-warning_tests_host_mapping.log;warningsonly
+                exit /b %ERRORLEVEL%
+
+            # Evaluate outputfiles, check for StyleCop records
+            codingconvenctions_tests_host_mapping:
+              ignore-state: false
+              start-when:
+                - script: build_tests_host_mapping   
+                  states: [passed]                
+              body: |
+                if not exist "attachment-msbuild-warning_tests_host_mapping.log" exit /b 1
+                type "attachment-msbuild-warning_tests_host_mapping.log" | find /c "warning : SA" > temp_tests_host_mapping.txt
+                set /p VAR=<temp_tests_host_mapping.txt
+                del temp_tests_host_mapping.txt
+                if %VAR% gtr 0 exit /b 2
+                exit /b 0
+                

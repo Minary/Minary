@@ -1,0 +1,61 @@
+      tasks:
+        host_mapping:
+          timeout: 300
+          name: HostMapping proxy plugin tests
+          
+          trial-attachments:
+            logs:
+             include-match: ^attachment[\w\d\-\_]*\.log$
+             content-type: text/plain
+          
+          scripts:
+            run_nuget_restore:   
+              body: |
+                start /w .nuget\nuget.exe restore
+                echo nuget.exe error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%  
+
+            build_testshost_mapping:  
+              ignore-state: false
+              start-when:
+                - script: run_nuget_restore   
+                  states: [passed]      
+              body: |
+                start /w msbuild tests\TestsHostMapping\TestsHostMapping.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild_testshost_mapping_info.log /flp1:logfile=attachment-msbuild_testshost_mapping_error.log;errorsonly /flp2:logfile=attachment-msbuild_testshost_mapping_warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+
+            build_host_mapping:  
+              ignore-state: false
+              start-when:
+                - script: build_testshost_mapping   
+                  states: [passed]   
+              body: |
+                start /w msbuild HostMapping\HostMapping.csproj /t:Clean,Build /p:Configuration="Debug" /p:Platform="Mixed Platforms" /p:OutputPath=bin\Debug /flp:Summary;Verbosity=minimal;LogFile=attachment-msbuild_host_mapping_info.log /flp1:logfile=attachment-msbuild_host_mapping_error.log;errorsonly /flp2:logfile=attachment-msbuild_host_mapping_warning.log;warningsonly
+                echo MSBuild error level is %ERRORLEVEL%
+                exit /b %ERRORLEVEL%
+                            
+              
+            tests_onpostclientheadersrequest:
+              ignore-state: false
+              start-when:
+                - script: build_host_mapping   
+                  states: [passed]                
+              body: |
+                start /w nunit3-console tests\TestsHostMapping\bin\debug\TestsHostMapping.dll --output=attachment-nunit-info-host_mapping_onpostclientheadersrequest.log --err=attachment-nunit-error-host_mapping_onpostclientheadersrequest.log --framework=4.0 --noresult --noheader --test=TestsHostMapping.OnPostClientHeadersRequest
+                echo msbuild error level is %errorlevel%
+                exit /b %errorlevel%
+                                                
+              
+            tests_onpostserverheadersresponse:
+              ignore-state: false
+              start-when:
+                - script: build_host_mapping   
+                  states: [passed]                
+              body: |
+                start /w nunit3-console tests\TestsHostMapping\bin\debug\TestsHostMapping.dll --output=attachment-nunit-info-host_mapping_onpostserverheadersrequest.log --err=attachment-nunit-error-host_mapping_onpostserverheadersrequest.log --framework=4.0 --noresult --noheader --test=TestsHostMapping.OnPostServerHeadersResponse
+                echo msbuild error level is %errorlevel%
+                exit /b %errorlevel%
+                
+                
+                
