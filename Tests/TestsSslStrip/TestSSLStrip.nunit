@@ -1,0 +1,8 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="bin\debug\TestsSSLStrip.dll" />
+    <assembly path="..\TestsHttpReverseProxy\bin\Debug\TestsHttpReverseProxy.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto" />
+</NUnitProject>

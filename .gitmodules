@@ -1,0 +1,9 @@
+[submodule "Tools"]
+	path = Tools
+	url = git@github.com:Minary/Tools.git
+[submodule "Plugins"]
+	path = Plugins
+	url = git@github.com:Minary/Plugins.git
+[submodule "Payloads"]
+	path = Payloads
+	url = git@github.com:Minary/Payloads.git
