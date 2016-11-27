@@ -61,7 +61,7 @@
 
       this.arpScanProc = new Process();
       this.arpScanProc.StartInfo.FileName = this.arpScanBin;
-      this.arpScanProc.StartInfo.Arguments = string.Format("{0} {1} {2}", this.arpScanConf.InterfaceId, this.arpScanConf.NetworkStartIp, this.arpScanConf.NetworkStopIp);
+      this.arpScanProc.StartInfo.Arguments = string.Format("{0} -s {1} {2}", this.arpScanConf.InterfaceId, this.arpScanConf.NetworkStartIp, this.arpScanConf.NetworkStopIp);
       this.arpScanProc.StartInfo.UseShellExecute = false;
       this.arpScanProc.StartInfo.CreateNoWindow = this.arpScanConf.IsDebuggingOn ? false : true;
       this.arpScanProc.StartInfo.WindowStyle = this.arpScanConf.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
