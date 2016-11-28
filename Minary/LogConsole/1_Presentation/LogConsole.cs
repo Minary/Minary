@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
-
-namespace Minary.LogConsole.Main
+﻿namespace Minary.LogConsole.Main
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Windows.Forms;
+
 
   public partial class LogConsole : Form
   {
@@ -27,7 +28,6 @@ namespace Minary.LogConsole.Main
       set { }
     }
 
-
     #endregion
 
 
@@ -41,7 +41,6 @@ namespace Minary.LogConsole.Main
       instance.Show();
       instance.BringToFront();
     }
-
 
 
     /// <summary>
@@ -62,7 +61,6 @@ namespace Minary.LogConsole.Main
     }
 
 
-
     /// <summary>
     ///
     /// </summary>
@@ -72,75 +70,32 @@ namespace Minary.LogConsole.Main
 
     public void LogMessage(string message, params object[] formatArgs)
     {
-      if (this.InvokeRequired)
-      {
-        this.BeginInvoke(new LogMessageDelegate(this.LogMessage), new object[] { message, formatArgs });
-        return;
-      }
+      string timeStamp = string.Empty;
+      DateTime timeNow = DateTime.Now;
 
       if (string.IsNullOrEmpty(message))
       {
         return;
       }
 
-      string timeStamp = string.Empty;
-      DateTime timeNow = DateTime.Now;
-
       try
       {
         timeStamp = timeNow.ToString("yyyy-MM-dd-HH:mm:ss");
-      }
-      catch
-      {
-      }
-
-      try
-      {
         message = message.Trim();
 
         if (formatArgs != null && formatArgs.Count() > 0)
         {
           message = string.Format(message, formatArgs);
         }
+
+        string realLogMessage = string.Format("{0} - {1}", timeStamp, message);
+        instance.tb_LogContent.AppendText(realLogMessage + Environment.NewLine);
+        instance.tb_LogContent.SelectionStart = instance.tb_LogContent.Text.Length;
+        instance.tb_LogContent.ScrollToCaret();
       }
-      catch
+      catch (Exception ex)
       {
       }
-
-      try
-      {
-        lock (this)
-        {
-          // Write to log console
-          instance.tb_LogContent.AppendText(string.Format("{0} - {1}\r\n", timeStamp, message));
-          instance.tb_LogContent.SelectionStart = instance.tb_LogContent.Text.Length;
-          instance.tb_LogContent.ScrollToCaret();
-          //instance.tb_LogContent.BeginInvoke(
-          //  new MethodInvoker(delegate () {
-          //    instance.tb_LogContent.AppendText(string.Format("{0} - {1}\r\n", timeStamp, message));
-          //    instance.tb_LogContent.SelectionStart = instance.tb_LogContent.Text.Length;
-          //    instance.tb_LogContent.ScrollToCaret();
-          //  })
-          //  );
-
-
-        }
-      }
-      catch (Exception)
-      {
-      }
-
-      System.IO.File.AppendAllText(@"c:\temp\minary.log", string.Format("{0} - {1}\r\n", timeStamp, message));
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public string GetLogContent()
-    {
-      return instance.tb_LogContent.Text;
     }
 
     #endregion
@@ -181,7 +136,9 @@ namespace Minary.LogConsole.Main
         return false;
       }
       else
+      {
         return base.ProcessDialogKey(keyData);
+      }
     }
 
     #endregion
@@ -189,10 +146,6 @@ namespace Minary.LogConsole.Main
 
     #region PRIVATE
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LogConsole"/> class.
-    ///
-    /// </summary>
     public LogConsole()
     {
       this.InitializeComponent();
