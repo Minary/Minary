@@ -7,6 +7,6 @@
 [submodule "Payloads"]
 	path = Payloads
 	url = git@github.com:Minary/Payloads.git
-[submodule "Tests/Tests"]
-	path = Tests/Tests
+[submodule "Tests"]
+	path = Tests
 	url = git@github.com:Minary/Tests.git
