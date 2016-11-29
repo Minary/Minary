@@ -6,7 +6,11 @@
 	url = git@github.com:Minary/Plugins.git
 [submodule "Payloads"]
 	path = Payloads
-	url = git@github.com:Minary/Payloads.git
+	url = git@github.com:rubenunteregger/MinaryPayloads.git 
 [submodule "Tests"]
-	path = Tests
-	url = git@github.com:Minary/Tests.git
+	path = MinaryTests
+	url = git@github.com:rubenunteregger/MinaryTests.git 
+[submodule "Build"]
+	path = MinaryBuild
+	url = git@github.com:rubenunteregger/MinaryBUILD.git 
+	

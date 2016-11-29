@@ -40,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Minary", "Minary", "{D927C5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payloads", "Payloads", "{64CF1144-E643-48C9-B4FE-C41D9F3B86A9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InjectCertificate", "Payloads\InjectCertificate\InjectCertificate.vcxproj", "{6CD1F565-54CF-4496-96E9-E43FDD5CC61F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InjectCertificate", "MinaryPayloads\InjectCertificate\InjectCertificate.vcxproj", "{6CD1F565-54CF-4496-96E9-E43FDD5CC61F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin_SslStrip", "Plugins\Plugin_SslStrip\Plugin_SslStrip.csproj", "{3639690A-4D81-4085-BD25-27EBB4CB33A3}"
 EndProject
@@ -56,12 +56,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpReverseProxyPlugin", "H
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A9816F71-4DED-43D7-9555-6D325A32778C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsHttpReverseProxy", "Tests\TestsHTTPReverseProxy\TestsHttpReverseProxy.csproj", "{F28AB97C-6788-4682-B6A5-3F59306CE661}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsHttpReverseProxy", "MinaryTests\TestsHTTPReverseProxy\TestsHttpReverseProxy.csproj", "{F28AB97C-6788-4682-B6A5-3F59306CE661}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E49DF12A-F849-4EE4-A47B-B2A02BA4DB44} = {E49DF12A-F849-4EE4-A47B-B2A02BA4DB44}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsSslStrip", "Tests\TestsSslStrip\TestsSslStrip.csproj", "{E9A8F71A-55DC-457B-8DE8-9E2C0887087D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsSslStrip", "MinaryTests\TestsSslStrip\TestsSslStrip.csproj", "{E9A8F71A-55DC-457B-8DE8-9E2C0887087D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientRequestSniffer", "Tools\HttpReverseProxy\ClientRequestSniffer\ClientRequestSniffer.csproj", "{E49DF12A-F849-4EE4-A47B-B2A02BA4DB44}"
 EndProject
@@ -76,17 +76,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C07B59
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NamedPiper", "Tests\NamedPiper\NamedPiper.csproj", "{84712388-F79F-4EE0-B1A7-54E700BE9B46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NamedPiper", "MinaryTests\NamedPiper\NamedPiper.csproj", "{84712388-F79F-4EE0-B1A7-54E700BE9B46}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApeSniffer", "Tools\ApeSniffer\ApeSniffer.vcxproj", "{A0D09316-FC10-46A0-95C4-4E37F9BD78DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaken", "Tools\HttpReverseProxy\Weaken\Weaken.csproj", "{F96AC5EF-0EF7-4224-B088-BD864BA0F293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsWeaken", "Tests\TestsWeaken\TestsWeaken.csproj", "{A6331374-E0CE-41CA-81E1-2B788B8662EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsWeaken", "MinaryTests\TestsWeaken\TestsWeaken.csproj", "{A6331374-E0CE-41CA-81E1-2B788B8662EB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DownloadAndRun", "Payloads\DownloadAndRun\DownloadAndRun.vcxproj", "{153B1D81-ABB3-4D43-A60D-EF379CCDEF53}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DownloadAndRun", "MinaryPayloads\DownloadAndRun\DownloadAndRun.vcxproj", "{153B1D81-ABB3-4D43-A60D-EF379CCDEF53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsMinaryAttackServices", "Tests\TestsMinaryAttackServices\TestsMinaryAttackServices.csproj", "{08B810C7-9031-43D6-8258-955D437B3881}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsMinaryAttackServices", "MinaryTests\TestsMinaryAttackServices\TestsMinaryAttackServices.csproj", "{08B810C7-9031-43D6-8258-955D437B3881}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin_InjectPayload", "Plugins\Plugin_InjectPayload\Plugin_InjectPayload.csproj", "{F9BD58B9-646E-4AD1-B072-9D8BEB876E93}"
 EndProject
@@ -97,17 +97,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsInject", "Tests\TestsInject\TestsInject.csproj", "{5FD4C25C-C340-4B05-95B8-02C2121F0A4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsInject", "MinaryTests\TestsInject\TestsInject.csproj", "{5FD4C25C-C340-4B05-95B8-02C2121F0A4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpClient", "Tests\TcpClient\TcpClient.csproj", "{9B65862F-AC85-4514-8421-C714EA37BAE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpClient", "MinaryTests\TcpClient\TcpClient.csproj", "{9B65862F-AC85-4514-8421-C714EA37BAE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostMapping", "Tools\HttpReverseProxy\HostMapping\HostMapping.csproj", "{2C2FF23C-B3C4-4975-8F25-B97F90E8BFBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin_HttpHostMapping", "Plugins\Plugin_HttpHostMapping\Plugin_HttpHostMapping.csproj", "{B820AFCE-2B60-4A57-A290-BF7D8A457EDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsHostMapping", "Tests\TestsHostMapping\TestsHostMapping.csproj", "{A7EA2F9B-2CD9-43E4-949D-8FF1089287B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsHostMapping", "MinaryTests\TestsHostMapping\TestsHostMapping.csproj", "{A7EA2F9B-2CD9-43E4-949D-8FF1089287B3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PackNDrop", "Payloads\PackNDrop\PackNDrop.vcxproj", "{272C4F5A-FD26-4A59-8EAA-EDE2CB574A15}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PackNDrop", "MinaryPayloads\PackNDrop\PackNDrop.vcxproj", "{272C4F5A-FD26-4A59-8EAA-EDE2CB574A15}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ArpScan", "Tools\ArpScan\ArpScan.fsproj", "{B4EF51EB-2761-466D-ADCE-C98F7E16579D}"
 EndProject
