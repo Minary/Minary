@@ -1,17 +1,19 @@
 ﻿namespace Minary.LogConsole.Main
 {
+  using Minary.LogConsole.DataTypes;
   using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Windows.Forms;
 
 
-  public partial class LogConsole : Form
+  public partial class LogConsole : Form, IObserver
   {
 
     #region MEMBERS
 
     private static LogConsole instance;
+    private Task.LogConsole logConsoleTask;
 
     #endregion
 
@@ -70,9 +72,6 @@
 
     public void LogMessage(string message, params object[] formatArgs)
     {
-      string timeStamp = string.Empty;
-      DateTime timeNow = DateTime.Now;
-
       if (string.IsNullOrEmpty(message))
       {
         return;
@@ -80,20 +79,18 @@
 
       try
       {
-        timeStamp = timeNow.ToString("yyyy-MM-dd-HH:mm:ss");
         message = message.Trim();
-
         if (formatArgs != null && formatArgs.Count() > 0)
         {
           message = string.Format(message, formatArgs);
         }
 
-        string realLogMessage = string.Format("{0} - {1}", timeStamp, message);
-        instance.tb_LogContent.AppendText(realLogMessage + Environment.NewLine);
-        instance.tb_LogContent.SelectionStart = instance.tb_LogContent.Text.Length;
-        instance.tb_LogContent.ScrollToCaret();
+        // this.logConsoleTask.AddLogMessage(message);
+        this.tb_LogContent.AppendText(message);
+        this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
+        this.tb_LogContent.ScrollToCaret();
       }
-      catch (Exception ex)
+      catch (Exception)
       {
       }
     }
@@ -144,11 +141,44 @@
     #endregion
 
 
+    #region INTERFACE: IObserver
+
+    public delegate void UpdateLogDelegate(List<string> newLogMessages);
+    public void UpdateLog(List<string> newLogMessages)
+    {
+      if (this.tb_LogContent.InvokeRequired)
+      {
+        this.tb_LogContent.BeginInvoke(new UpdateLogDelegate(this.UpdateLog), new object[] { newLogMessages });
+        return;
+      }
+
+      if (newLogMessages == null && newLogMessages.Count <= 0)
+      {
+        return;
+      }
+
+      string newLogChunk = string.Join(Environment.NewLine, newLogMessages.Where(elem => elem != null && elem.Length > 0));
+
+      if (string.IsNullOrEmpty(newLogChunk))
+      {
+        return;
+      }
+
+      this.tb_LogContent.AppendText(newLogChunk);
+      this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
+      this.tb_LogContent.ScrollToCaret();
+    }
+
+    #endregion
+
+
     #region PRIVATE
 
     public LogConsole()
     {
       this.InitializeComponent();
+      this.logConsoleTask = new Task.LogConsole();
+      this.logConsoleTask.AddObserver(this);
     }
 
     #endregion

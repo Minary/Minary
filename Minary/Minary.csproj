@@ -158,6 +158,9 @@
     <Compile Include="LogConsole\1_Presentation\LogConsole.Designer.cs">
       <DependentUpon>LogConsole.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogConsole\2_Task\LogConsole.cs" />
+    <Compile Include="LogConsole\DataTypes\IObservable.cs" />
+    <Compile Include="LogConsole\DataTypes\IObserver.cs" />
     <Compile Include="MacVendors\MacVendor.cs" />
     <Compile Include="Main\1_Presentation\MinaryMain_Events.cs">
       <SubType>Form</SubType>
