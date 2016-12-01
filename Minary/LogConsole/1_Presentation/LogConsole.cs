@@ -86,6 +86,7 @@
         }
 
         // this.logConsoleTask.AddLogMessage(message);
+        message += Environment.NewLine;
         this.tb_LogContent.AppendText(message);
         this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
         this.tb_LogContent.ScrollToCaret();
