@@ -1,0 +1,63 @@
+# Ignore files that are not part of the solution/project basis files. 
+# This are files like products of the build process (.exe, .dll, .log, etc)
+#
+**/*.pdb
+**/*.pch
+**/*.dll
+**/*.cache
+**/*.log
+**/*.tlog
+**/*.resources
+**/*.obj
+**/*.txt
+**/*.exe
+**/*.xml
+**/*.manifest
+**/*.res
+**/*.buildstate
+**/*.unsuccessfulbuild
+**/*.idb
+**/*.rc
+**/*.user
+**/*.sdf
+**/*.vc.db
+**/*.opendb
+**/*.opensdf
+**/*.suo
+**/*.cd
+**/StyleCop.Cache
+
+
+#
+# Gitignore nuget 
+#
+# Ignore NuGet Packages
+*.nupkg
+# Ignore the packages folder
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+#!**/packages/repositories.config
+**/nuget.exe.old
+
+
+# Ignore directories that are not part of the solution/project basis files. 
+#
+Winpcap/
+ipch/
+
+**/bin/Release/*
+**/bin/Debug/*
+**/obj/
+**/Debug/
+**/Release/
+**/x64/
+BUILDS/
+
+
+
+!Plugin**/app.config
+!Minary/app.config
+!Minary/**/*.manifest
+!.nuget/NuGet.exe
+!DEFAULT_DATA/*.txt
