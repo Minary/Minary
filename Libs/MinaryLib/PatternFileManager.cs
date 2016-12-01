@@ -1,14 +1,12 @@
-﻿using LibGit2Sharp;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-
-
-
-namespace Minary.PatternFileManager
+﻿namespace Minary.PatternFileManager
 {
+  using LibGit2Sharp;
+  using System;
+  using System.Collections.Generic;
+  using System.Configuration;
+  using System.IO;
+  using System.Linq;
+
 
   public class GitHubPatternFileMgr
   {
@@ -79,7 +77,6 @@ namespace Minary.PatternFileManager
     /// <param name="directory"></param>
     private static void DirectoryCleanup(string directory)
     {
-
       if (string.IsNullOrEmpty(directory))
       {
         return;
