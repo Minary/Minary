@@ -5,12 +5,12 @@
 	path = Plugins
 	url = git@github.com:Minary/Plugins.git
 [submodule "Payloads"]
-	path = Payloads
+	path = MinaryPayloads
 	url = git@github.com:rubenunteregger/MinaryPayloads.git 
 [submodule "Tests"]
 	path = MinaryTests
 	url = git@github.com:rubenunteregger/MinaryTests.git 
 [submodule "Build"]
-	path = MinaryBuild
+	path = MinaryBUILD
 	url = git@github.com:rubenunteregger/MinaryBUILD.git 
 	
