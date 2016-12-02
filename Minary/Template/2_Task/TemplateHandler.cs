@@ -46,7 +46,7 @@
         }
         catch (Exception ex)
         {
-          this.minaryMain.GetLogConsole.LogMessage("TemplateHandler: {0}", ex.Message);
+          this.minaryMain.LogConsole.LogMessage("TemplateHandler: {0}", ex.Message);
         }
       }
     }

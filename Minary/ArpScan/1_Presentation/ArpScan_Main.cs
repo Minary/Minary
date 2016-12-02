@@ -211,7 +211,7 @@
         return;
       }
 
-      this.minaryMain.GetLogConsole.LogMessage("SetArpScanGuiOnStopped!!");
+      this.minaryMain.LogConsole.LogMessage("SetArpScanGuiOnStopped!!");
       // Set GUI parameters
       this.dgv_Targets.Enabled = true;
       this.bt_Close.Enabled = true;

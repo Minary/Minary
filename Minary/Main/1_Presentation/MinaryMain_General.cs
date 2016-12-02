@@ -103,12 +103,12 @@
       }
       catch (NetworkInformationException niex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage(niex.StackTrace);
+        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(niex.StackTrace);
         return;
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
         return;
       }
 
@@ -142,7 +142,7 @@
           }
 
           this.cb_Interfaces.Items.Add(temp);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(interfaceData);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(interfaceData);
         }
       }
 
@@ -166,7 +166,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
       }
     }
 
