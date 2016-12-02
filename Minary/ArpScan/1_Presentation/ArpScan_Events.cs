@@ -9,8 +9,7 @@
 
   public partial class ArpScan
   {
-
-
+    
     #region EVENTS
 
     /// <summary>

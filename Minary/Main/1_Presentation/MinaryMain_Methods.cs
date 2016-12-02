@@ -90,7 +90,7 @@
         }
         else
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Starting attack: Can't start plugins because of a colision with another attacking session");
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Starting attack: Can't start plugins because of a colision with another attacking session");
         }
 
         // Starting attack services in a background worker
@@ -202,7 +202,7 @@
         {
           string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
           MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
         }
 
         try
@@ -213,7 +213,7 @@
         {
           string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
           MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
         }
 
         try
@@ -229,7 +229,7 @@
         {
           string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
           MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
 
           this.pluginHandler.RestoreLastPluginLoadState();
         }
