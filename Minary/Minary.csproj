@@ -131,6 +131,26 @@
     <Compile Include="AttackService\Service\ArpPoisoning.cs" />
     <Compile Include="AttackService\Service\DataSniffer.cs" />
     <Compile Include="AttackService\Service\HttpReverseProxy.cs" />
+    <Compile Include="Certificates\1_Presentation\CertificateDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Certificates\1_Presentation\CertificateDetails.Designer.cs">
+      <DependentUpon>CertificateDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\1_Presentation\CreateCertificate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Certificates\1_Presentation\CreateCertificate.Designer.cs">
+      <DependentUpon>CreateCertificate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\1_Presentation\ManageServerCertificates.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Certificates\1_Presentation\ManageServerCertificates.Designer.cs">
+      <DependentUpon>ManageServerCertificates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\2_Task\CreateCertificate.cs" />
+    <Compile Include="Certificates\DataTypes\CertificateRecord.cs" />
     <Compile Include="Common\Associations\AF_FileAssociator.cs" />
     <Compile Include="Common\Associations\ExecApplication.cs" />
     <Compile Include="Common\Associations\OpenWithList.cs" />
@@ -228,6 +248,15 @@
     <EmbeddedResource Include="ArpScan\1_Presentation\ArpScan_Main.resx">
       <DependentUpon>ArpScan_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\1_Presentation\CertificateDetails.resx">
+      <DependentUpon>CertificateDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\1_Presentation\CreateCertificate.resx">
+      <DependentUpon>CreateCertificate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\1_Presentation\ManageServerCertificates.resx">
+      <DependentUpon>ManageServerCertificates.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogConsole\1_Presentation\LogConsole.resx">
       <DependentUpon>LogConsole.cs</DependentUpon>
@@ -333,6 +362,10 @@
     <ProjectReference Include="..\Libs\MinaryLib\MinaryLib.csproj">
       <Project>{f40425d4-c8df-4200-9abc-f181519671ca}</Project>
       <Name>MinaryLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libs\NativeWindowsLib\NativeWindowsLib.csproj">
+      <Project>{48fe6d15-e639-44ae-81d5-d88d89c8c4a6}</Project>
+      <Name>NativeWindowsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

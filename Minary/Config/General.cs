@@ -68,6 +68,7 @@ public static readonly string HttpReverseProxyServiceDir = Path.Combine(AttackSe
 public static readonly string HttpReverseProxyBinaryPath = Path.Combine(HttpReverseProxyServiceDir, "HttpReverseProxy.exe");
 public static readonly string HttpReverseProxyConfigFilePath = Path.Combine(HttpReverseProxyServiceDir, "plugin.config");
 public static readonly string HttpReverseProxyName = "HttpReverseProxy";
+public static readonly string HttpReverseProxyCertrifcateDir = Path.Combine(HttpReverseProxyServiceDir, "Certificates");
 // public static string HttpReverseProxyPath { get { return (Path.Combine(Directory.GetCurrentDirectory(), Config.BinaryDir, Config.HttpReverseProxyBinaryPath)); } }
 
 // Service: HttpReverseProxy/SslStrip

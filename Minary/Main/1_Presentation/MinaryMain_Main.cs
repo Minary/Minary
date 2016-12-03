@@ -2,6 +2,7 @@
 {
   using Minary.ArpScan.DataTypes;
   using Minary.AttackService;
+  using Minary.Certificates.Presentation;
   using Minary.Common;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService;
@@ -28,6 +29,7 @@
     private DataInput.InputModule inputModule;
     private PluginHandler pluginHandler;
     private TabPageHandler tabPageHandler;
+    private ManageServerCertificates caCertificateHandler;
     private TemplateTask.TemplateHandler templateTaskLayer;
     private string currentIpAddress;
     private Browser miniBrowser;
@@ -51,8 +53,8 @@
     public string NetworkStartIp { get { return this.tb_NetworkStartIp.Text; } set { } }
 
     public string NetworkStopIp { get { return this.tb_NetworkStopIp.Text; } set { } }
-    
-    public LogConsole.Main.LogConsole GetLogConsole { get { return LogConsole.Main.LogConsole.LogInstance; } }
+
+    public LogConsole.Main.LogConsole LogConsole { get { return Minary.LogConsole.Main.LogConsole.LogInstance; } }
 
     public Minary.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
 
@@ -99,7 +101,7 @@
       columnPluginName.ReadOnly = true;
       columnPluginName.Width = 120;
       this.dgv_MainPlugins.Columns.Add(columnPluginName);
-      
+
       DataGridViewCheckBoxColumn columnActivated = new DataGridViewCheckBoxColumn();
       columnActivated.DataPropertyName = "Active";
       columnActivated.Name = "Active";
@@ -144,10 +146,13 @@
       this.commandLineArguments = args;
 
       // Initialize log console
-      LogConsole.Main.LogConsole.LogInstance.InitializeLogConsole();
+      Minary.LogConsole.Main.LogConsole.LogInstance.InitializeLogConsole();
 
       // Check if an other instance is running.
       MinaryProcess.GetInstance().HandleRunningInstances();
+
+      // Initialize certificate handler
+      this.caCertificateHandler = ManageServerCertificates.GetInstance(this);
 
       // Set current Debugging mode in GUI
       if (Debugging.IsDebuggingOn())
@@ -163,7 +168,7 @@
 
       // Populate network interface.
       this.LoadNicSettings();
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("Current directory : {0}", Directory.GetCurrentDirectory());
+      Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Current directory : {0}", Directory.GetCurrentDirectory());
 
       // Start data input thread.
       this.inputModule.StartInputThread();
@@ -181,7 +186,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Main() : {0}", ex.StackTrace);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Main() : {0}", ex.StackTrace);
           Application.Exit();
         }
 
@@ -263,12 +268,12 @@
       {
         try
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary: Passing new target list to plugin \"{0}\"", tmpKey);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary: Passing new target list to plugin \"{0}\"", tmpKey);
           this.pluginHandler.TabPagesCatalog[tmpKey].PluginObject.SetTargets(newTargetList.ToList());
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
         }
       }
     }
@@ -330,7 +335,7 @@
         if (guiElement.Tag != null && guiElement.Tag.ToString() == serviceName)
         {
           this.attackServiceMap.Add(serviceName, guiElement);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", serviceName, guiElement.Name);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", serviceName, guiElement.Name);
           break;
         }
       }

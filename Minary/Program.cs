@@ -80,11 +80,11 @@
                               Config.AttackServicesDir,
                               Config.ApeServiceDir,
                               Config.HttpReverseProxyServiceDir,
+                              Config.HttpReverseProxyCertrifcateDir,
                               Config.ArpScanServiceDir,
                               Config.PluginsDir,
                               Config.TemplatesDir,
                               Config.CustomTemplatesDir,
-////                              Config.SessionDir,
                               Config.DataDir,
                               Config.MinaryDllDir
                             };
