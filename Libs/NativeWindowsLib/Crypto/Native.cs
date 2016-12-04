@@ -1,21 +1,21 @@
-﻿namespace NativeWindowsLib
+﻿namespace NativeWindowsLib.Crypto
 {
   using System;
   using System.Runtime.InteropServices;
-  using CryptoTypes = NativeWindowsLib.DataTypes.Crypto;
-  using TimeTypes = NativeWindowsLib.DataTypes.Time;
+  using CryptoTypes = DataTypes.Crypto;
+  using TimeTypes = DataTypes.Time;
 
 
-  public static class Crypto
+  public class Native
   {
     [DllImport("AdvApi32.dll", SetLastError = true, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool CryptAcquireContextW(
-        out IntPtr providerContext,
-        [MarshalAs(UnmanagedType.LPWStr)] string container,
-        [MarshalAs(UnmanagedType.LPWStr)] string provider,
-        int providerType,
-        int flags);
+     out IntPtr providerContext,
+     [MarshalAs(UnmanagedType.LPWStr)] string container,
+     [MarshalAs(UnmanagedType.LPWStr)] string provider,
+     int providerType,
+     int flags);
 
     [DllImport("AdvApi32.dll", SetLastError = true, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
