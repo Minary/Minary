@@ -1,6 +1,8 @@
 ﻿namespace Minary.Certificates.Presentation
 {
   using System;
+  using System.IO;
+  using System.Text.RegularExpressions;
   using System.Windows.Forms;
 
 
@@ -51,13 +53,16 @@
       }
     }
 
-    #endregion
 
     private void BT_Add_Click(object sender, EventArgs e)
     {
       try
       {
-        this.certificateTaskLayer.CreateNewCertificate(this.tb_HostName.Text, this.dtp_BeginDate.Value, this.dtp_ExpirationDate.Value);
+        string hostName = this.tb_HostName.Text;
+        string certificateFileName = Regex.Replace(hostName, @"[^\d\w_]", "_");
+        string certificateOutputPath = Path.Combine(Config.HttpReverseProxyCertrifcateDir, string.Format("{0}.pfx", certificateFileName));
+
+        NativeWindowsLib.Crypto.Crypto.CreateNewCertificate(certificateOutputPath, hostName, this.dtp_BeginDate.Value, this.dtp_ExpirationDate.Value);
       }
       catch (Exception ex)
       {
@@ -67,5 +72,7 @@
 
       this.Close();
     }
+
+    #endregion
   }
 }
