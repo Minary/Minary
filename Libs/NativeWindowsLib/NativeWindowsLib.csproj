@@ -39,11 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crypto.cs" />
+    <Compile Include="Crypto\Crypto.cs" />
     <Compile Include="DataTypes\Crypto.cs" />
+    <Compile Include="Crypto\Native.cs" />
     <Compile Include="DataTypes\Time.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Time.cs" />
+    <Compile Include="Time\Time.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
