@@ -5,6 +5,7 @@
   using System.ComponentModel;
   using System.IO;
   using System.Linq;
+  using System.Security.Cryptography.X509Certificates;
   using System.Windows.Forms;
 
 
@@ -90,7 +91,28 @@
         {
           try
           {
-            CertificateRecord tmpRecord = this.certificateTaskLayer.ReadCertificateFile(tmpFile, string.Empty);
+            X509Certificate2Collection certificateCollection = NativeWindowsLib.Crypto.Crypto.GetCertificatesFromStoreFile(tmpFile, string.Empty);
+            CertificateRecord tmpRecord = new CertificateRecord();
+            X509Certificate2 theCertificate = certificateCollection[0];
+
+            tmpRecord.Issuer = string.IsNullOrEmpty(theCertificate.Issuer) ? string.Empty : theCertificate.Issuer;
+            tmpRecord.StartDate = theCertificate.NotBefore == DateTime.MinValue ? DateTime.MinValue : theCertificate.NotBefore;
+            tmpRecord.ExpirationDate = theCertificate.NotAfter == DateTime.MinValue ? DateTime.MinValue : theCertificate.NotAfter;
+            tmpRecord.SerialNumber = string.IsNullOrEmpty(theCertificate.SerialNumber) ? string.Empty : theCertificate.SerialNumber;
+            tmpRecord.SignatureAlgorithm = theCertificate.SignatureAlgorithm != null ? theCertificate.SignatureAlgorithm.FriendlyName : string.Empty;
+            tmpRecord.Subject = string.IsNullOrEmpty(theCertificate.Subject) ? string.Empty : theCertificate.Subject;
+            tmpRecord.Thumbprint = string.IsNullOrEmpty(theCertificate.Thumbprint) ? string.Empty : theCertificate.Thumbprint;
+            tmpRecord.Version = theCertificate.Version;
+
+            if (tmpRecord.Subject.Contains("="))
+            {
+              tmpRecord.ServerName = tmpRecord.Subject.Split(new char[] { '=' }, 2)[1];
+            }
+            else
+            {
+              tmpRecord.ServerName = tmpRecord.Subject;
+            }
+
             tmpRecord.FileName = Path.GetFileName(tmpFile);
             this.certificateRecords.Add(tmpRecord);
           }
