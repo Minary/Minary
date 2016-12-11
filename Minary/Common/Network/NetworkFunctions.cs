@@ -86,7 +86,7 @@
 
       if (string.IsNullOrEmpty(ipAddress) || ipAddress == "0.0.0.0")
       {
-        throw new Exception(string.Format("GetMACFromIP() : \"{0}\" is an invalid IpAddress address", ipAddress));
+        throw new Exception(string.Format("GetMACFromIP(): \"{0}\" is an invalid IpAddress address", ipAddress));
       }
 
       remoteIpAddress = IPAddress.Parse(ipAddress);
@@ -99,7 +99,7 @@
 
       if (SendARP(dest, 0, mac, ref len) != 0)
       {
-        throw new Exception(string.Format("GetMACFromIP() : The ARP request for {0} failed.", ipAddress));
+        throw new Exception(string.Format("GetMACFromIP(): The ARP request for {0} failed.", ipAddress));
       }
 
       retVal = string.Format("{0:x2}-{1:x2}-{2:x2}-{3:x2}-{4:x2}-{5:x2}", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);

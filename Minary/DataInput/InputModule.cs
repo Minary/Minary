@@ -202,7 +202,7 @@
 
             if (tmpRecord.StartsWith("QUIT"))
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread() : Received QUIT signal");
+              LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): Received QUIT signal");
               processIsStopped = true;
               break;
             }
@@ -211,14 +211,14 @@
           }
           catch (Exception ex)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread() : The following exception occurred: {0}", ex.Message);
+            LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
           }
         }
 
         Thread.Sleep(300);
       }
 
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread() : Exiting thread");
+      LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): Exiting thread");
     }
 
 

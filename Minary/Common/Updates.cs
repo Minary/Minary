@@ -32,7 +32,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("CheckForMinarygUpdates(Exception) : {0}", ex.Message);
+          LogConsole.Main.LogConsole.LogInstance.LogMessage("CheckForMinarygUpdates(Exception): {0}", ex.Message);
         }
 
         if (updateData != null && updateData.IsUpdateAvaliable)

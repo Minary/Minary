@@ -186,7 +186,7 @@
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Main() : {0}", ex.StackTrace);
+          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Main(): {0}", ex.StackTrace);
           Application.Exit();
         }
 

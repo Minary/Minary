@@ -322,7 +322,7 @@
     /// <param name="e"></param>
     private void DGV_MainPlugins_DataError(object sender, DataGridViewDataErrorEventArgs e)
     {
-      Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Error occurred ({0}) : {1}", sender.ToString(), e.ToString());
+      Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Error occurred ({0}): {1}", sender.ToString(), e.ToString());
     }
 
 

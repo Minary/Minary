@@ -501,7 +501,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ReportPluginSetStatus() : {0}", ex.ToString());
+        LogConsole.Main.LogConsole.LogInstance.LogMessage("ReportPluginSetStatus(): {0}", ex.ToString());
       }
     }
 
