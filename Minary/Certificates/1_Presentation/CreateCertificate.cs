@@ -10,8 +10,7 @@
   {
 
     #region MEMBERS
-
-    private Task.CreateCertificate certificateTaskLayer;
+    
     private Minary.MinaryMain minaryMain;
 
     #endregion
@@ -24,7 +23,6 @@
       this.InitializeComponent();
 
       this.minaryMain = minaryMain;
-      this.certificateTaskLayer = new Task.CreateCertificate();
       this.dtp_BeginDate.Value = DateTime.Now.AddDays(-1);
       this.dtp_ExpirationDate.Value = DateTime.Now.AddYears(2);
     }
