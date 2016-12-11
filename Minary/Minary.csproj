@@ -149,7 +149,6 @@
     <Compile Include="Certificates\1_Presentation\ManageServerCertificates.Designer.cs">
       <DependentUpon>ManageServerCertificates.cs</DependentUpon>
     </Compile>
-    <Compile Include="Certificates\2_Task\CreateCertificate.cs" />
     <Compile Include="Certificates\DataTypes\CertificateRecord.cs" />
     <Compile Include="Common\Associations\AF_FileAssociator.cs" />
     <Compile Include="Common\Associations\ExecApplication.cs" />

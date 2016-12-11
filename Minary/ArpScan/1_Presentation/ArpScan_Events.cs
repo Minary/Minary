@@ -157,7 +157,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan : {0}", ex.Message);
+          LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
           MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
           arpScan.SetArpScanGuiOnStopped();
         }
@@ -244,7 +244,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan : {0}", ex.Message);
+        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
         MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         this.SetArpScanGuiOnStopped();
       }
@@ -284,7 +284,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan : {0}", ex.Message);
+        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
         MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         this.SetArpScanGuiOnStopped();
       }
