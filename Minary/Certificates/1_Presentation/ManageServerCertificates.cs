@@ -15,7 +15,6 @@
     #region MEMBERSS
 
     private static ManageServerCertificates instance;
-    private Task.CreateCertificate certificateTaskLayer;
     private BindingList<CertificateRecord> certificateRecords;
     private Minary.MinaryMain minaryMain;
 
@@ -75,8 +74,6 @@
       this.dgv_ServerCertificates.DataSource = this.certificateRecords;
 
       this.minaryMain = minaryMain;
-
-      this.certificateTaskLayer = new Task.CreateCertificate();
       this.RefreshCertificateListing();
     }
 
