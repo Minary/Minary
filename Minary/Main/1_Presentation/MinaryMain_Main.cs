@@ -26,7 +26,7 @@
     private NetworkInterface[] allAttachednetworkInterfaces;
     private BindingList<PluginTableRecord> usedPlugins;
     private BindingList<string> targetList;
-    private DataInput.InputHandler inputModule;
+    private Input.InputHandler inputModule;
     private PluginHandler pluginHandler;
     private TabPageHandler tabPageHandler;
     private ManageServerCertificates caCertificateHandler;
@@ -109,7 +109,7 @@
 
       this.attackServiceHandler = new AttackServiceHandler(this);
       this.pluginHandler = new PluginHandler(this);
-      this.inputModule = new DataInput.InputHandler(this);
+      this.inputModule = new Input.InputHandler(this);
       this.caCertificateHandler = ManageServerCertificates.GetInstance(this);
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
     }

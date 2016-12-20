@@ -167,7 +167,7 @@
     <Compile Include="Config\NetworkIfc.cs" />
     <Compile Include="AttackService\DataType\AttackService.cs" />
     <Compile Include="DataTypes\MinaryExtension.cs" />
-    <Compile Include="DataInput\InputHandler.cs" />
+    <Compile Include="Input\InputHandler.cs" />
     <Compile Include="DSL\Calls.cs" />
     <Compile Include="DSL\Config.cs" />
     <Compile Include="DSL\CurrentSystemSettings.cs" />
