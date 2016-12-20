@@ -60,7 +60,7 @@
         }
         catch (Exception ex)
         {
-          string message = string.Format(@"An error occured while handlin running instance of {0}:\r\n\r\n", tmpProcName, ex.Message);
+          string message = string.Format(@"An error occured while handling running instance of {0}:\r\n\r\n", tmpProcName, ex.Message);
           MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
       }

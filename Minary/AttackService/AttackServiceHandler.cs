@@ -71,8 +71,6 @@
       this.MinaryMain.RegisterService(AService.HttpReverseProxyServer.Name);
       this.SetNewState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
 
-
-
       // ArpScan
       //      Dictionary<string, SubModule> arpScanSubModules = new Dictionary<string, SubModule>();
       //      arpScanSubModules.Add("ArpScan", new SubModule("ArpScan.ArpScan", arpScanWorkingDirectory, string.Empty));
