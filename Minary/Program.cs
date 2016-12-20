@@ -37,8 +37,14 @@
         Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
         Application.EnableVisualStyles();
 ////       Application.SetCompatibleTextRenderingDefault(true);
-        MinaryMain minarygGuiObj = Minary.MinaryMain.GetInstance(args);
-        Application.Run(minarygGuiObj);
+
+        MinaryMain minaryGuiObj = MinaryMain.GetInstance(args);
+        minaryGuiObj.LoadAllFormElements();
+        minaryGuiObj.StartAllHandlers();
+        minaryGuiObj.StartBackgroundThreads();
+        minaryGuiObj.PreRun();
+
+        Application.Run(minaryGuiObj);
       }
     }
 

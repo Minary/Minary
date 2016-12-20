@@ -8,7 +8,8 @@
   using System.Threading;
   using System.Windows.Forms;
 
-  public class InputModule
+
+  public class InputHandler
   {
 
     #region MEMBERS
@@ -30,11 +31,11 @@
     #region PUBLIC
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="InputModule"/> class.
+    /// Initializes a new instance of the <see cref="InputHandler"/> class.
     ///
     /// </summary>
     /// <param name="minaryMain"></param>
-    public InputModule(MinaryMain minaryMain)
+    public InputHandler(MinaryMain minaryMain)
     {
       this.minaryMain = minaryMain;
       this.tabPageCatalog = this.minaryMain.PluginHandler.TabPagesCatalog;
