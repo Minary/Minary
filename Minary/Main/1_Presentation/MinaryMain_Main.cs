@@ -26,7 +26,7 @@
     private NetworkInterface[] allAttachednetworkInterfaces;
     private BindingList<PluginTableRecord> usedPlugins;
     private BindingList<string> targetList;
-    private DataInput.InputModule inputModule;
+    private DataInput.InputHandler inputModule;
     private PluginHandler pluginHandler;
     private TabPageHandler tabPageHandler;
     private ManageServerCertificates caCertificateHandler;
@@ -94,6 +94,50 @@
       // Init configuration
       Config.InitializeMinaryConfig();
 
+      this.usedPlugins = new BindingList<PluginTableRecord>();
+      this.targetList = new BindingList<string>();
+      this.commandLineArguments = args;
+
+      // Set .mry file extension association
+      Minary.Common.Associations.MryFiles.InstallMryFileAssociation();
+    }
+
+
+    public void StartAllHandlers()
+    {
+      Minary.LogConsole.Main.LogConsole.LogInstance.InitializeLogConsole();
+
+      this.attackServiceHandler = new AttackServiceHandler(this);
+      this.pluginHandler = new PluginHandler(this);
+      this.inputModule = new DataInput.InputHandler(this);
+      this.caCertificateHandler = ManageServerCertificates.GetInstance(this);
+      this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
+    }
+
+
+    public void StartBackgroundThreads()
+    {
+      // Start data input thread.
+      this.inputModule.StartInputThread();
+
+      // Check if new Minary version is available
+      Thread updateThread = new Thread(delegate ()
+      {
+        Minary.Common.Updates.CheckForMinaryUpdates();
+      });
+      updateThread.Start();
+
+      // Download attack pattern updates
+      Thread syncThread = new Thread(delegate ()
+      {
+        Minary.Common.Updates.SyncAttackPatterns();
+      });
+      syncThread.Start();
+    }
+
+
+    public void LoadAllFormElements()
+    {
       DataGridViewTextBoxColumn columnPluginName = new DataGridViewTextBoxColumn();
       columnPluginName.DataPropertyName = "PluginName";
       columnPluginName.Name = "PluginName";
@@ -125,10 +169,9 @@
       columnPluginDescription.Width = 120;
       columnPluginDescription.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
       this.dgv_MainPlugins.Columns.Add(columnPluginDescription);
-
-      this.usedPlugins = new BindingList<PluginTableRecord>();
       this.dgv_MainPlugins.DataSource = this.usedPlugins;
 
+      // Set AttackStart/Stop events
       this.bgwOnStartAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
       this.bgwOnStartAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStartAllPlugins);
       this.bgwOnStartAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStartAttackCompleted);
@@ -137,23 +180,14 @@
       this.bgwOnStopAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStopAllPlugins);
       this.bgwOnStopAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStopAttackCompleted);
 
-      this.attackServiceHandler = new AttackServiceHandler(this);
-
-      this.targetList = new BindingList<string>();
-      this.pluginHandler = new PluginHandler(this);
-      this.inputModule = new DataInput.InputModule(this);
+      // Instantiate (own + foreign) application layers
       this.minaryTaskFacade = TaskFacade.GetInstance(this, this.dgv_MainPlugins);
-      this.commandLineArguments = args;
+      this.templateTaskLayer = Template.Task.TemplateHandler.GetInstance(this);
+    }
 
-      // Initialize log console
-      Minary.LogConsole.Main.LogConsole.LogInstance.InitializeLogConsole();
 
-      // Check if an other instance is running.
-      MinaryProcess.GetInstance().HandleRunningInstances();
-
-      // Initialize certificate handler
-      this.caCertificateHandler = ManageServerCertificates.GetInstance(this);
-
+    public void PreRun()
+    {
       // Set current Debugging mode in GUI
       if (Debugging.IsDebuggingOn())
       {
@@ -168,11 +202,6 @@
 
       // Populate network interface.
       this.LoadNicSettings();
-      Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Current directory : {0}", Directory.GetCurrentDirectory());
-
-      // Start data input thread.
-      this.inputModule.StartInputThread();
-
       if (this.cb_Interfaces.Items.Count <= 0)
       {
         MessageBox.Show("No active network adapter found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -193,29 +222,11 @@
         this.attackStarted = false;
       }
 
-      // Check if new Minary version is available
-      Thread updateThread = new Thread(delegate()
-      {
-        Minary.Common.Updates.CheckForMinaryUpdates();
-      });
-      updateThread.Start();
-
-      // Download attack pattern updates
-      Thread syncThread = new Thread(delegate()
-      {
-        Minary.Common.Updates.SyncAttackPatterns();
-      });
-      syncThread.Start();
-
-      // Set .mry file extension association
-      Minary.Common.Associations.MryFiles.InstallMryFileAssociation();
-
-      // Load template handler on the task layer. No UI needed.
-      this.templateTaskLayer = Template.Task.TemplateHandler.GetInstance(this);
-
       // Load and initialize all plugins
-      this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
       this.pluginHandler.LoadPlugins();
+
+      // Check if an other instance is running.
+      MinaryProcess.GetInstance().HandleRunningInstances();
     }
 
 
