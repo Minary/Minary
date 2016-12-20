@@ -1,4 +1,4 @@
-﻿namespace Minary.DataInput
+﻿namespace Minary.Input
 {
   using System;
   using System.Collections.Concurrent;
