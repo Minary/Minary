@@ -10,7 +10,3 @@
 [submodule "Tests"]
 	path = MinaryTests
 	url = git@github.com:rubenunteregger/MinaryTests.git 
-[submodule "Build"]
-	path = MinaryBUILD
-	url = git@github.com:rubenunteregger/MinaryBUILD.git 
-	
