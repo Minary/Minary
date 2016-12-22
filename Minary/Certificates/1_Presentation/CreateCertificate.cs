@@ -10,7 +10,7 @@
   {
 
     #region MEMBERS
-    
+
     private Minary.MinaryMain minaryMain;
 
     #endregion
@@ -72,5 +72,6 @@
     }
 
     #endregion
+
   }
 }
