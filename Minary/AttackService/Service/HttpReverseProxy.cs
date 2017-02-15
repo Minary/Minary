@@ -7,6 +7,7 @@
   using System.Diagnostics;
   using System.IO;
 
+
   public class HttpReverseProxy : IAttackService
   {
 
@@ -56,10 +57,30 @@
 
     public ServiceStatus StartService(ServiceParameters serviceParameters)
     {
-      string timeStamp = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+      string hostName = "localhost";
+      DateTime validityStartDate = DateTime.Now;
+      DateTime validityEndDate = validityStartDate.AddYears(10);
+      string certificateFileName = "defaultCertificate.pfx";
+      string certificateDirectoryName = "certificate";
+      string certificateDirectoryFullPath = Path.Combine(this.workingDirectory, certificateDirectoryName);
+      string certificateFileFullPath = Path.Combine(certificateDirectoryFullPath, certificateFileName);
+      string certificateRelativePath = Path.Combine(certificateDirectoryName, certificateFileName);
+
       Config.NetworkInterface ifcSelected = Config.GetIfcByID(serviceParameters.SelectedIfcId);
       string httpReverseProxyBinaryPath = Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyBinaryPath);
-      string processParameters = "80 /d";
+      string processParameters = string.Format("/httpport 80 /httpsport 443 /loglevel debug /certificate {0}", certificateRelativePath);
+
+      // If certificate directory does not exist create it
+      if (!Directory.Exists(certificateDirectoryFullPath))
+      {
+        Directory.CreateDirectory(certificateDirectoryFullPath);
+      }
+
+      // If certificate file does not exist create it.
+      if (!File.Exists(certificateFileFullPath))
+      {
+        NativeWindowsLib.Crypto.Crypto.CreateNewCertificate(certificateFileFullPath, hostName, validityStartDate, validityEndDate);
+      }
 
       // Start process
       this.httpReverseProxyProc = new Process();

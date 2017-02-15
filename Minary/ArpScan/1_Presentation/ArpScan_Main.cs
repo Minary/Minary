@@ -210,7 +210,7 @@
         this.BeginInvoke(new SetArpScanGuiOnStoppedDelegate(this.SetArpScanGuiOnStopped), new object[] { });
         return;
       }
-      
+
       // Set GUI parameters
       this.dgv_Targets.Enabled = true;
       this.bt_Close.Enabled = true;
