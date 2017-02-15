@@ -78,9 +78,6 @@
       this.tsmi_Tools = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Minibrowser = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_DetectInterfaces = new System.Windows.Forms.ToolStripMenuItem();
-      this.certificatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.certAuthorityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.serverCertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Help = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_GetUpdates = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Debugging = new System.Windows.Forms.ToolStripMenuItem();
@@ -473,8 +470,7 @@
       // 
       this.tsmi_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Minibrowser,
-            this.tsmi_DetectInterfaces,
-            this.certificatesToolStripMenuItem});
+            this.tsmi_DetectInterfaces});
       this.tsmi_Tools.Name = "tsmi_Tools";
       this.tsmi_Tools.Size = new System.Drawing.Size(48, 20);
       this.tsmi_Tools.Text = "Tools";
@@ -492,31 +488,6 @@
       this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(208, 22);
       this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
       this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.SearchNetworkInterfacesToolStripMenuItem_Click);
-      // 
-      // certificatesToolStripMenuItem
-      // 
-      this.certificatesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.certAuthorityToolStripMenuItem,
-            this.serverCertToolStripMenuItem});
-      this.certificatesToolStripMenuItem.Name = "certificatesToolStripMenuItem";
-      this.certificatesToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-      this.certificatesToolStripMenuItem.Text = "Manage certificates";
-      // 
-      // certAuthorityToolStripMenuItem
-      // 
-      this.certAuthorityToolStripMenuItem.Enabled = false;
-      this.certAuthorityToolStripMenuItem.Name = "certAuthorityToolStripMenuItem";
-      this.certAuthorityToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-      this.certAuthorityToolStripMenuItem.Text = "CA certs.";
-      this.certAuthorityToolStripMenuItem.Click += new System.EventHandler(this.CertAuthorityToolStripMenuItem_Click);
-      // 
-      // serverCertToolStripMenuItem
-      // 
-      this.serverCertToolStripMenuItem.Name = "serverCertToolStripMenuItem";
-      this.serverCertToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-      this.serverCertToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-      this.serverCertToolStripMenuItem.Text = "Server certs.";
-      this.serverCertToolStripMenuItem.Click += new System.EventHandler(this.serverCertToolStripMenuItem_Click);
       // 
       // tsmi_Help
       // 
@@ -716,8 +687,5 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_Tools;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Minibrowser;
     private System.Windows.Forms.ToolStripMenuItem tsmi_DetectInterfaces;
-    private System.Windows.Forms.ToolStripMenuItem certificatesToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem certAuthorityToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem serverCertToolStripMenuItem;
   }
 }
