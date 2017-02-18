@@ -191,12 +191,12 @@
       // Set current Debugging mode in GUI
       if (Debugging.IsDebuggingOn())
       {
-        this.tsmi_Debugging.Text = "Turn debugging off";
+        this.tsmi_Debugging.Text = "Debugging (is on)";
         this.SetAppTitle("Debugging");
       }
       else
       {
-        this.tsmi_Debugging.Text = "Turn debugging on";
+        this.tsmi_Debugging.Text = "Debugging (is off)";
         this.SetAppTitle(string.Empty);
       }
 

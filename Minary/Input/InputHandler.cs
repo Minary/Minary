@@ -22,8 +22,14 @@
     private Thread processInputDataThread;
     private NamedPipeServerStream[] pipeStream = new NamedPipeServerStream[Config.PipeInstances];
     private StreamReader[] streamReader = new StreamReader[Config.PipeInstances];
-
     private ConcurrentQueue<string> inputDataQueue;
+
+    #endregion
+
+
+    #region PROPERTIES
+
+    public bool IsBeepOn { get; set; }
 
     #endregion
 
@@ -38,6 +44,7 @@
     public InputHandler(MinaryMain minaryMain)
     {
       this.minaryMain = minaryMain;
+      this.IsBeepOn = false;
       this.tabPageCatalog = this.minaryMain.PluginHandler.TabPagesCatalog;
       this.inputDataQueue = new ConcurrentQueue<string>();
       this.processInputDataThread = new Thread(this.DataProcessingThread);
@@ -197,10 +204,13 @@
         // Process all records in queue
         while (!this.inputDataQueue.IsEmpty)
         {
+          if (this.inputDataQueue.TryDequeue(out tmpRecord) == false)
+          {
+            continue;
+          }
+
           try
           {
-            this.inputDataQueue.TryDequeue(out tmpRecord);
-
             if (tmpRecord.StartsWith("QUIT"))
             {
               LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): Received QUIT signal");
@@ -208,11 +218,20 @@
               break;
             }
             else
+            {
               this.UpdateMainTB(tmpRecord);
+            }
           }
           catch (Exception ex)
           {
             LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
+          }
+
+          // If activated in the GUI generate a short beep
+          // to signalize that a data packet was processed
+          if (this.IsBeepOn)
+          {
+            System.Threading.Tasks.Task.Run(() => { Console.Beep(800, 90); });
           }
         }
 
