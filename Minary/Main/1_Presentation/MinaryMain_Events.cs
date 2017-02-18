@@ -28,7 +28,7 @@
     {
       try
       {
-        Config.NetworkInterface interfaceStruct = Config.GetIfcByID(Config.Interfaces[cb_Interfaces.SelectedIndex].Id);
+        Config.NetworkInterface interfaceStruct = Config.GetIfcByID(Config.Interfaces[this.cb_Interfaces.SelectedIndex].Id);
 
         if (interfaceStruct.Name != null && interfaceStruct.Name.Length > 0)
         {
@@ -209,13 +209,13 @@
     {
       if (File.Exists(Config.DebuggingFile))
       {
-        this.tsmi_Debugging.Text = "Turn debugging on";
+        this.tsmi_Debugging.Text = "Debugging (is off)";
         this.SetAppTitle(string.Empty);
         Debugging.EnableDebugging(false);
       }
       else
       {
-        this.tsmi_Debugging.Text = "Turn debugging off";
+        this.tsmi_Debugging.Text = "Debugging (is on)";
         this.SetAppTitle("Debugging");
         Debugging.EnableDebugging(true);
       }
@@ -418,7 +418,14 @@
     private void UnloadToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.tb_TemplateName.Text = string.Empty;
-      templateTaskLayer.RemoveAllTemplatePatternsFromPlugins();
+      this.templateTaskLayer.RemoveAllTemplatePatternsFromPlugins();
+    }
+
+
+    private void beepToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      this.tsmi_Beep.Text = string.Format("Beep (is {0})", !this.inputModule.IsBeepOn == true ? "on" : "off");
+      this.inputModule.IsBeepOn = !this.inputModule.IsBeepOn;
     }
 
 
@@ -556,7 +563,7 @@
 
     private void serverCertToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      caCertificateHandler.ShowDialog();
+      this.caCertificateHandler.ShowDialog();
     }
 
     #endregion
