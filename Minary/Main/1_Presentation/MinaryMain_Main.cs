@@ -189,7 +189,7 @@
     public void PreRun()
     {
       // Set current Debugging mode in GUI
-      if (Debugging.IsDebuggingOn())
+      if (Debugging.IsDebuggingOn)
       {
         this.tsmi_Debugging.Text = "Debugging (is on)";
         this.SetAppTitle("Debugging");

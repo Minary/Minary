@@ -292,8 +292,6 @@
       Assembly assemblyObj;
       string fileName = Path.GetFileNameWithoutExtension(currentPluginFile);
 
-      //      if ((assemblyObj = Assembly.LoadFile(currentPluginFile)) == null)
-      //Assembly assemblyObj2 = Assembly.Load(currentPluginFile);
       if ((assemblyObj = Assembly.LoadFrom(currentPluginFile)) == null)
       {
         return;
@@ -323,7 +321,6 @@
        * - the "used plugins DGV" list
        * - the "plugin position" list (name + position)
        */
-
       object tmpPluginObj = Activator.CreateInstance(objType, pluginProperties);
       if (!(tmpPluginObj is IPlugin) || !(tmpPluginObj is UserControl))
       {
@@ -450,7 +447,7 @@
  
     public Form MainWindowForm { get { return this.minaryMain; } }
 
-    public bool IsDebuggingOn { get { return Debugging.IsDebuggingOn(); } }
+    public bool IsDebuggingOn { get { return Debugging.IsDebuggingOn; } }
 
     public string HostWorkingDirectory { get { return Directory.GetCurrentDirectory(); } }
 

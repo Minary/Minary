@@ -35,6 +35,8 @@
 
         public static string InjectPayload { get { return "HttpReverseProxyServer.InjectPayload"; } set { } }
 
+        public static string RequestRedirect { get { return "HttpReverseProxyServer.RequestRedirect"; } set { } }
+
         public static string HostMapping { get { return "HttpReverseProxyServer.HostMapping"; } set { } }
       }
     }

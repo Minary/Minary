@@ -38,6 +38,7 @@
       string sslStripWorkingDirectory = Path.Combine(currentDirectory, Config.SslStripDir);
       string dataSnifferWorkingDirectory = Path.Combine(currentDirectory, Config.DataSnifferDir);
       string injectPayloadrWorkingDirectory = Path.Combine(currentDirectory, Config.InjectPayloadDir);
+      string requestRedirectWorkingDirectory = Path.Combine(currentDirectory, Config.RequestRedirectDir);
       string hostMappingWorkingDirectory = Path.Combine(currentDirectory, Config.HostMappingDir);
       string arpScanWorkingDirectory = Path.Combine(currentDirectory, Config.ArpScanServiceDir);
 
@@ -65,6 +66,7 @@
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.SslStrip, new SubModule(AService.HttpReverseProxyServer.SubModule.SslStrip, sslStripWorkingDirectory, "plugin.config"));
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.DataSniffer, new SubModule(AService.HttpReverseProxyServer.SubModule.DataSniffer, dataSnifferWorkingDirectory, "plugin.config"));
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.InjectPayload, new SubModule(AService.HttpReverseProxyServer.SubModule.InjectPayload, injectPayloadrWorkingDirectory, "plugin.config"));
+      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.RequestRedirect, new SubModule(AService.HttpReverseProxyServer.SubModule.RequestRedirect, requestRedirectWorkingDirectory, "plugin.config"));
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.HostMapping, new SubModule(AService.HttpReverseProxyServer.SubModule.HostMapping, hostMappingWorkingDirectory, "plugin.config"));
       HttpReverseProxy tmpDataSnifferHttpReverseProxy = new HttpReverseProxy(this, AService.HttpReverseProxyServer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyServiceDir), httpReverseProxySubModules);
       this.attackServices.Add(AService.HttpReverseProxyServer.Name, tmpDataSnifferHttpReverseProxy);

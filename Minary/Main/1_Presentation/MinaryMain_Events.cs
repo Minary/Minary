@@ -95,7 +95,7 @@
 
       // 4. Remove all static ARP entries
       ProcessStartInfo procStartInfo = new ProcessStartInfo("arp", "-d *");
-      procStartInfo.WindowStyle = Debugging.IsDebuggingOn() ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+      procStartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
       System.Diagnostics.Process procClearArpCache = new System.Diagnostics.Process();
       procClearArpCache.StartInfo = procStartInfo;
       procClearArpCache.Start();
@@ -207,18 +207,9 @@
     /// <param name="e"></param>
     private void DebugginOnToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (File.Exists(Config.DebuggingFile))
-      {
-        this.tsmi_Debugging.Text = "Debugging (is off)";
-        this.SetAppTitle(string.Empty);
-        Debugging.EnableDebugging(false);
-      }
-      else
-      {
-        this.tsmi_Debugging.Text = "Debugging (is on)";
-        this.SetAppTitle("Debugging");
-        Debugging.EnableDebugging(true);
-      }
+      Debugging.IsDebuggingOn = !Debugging.IsDebuggingOn;
+      this.tsmi_Debugging.Text = string.Format("Debugging (is {0})", Debugging.IsDebuggingOn == true ? "on" : "off");
+      this.SetAppTitle(Debugging.IsDebuggingOn == true ? "Debugging" : string.Empty);
     }
 
 
@@ -374,17 +365,7 @@
     {
       if (keyData == (Keys.Control | Keys.D))
       {
-        if (File.Exists(Config.DebuggingFile))
-        {
-          this.SetAppTitle(string.Empty);
-          Debugging.EnableDebugging(false);
-        }
-        else
-        {
-          this.SetAppTitle("Debugging");
-          Debugging.EnableDebugging(true);
-        }
-
+        DebugginOnToolStripMenuItem_Click(null, null);
         return true;
       }
 

@@ -1,50 +1,22 @@
 ﻿namespace Minary.Common
 {
-  using System;
-  using System.IO;
+
 
   public class Debugging
   {
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static bool IsDebuggingOn()
-    {
-      bool retVal = false;
+    #region MEMBERS
 
-      if (File.Exists(Config.DebuggingFile))
-      {
-        retVal = true;
-      }
+    private static bool isDebuggingOn = false;
 
-      return retVal;
-    }
+    #endregion
 
 
+    #region PROPERTIES
 
+    public static bool IsDebuggingOn { get { return isDebuggingOn; } set { isDebuggingOn = value; } }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="debugStatus"></param>
-    public static void EnableDebugging(bool debugStatus)
-    {
-      try
-      {
-        if (!debugStatus)
-        {
-          File.Delete(Config.DebuggingFile);
-        }
-        else
-        {
-          File.Create(Config.DebuggingFile);
-        }
-      }
-      catch (Exception)
-      {
-      }
-    }
+    #endregion
+
   }
 }

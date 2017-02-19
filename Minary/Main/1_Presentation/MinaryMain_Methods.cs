@@ -12,7 +12,9 @@
     #region MEMBERS
 
     public TabPage TabPagePluginCatalog { get { return this.tp_MinaryPluginCatalog; } }
+
     public TabControl TCPlugins { get { return this.tc_Plugins; } }
+
     public BindingList<PluginTableRecord> DGVUsedPlugins { get { return this.usedPlugins; } }
 
     private BackgroundWorker bgwOnStartAttack;
@@ -92,30 +94,6 @@
         {
           Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Starting attack: Can't start plugins because of a colision with another attacking session");
         }
-
-        // Starting attack services in a background worker
-        // after all plugins were started
-
-        /*
-         if (!cBGWorkerServicesOnStartAttack.IsBusy)
-         {
-           DateTime lStartTime = DateTime.Now;
-           while (cBGWorkerOnStartAttack.IsBusy)
-           {
-             Thread.Sleep(100);
-             LogConsole.Main.LogConsole.LogInstance.LogMessage("Waiting until plugins started");
-             if (DateTime.Now.Subtract(lStartTime).Seconds > 5)
-             {
-               LogConsole.Main.LogConsole.LogInstance.LogMessage("WOOOOWWWW!!!");
-               break;
-             }
-           }
-
-           cBGWorkerServicesOnStartAttack.RunWorkerAsync();
-         }
-         else
-           LogConsole.Main.LogConsole.LogInstance.LogMessage("Starting attack: Can't start attack services because of a colision with another attacking session");
-        */
 
         this.attackStarted = true;
         this.bt_Attack.BackgroundImage = (System.Drawing.Image)Properties.Resources.StopBig;

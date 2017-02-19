@@ -150,7 +150,7 @@
 
             OnDataReceived = arpScan.UpdateTextBox,
             OnArpScanStopped = this.ArpScanStopped,
-            IsDebuggingOn = Minary.Common.Debugging.IsDebuggingOn()
+            IsDebuggingOn = Minary.Common.Debugging.IsDebuggingOn
           };
 
           arpScan.arpScanTask.StartArpScan(arpConf);
@@ -237,7 +237,7 @@
           NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
           OnDataReceived = this.UpdateTextBox,
           OnArpScanStopped = this.SetArpScanGuiOnStopped,
-          IsDebuggingOn = Debugging.IsDebuggingOn()
+          IsDebuggingOn = Debugging.IsDebuggingOn
         };
 
         this.arpScanTask.StartArpScan(arpConf);
@@ -277,7 +277,7 @@
           NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
           OnDataReceived = this.UpdateTextBox,
           OnArpScanStopped = this.SetArpScanGuiOnStopped,
-          IsDebuggingOn = Debugging.IsDebuggingOn()
+          IsDebuggingOn = Debugging.IsDebuggingOn
         };
 
         this.arpScanTask.StartArpScan(arpConf);

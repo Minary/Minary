@@ -99,8 +99,8 @@
       this.poisoningEngProc.StartInfo.WorkingDirectory = workingDirectory;
       this.poisoningEngProc.StartInfo.FileName = apeBinaryPath;
       this.poisoningEngProc.StartInfo.Arguments = processParameters;
-      this.poisoningEngProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn() ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-      this.poisoningEngProc.StartInfo.CreateNoWindow = Debugging.IsDebuggingOn() ? true : false;
+      this.poisoningEngProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+      this.poisoningEngProc.StartInfo.CreateNoWindow = Debugging.IsDebuggingOn ? true : false;
       this.poisoningEngProc.EnableRaisingEvents = true;
       this.poisoningEngProc.Exited += new EventHandler(this.OnServiceExited);
       this.serviceStatus = ServiceStatus.Running;
