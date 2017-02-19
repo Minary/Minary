@@ -17,7 +17,6 @@
     private readonly string workingDirectory;
     private readonly Dictionary<string, SubModule> subModules;
     private ServiceStatus serviceStatus;
-
     private Process httpReverseProxyProc;
     private AttackServiceHandler attackServiceHandler;
 
@@ -61,7 +60,7 @@
       DateTime validityStartDate = DateTime.Now;
       DateTime validityEndDate = validityStartDate.AddYears(10);
       string certificateFileName = "defaultCertificate.pfx";
-      string certificateDirectoryName = "certificate";
+      string certificateDirectoryName = "Certificates";
       string certificateDirectoryFullPath = Path.Combine(this.workingDirectory, certificateDirectoryName);
       string certificateFileFullPath = Path.Combine(certificateDirectoryFullPath, certificateFileName);
       string certificateRelativePath = Path.Combine(certificateDirectoryName, certificateFileName);
@@ -87,8 +86,8 @@
       this.httpReverseProxyProc.StartInfo.WorkingDirectory = this.workingDirectory;
       this.httpReverseProxyProc.StartInfo.FileName = httpReverseProxyBinaryPath;
       this.httpReverseProxyProc.StartInfo.Arguments = processParameters;
-      this.httpReverseProxyProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn() ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-      this.httpReverseProxyProc.StartInfo.CreateNoWindow = Debugging.IsDebuggingOn() ? true : false;
+      this.httpReverseProxyProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+      this.httpReverseProxyProc.StartInfo.CreateNoWindow = Debugging.IsDebuggingOn ? true : false;
       this.httpReverseProxyProc.EnableRaisingEvents = true;
       this.httpReverseProxyProc.Exited += new EventHandler(this.OnServiceExited);
 

@@ -7,6 +7,7 @@
   using System.Diagnostics;
   using System.IO;
 
+
   public class DataSniffer : IAttackService
   {
 
@@ -64,8 +65,8 @@
       this.snifferProc.StartInfo.FileName = apeSnifferBinaryPath;
       this.snifferProc.StartInfo.Arguments = processParameters;
       this.snifferProc.StartInfo.WorkingDirectory = workingDirectory;
-      this.snifferProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn() ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-      this.snifferProc.StartInfo.CreateNoWindow = Debugging.IsDebuggingOn() ? true : false;
+      this.snifferProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+      this.snifferProc.StartInfo.CreateNoWindow = Debugging.IsDebuggingOn ? true : false;
       this.snifferProc.EnableRaisingEvents = true;
       this.snifferProc.Exited += new EventHandler(this.OnServiceExited);
 

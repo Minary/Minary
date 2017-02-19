@@ -48,7 +48,7 @@
 
           OnDataReceived = arpScan.UpdateTextBox,
           OnArpScanStopped = onArpScanStopped,
-          IsDebuggingOn = Minary.Common.Debugging.IsDebuggingOn()
+          IsDebuggingOn = Debugging.IsDebuggingOn
         };
 
         try

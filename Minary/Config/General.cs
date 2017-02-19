@@ -16,7 +16,7 @@
     public static readonly string ApplicationName = "Minary";
 
     //// TODO : Candidates to export the app.config file
-    public static readonly string MinaryVersion = "1.0.0";
+public static readonly string MinaryVersion = "1.0.0";
 public static readonly string CurrentVersionURL = "http://buglist.io/download/currentVersion.xml";
 public static readonly string ToolHomepage = "http://www.buglist.io/downloads.php";
 
@@ -24,21 +24,13 @@ public static readonly string ToolHomepage = "http://www.buglist.io/downloads.ph
     public static readonly string MinaryFileExtension = "mry";
     public static readonly int PipeInstances = 16;
 
-    //// TODO : This are all candidates to export the app.config file
-
-
     public static readonly string PluginsDir = "plugins";
     public static readonly string TemplatesDir = "templates";
     public static readonly string CustomTemplatesDir = Path.Combine(TemplatesDir, "MyTemplates");
 
-//// public static readonly string BinaryDir = "bin";
     public static readonly string MinaryDllDir = "dll";
-////    public static readonly string SessionDir = "sessions";
     public static readonly string PatternDir = "patterns";
     public static readonly string DataDir = "data";
-
-// public static string LocalBinariesPath { get { return (Path.Combine(Directory.GetCurrentDirectory(), Config.BinaryDir)); } }
-// public static string LocalPluginPath { get { return (Path.Combine(Directory.GetCurrentDirectory(), Config.PluginsDir)); } }
 
     // Services
     public static readonly string AttackServicesDir = "attackservices";
@@ -82,7 +74,11 @@ public static readonly string DataSnifferConfigFilePath = Path.Combine(DataSniff
 // Service: HttpReverseProxy/InjectPayload
 public static readonly string InjectPayloadDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\Inject");
 public static readonly string InjectPayloadConfigFilePath = Path.Combine(InjectPayloadDir, "plugin.config");
- 
+
+// Service: HttpReverseProxy/InjectPayload
+public static readonly string RequestRedirectDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\RequestRedirect");
+public static readonly string RequestRedirectDirConfigFilePath = Path.Combine(RequestRedirectDir, "plugin.config");
+
 // Service: HttpReverseProxy/HostMapping
 public static readonly string HostMappingDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\HostMapping");
 public static readonly string HostMappingConfigFilePath = Path.Combine(HostMappingDir, "plugin.config");
