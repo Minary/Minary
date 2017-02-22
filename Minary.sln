@@ -70,7 +70,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DownloadAndRun", "MinaryPay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin_HttpInjectFile", "Plugins\Plugin_HttpInjectFile\Plugin_HttpInjectFile.csproj", "{F9BD58B9-646E-4AD1-B072-9D8BEB876E93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InjectFile", "Tools\HttpReverseProxy\Inject\InjectFile.csproj", "{FD78F8C5-A16A-4605-9391-9FA74200442D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InjectFile", "Tools\HttpReverseProxy\InjectFile\InjectFile.csproj", "{FD78F8C5-A16A-4605-9391-9FA74200442D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestRedirect", "Tools\HttpReverseProxy\RequestRedirect\RequestRedirect.csproj", "{DE17E245-AD36-452A-9555-5EB5DDABD183}"
 EndProject
