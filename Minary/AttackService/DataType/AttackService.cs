@@ -33,7 +33,7 @@
 
         public static string DataSniffer { get { return "HttpReverseProxyServer.DataSniffer"; } set { } }
 
-        public static string InjectPayload { get { return "HttpReverseProxyServer.InjectPayload"; } set { } }
+        public static string InjectFile { get { return "HttpReverseProxyServer.InjectFile"; } set { } }
 
         public static string RequestRedirect { get { return "HttpReverseProxyServer.RequestRedirect"; } set { } }
 
