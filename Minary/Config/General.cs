@@ -72,6 +72,10 @@ public static readonly string DataSnifferDir = Path.Combine(HttpReverseProxyServ
 public static readonly string DataSnifferConfigFilePath = Path.Combine(DataSnifferDir, "plugin.config");
 
 // Service: HttpReverseProxy/InjectFile
+public static readonly string InjectCodeDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\InjectCode");
+public static readonly string InjectCodeConfigFilePath = Path.Combine(InjectCodeDir, "plugin.config");
+
+// Service: HttpReverseProxy/InjectFile
 public static readonly string InjectFileDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\InjectFile");
 public static readonly string InjectFileConfigFilePath = Path.Combine(InjectFileDir, "plugin.config");
 
