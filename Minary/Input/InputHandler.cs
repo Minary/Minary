@@ -119,16 +119,16 @@
           namedPipeClient.Connect(500);
           streamWriter.AutoFlush = true;
           streamWriter.WriteLine("QUIT\r\n");
-          // streamWriter.Close();
+          streamWriter.Close();
 
-          // namedPipeClient.Close();
-          // namedPipeClient = null;
+          namedPipeClient.Close();
+          namedPipeClient = null;
           /*
              if (mInputWorkerThread != null)
              {
-                 //System.Threading.Thread.Sleep(500);
+                 System.Threading.Thread.Sleep(500);
                try { mInputWorkerThread[i].Abort(); } catch { }
-                 //mInputWorkerThread.Join();
+                 mInputWorkerThread.Join();
                try { mInputWorkerThread[i].Interrupt();  } catch { }
              }
           */
