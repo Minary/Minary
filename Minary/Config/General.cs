@@ -35,7 +35,6 @@ public static readonly string ToolHomepage = "http://www.buglist.io/downloads.ph
     // Services
     public static readonly string AttackServicesDir = "attackservices";
 
-
     // Service: APE
     public static readonly string ApeServiceDir = Path.Combine(AttackServicesDir, "APE");
     public static readonly string ApeBinaryPath = Path.Combine(ApeServiceDir, "Ape.exe");
