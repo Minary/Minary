@@ -4,6 +4,7 @@
   using MinaryLib.Plugin;
   using System.Collections.Generic;
 
+
   /// <summary>
   /// Properties that must to be defined in a
   /// plugin.
