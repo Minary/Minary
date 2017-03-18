@@ -52,7 +52,7 @@
     #endregion
 
 
-    #region
+    #region PUBLIC
 
     public ServiceStatus StartService(ServiceParameters serviceParameters)
     {
@@ -67,7 +67,7 @@
 
       Config.NetworkInterface ifcSelected = Config.GetIfcByID(serviceParameters.SelectedIfcId);
       string httpReverseProxyBinaryPath = Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyBinaryPath);
-      string processParameters = string.Format("/httpport 80 /httpsport 443 /loglevel debug /certificate {0}", certificateRelativePath);
+      string processParameters = string.Format("/httpport 80 /httpsport 443 /loglevel info /certificate {0}", certificateRelativePath);
 
       // If certificate directory does not exist create it
       if (!Directory.Exists(certificateDirectoryFullPath))
