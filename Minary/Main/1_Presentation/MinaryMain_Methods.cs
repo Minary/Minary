@@ -1,8 +1,10 @@
 ﻿namespace Minary
 {
+  using Minary.Common;
   using System;
   using System.ComponentModel;
   using System.IO;
+  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -38,7 +40,7 @@
       {
         throw new Exception("No network interface selected");
 
-      // Stop the attack
+        // Stop the attack
       }
       else if (this.attackStarted)
       {
@@ -54,31 +56,15 @@
         this.bt_Attack.BackgroundImage = (System.Drawing.Image)Properties.Resources.StartBig;
         this.Cursor = Cursors.Default;
 
-        /*
-         Notify user to select at least one targetSystem system
-         }
-         else if (TargetCounter(ArpScan.Presentation.ArpScan.GetInstance().TargetList()) <= 0)
-         {
-           this.Cursor = Cursors.WaitCursor;
-           EnableGUIElements();
-
-           if (!cBGWorkerOnStopAttack.IsBusy)
-             cBGWorkerOnStopAttack.RunWorkerAsync();
-
-           if (!cBGWorkerServicesOnStopAttack.IsBusy)
-             cBGWorkerServicesOnStopAttack.RunWorkerAsync();
-
-           mAttackStarted = false;
-           bt_Attack.BackgroundImage = ((System.Drawing.Image)(Properties.Resources.StartBig));
-           this.Cursor = Cursors.Default;
-
-           MessageBox.Show("You have to select at least one targetSystem system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-          */
+      // Notify user to select at least one targetSystem system
+      }
+      else if (Debugging.IsDebuggingOn == false &&
+               ArpScan.Presentation.ArpScan.GetInstance().TargetList.Where(elem => elem.Status == true).Count() <= 0)
+      {
+        MessageBox.Show("You have to select at least one targetSystem system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
-        //
-        // Start new attack
-        ////!!! else if (TargetCounter(ArpScan.Presentation.ArpScan.GetInstance().TargetList()) > 0)
+      // Start new attack
       }
       else
       {
