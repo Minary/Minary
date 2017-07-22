@@ -131,63 +131,15 @@ public static readonly string GitEmail = "Minary@";
     /// <summary>
     ///
     /// </summary>
-    public static void InitializeMinaryConfig()
+    public static void CollectSystemInformation()
     {
-      try
-      {
-        Config.OS = string.Format("{0}.{1}", Environment.OSVersion.Version.Major, Environment.OSVersion.Version.Minor);
-      }
-      catch (Exception)
-      {
-      }
-
-      try
-      {
-        Config.Architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-      }
-      catch (Exception)
-      {
-      }
-
-      try
-      {
-        Config.Language = System.Globalization.CultureInfo.CurrentCulture.ToString();
-      }
-      catch (Exception)
-      {
-      }
-
-      try
-      {
-        Config.Processor = System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER");
-      }
-      catch (Exception)
-      {
-      }
-
-      try
-      {
-        Config.NumProcessors = System.Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS");
-      }
-      catch (Exception)
-      {
-      }
-
-      try
-      {
-        Config.DotNetVersion = System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion();
-      }
-      catch (Exception)
-      {
-      }
-
-      try
-      {
-        Config.CommonLanguateRuntime = Environment.Version.ToString();
-      }
-      catch (Exception)
-      {
-      }
+      Config.OS = TryExecute(string.Format("{0}.{1}", Environment.OSVersion.Version.Major, Environment.OSVersion.Version.Minor).ToString);
+      Config.Architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+      Config.Language = TryExecute(System.Globalization.CultureInfo.CurrentCulture.ToString);
+      Config.Processor = TryExecute(System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").ToString);
+      Config.NumProcessors = TryExecute(System.Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS").ToString);
+      Config.DotNetVersion = TryExecute(System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion);
+      Config.CommonLanguateRuntime = TryExecute(Environment.Version.ToString);
     }
 
 
@@ -203,6 +155,24 @@ public static readonly string GitEmail = "Minary@";
       hasUserElevatedPermissions = principal.IsInRole(WindowsBuiltInRole.Administrator);
 
       return hasUserElevatedPermissions;
+    }
+
+    #endregion
+
+
+    #region PRIVATE
+
+    public static string TryExecute(Func<string> action)
+    {
+      try
+      {
+        return action();
+      }
+      catch (Exception)
+      {
+      }
+
+      return string.Empty;
     }
 
     #endregion
