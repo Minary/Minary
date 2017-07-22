@@ -92,7 +92,7 @@
       this.InitializeComponent();
 
       // Init configuration
-      Config.InitializeMinaryConfig();
+      Config.CollectSystemInformation();
 
       this.usedPlugins = new BindingList<PluginTableRecord>();
       this.targetList = new BindingList<string>();
