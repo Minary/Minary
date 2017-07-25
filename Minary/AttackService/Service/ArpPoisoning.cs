@@ -79,7 +79,7 @@
       // Write APE targetSystem hosts to list
       foreach (TargetRecord targetRecord in arpScan.TargetList)
       {
-        if (targetRecord.Status)
+        if (targetRecord.Attack)
         {
           targetHosts += string.Format("{0},{1}\r\n", targetRecord.IpAddress, targetRecord.MacAddress);
           LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", targetRecord.MacAddress, targetRecord.IpAddress);
