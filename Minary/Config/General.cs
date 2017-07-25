@@ -134,7 +134,7 @@ public static readonly string GitEmail = "Minary@";
     public static void CollectSystemInformation()
     {
       Config.OS = TryExecute(string.Format("{0}.{1}", Environment.OSVersion.Version.Major, Environment.OSVersion.Version.Minor).ToString);
-      Config.Architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+      Config.Architecture = TryExecute(() => { return Environment.Is64BitOperatingSystem ? "x64" : "x86"; });
       Config.Language = TryExecute(System.Globalization.CultureInfo.CurrentCulture.ToString);
       Config.Processor = TryExecute(System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").ToString);
       Config.NumProcessors = TryExecute(System.Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS").ToString);
