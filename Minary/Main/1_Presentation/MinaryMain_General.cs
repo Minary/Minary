@@ -193,12 +193,18 @@
     {
       int reval = 0;
 
-      if (targetList != null && targetList.Count > 0)
-        foreach (TargetRecord tmpRecord in targetList)
-          if (tmpRecord.Status)
-          {
-            reval++;
-          }
+      if (targetList == null || targetList.Count <= 0)
+      {
+        return reval;
+      }
+
+      foreach (TargetRecord tmpRecord in targetList)
+      {
+        if (tmpRecord.Attack)
+        {
+          reval++;
+        }
+      }
 
       return reval;
     }

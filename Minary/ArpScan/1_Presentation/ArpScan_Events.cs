@@ -41,7 +41,7 @@
       {
         if (this.targetRecords[i].MacAddress == macAddress && this.targetRecords[i].IpAddress == ipAddress)
         {
-          this.targetRecords[i].Status = this.targetRecords[i].Status ? false : true;
+          this.targetRecords[i].Attack = this.targetRecords[i].Attack ? false : true;
           break;
         }
       }

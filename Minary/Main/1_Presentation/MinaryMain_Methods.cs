@@ -59,7 +59,7 @@
       // Notify user to select at least one targetSystem system
       }
       else if (Debugging.IsDebuggingOn == false &&
-               ArpScan.Presentation.ArpScan.GetInstance().TargetList.Where(elem => elem.Status == true).Count() <= 0)
+               ArpScan.Presentation.ArpScan.GetInstance().TargetList.Where(elem => elem.Attack == true).Count() <= 0)
       {
         MessageBox.Show("You have to select at least one targetSystem system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -106,7 +106,7 @@
       this.tsmi_LoadTemplate.Enabled = false;
       this.tsmi_GetUpdates.Enabled = false;
       this.tsmi_Exit.Enabled = false;
-      this.tsmi_ResetApplication.Enabled = false;
+      this.tsmi_ResetMinary.Enabled = false;
       this.tsmi_DetectInterfaces.Enabled = false;
       this.tsmi_Debugging.Enabled = false;
       this.tsmi_LoadTemplate.Enabled = false;
@@ -129,7 +129,7 @@
       this.tsmi_LoadTemplate.Enabled = true;
       this.tsmi_GetUpdates.Enabled = true;
       this.tsmi_Exit.Enabled = true;
-      this.tsmi_ResetApplication.Enabled = true;
+      this.tsmi_ResetMinary.Enabled = true;
       this.tsmi_DetectInterfaces.Enabled = true;
       this.tsmi_Debugging.Enabled = true;
       this.tsmi_LoadTemplate.Enabled = true;

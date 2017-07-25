@@ -2,6 +2,7 @@
 {
   using System.ComponentModel;
 
+
   public class TargetRecord : INotifyPropertyChanged
   {
 
@@ -9,10 +10,8 @@
 
     private string ipAddress;
     private string macAddress;
-    private bool status;
+    private bool attack;
     private string vendor;
-    private string lastScanDate;
-    private string note;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,14 +20,12 @@
 
     #region PUBLIC
 
-    public TargetRecord(string ipAddress, string macAddress, string vendor, string lastScanDate, string note)
+    public TargetRecord(string ipAddress, string macAddress, string vendor)
     {
       this.ipAddress = ipAddress;
       this.macAddress = macAddress;
       this.vendor = vendor;
-      this.status = false;
-      this.lastScanDate = lastScanDate;
-      this.note = note;
+      this.attack = false;
     }
 
     #endregion
@@ -68,34 +65,13 @@
     }
 
 
-
-    public bool Status
+    public bool Attack
     {
-      get { return this.status; }
+      get { return this.attack; }
       set
       {
-        this.status = value;
-        this.NotifyPropertyChanged("Status");
-      }
-    }
-
-
-    public string LastScanDate
-    {
-      get { return this.lastScanDate; }
-      set
-      {
-        this.lastScanDate = value;
-      }
-    }
-
-
-    public string Note
-    {
-      get { return this.note; }
-      set
-      {
-        this.note = value;
+        this.attack = value;
+        this.NotifyPropertyChanged("Attack");
       }
     }
 

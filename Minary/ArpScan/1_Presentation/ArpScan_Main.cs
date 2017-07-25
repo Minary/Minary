@@ -41,11 +41,19 @@
     public ArpScan()
     {
       this.InitializeComponent();
-      
+
+      DataGridViewCheckBoxColumn columnAttack = new DataGridViewCheckBoxColumn();
+      columnAttack.DataPropertyName = "Attack";
+      columnAttack.Name = "Attack";
+      columnAttack.HeaderText = "Attack";
+      columnAttack.Visible = true;
+      columnAttack.Width = 72;
+      this.dgv_Targets.Columns.Add(columnAttack);
+
       DataGridViewTextBoxColumn columnIp = new DataGridViewTextBoxColumn();
       columnIp.DataPropertyName = "IpAddress";
       columnIp.Name = "IpAddress";
-      columnIp.HeaderText = "Ip address";
+      columnIp.HeaderText = "IP address";
       columnIp.ReadOnly = true;
       columnIp.MinimumWidth = 130;
       this.dgv_Targets.Columns.Add(columnIp);
@@ -63,34 +71,9 @@
       columnVendor.Name = "Vendor";
       columnVendor.HeaderText = "Vendor";
       columnVendor.ReadOnly = true;
+      columnVendor.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
       columnVendor.MinimumWidth = 180;
       this.dgv_Targets.Columns.Add(columnVendor);
-
-      DataGridViewCheckBoxColumn columnStatus = new DataGridViewCheckBoxColumn();
-      columnStatus.DataPropertyName = "Status";
-      columnStatus.Name = "Status";
-      columnStatus.HeaderText = "Attack";
-      columnStatus.Visible = true;
-      columnStatus.Width = 72;
-      this.dgv_Targets.Columns.Add(columnStatus);
-
-      DataGridViewTextBoxColumn columnLastScanDate = new DataGridViewTextBoxColumn();
-      columnLastScanDate.DataPropertyName = "LastScanDate";
-      columnLastScanDate.Name = "LastScanDate";
-      columnLastScanDate.HeaderText = "Scan date";
-      columnLastScanDate.ReadOnly = true;
-      columnLastScanDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-      columnLastScanDate.MinimumWidth = 200;
-      this.dgv_Targets.Columns.Add(columnLastScanDate);
-
-      DataGridViewTextBoxColumn columnNote = new DataGridViewTextBoxColumn();
-      columnNote.DataPropertyName = "Note";
-      columnNote.Name = "Note";
-      columnNote.HeaderText = "Note";
-      columnNote.ReadOnly = true;
-      columnNote.Visible = false;
-      columnNote.Width = 0;
-      this.dgv_Targets.Columns.Add(columnNote);
 
       this.targetRecords = new BindingList<TargetRecord>();
       this.dgv_Targets.DataSource = this.targetRecords;
@@ -230,22 +213,6 @@
       this.isScanStarted = false;
       this.Cursor = Cursors.Default;
       this.dgv_Targets.Cursor = Cursors.Default;
-
-      // Set the tool tips!
-      foreach (DataGridViewRow tmpRow in this.dgv_Targets.Rows)
-      {
-        foreach (DataGridViewCell tmpCell in tmpRow.Cells)
-        {
-          try
-          {
-            tmpCell.ToolTipText = tmpRow.Cells["Note"].Value.ToString();
-          }
-          catch (Exception)
-          {
-          }
-        }
-      }
-
       this.dgv_Targets.Refresh();
 
       // Stop ARP scan. First the regular, then the brute way.
@@ -274,8 +241,8 @@
     private delegate void SetArpScanGuiOnStartedDelegate();
     private void SetArpScanGuiOnStarted()
     {
-      string startIP = string.Empty;
-      string stopIP = string.Empty;
+      string startIp = string.Empty;
+      string stopIp = string.Empty;
 
       if (this.InvokeRequired)
       {
@@ -286,13 +253,13 @@
       // Check start/stop IpAddress addresses.
       if (this.rb_Subnet.Checked)
       {
-        startIP = this.tb_Subnet1.Text;
-        stopIP = this.tb_Subnet2.Text;
+        startIp = this.tb_Subnet1.Text;
+        stopIp = this.tb_Subnet2.Text;
       }
       else
       {
-        startIP = this.tb_Netrange1.Text;
-        stopIP = this.tb_Netrange2.Text;
+        startIp = this.tb_Netrange1.Text;
+        stopIp = this.tb_Netrange2.Text;
       }
 
       this.targetList.Clear();
@@ -345,7 +312,6 @@
       string ipAddress = string.Empty;
       string macAddress = string.Empty;
       string vendor = string.Empty;
-      string note = string.Empty;
 
       try
       {
@@ -378,10 +344,7 @@
             if (ipAddress != this.gatewayIp && ipAddress != this.localIp)
             {
               this.targetList.Add(ipAddress);
-
-              // lSysDetails = string.Empty; // lTaskFacadeFingerprint.GetSystemDetails(macAddress);
-              note = string.Empty; // lTaskFacadeFingerprint.GetFingerprintNote(macAddress);
-              this.targetRecords.Add(new TargetRecord(ipAddress, macAddress, vendor, string.Empty, note));
+              this.targetRecords.Add(new TargetRecord(ipAddress, macAddress, vendor));
             }
           }
           catch (Exception ex)
