@@ -21,26 +21,29 @@
   {
 
     #region MEMBERS
-    
+
+    private string[] commandLineArguments;
     private NetworkInterface[] allAttachednetworkInterfaces;
     private BindingList<PluginTableRecord> usedPlugins;
     private BindingList<string> targetList;
-    private Input.InputHandler inputModule;
-    private PluginHandler pluginHandler;
-    private TabPageHandler tabPageHandler;
-    private ManageServerCertificates caCertificateHandler;
     private TemplateTask.TemplateHandler templateTaskLayer;
     private string currentIpAddress;
     private Browser miniBrowser;
     private bool attackStarted;
     private Minary.TaskFacade minaryTaskFacade;
-    private string[] commandLineArguments;
-    private AttackServiceHandler attackServiceHandler;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
-
+    
+    // GUI handlers
     private Minary.ArpScan.Presentation.ArpScan arpScanHandler;
+
+    // Service handlers
+    private ManageServerCertificates caCertificateHandler;
+    private Input.InputHandler inputModuleHandler;
+    private AttackServiceHandler attackServiceHandler;
     private MacVendor macVendorHandler;
     private MinaryProcess minaryProcessHandler;
+    private PluginHandler pluginHandler;
+    private TabPageHandler tabPageHandler;
 
     #endregion
 
@@ -105,7 +108,7 @@
 
       this.attackServiceHandler = new AttackServiceHandler(this);
       this.pluginHandler = new PluginHandler(this);
-      this.inputModule = new Input.InputHandler(this);
+      this.inputModuleHandler = new Input.InputHandler(this);
       this.caCertificateHandler = new ManageServerCertificates(this);
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
       this.macVendorHandler = new MacVendor();
@@ -116,7 +119,7 @@
     public void StartBackgroundThreads()
     {
       // Start data input thread.
-      this.inputModule.StartInputThread();
+      this.inputModuleHandler.StartInputThread();
 
       // Check if new Minary version is available
       Thread updateThread = new Thread(delegate ()
