@@ -72,7 +72,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationManifest>Main\1_Presentation\app.manifest</ApplicationManifest>
+    <ApplicationManifest>Minary.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
