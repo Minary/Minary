@@ -143,7 +143,7 @@
       columnPluginName.Name = "PluginName";
       columnPluginName.HeaderText = "Plugin name";
       columnPluginName.ReadOnly = true;
-      columnPluginName.Width = 120;
+      columnPluginName.Width = 200;
       this.dgv_MainPlugins.Columns.Add(columnPluginName);
 
       DataGridViewCheckBoxColumn columnActivated = new DataGridViewCheckBoxColumn();
