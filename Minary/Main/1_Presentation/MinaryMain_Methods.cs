@@ -17,7 +17,7 @@
 
     public TabControl TCPlugins { get { return this.tc_Plugins; } }
 
-    public BindingList<PluginTableRecord> DGVUsedPlugins { get { return this.usedPlugins; } }
+    public BindingList<PluginTableRecord> DgvUsedPlugins { get { return this.usedPlugins; } }
 
     private BackgroundWorker bgwOnStartAttack;
     private BackgroundWorker bgwOnStopAttack;

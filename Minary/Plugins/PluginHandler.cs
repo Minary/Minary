@@ -346,7 +346,7 @@
         this.minaryMain.MinaryTabPageHandler.AddTabPageToCatalog(newPluginIPlugin.Config.PluginName, newPluginIPlugin, newPluginTabPage);
 
         // Add new plugin to Minary plugins TabPage
-        this.minaryMain.DGVUsedPlugins.Add(new PluginTableRecord(newPluginIPlugin.Config.PluginName, newPluginIPlugin.Config.PluginType, newPluginIPlugin.Config.PluginDescription, "0"));
+        this.minaryMain.DgvUsedPlugins.Add(new PluginTableRecord(newPluginIPlugin.Config.PluginName, newPluginIPlugin.Config.PluginType, newPluginIPlugin.Config.PluginDescription, "0"));
 
         // Call plugin initialization methods
         this.tabPagesCatalog[newPluginIPlugin.Config.PluginName].PluginObject.OnInit();
@@ -400,7 +400,7 @@
     /// <param name="status"></param>
     private void SetStateInMinaryTable(string pluginName, string status)
     {
-      foreach (PluginTableRecord tmpRecord in this.minaryMain.DGVUsedPlugins)
+      foreach (PluginTableRecord tmpRecord in this.minaryMain.DgvUsedPlugins)
       {
         if (tmpRecord.PluginName == pluginName)
         {
