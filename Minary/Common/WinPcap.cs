@@ -5,13 +5,6 @@
   public class WinPcap
   {
 
-    #region MEMBERS
-
-    private static WinPcap instance;
-
-    #endregion
-
-
     #region PUBLIC
 
 
@@ -19,20 +12,9 @@
     /// Initializes a new instance of the <see cref="WinPcap"/> class.
     ///
     /// </summary>
-    private WinPcap()
+    public WinPcap()
     {
     }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static WinPcap GetInstance()
-    {
-      return instance ?? (instance = new WinPcap());
-    }
-
 
 
     /// <summary>

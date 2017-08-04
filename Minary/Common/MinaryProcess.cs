@@ -11,9 +11,7 @@
   {
 
     #region MEMBERS
-
-    private static MinaryProcess instance;
-
+    
     #endregion
 
 
@@ -23,18 +21,8 @@
     /// Initializes a new instance of the <see cref="MinaryProcess"/> class.
     ///
     /// </summary>
-    private MinaryProcess()
+    public MinaryProcess()
     {
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static MinaryProcess GetInstance()
-    {
-      return instance ?? (instance = new MinaryProcess());
     }
 
 

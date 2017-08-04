@@ -9,8 +9,7 @@
   {
 
     #region MEMBERS
-
-    private static Minary.Template.Task.TemplateHandler instance;
+    
     private Infrastructure.TemplateHandler infrastructure;
     private Minary.MinaryMain minaryMain;
 
@@ -18,20 +17,16 @@
 
 
     #region PROPERTIES
-    
+
     #endregion
 
 
     #region PUBLIC
 
-    /// <summary>
-    /// /
-    /// </summary>
-    /// <param name="minaryMain"></param>
-    /// <returns></returns>
-    public static TemplateHandler GetInstance(Minary.MinaryMain minaryMain)
+    public TemplateHandler(Minary.MinaryMain minaryMain)
     {
-      return instance ?? (instance = new TemplateHandler(minaryMain));
+      this.minaryMain = minaryMain;
+      this.infrastructure = new Infrastructure.TemplateHandler();
     }
 
 
@@ -120,17 +115,6 @@
       return this.infrastructure.IsFileATemplate(filePath);
     }
 
-
-    #endregion
-
-
-    #region PRIVATE
-
-    private TemplateHandler(Minary.MinaryMain minaryMain)
-    {
-      this.minaryMain = minaryMain;
-      this.infrastructure = new Infrastructure.TemplateHandler();
-    }
 
     #endregion
 

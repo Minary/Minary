@@ -33,7 +33,7 @@
         if (interfaceStruct.Name != null && interfaceStruct.Name.Length > 0)
         {
           string interfaceName = interfaceStruct.Name.Length > 40 ? interfaceStruct.Name.Substring(0, 40) + " ..." : interfaceStruct.Name;
-          string vendor = MacVendor.GetInstance().GetVendorByMac(interfaceStruct.GatewayMac);
+          string vendor = this.macVendorHandler.GetVendorByMac(interfaceStruct.GatewayMac);
 
           if (vendor != null && vendor.Length > 50)
           {
@@ -241,7 +241,7 @@
       }
       else
       {
-        Minary.ArpScan.Presentation.ArpScan.ShowArpScanGui(this, Config.Interfaces[this.cb_Interfaces.SelectedIndex].Id, this.tb_NetworkStartIp.Text, this.tb_NetworkStopIp.Text, this.tb_GatewayIp.Text, ref this.targetList);
+        this.arpScanHandler.ShowArpScanGui(ref this.targetList);
       }
     }
 

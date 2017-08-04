@@ -12,80 +12,79 @@
 
     #region DSL
 
-    public static void StartArpScanInBackground(Action onArpScanStopped, int maxNumberSystemsToScan = -1)
+    public void StartArpScanInBackground(Action onArpScanStopped, int maxNumberSystemsToScan = -1)
     {
-      if (arpScan.isScanStarted == true)
+      if (this.isScanStarted == true)
       {
         throw new Exception("Another ArpScan instance is already running");
       }
+
+
+      string startIp = string.Empty;
+      string stopIp = string.Empty;
+
+      this.targetRecords.Clear();
+
+      // User defined net range
+      if (this.rb_Netrange.Checked == true)
+      {
+        startIp = this.tb_Netrange1.Text.ToString();
+        stopIp = this.tb_Netrange2.Text.ToString();
+      }
       else
       {
-        string startIp = string.Empty;
-        string stopIp = string.Empty;
+        startIp = this.tb_Subnet1.Text.ToString();
+        stopIp = this.tb_Subnet2.Text.ToString();
+      }
 
-        arpScan.targetRecords.Clear();
+      ArpScanConfig arpConf = new ArpScanConfig()
+      {
+        InterfaceId = this.interfaceId,
+        GatewayIp = this.gatewayIp,
+        LocalIp = this.localIp,
+        NetworkStartIp = startIp,
+        NetworkStopIp = stopIp,
+        MaxNumberSystemsToScan = maxNumberSystemsToScan,
 
-        // User defined net range
-        if (arpScan.rb_Netrange.Checked == true)
-        {
-          startIp = arpScan.tb_Netrange1.Text.ToString();
-          stopIp = arpScan.tb_Netrange2.Text.ToString();
-        }
-        else
-        {
-          startIp = arpScan.tb_Subnet1.Text.ToString();
-          stopIp = arpScan.tb_Subnet2.Text.ToString();
-        }
+        OnDataReceived = this.UpdateTextBox,
+        OnArpScanStopped = onArpScanStopped,
+        IsDebuggingOn = Debugging.IsDebuggingOn
+      };
 
-        ArpScanConfig arpConf = new ArpScanConfig()
-        {
-          InterfaceId = arpScan.interfaceId,
-          GatewayIp = arpScan.gatewayIp,
-          LocalIp = arpScan.localIp,
-          NetworkStartIp = startIp,
-          NetworkStopIp = stopIp,
-          MaxNumberSystemsToScan = maxNumberSystemsToScan,
+      try
+      {
+        this.isScanStarted = true;
+        this.arpScanTask.StartArpScan(arpConf);
+      }
+      catch (Exception)
+      {
+        this.arpScanTask.StopArpScan();
+        this.isScanStarted = false;
 
-          OnDataReceived = arpScan.UpdateTextBox,
-          OnArpScanStopped = onArpScanStopped,
-          IsDebuggingOn = Debugging.IsDebuggingOn
-        };
-
-        try
-        {
-          arpScan.isScanStarted = true;
-          arpScan.arpScanTask.StartArpScan(arpConf);
-        }
-        catch (Exception ex)
-        {
-          arpScan.arpScanTask.StopArpScan();
-          arpScan.isScanStarted = false;
-
-          throw;
-        }
+        throw;
       }
     }
 
 
-    public static int NumberTargetSystems()
+    public int NumberTargetSystems()
     {
-      return arpScan.dgv_Targets.Rows.Count;
+      return this.dgv_Targets.Rows.Count;
     }
 
 
-    public static void StopRunningArpScan()
+    public void StopRunningArpScan()
     {
-      arpScan.SetArpScanGuiOnStopped();
+      this.SetArpScanGuiOnStopped();
     }
 
 
-    public static void SelectRandomSystems(int noTargetSystems)
+    public void SelectRandomSystems(int noTargetSystems)
     {
-      for (int i = 0; i < arpScan.dgv_Targets.Rows.Count && i < noTargetSystems; i++)
+      for (int i = 0; i < this.dgv_Targets.Rows.Count && i < noTargetSystems; i++)
       {
         try
         {
-          arpScan.dgv_Targets.Rows[i].Cells["status"].Value = true;
+          this.dgv_Targets.Rows[i].Cells["status"].Value = true;
         }
         catch
         {

@@ -28,7 +28,7 @@
     {
       this.InitializeComponent();
       this.minaryMain = minaryMain;
-      this.taskLayerCreateTemplate = Minary.Template.Task.TemplateHandler.GetInstance(this.minaryMain);
+      this.taskLayerCreateTemplate = new Minary.Template.Task.TemplateHandler(this.minaryMain);
     }
 
     #endregion

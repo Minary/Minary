@@ -59,7 +59,7 @@
       // Notify user to select at least one targetSystem system
       }
       else if (Debugging.IsDebuggingOn == false &&
-               ArpScan.Presentation.ArpScan.GetInstance().TargetList.Where(elem => elem.Attack == true).Count() <= 0)
+               this.arpScanHandler.TargetList.Where(elem => elem.Attack == true).Count() <= 0)
       {
         MessageBox.Show("You have to select at least one targetSystem system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

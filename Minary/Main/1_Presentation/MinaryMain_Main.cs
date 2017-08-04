@@ -4,12 +4,12 @@
   using Minary.AttackService;
   using Minary.Certificates.Presentation;
   using Minary.Common;
+  using Minary.MacVendors;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService;
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
-  using System.IO;
   using System.Linq;
   using System.Net.NetworkInformation;
   using System.Threading;
@@ -21,8 +21,7 @@
   {
 
     #region MEMBERS
-
-    private static MinaryMain instance;
+    
     private NetworkInterface[] allAttachednetworkInterfaces;
     private BindingList<PluginTableRecord> usedPlugins;
     private BindingList<string> targetList;
@@ -38,6 +37,10 @@
     private string[] commandLineArguments;
     private AttackServiceHandler attackServiceHandler;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
+
+    private Minary.ArpScan.Presentation.ArpScan arpScanHandler;
+    private MacVendor macVendorHandler;
+    private MinaryProcess minaryProcessHandler;
 
     #endregion
 
@@ -66,28 +69,21 @@
 
     public AttackServiceHandler MinaryAttackServiceHandler { get { return this.attackServiceHandler; } set { } }
 
+    public Minary.ArpScan.Presentation.ArpScan ArpScan { get { return this.arpScanHandler; } set { } }
+
+    public MacVendor MacVendor { get { return this.macVendorHandler; } set { } }
+
     #endregion
 
 
     #region PUBLIC
 
     /// <summary>
-    ///
-    /// </summary>
-    /// <param name="args"></param>
-    /// <returns></returns>
-    public static MinaryMain GetInstance(string[] args)
-    {
-      return instance ?? (instance = new MinaryMain(args));
-    }
-
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="MinaryMain"/> class.
     ///
     /// </summary>
     /// <param name="args"></param>
-    private MinaryMain(string[] args)
+    public MinaryMain(string[] args)
     {
       this.InitializeComponent();
 
@@ -110,8 +106,10 @@
       this.attackServiceHandler = new AttackServiceHandler(this);
       this.pluginHandler = new PluginHandler(this);
       this.inputModule = new Input.InputHandler(this);
-      this.caCertificateHandler = ManageServerCertificates.GetInstance(this);
+      this.caCertificateHandler = new ManageServerCertificates(this);
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
+      this.macVendorHandler = new MacVendor();
+      this.minaryProcessHandler = new MinaryProcess();
     }
 
 
@@ -181,8 +179,8 @@
       this.bgwOnStopAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStopAttackCompleted);
 
       // Instantiate (own + foreign) application layers
-      this.minaryTaskFacade = TaskFacade.GetInstance(this, this.dgv_MainPlugins);
-      this.templateTaskLayer = Template.Task.TemplateHandler.GetInstance(this);
+      this.minaryTaskFacade = new TaskFacade(this, this.dgv_MainPlugins);
+      this.templateTaskLayer = new Template.Task.TemplateHandler(this);
     }
 
 
@@ -209,16 +207,7 @@
       else
       {
         // Init ArpScan console
-        try
-        {
-          Minary.ArpScan.Presentation.ArpScan.InitArpScan(this, ref this.targetList);
-        }
-        catch (Exception ex)
-        {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Main(): {0}", ex.StackTrace);
-          Application.Exit();
-        }
-
+        this.arpScanHandler = new ArpScan.Presentation.ArpScan(this);
         this.attackStarted = false;
       }
 
@@ -226,7 +215,7 @@
       this.pluginHandler.LoadPlugins();
 
       // Check if an other instance is running.
-      MinaryProcess.GetInstance().HandleRunningInstances();
+      this.minaryProcessHandler.HandleRunningInstances();
     }
 
 
@@ -256,7 +245,7 @@
     public void PassNewTargetListToPlugins()
     {
       List<Tuple<string, string, string>> newTargetList = new List<Tuple<string, string, string>>();
-      List<TargetRecord> reachableTargetSystems = ArpScan.Presentation.ArpScan.GetInstance().TargetList.ToList();
+      List<TargetRecord> reachableTargetSystems = this.arpScanHandler.TargetList.ToList();
 
       if (reachableTargetSystems == null || reachableTargetSystems.Count <= 0)
       {
@@ -267,7 +256,7 @@
       {
         try
         {
-            newTargetList.Add(new Tuple<string, string, string>(targetSystem.IpAddress, targetSystem.MacAddress, targetSystem.Vendor));
+          newTargetList.Add(new Tuple<string, string, string>(targetSystem.IpAddress, targetSystem.MacAddress, targetSystem.Vendor));
         }
         catch (Exception)
         {

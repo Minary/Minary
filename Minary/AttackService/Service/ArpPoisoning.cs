@@ -8,6 +8,7 @@
   using System.Diagnostics;
   using System.IO;
 
+
   public class ArpPoisoning : IAttackService
   {
 
@@ -17,6 +18,7 @@
     private readonly string workingDirectory;
     private readonly Dictionary<string, SubModule> subModules;
     private ServiceStatus serviceStatus;
+    private ArpScan.Presentation.ArpScan arpScan;
 
     private Process poisoningEngProc;
     private AttackServiceHandler attackServiceHandler;
@@ -58,18 +60,17 @@
     public ServiceStatus StartService(ServiceParameters serviceParameters)
     {
       string targetHosts = string.Empty;
-      ArpScan.Presentation.ArpScan arpScan;
       string workingDirectory = Path.Combine(Directory.GetCurrentDirectory(), Config.ApeServiceDir);
       string timeStamp = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
       string targetHostsPath = Config.APETargetHostsPath;
       string processParameters = string.Format("-x {0}", serviceParameters.SelectedIfcId);
 
-      if ((arpScan = ArpScan.Presentation.ArpScan.GetInstance()) == null)
-      {
-        return ServiceStatus.NotRunning;
-      }
+//if ((this.arpScan = new ArpScan.Presentation.ArpScan()) == null)
+//{
+//  return ServiceStatus.NotRunning;
+//}
 
-      if (arpScan.TargetList.Count <= 0)
+      if (this.arpScan.TargetList.Count <= 0)
       {
         this.serviceStatus = ServiceStatus.NotRunning;
         LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StartService(): There were no systems selected to attack");
@@ -77,7 +78,7 @@
       }
 
       // Write APE targetSystem hosts to list
-      foreach (TargetRecord targetRecord in arpScan.TargetList)
+      foreach (TargetRecord targetRecord in this.arpScan.TargetList)
       {
         if (targetRecord.Attack)
         {
