@@ -436,7 +436,7 @@
       {
         List<Tuple<string, string, string>> retVal = new List<Tuple<string, string, string>>();
 
-        foreach (TargetRecord tmpTarget in ArpScan.Presentation.ArpScan.GetInstance().TargetList)
+        foreach (TargetRecord tmpTarget in this.minaryMain.ArpScan.TargetList)
         {
           retVal.Add(new Tuple<string, string, string>(tmpTarget.MacAddress, tmpTarget.IpAddress, tmpTarget.Vendor));
         }

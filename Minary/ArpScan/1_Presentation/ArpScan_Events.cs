@@ -113,53 +113,53 @@
     /// <param name="e"></param>
     private void Bt_Scan_Click(object sender, EventArgs e)
     {
-      if (arpScan.isScanStarted == true)
+      if (this.isScanStarted == true)
       {
-        arpScan.SetArpScanGuiOnStopped();
+        this.SetArpScanGuiOnStopped();
       }
       else
       {
         string startIp = string.Empty;
         string stopIp = string.Empty;
 
-        arpScan.targetRecords.Clear();
-        arpScan.SetArpScanGuiOnStarted();
+        this.targetRecords.Clear();
+        this.SetArpScanGuiOnStarted();
 
         try
         {
           // User defined net range
-          if (arpScan.rb_Netrange.Checked == true)
+          if (this.rb_Netrange.Checked == true)
           {
-            startIp = arpScan.tb_Netrange1.Text.ToString();
-            stopIp = arpScan.tb_Netrange2.Text.ToString();
+            startIp = this.tb_Netrange1.Text.ToString();
+            stopIp = this.tb_Netrange2.Text.ToString();
           }
           else
           {
-            startIp = arpScan.tb_Subnet1.Text.ToString();
-            stopIp = arpScan.tb_Subnet2.Text.ToString();
+            startIp = this.tb_Subnet1.Text.ToString();
+            stopIp = this.tb_Subnet2.Text.ToString();
           }
 
           ArpScanConfig arpConf = new ArpScanConfig()
           {
-            InterfaceId = arpScan.interfaceId,
-            GatewayIp = arpScan.gatewayIp,
-            LocalIp = arpScan.localIp,
+            InterfaceId = this.interfaceId,
+            GatewayIp = this.gatewayIp,
+            LocalIp = this.localIp,
             NetworkStartIp = startIp,
             NetworkStopIp = stopIp,
             MaxNumberSystemsToScan = -1,
 
-            OnDataReceived = arpScan.UpdateTextBox,
+            OnDataReceived = this.UpdateTextBox,
             OnArpScanStopped = this.ArpScanStopped,
             IsDebuggingOn = Minary.Common.Debugging.IsDebuggingOn
           };
 
-          arpScan.arpScanTask.StartArpScan(arpConf);
+          this.arpScanTask.StartArpScan(arpConf);
         }
         catch (Exception ex)
         {
           LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
           MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          arpScan.SetArpScanGuiOnStopped();
+          this.SetArpScanGuiOnStopped();
         }
       }
     }

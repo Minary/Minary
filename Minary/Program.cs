@@ -38,7 +38,7 @@
         Application.EnableVisualStyles();
 ////       Application.SetCompatibleTextRenderingDefault(true);
 
-        MinaryMain minaryGuiObj = MinaryMain.GetInstance(args);
+        MinaryMain minaryGuiObj = new MinaryMain(args);
         minaryGuiObj.LoadAllFormElements();
         minaryGuiObj.StartAllHandlers();
         minaryGuiObj.StartBackgroundThreads();

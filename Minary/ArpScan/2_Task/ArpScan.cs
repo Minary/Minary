@@ -10,8 +10,7 @@ namespace Minary.ArpScan.Task
   {
 
     #region MEMBERS
-
-    private static ArpScan instance;
+    
     private Infrastructure.ArpScan infrastructure;
 
     #endregion
@@ -25,17 +24,7 @@ namespace Minary.ArpScan.Task
     /// </summary>
     public ArpScan()
     {
-      this.infrastructure = Infrastructure.ArpScan.GetInstance();
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static ArpScan GetInstance()
-    {
-      return instance ?? (instance = new ArpScan());
+      this.infrastructure = new Infrastructure.ArpScan();
     }
 
 

@@ -7,8 +7,7 @@
   {
 
     #region MEMBERS
-
-    private static TaskFacade instance;
+    
     private MinaryMain minaryMain;
     private DataGridView dgvPlugins;
 
@@ -16,26 +15,14 @@
 
 
     #region PUBLIC
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="pParent"></param>
-    /// <param name="dgvPlugins"></param>
-    /// <returns></returns>
-    public static TaskFacade GetInstance(MinaryMain parent, DataGridView dgvPlugins)
-    {
-      return instance ?? (instance = new TaskFacade(parent, dgvPlugins));
-    }
-
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="TaskFacade"/> class.
     ///
     /// </summary>
     /// <param name="pParent"></param>
     /// <param name="dgvPlugins"></param>
-    private TaskFacade(MinaryMain parent, DataGridView dgvPlugins)
+    public TaskFacade(MinaryMain parent, DataGridView dgvPlugins)
     {
       this.minaryMain = parent;
       this.dgvPlugins = dgvPlugins;

@@ -13,8 +13,7 @@
   {
 
     #region MEMBERSS
-
-    private static ManageServerCertificates instance;
+    
     private BindingList<CertificateRecord> certificateRecords;
     private Minary.MinaryMain minaryMain;
 
@@ -22,18 +21,8 @@
 
 
     #region PUBLIC
-
-    public static ManageServerCertificates GetInstance(Minary.MinaryMain minaryMain)
-    {
-      return instance ?? (instance = new ManageServerCertificates(minaryMain));
-    }
-
-    #endregion
-
-
-    #region PRIVATE
-
-    private ManageServerCertificates(Minary.MinaryMain minaryMain)
+    
+    public ManageServerCertificates(Minary.MinaryMain minaryMain)
     {
       this.InitializeComponent();
 
@@ -77,6 +66,10 @@
       this.RefreshCertificateListing();
     }
 
+    #endregion
+
+
+    #region PRIVATE
 
     private void RefreshCertificateListing()
     {

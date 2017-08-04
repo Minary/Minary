@@ -13,8 +13,7 @@
   {
 
     #region MEMBERS
-
-    private static ArpScan arpScan;
+    
     private BindingList<string> targetList;
     private string interfaceId;
     private string startIp;
@@ -38,7 +37,7 @@
 
     #region PUBLIC
 
-    public ArpScan()
+    public ArpScan(MinaryMain minaryMain)
     {
       this.InitializeComponent();
 
@@ -81,69 +80,36 @@
       this.dgv_Targets.CellValueChanged += new DataGridViewCellEventHandler(this.Dgv_CellValueChanged);
       this.dgv_Targets.CellClick += new DataGridViewCellEventHandler(this.Dgv_CellClick);
 
-      this.arpScanTask = Task.ArpScan.GetInstance();
+      this.arpScanTask = new Task.ArpScan();
       this.isScanStarted = false;
+      this.minaryMain = minaryMain;
     }
-
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="minaryMain"></param>
-    /// <param name="newTargetList"></param>
-    /// <returns></returns>
-    public static ArpScan GetInstance(MinaryMain minaryMain, ref BindingList<string> targetList)
-    {
-      if (arpScan == null)
-      {
-        arpScan = new ArpScan();
-      }
-
-      arpScan.ResetValues(minaryMain, ref targetList);
-
-      return arpScan;
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static ArpScan GetInstance()
-    {
-      return arpScan;
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="minaryMain"></param>
-    /// <param name="newTargetList"></param>
-    public static void InitArpScan(MinaryMain minaryMain, ref BindingList<string> targetList)
-    {
-      if (arpScan == null)
-      {
-        arpScan = GetInstance(minaryMain, ref targetList);
-      }
-    }
-
+    
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="minaryMain"></param>
-    /// <param name="interfaceId"></param>
-    /// <param name="startIp"></param>
-    /// <param name="stopIp"></param>
-    /// <param name="gatewayIp"></param>
     /// <param name="targetList"></param>
-    public static void ShowArpScanGui(MinaryMain minaryMain, string interfaceId, string startIp, string stopIp, string gatewayIp, ref BindingList<string> targetList)
+    public void ShowArpScanGui(ref BindingList<string> targetList)
     {
       try
       {
-        GetInstance(minaryMain, ref targetList).ShowDialog();
+        this.targetList = targetList;
+        this.interfaceId = this.minaryMain.GetCurrentInterface();
+        this.startIp = this.minaryMain.NetworkStartIp;
+        this.stopIp = this.minaryMain.NetworkStopIp;
+        this.gatewayIp = this.minaryMain.CurrentGatewayIp;
+        this.localIp = this.minaryMain.CurrentLocalIp;
+
+        this.tb_Subnet1.Text = this.startIp;
+        this.tb_Subnet2.Text = this.stopIp;
+
+        this.tb_Netrange1.Text = this.startIp;
+        this.tb_Netrange2.Text = this.stopIp;
+
+        this.rb_Subnet.Checked = true;
+        this.Rb_Subnet_CheckedChanged(null, null);
+        this.ShowDialog();
       }
       catch (Exception ex)
       {
@@ -155,33 +121,7 @@
 
 
     #region PRIVATE
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="minaryMain"></param>
-    /// <param name="targetList"></param>
-    private void ResetValues(MinaryMain minaryMain, ref BindingList<string> targetList)
-    {
-      this.minaryMain = minaryMain;
-      this.targetList = targetList;
-      this.interfaceId = minaryMain.GetCurrentInterface();
-      this.startIp = minaryMain.NetworkStartIp;
-      this.stopIp = minaryMain.NetworkStopIp;
-      this.gatewayIp = minaryMain.CurrentGatewayIp;
-      this.localIp = minaryMain.CurrentLocalIp;
-
-      this.tb_Subnet1.Text = this.startIp;
-      this.tb_Subnet2.Text = this.stopIp;
-
-      this.tb_Netrange1.Text = this.startIp;
-      this.tb_Netrange2.Text = this.stopIp;
-
-      this.rb_Subnet.Checked = true;
-      this.Rb_Subnet_CheckedChanged(null, null);
-    }
-
-
+    
     /// <summary>
     ///
     /// </summary>
@@ -339,7 +279,7 @@
             macAddress = entry.MAC;
 
             // Determine vendor
-            vendor = MacVendor.GetInstance().GetVendorByMac(macAddress);
+            vendor = this.minaryMain.MacVendor.GetVendorByMac(macAddress);
 
             if (ipAddress != this.gatewayIp && ipAddress != this.localIp)
             {

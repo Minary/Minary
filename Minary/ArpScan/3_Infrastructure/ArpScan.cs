@@ -12,8 +12,7 @@
   {
 
     #region MEMBERS
-
-    private static ArpScan instance;
+    
     private string arpScanProcName = "ArpScan";
     private Process arpScanProc;
     private string baseDir;
@@ -30,22 +29,11 @@
     /// Initializes a new instance of the <see cref="ArpScan"/> class.
     ///
     /// </summary>
-    private ArpScan()
+    public ArpScan()
     {
       this.baseDir = Directory.GetCurrentDirectory();
       this.arpScanBin = Path.Combine(this.baseDir, Minary.Config.ArpScanBinaryPath);
     }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static ArpScan GetInstance()
-    {
-      return instance ?? (instance = new ArpScan());
-    }
-
 
     /// <summary>
     ///

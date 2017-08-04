@@ -11,6 +11,7 @@
 
     #region MEMBERS
 
+    private Minary.ArpScan.Presentation.ArpScan arpScan;
     private const int MaxArpScanRuntime = 100000;
     private const int MaxSelectedTargetSystems = 10;
     private const int MaxSystemsToScan = 255;
@@ -46,20 +47,20 @@
 
       System.ComponentModel.BindingList<string> targetList = new System.ComponentModel.BindingList<string>();
       manualEventArpScanStopped.Reset();
-      Minary.ArpScan.Presentation.ArpScan.StartArpScanInBackground(this.ArpScanStopped, MaxSystemsToScan);
+      arpScan.StartArpScanInBackground(this.ArpScanStopped, MaxSystemsToScan);
 
       // If ArpScan did not return after "maxArpScanRuntime" milliseconds
       // interrupt the scanning process.
       if (manualEventArpScanStopped.WaitOne(MaxArpScanRuntime))
       {
-        Minary.ArpScan.Presentation.ArpScan.StopRunningArpScan();
+        this.arpScan.StopRunningArpScan();
       }
     }
 
 
     public int GetCurrentNumberOfTargetSystems()
     {
-      return Minary.ArpScan.Presentation.ArpScan.NumberTargetSystems();
+      return this.arpScan.NumberTargetSystems();
     }
 
 
@@ -77,7 +78,7 @@
         return;
       }
 
-      Minary.ArpScan.Presentation.ArpScan.SelectRandomSystems(noTargetSystems);
+      this.arpScan.SelectRandomSystems(noTargetSystems);
     }
 
 

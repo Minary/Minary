@@ -9,8 +9,7 @@
   {
 
     #region MEMBERS
-
-    private static MacVendor instance;
+    
     private string macVendorList = @"data\MACVendors.txt";
     private Hashtable macVendorMap;
 
@@ -28,21 +27,6 @@
       // Load MacAddress vendor list
       this.macVendorMap = new Hashtable();
       LoadMacVendorList();
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
-    public static MacVendor GetInstance()
-    {
-      if (instance == null)
-      {
-        instance = new MacVendor();
-      }
-
-      return instance;
     }
 
 
