@@ -1,5 +1,6 @@
 ﻿namespace Minary
 {
+  using Minary.Form;
   using System;
   using System.IO;
   using System.Windows.Forms;
@@ -20,32 +21,40 @@
 
       Application.SetCompatibleTextRenderingDefault(false);
 
-      // OS checks
-      if (operatingSystem.Platform != PlatformID.Win32NT || operatingSystemVersion.Major < 6)
+      // Initialization
+      Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
+      DirectoryChecks(System.Windows.Forms.Application.StartupPath);
+      AttackServiceChecks(System.Windows.Forms.Application.StartupPath);
+
+      Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+      Application.EnableVisualStyles();
+
+      /*
+       *  Determine PCap-Status
+       *  Determine Network-Interface-Status
+            if (IsPcapInstalled() == false)
+            if (NoInterfacesFound() == true )
+            if (No() == true )
+                  ....
+      */
+
+
+      // Load GUI
+      try
       {
-        string message = string.Format("{0} doesnt run on your Windows version!", Config.ApplicationName);
-        MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-      // Start GUI
-      }
-      else
-      {
-        Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
-        DirectoryChecks(System.Windows.Forms.Application.StartupPath);
-        AttackServiceChecks(System.Windows.Forms.Application.StartupPath);
-
-        Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-        Application.EnableVisualStyles();
-////       Application.SetCompatibleTextRenderingDefault(true);
-
         MinaryMain minaryGuiObj = new MinaryMain(args);
         minaryGuiObj.LoadAllFormElements();
-        minaryGuiObj.StartAllHandlers();
+        minaryGuiObj.StartAllHandlers(); // CRASH!!
         minaryGuiObj.StartBackgroundThreads();
         minaryGuiObj.PreRun();
-
         Application.Run(minaryGuiObj);
       }
+      catch (Exception ex)
+      {
+        string errorMsg = string.Format("Minary: The following error occured: {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
+        MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+
     }
 
 
