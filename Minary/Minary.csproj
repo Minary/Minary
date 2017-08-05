@@ -247,6 +247,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Form\Updates\Config\UpdateData.cs" />
+    <Compile Include="State\NetworkMissing.cs" />
+    <Compile Include="State\NotAdmin.cs" />
+    <Compile Include="State\StateOk.cs" />
     <Compile Include="State\WinPcapMissing.cs" />
     <EmbeddedResource Include="Form\ArpScan\1_Presentation\ArpScan_Main.resx">
       <DependentUpon>ArpScan_Main.cs</DependentUpon>

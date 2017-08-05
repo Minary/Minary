@@ -8,11 +8,7 @@
   public class Utils
   {
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="appName"></param>
-    /// <returns></returns>
+
     public static string IsProgrammInstalled(string appName)
     {
       string retVal = string.Empty;

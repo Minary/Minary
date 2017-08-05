@@ -55,7 +55,7 @@
       this.lab_Interface = new System.Windows.Forms.Label();
       this.lab_StartIP = new System.Windows.Forms.Label();
       this.bt_Attack = new System.Windows.Forms.Button();
-      this.bt_ScanLAN = new System.Windows.Forms.Button();
+      this.bt_ScanLan = new System.Windows.Forms.Button();
       this.gb_TargetRange = new System.Windows.Forms.GroupBox();
       this.tb_GatewayMac = new System.Windows.Forms.TextBox();
       this.l_GatewayMAC = new System.Windows.Forms.Label();
@@ -223,20 +223,18 @@
       this.bt_Attack.Size = new System.Drawing.Size(184, 149);
       this.bt_Attack.TabIndex = 6;
       this.bt_Attack.UseVisualStyleBackColor = true;
-      this.bt_Attack.Click += new System.EventHandler(this.Bt_Attack_Click);
       // 
       // bt_ScanLAN
       // 
-      this.bt_ScanLAN.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_ScanLAN.BackgroundImage")));
-      this.bt_ScanLAN.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-      this.bt_ScanLAN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_ScanLAN.Location = new System.Drawing.Point(1251, 48);
-      this.bt_ScanLAN.Margin = new System.Windows.Forms.Padding(0);
-      this.bt_ScanLAN.Name = "bt_ScanLAN";
-      this.bt_ScanLAN.Size = new System.Drawing.Size(184, 149);
-      this.bt_ScanLAN.TabIndex = 5;
-      this.bt_ScanLAN.UseVisualStyleBackColor = true;
-      this.bt_ScanLAN.Click += new System.EventHandler(this.BT_ScanLAN_Click);
+      this.bt_ScanLan.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_ScanLAN.BackgroundImage")));
+      this.bt_ScanLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+      this.bt_ScanLan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+      this.bt_ScanLan.Location = new System.Drawing.Point(1251, 48);
+      this.bt_ScanLan.Margin = new System.Windows.Forms.Padding(0);
+      this.bt_ScanLan.Name = "bt_ScanLAN";
+      this.bt_ScanLan.Size = new System.Drawing.Size(184, 149);
+      this.bt_ScanLan.TabIndex = 5;
+      this.bt_ScanLan.UseVisualStyleBackColor = true;
       // 
       // gb_TargetRange
       // 
@@ -471,7 +469,7 @@
       this.tsmi_Beep.Name = "tsmi_Beep";
       this.tsmi_Beep.Size = new System.Drawing.Size(305, 30);
       this.tsmi_Beep.Text = "Beep (is off)";
-      this.tsmi_Beep.Click += new System.EventHandler(this.beepToolStripMenuItem_Click);
+      this.tsmi_Beep.Click += new System.EventHandler(this.BeepToolStripMenuItem_Click);
       // 
       // tsmi_Debugging
       // 
@@ -659,7 +657,7 @@
       this.Controls.Add(this.tc_Plugins);
       this.Controls.Add(this.gb_TargetRange);
       this.Controls.Add(this.bt_Attack);
-      this.Controls.Add(this.bt_ScanLAN);
+      this.Controls.Add(this.bt_ScanLan);
       this.Controls.Add(this.gb_Interfaces);
       this.Controls.Add(this.ms_MainWindow);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -706,7 +704,7 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_Help;
     private System.Windows.Forms.ToolStripMenuItem tsmi_GetUpdates;
     private System.Windows.Forms.ToolStripMenuItem tsmi_LogConsole;
-    private System.Windows.Forms.Button bt_ScanLAN;
+    private System.Windows.Forms.Button bt_ScanLan;
     private System.Windows.Forms.Label l_GatewayIP;
     private System.Windows.Forms.TextBox tb_GatewayIp;
     private System.Windows.Forms.Button bt_Attack;

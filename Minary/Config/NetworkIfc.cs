@@ -200,7 +200,7 @@
             }
           }
 
-          string gatewayMac = NetworkFunctions.GetMACFromIP(defaultGateway);
+          string gatewayMac = NetworkFunctions.GetMacByIp(defaultGateway);
           Config.SetInterfaceInstance(ifcId, ifcName, ifcDescription, ifcIPAddress, ifcNetworkAddress, ifcBroadcastAddress, defaultGateway, gatewayMac);
         }
         catch (Exception ex)
