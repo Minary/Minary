@@ -1,6 +1,6 @@
 ﻿namespace Minary.Common
 {
-  using Minary.Updates.Config;
+  using Minary.Form.Updates.Config;
   using System;
   using System.Configuration;
   using System.IO;
@@ -37,7 +37,7 @@
 
         if (updateData != null && updateData.IsUpdateAvaliable)
         {
-          Minary.Updates.FormNewVersion newVersion = new Minary.Updates.FormNewVersion();
+          Minary.Form.Updates.FormNewVersion newVersion = new Minary.Form.Updates.FormNewVersion();
           newVersion.TopMost = true;
           newVersion.ShowDialog();
         }
