@@ -56,12 +56,12 @@
         this.bt_Attack.BackgroundImage = (System.Drawing.Image)Properties.Resources.StartBig;
         this.Cursor = Cursors.Default;
 
-      // Notify user to select at least one targetSystem system
+      // Notify user to select at least one target system
       }
       else if (Debugging.IsDebuggingOn == false &&
                this.arpScanHandler.TargetList.Where(elem => elem.Attack == true).Count() <= 0)
       {
-        MessageBox.Show("You have to select at least one targetSystem system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show("You have to select at least one target system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
       // Start new attack
