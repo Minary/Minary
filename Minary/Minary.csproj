@@ -111,6 +111,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\WinRegistry.cs" />
+    <Compile Include="DataTypes\Enum\MinaryState.cs" />
+    <Compile Include="DataTypes\Interface\IMinaryState.cs" />
+    <Compile Include="Domain\Main\MinaryFactory.cs" />
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_DSL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +247,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Form\Updates\Config\UpdateData.cs" />
+    <Compile Include="State\WinPcapMissing.cs" />
     <EmbeddedResource Include="Form\ArpScan\1_Presentation\ArpScan_Main.resx">
       <DependentUpon>ArpScan_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
