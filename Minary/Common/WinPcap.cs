@@ -2,6 +2,7 @@
 {
   using System;
 
+
   public class WinPcap
   {
 
@@ -9,19 +10,10 @@
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="WinPcap"/> class.
-    ///
-    /// </summary>
-    public WinPcap()
-    {
-    }
-
-
-    /// <summary>
     ///
     /// </summary>
     /// <returns></returns>
-    public string GetWinPcapVersion()
+    public static string GetWinPcapVersion()
     {
       string retVal = string.Empty;
 

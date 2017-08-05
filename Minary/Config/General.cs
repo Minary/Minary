@@ -1,5 +1,6 @@
 ﻿namespace Minary
 {
+  using Minary.Common;
   using System;
   using System.IO;
   using System.Security.Principal;
@@ -130,13 +131,13 @@ public static readonly string GitEmail = "Minary@";
     /// </summary>
     public static void CollectSystemInformation()
     {
-      Config.OS = TryExecute(string.Format("{0}.{1}", Environment.OSVersion.Version.Major, Environment.OSVersion.Version.Minor).ToString);
-      Config.Architecture = TryExecute(() => { return Environment.Is64BitOperatingSystem ? "x64" : "x86"; });
-      Config.Language = TryExecute(System.Globalization.CultureInfo.CurrentCulture.ToString);
-      Config.Processor = TryExecute(System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").ToString);
-      Config.NumProcessors = TryExecute(System.Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS").ToString);
-      Config.DotNetVersion = TryExecute(System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion);
-      Config.CommonLanguateRuntime = TryExecute(Environment.Version.ToString);
+      Config.OS = Utils.TryExecute(string.Format("{0}.{1}", Environment.OSVersion.Version.Major, Environment.OSVersion.Version.Minor).ToString);
+      Config.Architecture = Utils.TryExecute(() => { return Environment.Is64BitOperatingSystem ? "x64" : "x86"; });
+      Config.Language = Utils.TryExecute(System.Globalization.CultureInfo.CurrentCulture.ToString);
+      Config.Processor = Utils.TryExecute(System.Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER").ToString);
+      Config.NumProcessors = Utils.TryExecute(System.Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS").ToString);
+      Config.DotNetVersion = Utils.TryExecute(System.Runtime.InteropServices.RuntimeEnvironment.GetSystemVersion);
+      Config.CommonLanguateRuntime = Utils.TryExecute(Environment.Version.ToString);
     }
 
 
@@ -152,24 +153,6 @@ public static readonly string GitEmail = "Minary@";
       hasUserElevatedPermissions = principal.IsInRole(WindowsBuiltInRole.Administrator);
 
       return hasUserElevatedPermissions;
-    }
-
-    #endregion
-
-
-    #region PRIVATE
-
-    public static string TryExecute(Func<string> action)
-    {
-      try
-      {
-        return action();
-      }
-      catch (Exception)
-      {
-      }
-
-      return string.Empty;
     }
 
     #endregion
