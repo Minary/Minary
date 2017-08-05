@@ -13,7 +13,7 @@
     <AssemblyName>Minary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>Minary.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Minary.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -203,11 +203,6 @@
     <Compile Include="Form\Plugin\TabPageHandler.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Form\Template\1_Presentation\CreateTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -297,6 +292,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -305,10 +305,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HostsBig.bmp" />
-    <None Include="img\HostsBig.jpg" />
-    <None Include="img\StartBig.jpg" />
-    <None Include="img\StopBig.jpg" />
-    <Content Include="Minary.ico" />
+    <None Include="Resources\HostsBig.jpg" />
+    <None Include="Resources\StartBig.jpg" />
+    <None Include="Resources\StopBig.jpg" />
+    <Content Include="Resources\Minary.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

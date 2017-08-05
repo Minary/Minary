@@ -97,7 +97,7 @@
     /// </summary>
     private void DisableGuiElements()
     {
-      this.bt_Attack.BackgroundImage = Properties.Resources.Start;
+      this.bt_Attack.BackgroundImage = Properties.Resources.StartBig;
       this.bt_ScanLAN.Enabled = false;
       this.cb_Interfaces.Enabled = false;
       this.dgv_MainPlugins.Enabled = false;
@@ -120,7 +120,7 @@
     /// </summary>
     private void EnableGUIElements()
     {
-      this.bt_Attack.BackgroundImage = Properties.Resources.Stop;
+      this.bt_Attack.BackgroundImage = Properties.Resources.StopBig;
       this.bt_ScanLAN.Enabled = true;
       this.cb_Interfaces.Enabled = true;
       this.dgv_MainPlugins.Enabled = true;

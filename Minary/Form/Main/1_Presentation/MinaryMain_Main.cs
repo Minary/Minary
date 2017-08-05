@@ -303,7 +303,7 @@
 
       // Set service status
       this.attackStarted = false;
-      this.bt_Attack.BackgroundImage = (System.Drawing.Image)Properties.Resources.StartBig;
+      this.bt_Attack.BackgroundImage = (System.Drawing.Image)Minary.Properties.Resources.StartBig;
       this.Cursor = Cursors.Default;
 
       // Report service failure
