@@ -228,13 +228,10 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void BT_ScanLAN_Click(object sender, EventArgs e)
+    delegate void ScanLanClickDelegate(object sender, EventArgs e);
+    private void Bt_ScanLan_Click(object sender, EventArgs e)
     {
-      if (!Config.IsAdministrator())
-      {
-        MessageBox.Show("Administrator privileges are required to use this program.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-      }
-      else if (this.cb_Interfaces.SelectedIndex < 0)
+      if (this.cb_Interfaces.SelectedIndex < 0)
       {
         MessageBox.Show("No network interface selected", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
@@ -250,6 +247,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
+    delegate void AttackClickDelegate(object sender, EventArgs e);
     private void Bt_Attack_Click(object sender, EventArgs e)
     {
       try
@@ -402,7 +400,7 @@
     }
 
 
-    private void beepToolStripMenuItem_Click(object sender, EventArgs e)
+    private void BeepToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.tsmi_Beep.Text = string.Format("Beep (is {0})", !this.inputModuleHandler.IsBeepOn == true ? "on" : "off");
       this.inputModuleHandler.IsBeepOn = !this.inputModuleHandler.IsBeepOn;
@@ -541,7 +539,8 @@
       this.caCertificateHandler.ShowDialog();
     }
 
-    private void serverCertToolStripMenuItem_Click(object sender, EventArgs e)
+
+    private void ServerCertToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.caCertificateHandler.ShowDialog();
     }

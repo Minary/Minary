@@ -1,6 +1,8 @@
 ﻿namespace Minary
 {
+  using Minary.Domain.Main;
   using Minary.Form;
+  using Minary.DataTypes.Interface;
   using System;
   using System.IO;
   using System.Windows.Forms;
@@ -18,6 +20,7 @@
     {
       OperatingSystem operatingSystem = Environment.OSVersion;
       Version operatingSystemVersion = operatingSystem.Version;
+      IMinaryState minaryState;
 
       Application.SetCompatibleTextRenderingDefault(false);
 
@@ -29,20 +32,14 @@
       Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
       Application.EnableVisualStyles();
 
-      /*
-       *  Determine PCap-Status
-       *  Determine Network-Interface-Status
-            if (IsPcapInstalled() == false)
-            if (NoInterfacesFound() == true )
-            if (No() == true )
-                  ....
-      */
-
+      // Get event base methods depending on the 
+      // system state.
+      minaryState = MinaryFactory.GetMinaryEventBase();
 
       // Load GUI
       try
       {
-        MinaryMain minaryGuiObj = new MinaryMain(args);
+        MinaryMain minaryGuiObj = new MinaryMain(args, minaryState);
         minaryGuiObj.LoadAllFormElements();
         minaryGuiObj.StartAllHandlers();
         minaryGuiObj.StartBackgroundThreads();

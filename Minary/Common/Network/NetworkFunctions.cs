@@ -4,6 +4,7 @@
   using System.Net;
   using System.Runtime.InteropServices;
 
+
   public static class NetworkFunctions
   {
 
@@ -75,7 +76,7 @@
     /// </summary>
     /// <param name="ipAddress"></param>
     /// <returns></returns>
-    public static string GetMACFromIP(string ipAddress)
+    public static string GetMacByIp(string ipAddress)
     {
       string retVal = string.Empty;
       IPAddress remoteIpAddress;

@@ -98,7 +98,7 @@
     private void DisableGuiElements()
     {
       this.bt_Attack.BackgroundImage = Properties.Resources.StartBig;
-      this.bt_ScanLAN.Enabled = false;
+      this.bt_ScanLan.Enabled = false;
       this.cb_Interfaces.Enabled = false;
       this.dgv_MainPlugins.Enabled = false;
       this.tb_NetworkStartIp.Enabled = false;
@@ -121,7 +121,7 @@
     private void EnableGUIElements()
     {
       this.bt_Attack.BackgroundImage = Properties.Resources.StopBig;
-      this.bt_ScanLAN.Enabled = true;
+      this.bt_ScanLan.Enabled = true;
       this.cb_Interfaces.Enabled = true;
       this.dgv_MainPlugins.Enabled = true;
       this.tb_NetworkStartIp.Enabled = true;

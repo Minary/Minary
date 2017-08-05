@@ -3,6 +3,9 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Certificates.Presentation;
   using Minary.Common;
+  using Minary.Common.Associations;
+  using Minary.DataTypes.Enum;
+  using Minary.DataTypes.Interface;
   using Minary.Domain.AttackService;
   using Minary.Domain.Input;
   using Minary.Domain.MacVendor;
@@ -33,7 +36,8 @@
     private bool attackStarted;
     private Minary.Form.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
-    
+    private IMinaryState minaryState;
+
     // GUI handlers
     private Minary.Form.ArpScan.Presentation.ArpScan arpScanHandler;
 
@@ -80,12 +84,7 @@
 
     #region PUBLIC
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MinaryMain"/> class.
-    ///
-    /// </summary>
-    /// <param name="args"></param>
-    public MinaryMain(string[] args)
+    public MinaryMain(string[] args, IMinaryState minaryState)
     {
       this.InitializeComponent();
 
@@ -95,10 +94,12 @@
 
       this.usedPlugins = new BindingList<PluginTableRecord>();
       this.targetList = new BindingList<string>();
+
       this.commandLineArguments = args;
+      this.minaryState = minaryState;
 
       // Set .mry file extension association
-      Minary.Common.Associations.MryFiles.InstallMryFileAssociation();
+      MryFiles.InstallMryFileAssociation();
     }
 
 
@@ -217,13 +218,12 @@
 
       // Check if an other instance is running.
       this.minaryProcessHandler.HandleRunningInstances();
+
+      // Inject dependency: Minary state
+      this.InjectDependency(this.minaryState);
     }
 
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <returns></returns>
     public string GetCurrentInterface()
     {
       string retVal = string.Empty;
@@ -240,9 +240,6 @@
     }
 
 
-    /// <summary>
-    ///
-    /// </summary>
     public void PassNewTargetListToPlugins()
     {
       List<Tuple<string, string, string>> newTargetList = new List<Tuple<string, string, string>>();
@@ -339,6 +336,25 @@
           Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", serviceName, guiElement.Name);
           break;
         }
+      }
+    }
+
+    #endregion
+
+
+    #region PRIVATE
+
+    private void InjectDependency(IMinaryState minaryState)
+    {
+      if (this.minaryState.CurrentState == MinaryState.StateOk)
+      {
+        this.bt_Attack.Click += new EventHandler(this.Bt_Attack_Click);
+        this.bt_ScanLan.Click += new EventHandler(this.Bt_ScanLan_Click);
+      }
+      else
+      {
+        this.bt_Attack.Click += new EventHandler(minaryState.Bt_Attack_Click);
+        this.bt_ScanLan.Click += new EventHandler(minaryState.Bt_ScanLan_Click);
       }
     }
 
