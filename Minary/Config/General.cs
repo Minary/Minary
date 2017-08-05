@@ -10,9 +10,6 @@
 
     #region MEMBERS
 
-    public static readonly string DebuggingFile = "DEBUG.txt";
-    public static readonly string LogFile = "Logfile.txt";
-
     public static readonly string ApplicationName = "Minary";
 
     //// TODO : Candidates to export the app.config file

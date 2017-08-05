@@ -44,7 +44,7 @@
       {
         MinaryMain minaryGuiObj = new MinaryMain(args);
         minaryGuiObj.LoadAllFormElements();
-        minaryGuiObj.StartAllHandlers(); // CRASH!!
+        minaryGuiObj.StartAllHandlers();
         minaryGuiObj.StartBackgroundThreads();
         minaryGuiObj.PreRun();
         Application.Run(minaryGuiObj);
