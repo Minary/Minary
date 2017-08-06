@@ -152,40 +152,42 @@
     /// <param name="e"></param>
     private void GetUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up))
-      {
-        Thread updateAvailableThread = new Thread(delegate()
-        {
-          if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up))
-          {
-            try
-            {
-              Minary.Form.Updates.Config.UpdateData updateMetaData = Minary.Common.Updates.FetchUpdateInformationFromServer();
-
-              if (updateMetaData.IsUpdateAvaliable == true)
-              {
-                Updates.FormNewVersion newVersion = new Updates.FormNewVersion();
-                newVersion.TopMost = true;
-                newVersion.ShowDialog();
-              }
-              else
-              {
-                LogCons.Inst.Write("No new updates available.");
-                MessageBox.Show("No new updates available.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-              }
-            }
-            catch (Exception)
-            {
-            }
-          }
-        });
-        updateAvailableThread.Start();
-      }
-      else
+      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
         LogCons.Inst.Write("Can't check for updates. Internet connection is down.");
         MessageBox.Show("Can't check for updates. Internet connection is down.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        return;
       }
+
+      Thread updateAvailableThread = new Thread(delegate()
+      {
+        if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
+        {
+          return;
+        }
+
+        try
+        {
+          Minary.Form.Updates.Config.UpdateData updateMetaData = Minary.Common.Updates.FetchUpdateInformationFromServer();
+
+          if (updateMetaData.IsUpdateAvaliable == true)
+          {
+            Updates.FormNewVersion newVersion = new Updates.FormNewVersion();
+            newVersion.TopMost = true;
+            newVersion.ShowDialog();
+          }
+          else
+          {
+            LogCons.Inst.Write("No new updates available.");
+            MessageBox.Show("No new updates available.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          }
+        }
+        catch (Exception)
+        {
+        }
+      });
+
+      updateAvailableThread.Start();
     }
 
 
@@ -298,7 +300,7 @@
       {
         Template.Presentation.LoadTemplate loadTemplatePresentation = new Template.Presentation.LoadTemplate(this, templateFileName);
         loadTemplatePresentation.ShowDialog();
-        // this.loadTemplatePresentation.StartLoadingTemplate(this.ofd_ImportSession.FileName);
+
         if (loadTemplatePresentation != null &&
             loadTemplatePresentation.TemplateData != null &&
             !string.IsNullOrEmpty(loadTemplatePresentation.TemplateData.TemplateConfig.Name))

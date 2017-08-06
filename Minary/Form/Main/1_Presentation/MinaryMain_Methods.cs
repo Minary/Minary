@@ -153,10 +153,8 @@
       {
         return MinaryFileType.TemplateFile;
       }
-      else
-      {
-        return MinaryFileType.Undetermined;
-      }
+
+      return MinaryFileType.Undetermined;
     }
 
 
