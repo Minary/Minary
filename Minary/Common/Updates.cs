@@ -23,34 +23,32 @@
     /// </summary>
     public static void CheckForMinaryUpdates()
     {
-      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up))
-      {
-        UpdateData updateData = null;
+      UpdateData updateData = null;
 
-        try
-        {
-          updateData = FetchUpdateInformationFromServer();
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write("CheckForMinarygUpdates(Exception): {0}", ex.Message);
-        }
-
-        if (updateData != null && updateData.IsUpdateAvaliable)
-        {
-          Minary.Form.Updates.FormNewVersion newVersion = new Minary.Form.Updates.FormNewVersion();
-          newVersion.TopMost = true;
-          newVersion.ShowDialog();
-        }
-        else
-        {
-          LogCons.Inst.Write("No new updates available.");
-        }
-      }
-      else
+      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
         LogCons.Inst.Write("Can't check for new updates as no internet connection is available.");
+        return;
       }
+
+      try
+      {
+        updateData = FetchUpdateInformationFromServer();
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("CheckForMinarygUpdates(Exception): {0}", ex.Message);
+      }
+
+      if (updateData == null || updateData.IsUpdateAvaliable == false)
+      {
+        LogCons.Inst.Write("No new updates available.");
+        return;
+      }
+
+      Minary.Form.Updates.FormNewVersion newVersion = new Minary.Form.Updates.FormNewVersion();
+      newVersion.TopMost = true;
+      newVersion.ShowDialog();
     }
 
 
@@ -59,36 +57,38 @@
     /// </summary>
     public static void SyncAttackPatterns()
     {
-      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up))
+      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
-        string repositoryLocal = Path.Combine(Directory.GetCurrentDirectory(), Config.TemplatesDir);
-        string repositoryRemote = ConfigurationManager.AppSettings.Get("AttackPatternGitRepositoryRemote");
-
-        if (string.IsNullOrEmpty(repositoryRemote))
-        {
-          LogCons.Inst.Write("Minary SyncAttackPatterns: Can't sync attack pattern files because no remote repository is defined in the configuration file");
-          return;
-        }
-
-        try
-        {
-          PatternFileManager.GitHubPatternFileMgr.InitializeRepository(repositoryLocal, repositoryRemote);
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write("Minary SyncAttackPatterns: Initializing local attack pattern directory ({0}) failed: {1}", repositoryLocal, ex.Message);
-        }
-
-        try
-        {
-          PatternFileManager.GitHubPatternFileMgr.SyncRepository(repositoryLocal, Config.GitUser, Config.GitEmail);
-          LogCons.Inst.Write("Minary SyncAttackPatterns: Attack pattern sync finished.");
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write("Minary SyncAttackPatterns: Syncing attack pattern failed: {0}", ex.Message);
-        }
+        return;
       }
+
+      string repositoryLocal = Path.Combine(Directory.GetCurrentDirectory(), Config.TemplatesDir);
+      string repositoryRemote = ConfigurationManager.AppSettings.Get("AttackPatternGitRepositoryRemote");
+
+      if (string.IsNullOrEmpty(repositoryRemote))
+      {
+        LogCons.Inst.Write("Minary SyncAttackPatterns: Can't sync attack pattern files because no remote repository is defined in the configuration file");
+        return;
+      }
+
+      try
+      {
+        PatternFileManager.GitHubPatternFileMgr.InitializeRepository(repositoryLocal, repositoryRemote);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("Minary SyncAttackPatterns: Initializing local attack pattern directory ({0}) failed: {1}", repositoryLocal, ex.Message);
+      }
+
+      try
+      {
+        PatternFileManager.GitHubPatternFileMgr.SyncRepository(repositoryLocal, Config.GitUser, Config.GitEmail);
+        LogCons.Inst.Write("Minary SyncAttackPatterns: Attack pattern sync finished.");
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("Minary SyncAttackPatterns: Syncing attack pattern failed: {0}", ex.Message);
+      }      
     }
 
 
@@ -104,9 +104,9 @@
       string currentVersionXML = string.Empty;
       UpdateData updateMetaData = new UpdateData();
 
-      if (!NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up))
+      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
-        return updateMetaData;
+        goto END;
       }
 
       try
@@ -120,34 +120,40 @@
         currentVersionXML = reader.ReadToEnd();
 
         // Parse meta data
-        if (!string.IsNullOrEmpty(currentVersionXML) && !string.IsNullOrEmpty(Minary.Config.MinaryVersion))
+        if (string.IsNullOrEmpty(currentVersionXML) ||
+            string.IsNullOrEmpty(Minary.Config.MinaryVersion))
         {
-          XmlDocument xmlDoc = new XmlDocument();
-          xmlDoc.LoadXml(currentVersionXML);
+          goto END;
+        }
 
-          // Parse latest version data
-          var data = xmlDoc.SelectNodes("/minary");
-          updateMetaData.AvailableVersionStr = data.Item(0)["version"].InnerText;
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(currentVersionXML);
 
-          // Parse messages from XML
-          updateMetaData.Messages.Clear();
-          XmlNodeList messages = xmlDoc.SelectNodes("/minary/message");
-          foreach (XmlNode xn in messages)
-          {
-            updateMetaData.Messages.Add(xn.InnerText);
-          }
+        // Parse latest version data
+        var data = xmlDoc.SelectNodes("/minary");
+        updateMetaData.AvailableVersionStr = data.Item(0)["version"].InnerText;
 
-          // Compare current and latest version.
-          if (Regex.Match(Minary.Config.MinaryVersion, @"^\d+\.\d+\.\d+$").Success && Regex.Match(updateMetaData.AvailableVersionStr, @"^\d+\.\d+\.\d+$").Success)
-          {
-            int availableVersionInt = int.Parse(Regex.Replace(updateMetaData.AvailableVersionStr, @"[^\d]+", string.Empty));
-            int toolVersionInt = int.Parse(Regex.Replace(Minary.Config.MinaryVersion, @"[^\d]+", string.Empty));
+        // Parse messages from XML
+        updateMetaData.Messages.Clear();
+        XmlNodeList messages = xmlDoc.SelectNodes("/minary/message");
+        foreach (XmlNode xn in messages)
+        {
+          updateMetaData.Messages.Add(xn.InnerText);
+        }
 
-            if (availableVersionInt.CompareTo(toolVersionInt) > 0)
-            {
-              updateMetaData.IsUpdateAvaliable = true;
-            }
-          }
+        // Compare current and latest version.
+        if (Regex.Match(Minary.Config.MinaryVersion, @"^\d+\.\d+\.\d+$").Success  == false ||
+           Regex.Match(updateMetaData.AvailableVersionStr, @"^\d+\.\d+\.\d+$").Success == false)
+        {
+          goto END;
+        }
+
+        int availableVersionInt = int.Parse(Regex.Replace(updateMetaData.AvailableVersionStr, @"[^\d]+", string.Empty));
+        int toolVersionInt = int.Parse(Regex.Replace(Minary.Config.MinaryVersion, @"[^\d]+", string.Empty));
+
+        if (availableVersionInt.CompareTo(toolVersionInt) > 0)
+        {
+          updateMetaData.IsUpdateAvaliable = true;
         }
       }
       catch (Exception ex)
@@ -166,6 +172,8 @@
           webResponse.Close();
         }
       }
+
+END:
 
       return updateMetaData;
     }
