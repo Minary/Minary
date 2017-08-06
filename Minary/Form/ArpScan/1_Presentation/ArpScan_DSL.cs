@@ -16,8 +16,7 @@
       {
         throw new Exception("Another ArpScan instance is already running");
       }
-
-
+      
       string startIp = string.Empty;
       string stopIp = string.Empty;
 
@@ -43,9 +42,7 @@
         NetworkStartIp = startIp,
         NetworkStopIp = stopIp,
         MaxNumberSystemsToScan = maxNumberSystemsToScan,
-
-        OnDataReceived = this.UpdateTextBox,
-        OnArpScanStopped = onArpScanStopped,
+        ObserverClass = this,
         IsDebuggingOn = Debugging.IsDebuggingOn
       };
 

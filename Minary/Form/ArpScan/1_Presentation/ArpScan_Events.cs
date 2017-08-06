@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
   using Minary.Form.ArpScan.DataTypes;
+  using Minary.Form.ArpScan.DataTypes.Interface;
   using Minary.Common;
   using Minary.LogConsole.Main;
   using System;
@@ -8,7 +9,7 @@
   using System.Windows.Forms;
 
 
-  public partial class ArpScan
+  public partial class ArpScan : IObserver
   {
     
     #region EVENTS
@@ -117,51 +118,48 @@
       if (this.isScanStarted == true)
       {
         this.SetArpScanGuiOnStopped();
+        return;
       }
-      else
+
+      string startIp = string.Empty;
+      string stopIp = string.Empty;
+
+      this.targetRecords.Clear();
+      this.SetArpScanGuiOnStarted();
+
+      try
       {
-        string startIp = string.Empty;
-        string stopIp = string.Empty;
-
-        this.targetRecords.Clear();
-        this.SetArpScanGuiOnStarted();
-
-        try
+        // User defined net range
+        if (this.rb_Netrange.Checked == true)
         {
-          // User defined net range
-          if (this.rb_Netrange.Checked == true)
-          {
-            startIp = this.tb_Netrange1.Text.ToString();
-            stopIp = this.tb_Netrange2.Text.ToString();
-          }
-          else
-          {
-            startIp = this.tb_Subnet1.Text.ToString();
-            stopIp = this.tb_Subnet2.Text.ToString();
-          }
-
-          ArpScanConfig arpConf = new ArpScanConfig()
-          {
-            InterfaceId = this.interfaceId,
-            GatewayIp = this.gatewayIp,
-            LocalIp = this.localIp,
-            NetworkStartIp = startIp,
-            NetworkStopIp = stopIp,
-            MaxNumberSystemsToScan = -1,
-
-            OnDataReceived = this.UpdateTextBox,
-            OnArpScanStopped = this.ArpScanStopped,
-            IsDebuggingOn = Minary.Common.Debugging.IsDebuggingOn
-          };
-
-          this.arpScanTask.StartArpScan(arpConf);
+          startIp = this.tb_Netrange1.Text.ToString();
+          stopIp = this.tb_Netrange2.Text.ToString();
         }
-        catch (Exception ex)
+        else
         {
-          LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-          MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          this.SetArpScanGuiOnStopped();
+          startIp = this.tb_Subnet1.Text.ToString();
+          stopIp = this.tb_Subnet2.Text.ToString();
         }
+
+        ArpScanConfig arpConf = new ArpScanConfig()
+        {
+          InterfaceId = this.interfaceId,
+          GatewayIp = this.gatewayIp,
+          LocalIp = this.localIp,
+          NetworkStartIp = startIp,
+          NetworkStopIp = stopIp,
+          MaxNumberSystemsToScan = -1,
+          ObserverClass = this,
+          IsDebuggingOn = Debugging.IsDebuggingOn
+        };
+
+        this.arpScanTask.StartArpScan(arpConf);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
+        MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        this.SetArpScanGuiOnStopped();
       }
     }
 
@@ -236,8 +234,7 @@
           LocalIp = this.localIp,
           NetworkStartIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange1.Text.ToString() : this.tb_Subnet1.ToString(),
           NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
-          OnDataReceived = this.UpdateTextBox,
-          OnArpScanStopped = this.SetArpScanGuiOnStopped,
+          ObserverClass = this,
           IsDebuggingOn = Debugging.IsDebuggingOn
         };
 
@@ -276,8 +273,7 @@
           LocalIp = this.localIp,
           NetworkStartIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange1.Text.ToString() : this.tb_Subnet1.ToString(),
           NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
-          OnDataReceived = this.UpdateTextBox,
-          OnArpScanStopped = this.SetArpScanGuiOnStopped,
+          ObserverClass = this,
           IsDebuggingOn = Debugging.IsDebuggingOn
         };
 
@@ -487,6 +483,28 @@
         LogCons.Inst.Write("ArpScan: {0}", ex.Message);
         this.dgv_Targets.ClearSelection();
       }
+    }
+
+    #endregion
+
+
+    #region INTERFACE: IObserver
+
+    public void UpdateProgressbar(int progress)
+    {
+      this.pb_ArpScan.Value = progress;
+    }
+
+
+    public void AddRecordToDgv(string inputData)
+    {
+      this.UpdateTextBox(inputData);
+    }
+
+
+    public void ProcessStopped()
+    {
+      this.SetArpScanGuiOnStopped();
     }
 
     #endregion

@@ -1,10 +1,9 @@
-﻿using Minary.Form.ArpScan.DataTypes;
-using System;
-using System.Net;
-
-
-namespace Minary.Form.ArpScan.Task
+﻿namespace Minary.Form.ArpScan.Task
 {
+  using Minary.Form.ArpScan.DataTypes;
+  using System;
+  using System.Net;
+
 
   public class ArpScan
   {
