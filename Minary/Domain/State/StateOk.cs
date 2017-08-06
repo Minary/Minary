@@ -1,4 +1,4 @@
-﻿namespace Minary.State
+﻿namespace Minary.Domain.State
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
@@ -6,12 +6,12 @@
   using System.Windows.Forms;
 
 
-  public class WinPcapMissing : IMinaryState
+  public class StateOk : IMinaryState
   {
 
     #region PUBLIC
 
-    public WinPcapMissing(MinaryState state)
+    public StateOk(MinaryState state)
     {
       this.CurrentState = state;
       this.Bt_Attack_Click += this.Bt_Attack_Click_Event;
@@ -32,14 +32,14 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Can't start Minary because WinPcap is not installed.");
+      string message = string.Format("Status OK");
       MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Can't scan network because WinPcap is not installed.");
+      string message = string.Format("Status OK");
       MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 

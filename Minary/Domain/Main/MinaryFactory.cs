@@ -3,8 +3,8 @@
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
+  using Minary.Domain.State;
   using Minary.Form;
-  using Minary.State;
   using System.Net.NetworkInformation;
 
 

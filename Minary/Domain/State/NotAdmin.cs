@@ -1,4 +1,4 @@
-﻿namespace Minary.State
+﻿namespace Minary.Domain.State
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;

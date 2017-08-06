@@ -1,4 +1,4 @@
-﻿namespace Minary.State
+﻿namespace Minary.Domain.State
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
@@ -6,12 +6,12 @@
   using System.Windows.Forms;
 
 
-  public class StateOk : IMinaryState
+  public class NetworkMissing : IMinaryState
   {
 
     #region PUBLIC
 
-    public StateOk(MinaryState state)
+    public NetworkMissing(MinaryState state)
     {
       this.CurrentState = state;
       this.Bt_Attack_Click += this.Bt_Attack_Click_Event;
@@ -30,19 +30,21 @@
     public Bt_Attack_Click_Delegate Bt_Attack_Click { get; set; }
 
 
+
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Status OK");
+      string message = string.Format("Can't start Minary because no network interface was found.");
       MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Status OK");
+      string message = string.Format("Can't scan network because no network interface was found.");
       MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
     #endregion
   }
 }
+
