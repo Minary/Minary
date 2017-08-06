@@ -130,6 +130,8 @@
       <DependentUpon>ArpScan_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\ArpScan\DataTypes\ArpScanConfig.cs" />
+    <Compile Include="Form\ArpScan\DataTypes\Interface\IObservable.cs" />
+    <Compile Include="Form\ArpScan\DataTypes\Interface\IObserver.cs" />
     <Compile Include="Form\ArpScan\DataTypes\ScanSystem.cs" />
     <Compile Include="Form\ArpScan\DataTypes\TargetRecord.cs" />
     <Compile Include="Form\ArpScan\DataTypes\IpHelper.cs">

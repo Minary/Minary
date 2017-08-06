@@ -49,6 +49,7 @@
       this.unscanedSystemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.bt_Scan = new System.Windows.Forms.Button();
+      this.pb_ArpScan = new System.Windows.Forms.ProgressBar();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_Targets)).BeginInit();
       this.gb_Range.SuspendLayout();
       this.cms_ManageTargets.SuspendLayout();
@@ -57,9 +58,10 @@
       // bt_Close
       // 
       this.bt_Close.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_Close.Location = new System.Drawing.Point(647, 294);
+      this.bt_Close.Location = new System.Drawing.Point(970, 452);
+      this.bt_Close.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.bt_Close.Name = "bt_Close";
-      this.bt_Close.Size = new System.Drawing.Size(75, 23);
+      this.bt_Close.Size = new System.Drawing.Size(112, 35);
       this.bt_Close.TabIndex = 8;
       this.bt_Close.Text = "Close";
       this.bt_Close.UseVisualStyleBackColor = true;
@@ -83,7 +85,8 @@
       dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.dgv_Targets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
       this.dgv_Targets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.dgv_Targets.Location = new System.Drawing.Point(7, 77);
+      this.dgv_Targets.Location = new System.Drawing.Point(10, 118);
+      this.dgv_Targets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.dgv_Targets.MultiSelect = false;
       this.dgv_Targets.Name = "dgv_Targets";
       this.dgv_Targets.ReadOnly = true;
@@ -92,7 +95,7 @@
       this.dgv_Targets.RowTemplate.Height = 24;
       this.dgv_Targets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
       this.dgv_Targets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.dgv_Targets.Size = new System.Drawing.Size(731, 210);
+      this.dgv_Targets.Size = new System.Drawing.Size(1096, 323);
       this.dgv_Targets.TabIndex = 0;
       this.dgv_Targets.TabStop = false;
       this.dgv_Targets.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Dgv_Targets_MouseDown);
@@ -106,9 +109,11 @@
       this.gb_Range.Controls.Add(this.tb_Netrange1);
       this.gb_Range.Controls.Add(this.tb_Subnet2);
       this.gb_Range.Controls.Add(this.tb_Subnet1);
-      this.gb_Range.Location = new System.Drawing.Point(7, 8);
+      this.gb_Range.Location = new System.Drawing.Point(10, 12);
+      this.gb_Range.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.gb_Range.Name = "gb_Range";
-      this.gb_Range.Size = new System.Drawing.Size(731, 56);
+      this.gb_Range.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.gb_Range.Size = new System.Drawing.Size(1096, 86);
       this.gb_Range.TabIndex = 0;
       this.gb_Range.TabStop = false;
       this.gb_Range.Text = "Target range";
@@ -118,9 +123,10 @@
       this.rb_Netrange.AutoSize = true;
       this.rb_Netrange.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
       this.rb_Netrange.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.rb_Netrange.Location = new System.Drawing.Point(398, 23);
+      this.rb_Netrange.Location = new System.Drawing.Point(597, 35);
+      this.rb_Netrange.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.rb_Netrange.Name = "rb_Netrange";
-      this.rb_Netrange.Size = new System.Drawing.Size(80, 17);
+      this.rb_Netrange.Size = new System.Drawing.Size(114, 24);
       this.rb_Netrange.TabIndex = 4;
       this.rb_Netrange.TabStop = true;
       this.rb_Netrange.Text = "Net range";
@@ -133,9 +139,10 @@
       this.rb_Subnet.Checked = true;
       this.rb_Subnet.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
       this.rb_Subnet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.rb_Subnet.Location = new System.Drawing.Point(14, 23);
+      this.rb_Subnet.Location = new System.Drawing.Point(21, 35);
+      this.rb_Subnet.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.rb_Subnet.Name = "rb_Subnet";
-      this.rb_Subnet.Size = new System.Drawing.Size(64, 17);
+      this.rb_Subnet.Size = new System.Drawing.Size(90, 24);
       this.rb_Subnet.TabIndex = 1;
       this.rb_Subnet.TabStop = true;
       this.rb_Subnet.Text = "Subnet";
@@ -144,56 +151,61 @@
       // 
       // tb_Netrange2
       // 
-      this.tb_Netrange2.Location = new System.Drawing.Point(612, 23);
+      this.tb_Netrange2.Location = new System.Drawing.Point(918, 35);
+      this.tb_Netrange2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_Netrange2.Name = "tb_Netrange2";
-      this.tb_Netrange2.Size = new System.Drawing.Size(100, 20);
+      this.tb_Netrange2.Size = new System.Drawing.Size(148, 26);
       this.tb_Netrange2.TabIndex = 6;
       this.tb_Netrange2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Tb_Netrange2_KeyUp);
       // 
       // tb_Netrange1
       // 
-      this.tb_Netrange1.Location = new System.Drawing.Point(490, 23);
+      this.tb_Netrange1.Location = new System.Drawing.Point(735, 35);
+      this.tb_Netrange1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_Netrange1.Name = "tb_Netrange1";
-      this.tb_Netrange1.Size = new System.Drawing.Size(102, 20);
+      this.tb_Netrange1.Size = new System.Drawing.Size(151, 26);
       this.tb_Netrange1.TabIndex = 5;
       this.tb_Netrange1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Tb_Netrange1_KeyUp);
       // 
       // tb_Subnet2
       // 
-      this.tb_Subnet2.Location = new System.Drawing.Point(211, 22);
+      this.tb_Subnet2.Location = new System.Drawing.Point(316, 34);
+      this.tb_Subnet2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_Subnet2.Name = "tb_Subnet2";
       this.tb_Subnet2.ReadOnly = true;
-      this.tb_Subnet2.Size = new System.Drawing.Size(100, 20);
+      this.tb_Subnet2.Size = new System.Drawing.Size(148, 26);
       this.tb_Subnet2.TabIndex = 3;
       // 
       // tb_Subnet1
       // 
-      this.tb_Subnet1.Location = new System.Drawing.Point(88, 22);
+      this.tb_Subnet1.Location = new System.Drawing.Point(132, 34);
+      this.tb_Subnet1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_Subnet1.Name = "tb_Subnet1";
       this.tb_Subnet1.ReadOnly = true;
-      this.tb_Subnet1.Size = new System.Drawing.Size(102, 20);
+      this.tb_Subnet1.Size = new System.Drawing.Size(151, 26);
       this.tb_Subnet1.TabIndex = 2;
       // 
       // cms_ManageTargets
       // 
+      this.cms_ManageTargets.ImageScalingSize = new System.Drawing.Size(24, 24);
       this.cms_ManageTargets.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectAllToolStripMenuItem,
             this.unselectAllToolStripMenuItem,
             this.fingerprintToolStripMenuItem});
       this.cms_ManageTargets.Name = "cms_ManageTargets";
-      this.cms_ManageTargets.Size = new System.Drawing.Size(135, 70);
+      this.cms_ManageTargets.Size = new System.Drawing.Size(173, 94);
       // 
       // selectAllToolStripMenuItem
       // 
       this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-      this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+      this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
       this.selectAllToolStripMenuItem.Text = "Select all";
       this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
       // 
       // unselectAllToolStripMenuItem
       // 
       this.unselectAllToolStripMenuItem.Name = "unselectAllToolStripMenuItem";
-      this.unselectAllToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+      this.unselectAllToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
       this.unselectAllToolStripMenuItem.Text = "Unselect all";
       this.unselectAllToolStripMenuItem.Click += new System.EventHandler(this.UnselectAllToolStripMenuItem_Click);
       // 
@@ -204,52 +216,62 @@
             this.unscanedSystemsToolStripMenuItem,
             this.allToolStripMenuItem});
       this.fingerprintToolStripMenuItem.Name = "fingerprintToolStripMenuItem";
-      this.fingerprintToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+      this.fingerprintToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
       this.fingerprintToolStripMenuItem.Text = "Fingerprint";
       // 
       // thisSystemToolStripMenuItem
       // 
       this.thisSystemToolStripMenuItem.Name = "thisSystemToolStripMenuItem";
-      this.thisSystemToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+      this.thisSystemToolStripMenuItem.Size = new System.Drawing.Size(242, 30);
       this.thisSystemToolStripMenuItem.Text = "This system";
       this.thisSystemToolStripMenuItem.Click += new System.EventHandler(this.ThisSystemToolStripMenuItem_Click);
       // 
       // unscanedSystemsToolStripMenuItem
       // 
       this.unscanedSystemsToolStripMenuItem.Name = "unscanedSystemsToolStripMenuItem";
-      this.unscanedSystemsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+      this.unscanedSystemsToolStripMenuItem.Size = new System.Drawing.Size(242, 30);
       this.unscanedSystemsToolStripMenuItem.Text = "Unscaned systems";
       this.unscanedSystemsToolStripMenuItem.Click += new System.EventHandler(this.UnscanedSystemsToolStripMenuItem_Click);
       // 
       // allToolStripMenuItem
       // 
       this.allToolStripMenuItem.Name = "allToolStripMenuItem";
-      this.allToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+      this.allToolStripMenuItem.Size = new System.Drawing.Size(242, 30);
       this.allToolStripMenuItem.Text = "All systems";
       this.allToolStripMenuItem.Click += new System.EventHandler(this.AllToolStripMenuItem_Click);
       // 
       // bt_Scan
       // 
       this.bt_Scan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_Scan.Location = new System.Drawing.Point(538, 293);
+      this.bt_Scan.Location = new System.Drawing.Point(807, 451);
+      this.bt_Scan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.bt_Scan.Name = "bt_Scan";
-      this.bt_Scan.Size = new System.Drawing.Size(75, 23);
+      this.bt_Scan.Size = new System.Drawing.Size(112, 35);
       this.bt_Scan.TabIndex = 7;
       this.bt_Scan.Text = "Scan";
       this.bt_Scan.UseVisualStyleBackColor = true;
       this.bt_Scan.Click += new System.EventHandler(this.Bt_Scan_Click);
       // 
+      // pb_ArpScan
+      // 
+      this.pb_ArpScan.Location = new System.Drawing.Point(31, 457);
+      this.pb_ArpScan.Name = "pb_ArpScan";
+      this.pb_ArpScan.Size = new System.Drawing.Size(680, 23);
+      this.pb_ArpScan.TabIndex = 9;
+      // 
       // ArpScan
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+      this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(750, 329);
+      this.ClientSize = new System.Drawing.Size(1125, 506);
+      this.Controls.Add(this.pb_ArpScan);
       this.Controls.Add(this.bt_Scan);
       this.Controls.Add(this.gb_Range);
       this.Controls.Add(this.dgv_Targets);
       this.Controls.Add(this.bt_Close);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "ArpScan";
@@ -283,5 +305,6 @@
     private System.Windows.Forms.ToolStripMenuItem unscanedSystemsToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem thisSystemToolStripMenuItem;
     private System.Windows.Forms.Button bt_Scan;
+    private System.Windows.Forms.ProgressBar pb_ArpScan;
   }
 }

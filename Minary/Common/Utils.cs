@@ -68,5 +68,17 @@ END:
       return string.Empty;
     }
 
+
+    public static void TryExecute2(Action action)
+    {
+      try
+      {
+        action();
+      }
+      catch (Exception)
+      {
+      }
+    }
+
   }
 }

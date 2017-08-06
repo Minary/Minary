@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
+  using Minary.Common;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
@@ -165,13 +166,10 @@
         LogCons.Inst.Write(ex.StackTrace);
       }
 
-      try
-      {
-        this.arpScanTask.KillAllRunningArpScans();
-      }
-      catch
-      {
-      }
+      Utils.TryExecute2(this.arpScanTask.KillAllRunningArpScans);
+
+this.pb_ArpScan.Value = 0;
+this.pb_ArpScan.Maximum = 100;
     }
 
 
@@ -203,6 +201,8 @@
       }
 
       this.targetList.Clear();
+this.pb_ArpScan.Value = 0;
+this.pb_ArpScan.Maximum = 100;
 
       // Set GUI parameters
       this.dgv_Targets.Enabled = false;
@@ -223,15 +223,6 @@
       this.isScanStarted = true;
       this.Cursor = Cursors.WaitCursor;
       this.dgv_Targets.Cursor = Cursors.WaitCursor;
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    private void ArpScanStopped()
-    {
-      this.SetArpScanGuiOnStopped();
     }
 
 

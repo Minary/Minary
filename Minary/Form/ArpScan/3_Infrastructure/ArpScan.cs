@@ -1,24 +1,27 @@
 ﻿namespace Minary.Form.ArpScan.Infrastructure
 {
   using Minary.Form.ArpScan.DataTypes;
+  using Minary.Form.ArpScan.DataTypes.Interface;
   using System;
+  using System.Collections.Generic;
   using System.Diagnostics;
   using System.IO;
   using System.Text.RegularExpressions;
   using System.Threading;
 
 
-  public class ArpScan
+  public class ArpScan : IObservable
   {
 
     #region MEMBERS
-    
+
     private string arpScanProcName = "ArpScan";
     private Process arpScanProc;
     private string baseDir;
     private string arpScanBin;
     private string data = string.Empty;
     private ArpScanConfig arpScanConf;
+    private List<IObserver> observers;
 
     #endregion
 
@@ -33,7 +36,9 @@
     {
       this.baseDir = Directory.GetCurrentDirectory();
       this.arpScanBin = Path.Combine(this.baseDir, Minary.Config.ArpScanBinaryPath);
+      this.observers = new List<IObserver>();
     }
+
 
     /// <summary>
     ///
@@ -99,13 +104,7 @@
 
       foreach (Process proc in minaryInstances)
       {
-        try
-        {
-          proc.Kill();
-        }
-        catch (Exception)
-        {
-        }
+        Common.Utils.TryExecute2(proc.Kill);
       }
     }
 
@@ -121,10 +120,7 @@
     /// <param name="e"></param>
     private void OnArpScanExited(object sender, System.EventArgs e)
     {
-      if (this.arpScanConf.OnArpScanStopped != null)
-      {
-        this.arpScanConf.OnArpScanStopped();
-      }
+      this.arpScanConf.ObserverClass.ProcessStopped();
     }
 
 
@@ -150,9 +146,46 @@
 
         if (trafficMatch.Success)
         {
-          this.arpScanConf.OnDataReceived(this.data);
+          this.arpScanConf.ObserverClass.AddRecordToDgv(this.data);
           this.data = string.Empty;
         }
+      }
+    }
+
+    #endregion
+
+
+    #region INTERFACE: IObservable
+
+    public void AddObserver(IObserver observer)
+    {
+      this.observers.Add(observer);
+    }
+
+
+    public void NotifyProgressBar(int progress)
+    {
+      foreach (IObserver observer in this.observers)
+      {
+        observer.UpdateProgressbar(progress);
+      }
+    }
+
+
+    public void AddRecordToDgv(string inputData)
+    {
+      foreach (IObserver observer in this.observers)
+      {
+        observer.AddRecordToDgv(inputData);
+      }
+    }
+
+
+    public void ProcessStopped()
+    {
+      foreach (IObserver observer in this.observers)
+      {
+        observer.ProcessStopped();
       }
     }
 
