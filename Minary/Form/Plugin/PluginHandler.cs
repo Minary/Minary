@@ -2,6 +2,7 @@
 {
   using Minary.Common;
   using Minary.Form.ArpScan.DataTypes;
+  using Minary.LogConsole.Main;
   using MinaryLib;
   using MinaryLib.AttackService;
   using MinaryLib.Plugin;
@@ -66,7 +67,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary LoadPlugins Exception: {0}", ex.Message);
+        LogCons.Inst.Write("Minary LoadPlugins Exception: {0}", ex.Message);
         pluginList = new List<string>();
         return;
       }
@@ -85,7 +86,7 @@
         for (int i = 0; i < pluginFiles.Length; i++)
         {
           fileName = Path.GetFileNameWithoutExtension(pluginFiles[i]);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Found plugin: {0}", pluginFiles[i]);
+          LogCons.Inst.Write("Found plugin: {0}", pluginFiles[i]);
 
           // Create/Load instance of plugin.
           try
@@ -94,7 +95,7 @@
           }
           catch (Exception ex)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("Error occurred while loading plugin {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
+            LogCons.Inst.Write("Error occurred while loading plugin {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
             MessageBox.Show(string.Format("Error occurred while loading plugin {0} : {1}", fileName, ex.Message));
 
             continue;
@@ -116,7 +117,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("PluginHandler.ResetAllPlugins(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("PluginHandler.ResetAllPlugins(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
         }
       }
     }
@@ -135,7 +136,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("PluginHandler.ResetAllPlugins(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("PluginHandler.ResetAllPlugins(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
         }
       }
     }
@@ -148,7 +149,7 @@
     {
       foreach (string key in this.tabPagesCatalog.Keys)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.RestoreLastPluginLoadState(): PluginName:{0}", key);
+        LogCons.Inst.Write("Minary.RestoreLastPluginLoadState(): PluginName:{0}", key);
         try
         {
           IPlugin tmpPluginObj = this.tabPagesCatalog[key].PluginObject;
@@ -156,7 +157,7 @@
 
           if (currentPluginState == null)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("RestoreLastPluginLoadState(): No former state found for plugin {0}", key);
+            LogCons.Inst.Write("RestoreLastPluginLoadState(): No former state found for plugin {0}", key);
           }
           else if (currentPluginState.ToLower() == "on")
           {
@@ -169,7 +170,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("RestoreLastPluginLoadState(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("RestoreLastPluginLoadState(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
         }
       }
     }
@@ -353,42 +354,42 @@
       }
       catch (ArgumentNullException ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArgumentNullException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("ArgumentNullException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
       catch (ArgumentException ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArgumentException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("ArgumentException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
       catch (NotSupportedException ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("NotSupportedException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("NotSupportedException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
       catch (TargetInvocationException ex)
       {
         if (ex.InnerException != null)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("TargetInvocationException {0}: {1} - {2}", fileName, ex.Message, ex.InnerException.Message);
+          LogCons.Inst.Write("TargetInvocationException {0}: {1} - {2}", fileName, ex.Message, ex.InnerException.Message);
         }
         else
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("TargetInvocationException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("TargetInvocationException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
         }
       }
       catch (MethodAccessException ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("MethodAccessException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("MethodAccessException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
       catch (MemberAccessException ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("MemberAccessException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("MemberAccessException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
       catch (TypeLoadException ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("TypeLoadException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("TypeLoadException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Exception {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("Exception {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
       }
     }
 
@@ -455,7 +456,7 @@
 
     public void LogMessage(string message, params object[] formatArgs)
     {
-      LogConsole.Main.LogConsole.LogInstance.LogMessage(message, formatArgs);
+      LogCons.Inst.Write(message, formatArgs);
     }
 
 
@@ -493,12 +494,12 @@
 
           tmpNewPluginStatus = (newPluginStatus >= 0) ? (int)newPluginStatus : (int)MinaryLib.Plugin.Status.NotRunning;
           tabPage.ImageIndex = tmpNewPluginStatus;
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(@"{0} : CurrentState:{1}, NewState:{2}", plugin.Config.PluginName, oldPluginStatus, tmpNewPluginStatus);
+          LogCons.Inst.Write(@"{0} : CurrentState:{1}, NewState:{2}", plugin.Config.PluginName, oldPluginStatus, tmpNewPluginStatus);
         }
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ReportPluginSetStatus(): {0}", ex.ToString());
+        LogCons.Inst.Write("ReportPluginSetStatus(): {0}", ex.ToString());
       }
     }
 
@@ -516,7 +517,7 @@
       this.tabPagesCatalog[plugin.Config.PluginName].PluginObject.OnResetPlugin();
       this.tabPagesCatalog[plugin.Config.PluginName].PluginObject.OnStartUpdate();
 
-      LogConsole.Main.LogConsole.LogInstance.LogMessage(@"{0} : Plugin is calling back for registration", plugin.Config.PluginName);
+      LogCons.Inst.Write(@"{0} : Plugin is calling back for registration", plugin.Config.PluginName);
     }
 
 

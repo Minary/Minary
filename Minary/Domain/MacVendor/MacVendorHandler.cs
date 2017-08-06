@@ -1,5 +1,6 @@
 ﻿namespace Minary.Domain.MacVendor
 {
+  using Minary.LogConsole.Main;
   using System;
   using System.Collections;
   using System.IO;
@@ -97,17 +98,17 @@
           }
           catch (Exception)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("Unable to load MacAddress/Vendor pair: {0}/{1}   ({2})", tmpLine, macAddress, vendorName);
+            LogCons.Inst.Write("Unable to load MacAddress/Vendor pair: {0}/{1}   ({2})", tmpLine, macAddress, vendorName);
           }
         }
       }
       catch (FileNotFoundException)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("{0} not found!", this.macVendorList);
+        LogCons.Inst.Write("{0} not found!", this.macVendorList);
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Error occurred while opening {0}: {1}", this.macVendorList, ex.StackTrace);
+        LogCons.Inst.Write("Error occurred while opening {0}: {1}", this.macVendorList, ex.StackTrace);
       }
       finally
       {

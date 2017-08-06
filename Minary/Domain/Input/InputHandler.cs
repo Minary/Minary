@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.Input
 {
   using Minary.Form;
+  using Minary.LogConsole.Main;
   using System;
   using System.Collections.Concurrent;
   using System.IO;
@@ -76,7 +77,7 @@
           }
           catch (Exception ex)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("Can't start named pipe - " + ex.StackTrace + "\n" + ex.ToString());
+            LogCons.Inst.Write("Can't start named pipe - " + ex.StackTrace + "\n" + ex.ToString());
             MessageBox.Show("Can't start named pipe : " + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
           }
 
@@ -86,7 +87,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
+        LogCons.Inst.Write("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
         MessageBox.Show("An error occurred while starting the sniffer : " + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
     }
@@ -136,11 +137,11 @@
         }
         catch (TimeoutException tex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(tex.StackTrace + "\n" + tex.ToString());
+          LogCons.Inst.Write(tex.StackTrace + "\n" + tex.ToString());
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
+          LogCons.Inst.Write("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
         }
         finally
         {
@@ -214,7 +215,7 @@
           {
             if (tmpRecord.StartsWith("QUIT"))
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): Received QUIT signal");
+              LogCons.Inst.Write("Minary.DataInput.InputModule.DataProcessingThread(): Received QUIT signal");
               processIsStopped = true;
               break;
             }
@@ -225,7 +226,7 @@
           }
           catch (Exception ex)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
+            LogCons.Inst.Write("Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
           }
 
           // If activated in the GUI generate a short beep
@@ -239,7 +240,7 @@
         Thread.Sleep(300);
       }
 
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.DataInput.InputModule.DataProcessingThread(): Exiting thread");
+      LogCons.Inst.Write("Minary.DataInput.InputModule.DataProcessingThread(): Exiting thread");
     }
 
 
@@ -265,7 +266,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+          LogCons.Inst.Write(ex.StackTrace);
 
           try
           {
@@ -309,19 +310,19 @@
             }
             catch (ObjectDisposedException odex)
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage(odex.StackTrace + "\n" + odex.ToString());
+              LogCons.Inst.Write(odex.StackTrace + "\n" + odex.ToString());
               break;
             }
             catch (Exception ex)
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace + "\n" + ex.ToString());
+              LogCons.Inst.Write(ex.StackTrace + "\n" + ex.ToString());
               break;
             }
           }
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace + "\n" + ex.ToString());
+          LogCons.Inst.Write(ex.StackTrace + "\n" + ex.ToString());
         }
       }
     }
@@ -345,7 +346,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("InputModules.UpdateMainTB(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write("InputModules.UpdateMainTB(EXCEPTION): {0}", ex.Message);
         return;
       }
 
@@ -368,7 +369,7 @@
             }
             catch (Exception ex)
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+              LogCons.Inst.Write(ex.StackTrace);
             }
           }
         }
@@ -388,7 +389,7 @@
             }
             catch (Exception ex)
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+              LogCons.Inst.Write(ex.StackTrace);
             }
           }
         }
@@ -409,7 +410,7 @@
             }
             catch (Exception ex)
             {
-              LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+              LogCons.Inst.Write(ex.StackTrace);
             }
           }
         }

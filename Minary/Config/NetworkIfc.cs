@@ -1,6 +1,7 @@
 ﻿namespace Minary
 {
   using Minary.Common.Network;
+  using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;
   using System.Net.NetworkInformation;
@@ -102,7 +103,7 @@
 
       foreach (NetworkInterface tmpInterface in Interfaces)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("/" + tmpInterface.Id + "/" + interfaceId + "/");
+        LogCons.Inst.Write("/" + tmpInterface.Id + "/" + interfaceId + "/");
         if (tmpInterface.Id == interfaceId)
         {
           retVal = tmpInterface;
@@ -205,7 +206,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.Message);
+          LogCons.Inst.Write(ex.Message);
         }
       }
 

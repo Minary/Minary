@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form
 {
   using Minary.Form.ArpScan.DataTypes;
+  using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
   using System.Net.NetworkInformation;
@@ -104,12 +105,12 @@
       }
       catch (NetworkInformationException niex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(niex.StackTrace);
+        LogCons.Inst.Write(niex.StackTrace);
         return;
       }
       catch (Exception ex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        LogCons.Inst.Write(ex.StackTrace);
         return;
       }
 
@@ -143,7 +144,7 @@
           }
 
           this.cb_Interfaces.Items.Add(temp);
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(interfaceData);
+          LogCons.Inst.Write(interfaceData);
         }
       }
 
@@ -167,7 +168,7 @@
       }
       catch (Exception ex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        LogCons.Inst.Write(ex.StackTrace);
       }
     }
 

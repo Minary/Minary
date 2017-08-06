@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form
 {
   using Minary.Common;
+  using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
   using System.IO;
@@ -78,7 +79,7 @@
         }
         else
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Starting attack: Can't start plugins because of a colision with another attacking session");
+          LogCons.Inst.Write("Starting attack: Can't start plugins because of a colision with another attacking session");
         }
 
         this.attackStarted = true;
@@ -174,7 +175,7 @@
         {
           string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
           MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
+          LogCons.Inst.Write(message);
         }
 
         try
@@ -185,7 +186,7 @@
         {
           string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
           MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
+          LogCons.Inst.Write(message);
         }
 
         try
@@ -201,7 +202,7 @@
         {
           string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
           MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(message);
+          LogCons.Inst.Write(message);
 
           this.pluginHandler.RestoreLastPluginLoadState();
         }
@@ -211,7 +212,6 @@
         this.pluginHandler.RestoreLastPluginLoadState();
       }
     }
-
 
     #endregion
 

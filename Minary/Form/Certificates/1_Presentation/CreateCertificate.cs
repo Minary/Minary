@@ -1,6 +1,7 @@
 ﻿namespace Minary.Certificates.Presentation
 {
   using Minary.Form;
+  using Minary.LogConsole.Main;
   using System;
   using System.IO;
   using System.Text.RegularExpressions;
@@ -65,7 +66,7 @@
       }
       catch (Exception ex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("CreateCertificate: {0}", ex.Message);
+        LogCons.Inst.Write("CreateCertificate: {0}", ex.Message);
         MessageBox.Show(string.Format("{0}", ex.Message), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
 

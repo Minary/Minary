@@ -1,7 +1,8 @@
 ﻿namespace Minary.Domain.AttackService.Service
 {
-  using Minary.Form.ArpScan.DataTypes;
   using Minary.Common;
+  using Minary.Form.ArpScan.DataTypes;
+  using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
   using System.Collections.Generic;
@@ -65,15 +66,10 @@
       string targetHostsPath = Config.APETargetHostsPath;
       string processParameters = string.Format("-x {0}", serviceParameters.SelectedIfcId);
 
-//if ((this.arpScan = new ArpScan.Presentation.ArpScan()) == null)
-//{
-//  return ServiceStatus.NotRunning;
-//}
-
       if (this.arpScan.TargetList.Count <= 0)
       {
         this.serviceStatus = ServiceStatus.NotRunning;
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StartService(): There were no systems selected to attack");
+        LogCons.Inst.Write("ArpPoisoning.StartService(): There were no systems selected to attack");
         return ServiceStatus.NotRunning;
       }
 
@@ -83,7 +79,7 @@
         if (targetRecord.Attack)
         {
           targetHosts += string.Format("{0},{1}\r\n", targetRecord.IpAddress, targetRecord.MacAddress);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", targetRecord.MacAddress, targetRecord.IpAddress);
+          LogCons.Inst.Write("ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", targetRecord.MacAddress, targetRecord.IpAddress);
         }
       }
 
@@ -106,7 +102,7 @@
       this.poisoningEngProc.Exited += new EventHandler(this.OnServiceExited);
       this.serviceStatus = ServiceStatus.Running;
 
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StartService(): CommandLine:{0} {1}", apeBinaryPath, processParameters);
+      LogCons.Inst.Write("ArpPoisoning.StartService(): CommandLine:{0} {1}", apeBinaryPath, processParameters);
       this.poisoningEngProc.Start();
 
       return ServiceStatus.Running;
@@ -117,7 +113,7 @@
     {
       if (this.poisoningEngProc == null)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StopService(): Can't stop attack service because it never was started");
+        LogCons.Inst.Write("ArpPoisoning.StopService(): Can't stop attack service because it never was started");
         this.serviceStatus = ServiceStatus.NotRunning;
         return ServiceStatus.NotRunning;
       }
@@ -125,7 +121,7 @@
       this.poisoningEngProc.EnableRaisingEvents = false;
       this.poisoningEngProc.Exited += null;
       this.serviceStatus = ServiceStatus.NotRunning;
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StopService(): EnableRaisingEvents:{0}", this.poisoningEngProc.EnableRaisingEvents);
+      LogCons.Inst.Write("ArpPoisoning.StopService(): EnableRaisingEvents:{0}", this.poisoningEngProc.EnableRaisingEvents);
 
       try
       {
@@ -137,7 +133,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.StopService(Exception): {0}", ex.Message);
+        LogCons.Inst.Write("ArpPoisoning.StopService(Exception): {0}", ex.Message);
       }
 
       return ServiceStatus.NotRunning;
@@ -152,7 +148,7 @@
 
     private void OnServiceExited(object sender, System.EventArgs e)
     {
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
+      LogCons.Inst.Write("ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
 
       this.poisoningEngProc.EnableRaisingEvents = false;
       this.poisoningEngProc.Exited += null;

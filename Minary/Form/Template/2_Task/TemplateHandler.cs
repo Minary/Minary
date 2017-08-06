@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form.Template.Task
 {
   using Minary.Form.Template.DataTypes.Template;
+  using Minary.LogConsole.Main;
   using MinaryLib.Plugin;
   using System;
 
@@ -41,7 +42,7 @@
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("TemplateHandler: {0}", ex.Message);
+          LogCons.Inst.Write("TemplateHandler: {0}", ex.Message);
         }
       }
     }
@@ -114,7 +115,6 @@
     {
       return this.infrastructure.IsFileATemplate(filePath);
     }
-
 
     #endregion
 

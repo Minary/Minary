@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form
 {
+  using Minary.LogConsole.Main;
   using MinaryLib.Plugin;
   using System;
   using System.Collections.Generic;
@@ -88,7 +89,7 @@
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Error occurred while hiding tab page: {0}", ex.Message);
+          LogCons.Inst.Write("Error occurred while hiding tab page: {0}", ex.Message);
         }
       }
     }
@@ -115,7 +116,7 @@
       // Return if TabPage is not in catalog
       if (!this.minaryMain.PluginHandler.TabPagesCatalog.ContainsKey(tabPageName))
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("{0} : Can't hide plugin as it is not found in the catalog", tabPageName);
+        LogCons.Inst.Write("{0} : Can't hide plugin as it is not found in the catalog", tabPageName);
         return;
       }
 
@@ -125,12 +126,12 @@
         this.minaryMain.PluginHandler.TabPagesCatalog[tabPageName].PluginTabPage.BeginInvoke(
           new MethodInvoker(delegate () { this.tabController.TabPages.Remove(this.minaryMain.PluginHandler.TabPagesCatalog[tabPageName].PluginTabPage); })
           );
-        
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("{0} : Plugin tab is hidden.", tabPageName);
+
+        LogCons.Inst.Write("{0} : Plugin tab is hidden.", tabPageName);
       }
       catch (Exception ex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("{0} : Error occurred while hiding tab page: {1}", tabPageName, ex.Message);
+        LogCons.Inst.Write("{0} : Error occurred while hiding tab page: {1}", tabPageName, ex.Message);
       }
     }
 
@@ -178,14 +179,14 @@
       // Return if TabPage is not in catalog
       if (!this.minaryMain.PluginHandler.TabPagesCatalog.ContainsKey(tabPageName))
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("{0} : Can't display plugin as it is not found in the catalog", tabPageName);
+        LogCons.Inst.Write("{0} : Can't display plugin as it is not found in the catalog", tabPageName);
         return;
       }
 
       // Return if TabPage is already shown
       if (this.tabController.TabPages.ContainsKey(tabPageName))
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("{0} : Plugin is already activated and shown in the TabControl", tabPageName);
+        LogCons.Inst.Write("{0} : Plugin is already activated and shown in the TabControl", tabPageName);
         return;
       }
 
@@ -199,13 +200,13 @@
           {
             this.tabController.Invoke((MethodInvoker)delegate { this.tabController.TabPages.Insert(i, this.minaryMain.PluginHandler.TabPagesCatalog[tabPageName].PluginTabPage); });
             this.minaryMain.SetPluginStateByName(tabPageName, "1");
-            Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(@"{0} : Displaying page in PageHandler", tabPageName);
+            LogCons.Inst.Write(@"{0} : Displaying page in PageHandler", tabPageName);
             break;
           }
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(@"{0} : {1}", tabPageName, ex.Message);
+          LogCons.Inst.Write(@"{0} : {1}", tabPageName, ex.Message);
         }
       }
 

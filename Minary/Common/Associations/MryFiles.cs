@@ -1,9 +1,11 @@
 ﻿namespace Minary.Common.Associations
 {
+  using Minary.LogConsole.Main;
   using System;
   using System.IO;
   using System.Runtime.InteropServices;
   using System.Windows.Forms;
+
 
   public class MryFiles
   {
@@ -35,7 +37,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write("Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
       }
 
       try
@@ -49,7 +51,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write("Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
       }
 
       // Tell explorer the file association has been changed
