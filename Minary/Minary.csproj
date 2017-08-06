@@ -167,7 +167,7 @@
     <Compile Include="Common\Debugging.cs" />
     <Compile Include="Common\Associations\ProgramIcon.cs" />
     <Compile Include="Common\Associations\RegistryUtilities.cs" />
-    <Compile Include="Common\Http\HttpRequest.cs" />
+    <Compile Include="Common\HttpRequest.cs" />
     <Compile Include="Common\MinaryProcess.cs" />
     <Compile Include="Common\Updates.cs">
       <SubType>Component</SubType>
@@ -247,7 +247,7 @@
     <Compile Include="Form\Main\1_Presentation\MinaryMain_Main.Designer.cs">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\Network\NetworkFunctions.cs" />
+    <Compile Include="Common\NetworkFunctions.cs" />
     <Compile Include="Form\Plugin\Config\PluginTableRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
