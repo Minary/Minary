@@ -4,11 +4,13 @@
   using System;
 
 
+  public delegate void Bt_ScanLan_Click_Delegate(object sender, EventArgs e);
+  public delegate void Bt_Attack_Click_Delegate(object sender, EventArgs e);
+
   public interface IMinaryState
   {
     MinaryState CurrentState { get; set; }
-
-    void Bt_ScanLan_Click(object sender, EventArgs e);
-    void Bt_Attack_Click(object sender, EventArgs e);
+    Bt_ScanLan_Click_Delegate Bt_ScanLan_Click { get; set; }
+    Bt_Attack_Click_Delegate Bt_Attack_Click { get; set; }
   }
 }

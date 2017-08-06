@@ -20,7 +20,6 @@
     {
       OperatingSystem operatingSystem = Environment.OSVersion;
       Version operatingSystemVersion = operatingSystem.Version;
-      IMinaryState minaryState;
 
       Application.SetCompatibleTextRenderingDefault(false);
 
@@ -32,18 +31,15 @@
       Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
       Application.EnableVisualStyles();
 
-      // Get event base methods depending on the 
-      // system state.
-      minaryState = MinaryFactory.GetMinaryEventBase();
-
       // Load GUI
       try
       {
-        MinaryMain minaryGuiObj = new MinaryMain(args, minaryState);
+        MinaryMain minaryGuiObj = new MinaryMain(args);
         minaryGuiObj.LoadAllFormElements();
         minaryGuiObj.StartAllHandlers();
         minaryGuiObj.StartBackgroundThreads();
         minaryGuiObj.PreRun();
+        minaryGuiObj.SetInitialMinaryState();
         Application.Run(minaryGuiObj);
       }
       catch (Exception ex)
@@ -51,7 +47,6 @@
         string errorMsg = string.Format("Minary: The following error occured: {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
         MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
-
     }
 
 

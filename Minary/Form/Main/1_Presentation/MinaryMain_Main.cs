@@ -4,11 +4,11 @@
   using Minary.Certificates.Presentation;
   using Minary.Common;
   using Minary.Common.Associations;
-  using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
   using Minary.Domain.AttackService;
   using Minary.Domain.Input;
   using Minary.Domain.MacVendor;
+  using Minary.Domain.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService;
   using System;
@@ -36,7 +36,6 @@
     private bool attackStarted;
     private Minary.Form.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
-    private IMinaryState minaryState;
 
     // GUI handlers
     private Minary.Form.ArpScan.Presentation.ArpScan arpScanHandler;
@@ -84,7 +83,7 @@
 
     #region PUBLIC
 
-    public MinaryMain(string[] args, IMinaryState minaryState)
+    public MinaryMain(string[] args)
     {
       this.InitializeComponent();
 
@@ -96,7 +95,6 @@
       this.targetList = new BindingList<string>();
 
       this.commandLineArguments = args;
-      this.minaryState = minaryState;
 
       // Set .mry file extension association
       MryFiles.InstallMryFileAssociation();
@@ -202,25 +200,26 @@
 
       // Populate network interface.
       this.LoadNicSettings();
-      if (this.cb_Interfaces.Items.Count <= 0)
-      {
-        MessageBox.Show("No active network adapter found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-      }
-      else
-      {
-        // Init ArpScan console
-        this.arpScanHandler = new ArpScan.Presentation.ArpScan(this);
-        this.attackStarted = false;
-      }
+
+      // Init ArpScan console
+      this.arpScanHandler = new ArpScan.Presentation.ArpScan(this);
+      this.attackStarted = false;
 
       // Load and initialize all plugins
       this.pluginHandler.LoadPlugins();
 
       // Check if an other instance is running.
       this.minaryProcessHandler.HandleRunningInstances();
+    }
 
-      // Inject dependency: Minary state
-      this.InjectDependency(this.minaryState);
+
+    public void SetInitialMinaryState()
+    {
+      // The click event handlers need an initial value
+      this.Bt_Attack_Click = this.Bt_Attack_Click_Event;
+      this.Bt_ScanLan_Click = this.Bt_ScanLan_Click_Event;
+ 
+      this.InjectMinaryStateDependency();
     }
 
 
@@ -344,18 +343,11 @@
 
     #region PRIVATE
 
-    private void InjectDependency(IMinaryState minaryState)
+    private void InjectMinaryStateDependency()
     {
-      if (this.minaryState.CurrentState == MinaryState.StateOk)
-      {
-        this.bt_Attack.Click += new EventHandler(this.Bt_Attack_Click);
-        this.bt_ScanLan.Click += new EventHandler(this.Bt_ScanLan_Click);
-      }
-      else
-      {
-        this.bt_Attack.Click += new EventHandler(minaryState.Bt_Attack_Click);
-        this.bt_ScanLan.Click += new EventHandler(minaryState.Bt_ScanLan_Click);
-      }
+      IMinaryState minaryState = MinaryFactory.GetMinaryEventBase(this);
+      this.bt_Attack.Click += new EventHandler(minaryState.Bt_Attack_Click);
+      this.bt_ScanLan.Click += new EventHandler(minaryState.Bt_ScanLan_Click);
     }
 
     #endregion
