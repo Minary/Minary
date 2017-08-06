@@ -85,7 +85,7 @@
       this.isScanStarted = false;
       this.minaryMain = minaryMain;
     }
-    
+
 
     /// <summary>
     /// 

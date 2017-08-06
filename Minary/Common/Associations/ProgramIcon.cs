@@ -8,18 +8,21 @@
   /// </summary>
   public class ProgramIcon
   {
-    public ProgramIcon(string iconPath)
-    {
-      IconPath = iconPath.Trim();
-    }
+
+    #region MEMBERS
 
     public readonly string IconPath;
+
+    #endregion
+
+
+    #region PROPERTIES
 
     public bool IsValid
     {
       get
       {
-        FileInfo getInfo = new FileInfo(IconPath);
+        FileInfo getInfo = new FileInfo(this.IconPath);
 
         if (getInfo.Exists && getInfo.Extension == ".ico")
         {
@@ -31,5 +34,18 @@
         }
       }
     }
+
+    #endregion
+
+
+    #region PUBLIC
+
+    public ProgramIcon(string iconPath)
+    {
+      this.IconPath = iconPath.Trim();
+    }
+
+    #endregion
+
   }
 }

@@ -7,12 +7,15 @@
   /// </summary>
   public class ExecApplication
   {
-    public ExecApplication(string appPath)
-    {
-      Path = appPath.Trim();
-    }
+
+    #region MEMBERS
 
     public readonly string Path;
+
+    #endregion
+
+
+    #region PROPERTIES
 
     /// <summary>
     /// Gets a value indicating whether this Executable Application is an .exe, and that it exists.
@@ -21,7 +24,7 @@
     {
       get
       {
-        FileInfo getInfo = new FileInfo(Path);
+        FileInfo getInfo = new FileInfo(this.Path);
         if (getInfo.Exists)
         {
           return true;
@@ -32,6 +35,19 @@
         }
       }
     }
+
+    #endregion
+
+
+    #region PUBLIC
+
+    public ExecApplication(string appPath)
+    {
+      this.Path = appPath.Trim();
+    }
+
+    #endregion
+
   }
 
 }
