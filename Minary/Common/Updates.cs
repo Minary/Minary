@@ -1,6 +1,7 @@
 ﻿namespace Minary.Common
 {
   using Minary.Form.Updates.Config;
+  using Minary.LogConsole.Main;
   using System;
   using System.Configuration;
   using System.IO;
@@ -32,7 +33,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("CheckForMinarygUpdates(Exception): {0}", ex.Message);
+          LogCons.Inst.Write("CheckForMinarygUpdates(Exception): {0}", ex.Message);
         }
 
         if (updateData != null && updateData.IsUpdateAvaliable)
@@ -42,11 +43,13 @@
           newVersion.ShowDialog();
         }
         else
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("No new updates available.");
+        {
+          LogCons.Inst.Write("No new updates available.");
+        }
       }
       else
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("Can't check for new updates as no internet connection is available.");
+        LogCons.Inst.Write("Can't check for new updates as no internet connection is available.");
       }
     }
 
@@ -63,27 +66,27 @@
 
         if (string.IsNullOrEmpty(repositoryRemote))
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary SyncAttackPatterns: Can't sync attack pattern files because no remote repository is defined in the configuration file");
+          LogCons.Inst.Write("Minary SyncAttackPatterns: Can't sync attack pattern files because no remote repository is defined in the configuration file");
           return;
         }
 
         try
         {
-          Minary.PatternFileManager.GitHubPatternFileMgr.InitializeRepository(repositoryLocal, repositoryRemote);
+          PatternFileManager.GitHubPatternFileMgr.InitializeRepository(repositoryLocal, repositoryRemote);
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary SyncAttackPatterns: Initializing local attack pattern directory ({0}) failed: {1}", repositoryLocal, ex.Message);
+          LogCons.Inst.Write("Minary SyncAttackPatterns: Initializing local attack pattern directory ({0}) failed: {1}", repositoryLocal, ex.Message);
         }
 
         try
         {
-          Minary.PatternFileManager.GitHubPatternFileMgr.SyncRepository(repositoryLocal, Config.GitUser, Config.GitEmail);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary SyncAttackPatterns: Attack pattern sync finished.");
+          PatternFileManager.GitHubPatternFileMgr.SyncRepository(repositoryLocal, Config.GitUser, Config.GitEmail);
+          LogCons.Inst.Write("Minary SyncAttackPatterns: Attack pattern sync finished.");
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary SyncAttackPatterns: Syncing attack pattern failed: {0}", ex.Message);
+          LogCons.Inst.Write("Minary SyncAttackPatterns: Syncing attack pattern failed: {0}", ex.Message);
         }
       }
     }
@@ -149,7 +152,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("FetchLatestReleaseMetaData(): {0}", ex.Message);
+        LogCons.Inst.Write("FetchLatestReleaseMetaData(): {0}", ex.Message);
       }
       finally
       {
@@ -167,7 +170,7 @@
       return updateMetaData;
     }
 
-
     #endregion
+
   }
 }

@@ -1,11 +1,10 @@
 ﻿namespace Minary
 {
-  using Minary.Domain.Main;
   using Minary.Form;
-  using Minary.DataTypes.Interface;
   using System;
   using System.IO;
   using System.Windows.Forms;
+  using Minary.LogConsole.Main;
 
 
   public static class Program
@@ -72,7 +71,7 @@
       if (missingAttackServiceBinaries.Length > 0)
       {
         string errorMsg = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
-        LogConsole.Main.LogConsole.LogInstance.LogMessage(errorMsg);
+        LogCons.Inst.Write(errorMsg);
         MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
     }

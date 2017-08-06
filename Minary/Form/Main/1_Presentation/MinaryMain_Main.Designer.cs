@@ -1,5 +1,7 @@
 ﻿namespace Minary.Form
 {
+  using Minary.LogConsole.Main;
+
 
   public partial class MinaryMain
   {
@@ -20,7 +22,7 @@
       }
       catch (System.Exception ex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("MinaryMain.Dispose(Exception): {0}", ex.Message);
+        LogCons.Inst.Write("MinaryMain.Dispose(Exception): {0}", ex.Message);
       }
 
       if (disposing && (components != null))

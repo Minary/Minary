@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.AttackService.Service
 {
   using Minary.Common;
+  using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
   using System.Collections.Generic;
@@ -70,7 +71,7 @@
       this.snifferProc.EnableRaisingEvents = true;
       this.snifferProc.Exited += new EventHandler(this.OnServiceExited);
 
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("DataSniffer.StartService(): CommandLine:{0} {1}", apeSnifferBinaryPath, processParameters);
+      LogCons.Inst.Write("DataSniffer.StartService(): CommandLine:{0} {1}", apeSnifferBinaryPath, processParameters);
       this.serviceStatus = ServiceStatus.Running;
       this.snifferProc.Start();
 
@@ -82,7 +83,7 @@
     {
       if (this.snifferProc == null)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("DataSniffer.StopService(): Can't stop attack service because it never was started");
+        LogCons.Inst.Write("DataSniffer.StopService(): Can't stop attack service because it never was started");
         this.serviceStatus = ServiceStatus.NotRunning;
         return ServiceStatus.NotRunning;
       }
@@ -90,7 +91,7 @@
       this.snifferProc.EnableRaisingEvents = false;
       this.snifferProc.Exited += null;
       this.serviceStatus = ServiceStatus.NotRunning;
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("DataSniffer.StopService(): EnableRaisingEvents:{0}", this.snifferProc.EnableRaisingEvents);
+      LogCons.Inst.Write("DataSniffer.StopService(): EnableRaisingEvents:{0}", this.snifferProc.EnableRaisingEvents);
 
       try
       {
@@ -102,7 +103,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("DataSniffer.StopService(Exception): {0}", ex.Message);
+        LogCons.Inst.Write("DataSniffer.StopService(Exception): {0}", ex.Message);
       }
 
       return ServiceStatus.NotRunning;
@@ -117,7 +118,7 @@
 
     private void OnServiceExited(object sender, System.EventArgs e)
     {
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("DataSniffer.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.snifferProc.ExitCode);
+      LogCons.Inst.Write("DataSniffer.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.snifferProc.ExitCode);
 
       this.snifferProc.EnableRaisingEvents = false;
       this.snifferProc.Exited += null;

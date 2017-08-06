@@ -2,6 +2,7 @@
 {
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Certificates.Presentation;
+  using Minary.LogConsole.Main;
   using Minary.Common;
   using Minary.Common.Associations;
   using Minary.DataTypes.Interface;
@@ -89,7 +90,7 @@
 
       // Initialize logging
       Config.CollectSystemInformation();
-      Minary.LogConsole.Main.LogConsole.LogInstance.DumpSystemInformation();
+      LogCons.Inst.DumpSystemInformation();
 
       this.usedPlugins = new BindingList<PluginTableRecord>();
       this.targetList = new BindingList<string>();
@@ -265,12 +266,12 @@
       {
         try
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary: Passing new target list to plugin \"{0}\"", tmpKey);
+          LogCons.Inst.Write("Minary: Passing new target list to plugin \"{0}\"", tmpKey);
           this.pluginHandler.TabPagesCatalog[tmpKey].PluginObject.SetTargets(newTargetList.ToList());
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
         }
       }
     }
@@ -332,7 +333,7 @@
         if (guiElement.Tag != null && guiElement.Tag.ToString() == serviceName)
         {
           this.attackServiceMap.Add(serviceName, guiElement);
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", serviceName, guiElement.Name);
+          LogCons.Inst.Write("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", serviceName, guiElement.Name);
           break;
         }
       }

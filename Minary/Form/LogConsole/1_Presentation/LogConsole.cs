@@ -7,12 +7,12 @@
   using System.Windows.Forms;
 
 
-  public partial class LogConsole : Form, IObserver
+  public partial class LogCons : Form, IObserver
   {
 
     #region MEMBERS
 
-    private static LogConsole instance;
+    private static LogCons instance;
     private Task.LogConsole logConsoleTask;
 
     #endregion
@@ -24,9 +24,9 @@
     ///
     /// </summary>
     /// <returns></returns>
-    public static LogConsole LogInstance
+    public static LogCons Inst
     {
-      get { return instance ?? (instance = new LogConsole()); }
+      get { return instance ?? (instance = new LogCons()); }
       set { }
     }
 
@@ -50,16 +50,16 @@
     /// </summary>
     public void DumpSystemInformation()
     {
-      this.LogMessage("Starting Log console");
-      this.LogMessage("Minary version : {0}", Config.MinaryVersion);
-      this.LogMessage("OS : {0}", Config.OS);
-      this.LogMessage("Architecture : {0}", Config.Architecture);
-      this.LogMessage("Language : {0}", Config.Language);
-      this.LogMessage("Processor : {0}", Config.Processor);
-      this.LogMessage("Num. processors : {0}", Config.NumProcessors);
-      this.LogMessage(".Net version : {0}", Config.DotNetVersion);
-      this.LogMessage("CLR version : {0}", Config.CommonLanguateRuntime);
-      this.LogMessage("WinPcap version : {0}", Config.WinPcap);
+      this.Write("Starting Log console");
+      this.Write("Minary version : {0}", Config.MinaryVersion);
+      this.Write("OS : {0}", Config.OS);
+      this.Write("Architecture : {0}", Config.Architecture);
+      this.Write("Language : {0}", Config.Language);
+      this.Write("Processor : {0}", Config.Processor);
+      this.Write("Num. processors : {0}", Config.NumProcessors);
+      this.Write(".Net version : {0}", Config.DotNetVersion);
+      this.Write("CLR version : {0}", Config.CommonLanguateRuntime);
+      this.Write("WinPcap version : {0}", Config.WinPcap);
     }
 
 
@@ -69,7 +69,7 @@
     /// <param name="message"></param>
     /// <param name="formatArgs"></param>
     public delegate void LogMessageDelegate(string message, params object[] formatArgs);
-    public void LogMessage(string message, params object[] formatArgs)
+    public void Write(string message, params object[] formatArgs)
     {
       if (string.IsNullOrEmpty(message))
       {
@@ -174,7 +174,7 @@
 
     #region PRIVATE
 
-    public LogConsole()
+    public LogCons()
     {
       this.InitializeComponent();
       this.logConsoleTask = new Task.LogConsole();

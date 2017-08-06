@@ -2,6 +2,7 @@
 {
   using Minary.Common;
   using Minary.DataTypes.Interface;
+  using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService;
   using System;
@@ -52,7 +53,7 @@
       }
       catch (Exception ex)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        LogCons.Inst.Write(ex.StackTrace);
       }
     }
 
@@ -169,7 +170,7 @@
               }
               else
               {
-                Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("No new updates available.");
+                LogCons.Inst.Write("No new updates available.");
                 MessageBox.Show("No new updates available.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
               }
             }
@@ -182,7 +183,7 @@
       }
       else
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Can't check for updates. Internet connection is down.");
+        LogCons.Inst.Write("Can't check for updates. Internet connection is down.");
         MessageBox.Show("Can't check for updates. Internet connection is down.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
     }
@@ -220,7 +221,7 @@
     /// <param name="e"></param>
     private void LogConsoleToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      Minary.LogConsole.Main.LogConsole.LogInstance.ShowLogConsole();
+      LogCons.Inst.ShowLogConsole();
     }
 
 
@@ -272,7 +273,7 @@
     /// <param name="e"></param>
     private void DGV_MainPlugins_DataError(object sender, DataGridViewDataErrorEventArgs e)
     {
-      Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Error occurred ({0}): {1}", sender.ToString(), e.ToString());
+      LogCons.Inst.Write("Error occurred ({0}): {1}", sender.ToString(), e.ToString());
     }
 
 
@@ -308,7 +309,7 @@
       catch (Exception ex)
       {
         string errorMessage = string.Format("An error occurred while loading template \"{0}\".\r\n\r\n{1}", Path.GetFileName(templateFileName), ex.Message);
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(errorMessage);
+        LogCons.Inst.Write(errorMessage);
         MessageBox.Show(errorMessage, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
       }
     }
@@ -408,7 +409,7 @@
       {
         try
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
+          LogCons.Inst.Write("Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
 
           if (this.pluginHandler.IsPluginActive(key))
           {
@@ -417,7 +418,7 @@
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+          LogCons.Inst.Write(ex.StackTrace);
         }
       }
 
@@ -436,15 +437,15 @@
     {
       if (!e.Cancelled && e.Error == null)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStartAttackCompleted(): Done");
+        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Done");
       }
       else if (e.Cancelled)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStartAttackCompleted(): Was cancelled");
+        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Was cancelled");
       }
       else
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStartAttackCompleted(): Erors occurred");
+        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Erors occurred");
       }
     }
 
@@ -472,7 +473,7 @@
         }
         catch (Exception ex)
         {
-          Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+          LogCons.Inst.Write(ex.StackTrace);
         }
       }
 
@@ -485,15 +486,15 @@
     {
       if (!e.Cancelled && e.Error == null)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStopAttackCompleted(): Done");
+        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Done");
       }
       else if (e.Cancelled)
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStopAttackCompleted(): Was cancelled");
+        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Was cancelled");
       }
       else
       {
-        Minary.LogConsole.Main.LogConsole.LogInstance.LogMessage("Minary.BGW_OnStopAttackCompleted(): Erors occurred");
+        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Erors occurred");
       }
     }
 

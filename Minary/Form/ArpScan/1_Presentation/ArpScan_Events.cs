@@ -2,6 +2,7 @@
 {
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Common;
+  using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;
   using System.Windows.Forms;
@@ -19,7 +20,7 @@
     /// <param name="e"></param>
     private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
     {
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan.DGV_CellClick(): Start");
+      LogCons.Inst.Write("ArpScan.DGV_CellClick(): Start");
 
       // Ignore clicks that are not on button cells.
       if (e.RowIndex < 0)
@@ -157,7 +158,7 @@
         }
         catch (Exception ex)
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
+          LogCons.Inst.Write("ArpScan: {0}", ex.Message);
           MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
           this.SetArpScanGuiOnStopped();
         }
@@ -244,7 +245,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
+        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
         MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         this.SetArpScanGuiOnStopped();
       }
@@ -284,7 +285,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
+        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
         MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         this.SetArpScanGuiOnStopped();
       }
@@ -483,7 +484,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
+        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
         this.dgv_Targets.ClearSelection();
       }
     }

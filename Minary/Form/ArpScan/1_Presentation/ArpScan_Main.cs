@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
   using Minary.Form.ArpScan.DataTypes;
+  using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
   using System.Linq;
@@ -112,7 +113,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan.ShowDialog(): {0}", ex.Message);
+        LogCons.Inst.Write("ArpScan.ShowDialog(): {0}", ex.Message);
       }
     }
 
@@ -161,7 +162,7 @@
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        LogCons.Inst.Write(ex.StackTrace);
       }
 
       try
@@ -288,13 +289,13 @@
           }
           catch (Exception ex)
           {
-            LogConsole.Main.LogConsole.LogInstance.LogMessage("ArpScan: {0}", ex.Message);
+            LogCons.Inst.Write("ArpScan: {0}", ex.Message);
           }
         }
       }
       catch (Exception ex)
       {
-        LogConsole.Main.LogConsole.LogInstance.LogMessage(ex.StackTrace);
+        LogCons.Inst.Write(ex.StackTrace);
       }
     }
 

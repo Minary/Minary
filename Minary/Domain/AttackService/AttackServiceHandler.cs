@@ -2,6 +2,7 @@
 {
   using Minary.Domain.AttackService.Service;
   using Minary.Form;
+  using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
   using System.Collections.Generic;
@@ -89,14 +90,14 @@
       {
         try
         {
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServices[tmpKey].ServiceName);
+          LogCons.Inst.Write("AttackServiceHandler.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServices[tmpKey].ServiceName);
           ServiceStatus newServiceStatus = this.attackServices[tmpKey].StartService(serviceParameters);
           this.SetNewState(tmpKey, newServiceStatus);
         }
         catch (Exception ex)
         {
           this.SetNewState(tmpKey, ServiceStatus.Error);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.StartAllServices(Exception): {0}\r\n{1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("AttackServiceHandler.StartAllServices(Exception): {0}\r\n{1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
         }
       }
     }
@@ -118,7 +119,7 @@
         catch (Exception ex)
         {
           this.SetNewState(tmpKey, ServiceStatus.Error);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.StopAllServices(Exception): {0}: {1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
+          LogCons.Inst.Write("AttackServiceHandler.StopAllServices(Exception): {0}: {1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
         }
       }
     }
@@ -136,7 +137,7 @@
         catch (Exception ex)
         {
           this.SetNewState(tmpKey, ServiceStatus.Error);
-          LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.ShutDown(Exception): {0}", ex.Message);
+          LogCons.Inst.Write("AttackServiceHandler.ShutDown(Exception): {0}", ex.Message);
         }
       }
     }
@@ -144,7 +145,7 @@
 
     public void OnServiceExited(string serviceName)
     {
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly working", serviceName);
+      LogCons.Inst.Write("AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly working", serviceName);
       this.SetNewState(serviceName, ServiceStatus.Error);
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
     }
@@ -161,7 +162,7 @@
         return;
       }
 
-      LogConsole.Main.LogConsole.LogInstance.LogMessage("AttackServiceHandler.SetNewState(): {0} has new state {1}", serviceName, newStatus.ToString());
+      LogCons.Inst.Write("AttackServiceHandler.SetNewState(): {0} has new state {1}", serviceName, newStatus.ToString());
       // Set actual service state
       this.attackServices[serviceName].Status = newStatus;
 
