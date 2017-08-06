@@ -3,32 +3,41 @@
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
+  using Minary.Form;
   using Minary.State;
   using System.Net.NetworkInformation;
 
 
   public class MinaryFactory
   {
-
-    public static IMinaryState GetMinaryEventBase()
+    public static IMinaryState GetMinaryEventBase(MinaryMain minaryObj)
     {
       MinaryState state = DetermineSystemState();
+      IMinaryState newState;
 
       if ((state & MinaryState.NetworkMissing) == MinaryState.NetworkMissing)
       {
-        return new NetworkMissing(MinaryState.NetworkMissing);
+        newState = new NetworkMissing(MinaryState.NetworkMissing);
+        return newState;
       }
       else if ((state & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
       {
-        return new WinPcapMissing(MinaryState.WinPcapMissing);
+        newState = new WinPcapMissing(MinaryState.WinPcapMissing);
+        return newState;
       }
       else if ((state & MinaryState.NotAdmin) == MinaryState.NotAdmin)
       {
-        return new NotAdmin(MinaryState.NotAdmin);
+        newState = new NotAdmin(MinaryState.NotAdmin);
+        return newState;
       }
       else
       {
-        return new StateOk(MinaryState.StateOk);
+        newState = new StateOk(MinaryState.StateOk);
+        newState.Bt_Attack_Click = null;
+        newState.Bt_ScanLan_Click = null;
+        newState.Bt_Attack_Click += minaryObj.Bt_Attack_Click;
+        newState.Bt_ScanLan_Click += minaryObj.Bt_ScanLan_Click;
+        return newState;
       }
     }
 

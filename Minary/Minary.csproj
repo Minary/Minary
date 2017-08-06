@@ -195,6 +195,9 @@
     <Compile Include="Form\Main\1_Presentation\MinaryMain_General.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\Main\1_Presentation\MinaryMain_Interface.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\Main\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
     </Compile>
