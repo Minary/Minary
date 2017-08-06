@@ -29,11 +29,10 @@
       if (this.cb_Interfaces.SelectedIndex < 0)
       {
         MessageBox.Show("No network interface selected", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
       }
-      else
-      {
-        this.arpScanHandler.ShowArpScanGui(ref this.targetList);
-      }
+
+      this.arpScanHandler.ShowArpScanGui(ref this.targetList);
     }
 
 
