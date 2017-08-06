@@ -1,6 +1,6 @@
 ﻿namespace Minary
 {
-  using Minary.Common.Network;
+  using Minary.Common;
   using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;

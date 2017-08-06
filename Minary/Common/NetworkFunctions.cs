@@ -1,4 +1,4 @@
-﻿namespace Minary.Common.Network
+﻿namespace Minary.Common
 {
   using System;
   using System.Net;
