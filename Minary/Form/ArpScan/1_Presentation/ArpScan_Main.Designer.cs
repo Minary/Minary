@@ -84,7 +84,7 @@
       dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
       dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.dgv_Targets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-      this.dgv_Targets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.dgv_Targets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
       this.dgv_Targets.Location = new System.Drawing.Point(10, 118);
       this.dgv_Targets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.dgv_Targets.MultiSelect = false;
@@ -92,7 +92,7 @@
       this.dgv_Targets.ReadOnly = true;
       this.dgv_Targets.RowHeadersVisible = false;
       this.dgv_Targets.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-      this.dgv_Targets.RowTemplate.Height = 24;
+      this.dgv_Targets.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
       this.dgv_Targets.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
       this.dgv_Targets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.dgv_Targets.Size = new System.Drawing.Size(1096, 323);
