@@ -2,6 +2,7 @@
 {
   using Minary.Common;
   using Minary.DataTypes.Interface;
+  using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService;
@@ -29,7 +30,7 @@
     {
       try
       {
-        Config.NetworkInterface interfaceStruct = Config.GetIfcByID(Config.Interfaces[this.cb_Interfaces.SelectedIndex].Id);
+        NetworkInterfaceConfig interfaceStruct = NetworkFunctions.GetIfcById(NetworkFunctions.Interfaces[this.cb_Interfaces.SelectedIndex].Id);
 
         if (interfaceStruct.Name != null && interfaceStruct.Name.Length > 0)
         {
@@ -407,7 +408,7 @@
       ServiceParameters currentServiceParams = new ServiceParameters()
       {
         SelectedIfcIndex = this.cb_Interfaces.SelectedIndex,
-        SelectedIfcId = Config.GetNetworkInterfaceIDByIndexNumber(this.cb_Interfaces.SelectedIndex),
+        SelectedIfcId = NetworkFunctions.GetNetworkInterfaceIdByIndexNumber(this.cb_Interfaces.SelectedIndex),
         TargetList = (from target in this.arpScanHandler.TargetList
                       where target.Attack == true
                       select new { target.MacAddress, target.IpAddress }).

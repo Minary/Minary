@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.AttackService.Service
 {
   using Minary.Common;
+  using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
@@ -66,7 +67,7 @@
       string certificateFileFullPath = Path.Combine(certificateDirectoryFullPath, certificateFileName);
       string certificateRelativePath = Path.Combine(certificateDirectoryName, certificateFileName);
 
-      Config.NetworkInterface ifcSelected = Config.GetIfcByID(serviceParameters.SelectedIfcId);
+      NetworkInterfaceConfig ifcSelected = NetworkFunctions.GetIfcById(serviceParameters.SelectedIfcId);
       string httpReverseProxyBinaryPath = Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyBinaryPath);
       string processParameters = string.Format("/httpport 80 /httpsport 443 /loglevel info /certificate {0}", certificateRelativePath);
 
