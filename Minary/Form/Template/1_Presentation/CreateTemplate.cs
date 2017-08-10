@@ -76,7 +76,7 @@
       }
       catch (Exception ex)
       {
-        MessageBox.Show(ex.Message, "Invalid template data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageDialog.ShowError(string.Empty, ex.Message, this);
         return;
       }
 
@@ -101,7 +101,8 @@
       }
       else if (string.IsNullOrEmpty(this.sfd_TemplateFile.FileName))
       {
-        MessageBox.Show("You didn't define an output file", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        string message = "You didn't define an output file";
+        MessageDialog.ShowWarning(string.Empty, message, this);
         return;
       }
 
@@ -117,13 +118,17 @@
 
         // Serialize and save template
         this.taskLayerCreateTemplate.SaveAttackTemplate(newTemplateData, this.sfd_TemplateFile.FileName);
-        MessageBox.Show(string.Format("Template \"{0}\" was saved successfully.", newTemplateData.TemplateConfig.Name), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        string message = string.Format("Template \"{0}\" was saved successfully.", newTemplateData.TemplateConfig.Name);
+        MessageDialog.ShowInformation(string.Empty, message, this);
+
         base.Dispose(true);
       }
       catch (Exception ex)
       {
         LogCons.Inst.Write("Error occurred while saving template : {0}", ex.Message);
-        MessageBox.Show(string.Format("Error occurred while saving template : {0}", ex.Message), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+        string message = string.Format("Error occurred while saving template : {0}", ex.Message);
+        MessageDialog.ShowWarning(string.Empty, message, this);
       }
     }
 

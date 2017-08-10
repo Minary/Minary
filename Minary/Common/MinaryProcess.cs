@@ -1,5 +1,6 @@
 ﻿namespace Minary.Common
 {
+  using Minary.Form;
   using System;
   using System.Collections.Generic;
   using System.Diagnostics;
@@ -49,7 +50,7 @@
         catch (Exception ex)
         {
           string message = string.Format(@"An error occured while handling running instance of {0}:\r\n\r\n", tmpProcName, ex.Message);
-          MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+          MessageDialog.ShowInformation(string.Empty, message);
         }
       }
     }
@@ -90,13 +91,7 @@
 
       foreach (Process proc in processList)
       {
-        try
-        {
-          proc.Kill();
-        }
-        catch (Exception)
-        {
-        }
+        Utils.TryExecute2(proc.Kill);
       }
     }
 

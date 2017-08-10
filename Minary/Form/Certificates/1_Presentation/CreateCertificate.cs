@@ -67,7 +67,7 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write("CreateCertificate: {0}", ex.Message);
-        MessageBox.Show(string.Format("{0}", ex.Message), "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
       }
 
       this.Close();

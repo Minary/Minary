@@ -1,8 +1,6 @@
 ﻿namespace Minary.Form
 {
-  using Minary.Form.ArpScan.DataTypes;
   using Minary.Certificates.Presentation;
-  using Minary.LogConsole.Main;
   using Minary.Common;
   using Minary.Common.Associations;
   using Minary.DataTypes.Interface;
@@ -10,6 +8,8 @@
   using Minary.Domain.Input;
   using Minary.Domain.MacVendor;
   using Minary.Domain.Main;
+  using Minary.Form.ArpScan.DataTypes;
+  using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService;
   using System;
@@ -39,7 +39,7 @@
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
 
     // GUI handlers
-    private Minary.Form.ArpScan.Presentation.ArpScan arpScanHandler;
+    private ArpScan.Presentation.ArpScan arpScanHandler;
 
     // Service handlers
     private ManageServerCertificates caCertificateHandler;
@@ -111,6 +111,7 @@
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
       this.macVendorHandler = new MacVendorHandler();
       this.minaryProcessHandler = new MinaryProcess();
+      
     }
 
 
@@ -170,13 +171,14 @@
       this.dgv_MainPlugins.Columns.Add(columnPluginDescription);
       this.dgv_MainPlugins.DataSource = this.usedPlugins;
 
-      // Set AttackStart/Stop events
+      // Set AttackStart events
       this.bgwOnStartAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
-      this.bgwOnStartAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStartAllPlugins);
+      this.bgwOnStartAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStartAttack);
       this.bgwOnStartAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStartAttackCompleted);
-
+      
+      // Set AttackStop events
       this.bgwOnStopAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
-      this.bgwOnStopAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStopAllPlugins);
+      this.bgwOnStopAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStopAttack);
       this.bgwOnStopAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStopAttackCompleted);
 
       // Instantiate (own + foreign) application layers
@@ -266,7 +268,7 @@
       {
         try
         {
-          LogCons.Inst.Write("Minary: Passing new target list to plugin \"{0}\"", tmpKey);
+          LogCons.Inst.Write("Minary: Passing new target list to plugin \"{0}\". Total no. targets={1}", tmpKey, newTargetList.Count());
           this.pluginHandler.TabPagesCatalog[tmpKey].PluginObject.SetTargets(newTargetList.ToList());
         }
         catch (Exception ex)
@@ -290,8 +292,8 @@
       ////      this.SetNewState(serviceName, Status.Error);
       //// this.attackServiceHandler.AttackServices[serviceName].Status = MinaryLib.AttackService.ServiceStatus.Error;
 
-      this.Cursor = Cursors.WaitCursor;
-      this.EnableGUIElements();
+//      this.Cursor = Cursors.WaitCursor;
+      this.EnableGuiElements();
 
       if (!this.bgwOnStopAttack.IsBusy)
       {
@@ -299,25 +301,37 @@
       }
 
       // Set service status
-      this.attackStarted = false;
-      this.bt_Attack.BackgroundImage = (System.Drawing.Image)Minary.Properties.Resources.StartBig;
-      this.Cursor = Cursors.Default;
+//      this.attackStarted = false;
+//  this.bt_Attack.BackgroundImage = (System.Drawing.Image)Minary.Properties.Resources.StartBig;
+//      this.Cursor = Cursors.Default;
+
+      this.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
+
 
       // Report service failure
       string message = string.Format("The attack service \"{0}\" failed unexpectedly", serviceName);
-      MessageBox.Show(message, "Attack service error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      MessageDialog.ShowWarning("Attack service error", message, this);
     }
 
 
     public void SetNewAttackServiceState(string serviceName, ServiceStatus newStatus)
     {
-      if (string.IsNullOrEmpty(serviceName))
+      if (string.IsNullOrEmpty(serviceName) ||
+          this.attackServiceHandler?.AttackServices == null)
       {
+        return;
+      }
+      
+      if (this.attackServiceHandler.AttackServices.ContainsKey(serviceName) == false)
+      {
+        LogCons.Inst.Write("AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
         return;
       }
 
       int tmpNewServiceStatus = (newStatus >= 0) ? (int)newStatus : (int)MinaryLib.AttackService.ServiceStatus.NotRunning;
+
       this.attackServiceMap[serviceName].Image = this.il_AttackServiceStat.Images[tmpNewServiceStatus];
+      LogCons.Inst.Write("AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());
     }
 
 
@@ -327,7 +341,7 @@
       {
         return;
       }
-      
+
       foreach (PictureBox guiElement in this.Controls.OfType<PictureBox>())
       {
         if (guiElement.Tag != null && guiElement.Tag.ToString() == serviceName)

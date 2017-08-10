@@ -2,6 +2,7 @@
 {
   using System;
   using System.Net;
+  using System.Net.NetworkInformation;
   using System.Runtime.InteropServices;
 
 
@@ -106,6 +107,35 @@
       retVal = string.Format("{0:x2}-{1:x2}-{2:x2}-{3:x2}-{4:x2}-{5:x2}", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 
       return retVal;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="portNo"></param>
+    /// <returns></returns>
+    public static bool IsPortAvailable(int portNo)
+    {
+      if (portNo <= 0 || portNo > 65535)
+      {
+        throw new Exception("The port is invalid");
+      }
+
+      bool isPortAvailable = true;
+      IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+      IPEndPoint[] ipEndPoints = ipGlobalProperties.GetActiveTcpListeners();
+
+      foreach (IPEndPoint endPoint in ipEndPoints)
+      {
+        if (endPoint.Port == portNo)
+        {
+          isPortAvailable = false;
+          break;
+        }
+      }
+
+      return isPortAvailable;
     }
 
     #endregion

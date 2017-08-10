@@ -226,14 +226,14 @@
       this.bt_Attack.TabIndex = 6;
       this.bt_Attack.UseVisualStyleBackColor = true;
       // 
-      // bt_ScanLAN
+      // bt_ScanLan
       // 
-      this.bt_ScanLan.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_ScanLAN.BackgroundImage")));
+      this.bt_ScanLan.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_ScanLan.BackgroundImage")));
       this.bt_ScanLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_ScanLan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
       this.bt_ScanLan.Location = new System.Drawing.Point(1251, 48);
       this.bt_ScanLan.Margin = new System.Windows.Forms.Padding(0);
-      this.bt_ScanLan.Name = "bt_ScanLAN";
+      this.bt_ScanLan.Name = "bt_ScanLan";
       this.bt_ScanLan.Size = new System.Drawing.Size(184, 149);
       this.bt_ScanLan.TabIndex = 5;
       this.bt_ScanLan.UseVisualStyleBackColor = true;
@@ -327,7 +327,7 @@
       this.tc_Plugins.Controls.Add(this.tp_MinaryPluginCatalog);
       this.tc_Plugins.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tc_Plugins.ImageList = this.il_PluginStat;
-      this.tc_Plugins.ItemSize = new System.Drawing.Size(79, 19);
+      this.tc_Plugins.ItemSize = new System.Drawing.Size(79, 23);
       this.tc_Plugins.Location = new System.Drawing.Point(18, 218);
       this.tc_Plugins.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tc_Plugins.Multiline = true;
@@ -341,11 +341,11 @@
       this.tp_MinaryPluginCatalog.BackColor = System.Drawing.Color.White;
       this.tp_MinaryPluginCatalog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.tp_MinaryPluginCatalog.Controls.Add(this.dgv_MainPlugins);
-      this.tp_MinaryPluginCatalog.Location = new System.Drawing.Point(4, 23);
+      this.tp_MinaryPluginCatalog.Location = new System.Drawing.Point(4, 27);
       this.tp_MinaryPluginCatalog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tp_MinaryPluginCatalog.Name = "tp_MinaryPluginCatalog";
       this.tp_MinaryPluginCatalog.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.tp_MinaryPluginCatalog.Size = new System.Drawing.Size(1621, 613);
+      this.tp_MinaryPluginCatalog.Size = new System.Drawing.Size(1621, 609);
       this.tp_MinaryPluginCatalog.TabIndex = 0;
       this.tp_MinaryPluginCatalog.Text = "Minary";
       // 
@@ -405,7 +405,7 @@
       this.dgv_MainPlugins.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
       this.dgv_MainPlugins.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
       this.dgv_MainPlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.dgv_MainPlugins.Size = new System.Drawing.Size(1515, 522);
+      this.dgv_MainPlugins.Size = new System.Drawing.Size(1515, 518);
       this.dgv_MainPlugins.TabIndex = 0;
       this.dgv_MainPlugins.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dgv_MainPlugins_CellContentClick);
       this.dgv_MainPlugins.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DGV_MainPlugins_DataError);
@@ -446,14 +446,14 @@
       // tsmi_Exit
       // 
       this.tsmi_Exit.Name = "tsmi_Exit";
-      this.tsmi_Exit.Size = new System.Drawing.Size(210, 30);
+      this.tsmi_Exit.Size = new System.Drawing.Size(197, 30);
       this.tsmi_Exit.Text = "Exit";
       this.tsmi_Exit.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
       // 
       // tsmi_ResetMinary
       // 
       this.tsmi_ResetMinary.Name = "tsmi_ResetMinary";
-      this.tsmi_ResetMinary.Size = new System.Drawing.Size(210, 30);
+      this.tsmi_ResetMinary.Size = new System.Drawing.Size(197, 30);
       this.tsmi_ResetMinary.Text = "Reset Minary";
       this.tsmi_ResetMinary.Click += new System.EventHandler(this.TSMI_ResetAllPlugins_Click);
       // 

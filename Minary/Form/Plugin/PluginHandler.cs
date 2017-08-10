@@ -96,13 +96,14 @@
           catch (Exception ex)
           {
             LogCons.Inst.Write("Error occurred while loading plugin {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
-            MessageBox.Show(string.Format("Error occurred while loading plugin {0} : {1}", fileName, ex.Message));
-
+            string message = string.Format("Error occurred while loading plugin {0} : {1}", fileName, ex.Message);
+            MessageDialog.ShowError(string.Empty, message, this);
             continue;
           }
         }
       }
     }
+
 
     /// <summary>
     ///
@@ -141,7 +142,31 @@
       }
     }
 
-    
+
+    /// <summary>
+    ///
+    /// </summary>
+//    public void StartAllPlugins()
+//    {
+//      foreach (string key in this.TabPagesCatalog.Keys)
+//      {
+//LogCons.Inst.Write("PluginHandler.StartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.IsPluginActive(key));
+//        if (this.IsPluginActive(key))
+//        {
+//          try
+//          {
+//            this.TabPagesCatalog[key].PluginObject.OnStartAttack();
+//          }
+//          catch (Exception ex)
+//          {
+//LogCons.Inst.Write("PluginHandler.StartAllPlugins(): EXCEPTION Plugin:{0}, msg:{1}",
+//  key, ex.Message);
+//          }
+//        }
+//      }
+//    }
+
+
     /// <summary>
     ///
     /// </summary>
@@ -486,21 +511,29 @@
       {
         plugin = (IPlugin)callingPluginObj;
         tabPage = this.FindTabPageInCatalog(plugin.Config.PluginName);
-
-        if (tabPage != null)
-        {
-          int tmpNewPluginStatus = (int)newPluginStatus;
-          int oldPluginStatus = tabPage.ImageIndex;
-
-          tmpNewPluginStatus = (newPluginStatus >= 0) ? (int)newPluginStatus : (int)MinaryLib.Plugin.Status.NotRunning;
-          tabPage.ImageIndex = tmpNewPluginStatus;
-          LogCons.Inst.Write(@"{0} : CurrentState:{1}, NewState:{2}", plugin.Config.PluginName, oldPluginStatus, tmpNewPluginStatus);
-        }
       }
       catch (Exception ex)
       {
         LogCons.Inst.Write("ReportPluginSetStatus(): {0}", ex.ToString());
       }
+
+      if (tabPage == null)
+      {
+        return;
+      }
+
+      int tmpNewPluginStatus = (int)newPluginStatus;
+      int oldPluginStatus = tabPage.ImageIndex;
+
+      tmpNewPluginStatus = (newPluginStatus >= 0) ? (int)newPluginStatus : (int)MinaryLib.Plugin.Status.NotRunning;
+      tabPage.ImageIndex = tmpNewPluginStatus;
+
+      if (oldPluginStatus == tmpNewPluginStatus)
+      {
+        return;
+      }
+
+      LogCons.Inst.Write(@"{0} : CurrentState:{1}, NewState:{2}", plugin.Config.PluginName, oldPluginStatus, tmpNewPluginStatus);
     }
 
 

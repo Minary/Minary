@@ -189,9 +189,9 @@
     {
       if (keyData == Keys.Escape)
       {
-        if (bgw_LoadTemplate.IsBusy)
+        if (this.bgw_LoadTemplate.IsBusy)
         {
-          MessageBox.Show("System still busy loading template.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+          MessageDialog.ShowWarning(string.Empty, "System still busy loading template.", this);
           return false;
         }
         else

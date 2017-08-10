@@ -73,43 +73,27 @@
        *
        */
 
-      // 0. Set the Wait cursor.
+      // Set the Wait cursor.
       this.Cursor = Cursors.WaitCursor;
 
-      // 1. Shut down all plugins
-      this.pluginHandler.StopAllPlugins();
-      this.bgwOnStopAttack.RunWorkerAsync();
+      // Shut down all plugins
+      if (!this.bgwOnStopAttack.IsBusy)
+      {
+        this.bgwOnStopAttack.RunWorkerAsync();
+      }
 
-      // 2. Shut all attack services down
-      // cAttackServiceHandler.ShutDown();
-
-      // 3. Kill all APE processes : WARNING!!!  it kills also the APE Depoisoning process!!
-      // Process[] lAPEProcesses;
-      // if ((lAPEProcesses = Process.GetProcessesByName(Config.APEName)) != null && lAPEProcesses.Length > 0)
-      // {
-      //   foreach (Process proc in lAPEProcesses)
-      //   {
-      //     try { proc.Kill(); }
-      //     catch (Exception) { }
-      //   }
-      // }
-
-      // 4. Remove all static ARP entries
+      // Remove all static ARP entries
       ProcessStartInfo procStartInfo = new ProcessStartInfo("arp", "-d *");
       procStartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-      System.Diagnostics.Process procClearArpCache = new System.Diagnostics.Process();
+      Process procClearArpCache = new Process();
       procClearArpCache.StartInfo = procStartInfo;
       procClearArpCache.Start();
       procClearArpCache.WaitForExit(3000);
       procClearArpCache.Close();
 
-      // 5. Set the default cursor.
+      // Set the default cursor.
       this.Cursor = Cursors.Default;
 
-      // 6. Sometimes process cant stop correctly and stays running. Therefore ... clack clack booom!
-      // if (System.Windows.Forms.Application.MessageLoop)
-      //   System.Windows.Forms.Application.Exit();
-      // else
       System.Environment.Exit(0);
     }
 
@@ -154,12 +138,14 @@
     {
       if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
-        LogCons.Inst.Write("Can't check for updates. Internet connection is down.");
-        MessageBox.Show("Can't check for updates. Internet connection is down.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        string message = "Can't check for updates. Internet connection is down.";
+        LogCons.Inst.Write(message);
+        MessageDialog.ShowInformation(string.Empty, message, this);
+
         return;
       }
 
-      Thread updateAvailableThread = new Thread(delegate()
+      Thread updateAvailableThread = new Thread(delegate ()
       {
         if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
         {
@@ -178,8 +164,9 @@
           }
           else
           {
-            LogCons.Inst.Write("No new updates available.");
-            MessageBox.Show("No new updates available.", "Update information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string message = "No new updates available.";
+            LogCons.Inst.Write(message);
+            MessageDialog.ShowInformation("Update information", message, this);
           }
         }
         catch (Exception)
@@ -253,7 +240,8 @@
       }
       else
       {
-        MessageBox.Show("Another instance of Minibrowser is already running", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        string message = "Another instance of Minibrowser is already running";
+        MessageDialog.ShowInformation("Update information", message, this);
       }
     }
 
@@ -310,9 +298,9 @@
       }
       catch (Exception ex)
       {
-        string errorMessage = string.Format("An error occurred while loading template \"{0}\".\r\n\r\n{1}", Path.GetFileName(templateFileName), ex.Message);
-        LogCons.Inst.Write(errorMessage);
-        MessageBox.Show(errorMessage, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        string message = string.Format("An error occurred while loading template \"{0}\".\r\n\r\n{1}", Path.GetFileName(templateFileName), ex.Message);
+        LogCons.Inst.Write(message);
+        MessageDialog.ShowWarning(string.Empty, message, this);
       }
     }
 
@@ -327,7 +315,7 @@
     {
       if (keyData == (Keys.Control | Keys.D))
       {
-        DebugginOnToolStripMenuItem_Click(null, null);
+        this.DebugginOnToolStripMenuItem_Click(null, null);
         return true;
       }
 
@@ -397,58 +385,78 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void BGW_OnStartPluginsDelegate(object sender, DoWorkEventArgs e);
-    private void BGW_OnStartAllPlugins(object sender, DoWorkEventArgs e)
+    public delegate void BGW_OnStartAttackDelegate(object sender, DoWorkEventArgs e);
+    private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new BGW_OnStartPluginsDelegate(this.BGW_OnStartAllPlugins), new object[] { sender, e });
+        this.BeginInvoke(new BGW_OnStartAttackDelegate(this.BGW_OnStartAttack), new object[] { sender, e });
         return;
       }
 
-      // Start all plugins
-      foreach (string key in this.pluginHandler.TabPagesCatalog.Keys)
-      {
-        try
-        {
-          LogCons.Inst.Write("Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
+      e.Result = false;
+      this.Cursor = Cursors.WaitCursor;
 
-          if (this.pluginHandler.IsPluginActive(key))
-          {
-            this.pluginHandler.TabPagesCatalog[key].PluginObject.OnStartAttack();
-          }
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(ex.StackTrace);
-        }
-      }
+      // Disable all GUI elements
+      Utils.TryExecute2(this.DisableGuiElements);
+
+      // Start all plugins
+      Utils.TryExecute2(this.StartAllPlugins);
 
       // Start all services
       ServiceParameters currentServiceParams = new ServiceParameters()
       {
         SelectedIfcIndex = this.cb_Interfaces.SelectedIndex,
-        SelectedIfcId = Config.GetNetworkInterfaceIDByIndexNumber(this.cb_Interfaces.SelectedIndex)
+        SelectedIfcId = Config.GetNetworkInterfaceIDByIndexNumber(this.cb_Interfaces.SelectedIndex),
+        TargetList = (from target in this.arpScanHandler.TargetList
+                      where target.Attack == true
+                      select new { target.MacAddress, target.IpAddress }).
+                        ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
       };
 
-      this.attackServiceHandler.StartAllServices(currentServiceParams);
+      try
+      {
+        this.StartAllServices(currentServiceParams);
+
+        // NOTE: The "Completed" method does not receive the
+        //       caught exceptions. The outcome has to be done
+        //       via return value  :/
+        e.Result = true;
+      }
+      catch
+      {
+      }
     }
 
 
     private void BGW_OnStartAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      if (!e.Cancelled && e.Error == null)
+// bool retVal = (bool)e.Result;
+
+      this.attackStarted = true;
+
+      if (e.Error != null)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Done");
+        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
+        this.bgwOnStopAttack.RunWorkerAsync();
       }
-      else if (e.Cancelled)
+      else if (e.Cancelled == true)
       {
         LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Was cancelled");
+        this.bgwOnStopAttack.RunWorkerAsync();
       }
+      //else if (retVal == false)
+      //{
+      //  LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Procedure has completed unsuccessfully");
+      //  this.bgwOnStopAttack.RunWorkerAsync();
+      //}
+      //else if (retVal == true)
       else
       {
-        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Erors occurred");
+        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Procedure has completed successfully (bgwOnStopAttack==null:{0})", this.bgwOnStopAttack == null);
       }
+
+      this.Cursor = Cursors.Default;
     }
 
 
@@ -457,47 +465,45 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void BGW_OnStopPluginsDelegate(object sender, DoWorkEventArgs e);
-    private void BGW_OnStopAllPlugins(object sender, DoWorkEventArgs e)
+    public delegate void BGW_OnStopAttackDelegate(object sender, DoWorkEventArgs e);
+    private void BGW_OnStopAttack(object sender, DoWorkEventArgs e)
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new BGW_OnStopPluginsDelegate(this.BGW_OnStopAllPlugins), new object[] { sender, e });
+        this.BeginInvoke(new BGW_OnStopAttackDelegate(this.BGW_OnStopAttack), new object[] { sender, e });
         return;
       }
 
+      this.Cursor = Cursors.WaitCursor;
+
+      // Enable GUI elements
+      Utils.TryExecute2(this.EnableGuiElements);
+
       // Stop all plugins
-      foreach (string key in this.pluginHandler.TabPagesCatalog.Keys)
-      {
-        try
-        {
-          this.pluginHandler.TabPagesCatalog[key].PluginObject.OnStopAttack();
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(ex.StackTrace);
-        }
-      }
+      Utils.TryExecute2(this.pluginHandler.StopAllPlugins);
 
       // Stop all services
-      this.attackServiceHandler.StopAllServices();
+      Utils.TryExecute2(this.attackServiceHandler.StopAllServices);
     }
 
 
     private void BGW_OnStopAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      if (!e.Cancelled && e.Error == null)
+      if (e.Error != null)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Done");
+        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
       }
-      else if (e.Cancelled)
+      else if (e.Cancelled == true)
       {
         LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Was cancelled");
       }
       else
       {
-        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Erors occurred");
+        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Procedure completed");
       }
+
+      this.attackStarted = false;
+      this.Cursor = Cursors.Default;
     }
 
 
@@ -510,6 +516,46 @@
     private void ServerCertToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.caCertificateHandler.ShowDialog();
+    }
+
+    
+    private void StartAllPlugins()
+    {
+      foreach (string key in this.pluginHandler.TabPagesCatalog.Keys)
+      {
+        LogCons.Inst.Write("Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
+
+        try
+        {
+          if (this.pluginHandler.IsPluginActive(key))
+          {
+            this.pluginHandler.TabPagesCatalog[key].PluginObject.OnStartAttack();
+          }
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(ex.StackTrace);
+        }
+      }
+    }
+
+
+    private void StartAllServices(ServiceParameters serviceParameters)
+    {
+      foreach (string tmpKey in this.attackServiceHandler.AttackServices.Keys)
+      {
+        try
+        {
+          LogCons.Inst.Write("Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName);
+          ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters);
+          this.SetNewAttackServiceState(tmpKey, newServiceStatus);
+        }
+        catch (Exception ex)
+        {
+          this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
+          throw;
+        }
+      }
     }
 
     #endregion

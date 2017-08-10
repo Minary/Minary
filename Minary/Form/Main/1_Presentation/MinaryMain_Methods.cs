@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form
 {
   using Minary.Common;
+  using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
@@ -37,54 +38,50 @@
         return;
       }
 
-      if (this.cb_Interfaces.SelectedIndex < 0)
+      // Another OnStopAttack instance is running
+      if (this.bgwOnStopAttack.IsBusy == true)
       {
-        throw new Exception("No network interface selected");
+        string message = "Another instance of the OnStopAttack back ground worker is already running.";
+        LogCons.Inst.Write(message);
 
-        // Stop the attack
+
+      // Another OnStartAttack instance is running
       }
-      else if (this.attackStarted)
+      else if (this.bgwOnStartAttack.IsBusy == true)
       {
-        this.Cursor = Cursors.WaitCursor;
-        this.EnableGUIElements();
+        string message = "Another instance of the OnStartAttack back ground worker is already running.";
+        LogCons.Inst.Write(message);
 
-        if (!this.bgwOnStopAttack.IsBusy)
-        {
-          this.bgwOnStopAttack.RunWorkerAsync();
-        }
 
-        this.attackStarted = false;
-        this.bt_Attack.BackgroundImage = (System.Drawing.Image)Properties.Resources.StartBig;
-        this.Cursor = Cursors.Default;
+      // Fail if selected interface is invalid
+      }
+      else if (this.cb_Interfaces.SelectedIndex < 0)
+      {
+        string message = "No network interface selected";
+        MessageDialog.ShowWarning(string.Empty, message, this);
+
 
       // Notify user to select at least one target system
       }
       else if (Debugging.IsDebuggingOn == false &&
                this.arpScanHandler.TargetList.Where(elem => elem.Attack == true).Count() <= 0)
       {
-        MessageBox.Show("You have to select at least one target system.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        string message = "You must select at least one target system.";
+        MessageDialog.ShowWarning(string.Empty, message, this);
 
 
-      // Start new attack
+      // Stop the attack
+      }
+      else if (this.attackStarted == false)
+      {
+        this.bgwOnStartAttack.RunWorkerAsync();
+
+
+      // In any other case stop a running attack
       }
       else
       {
-        this.Cursor = Cursors.WaitCursor;
-        this.DisableGuiElements();
-
-        // Starting plugins in a background worker
-        if (!this.bgwOnStartAttack.IsBusy)
-        {
-          this.bgwOnStartAttack.RunWorkerAsync(this.bgwOnStartAttack);
-        }
-        else
-        {
-          LogCons.Inst.Write("Starting attack: Can't start plugins because of a colision with another attacking session");
-        }
-
-        this.attackStarted = true;
-        this.bt_Attack.BackgroundImage = (System.Drawing.Image)Properties.Resources.StopBig;
-        this.Cursor = Cursors.Default;
+        this.bgwOnStopAttack.RunWorkerAsync();
       }
     }
 
@@ -92,13 +89,13 @@
 
 
     #region PRIVATE
-    
+
     /// <summary>
     ///
     /// </summary>
     private void DisableGuiElements()
     {
-      this.bt_Attack.BackgroundImage = Properties.Resources.StartBig;
+      this.bt_Attack.BackgroundImage = Properties.Resources.StopBig;
       this.bt_ScanLan.Enabled = false;
       this.cb_Interfaces.Enabled = false;
       this.dgv_MainPlugins.Enabled = false;
@@ -119,9 +116,9 @@
     /// <summary>
     ///
     /// </summary>
-    private void EnableGUIElements()
+    private void EnableGuiElements()
     {
-      this.bt_Attack.BackgroundImage = Properties.Resources.StopBig;
+      this.bt_Attack.BackgroundImage = Properties.Resources.StartBig;
       this.bt_ScanLan.Enabled = true;
       this.cb_Interfaces.Enabled = true;
       this.dgv_MainPlugins.Enabled = true;
@@ -136,14 +133,6 @@
       this.tsmi_LoadTemplate.Enabled = true;
       this.tsmi_CreateTemplate.Enabled = true;
       this.tsmi_UnloadTemplate.Enabled = true;
-    }
-
-
-    public enum MinaryFileType
-    {
-      SessionFile,
-      TemplateFile,
-      Undetermined
     }
 
 
@@ -162,51 +151,49 @@
     {
       MinaryFileType fileType = this.DetermineFileType(cmdLineArgument);
 
-      if (fileType == MinaryFileType.TemplateFile)
+      if (fileType != MinaryFileType.TemplateFile)
       {
-        Template.Presentation.LoadTemplate loadTemplatePresentation = null;
-        try
-        {
-          loadTemplatePresentation = new Template.Presentation.LoadTemplate(this, cmdLineArgument);
-        }
-        catch (Exception ex)
-        {
-          string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-          MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          LogCons.Inst.Write(message);
-        }
+        this.pluginHandler.RestoreLastPluginLoadState();
+      }
 
-        try
-        {
-          loadTemplatePresentation.ShowDialog();
-        }
-        catch (Exception ex)
-        {
-          string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-          MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          LogCons.Inst.Write(message);
-        }
+      Template.Presentation.LoadTemplate loadTemplatePresentation = null;
+      try
+      {
+        loadTemplatePresentation = new Template.Presentation.LoadTemplate(this, cmdLineArgument);
+      }
+      catch (Exception ex)
+      {
+        string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
+        LogCons.Inst.Write(message);
+        MessageDialog.ShowWarning(string.Empty, message, this);
+      }
 
-        try
-        {
-          if (loadTemplatePresentation != null &&
-              loadTemplatePresentation.TemplateData != null &&
-              !string.IsNullOrEmpty(loadTemplatePresentation.TemplateData.TemplateConfig.Name))
-          {
-            this.tb_TemplateName.Text = loadTemplatePresentation.TemplateData.TemplateConfig.Name;
-          }
-        }
-        catch (Exception ex)
-        {
-          string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-          MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-          LogCons.Inst.Write(message);
+      try
+      {
+        loadTemplatePresentation.ShowDialog();
+      }
+      catch (Exception ex)
+      {
+        string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
+        LogCons.Inst.Write(message);
+        MessageDialog.ShowWarning(string.Empty, message, this);
+      }
 
-          this.pluginHandler.RestoreLastPluginLoadState();
+      try
+      {
+        if (loadTemplatePresentation != null &&
+            loadTemplatePresentation.TemplateData != null &&
+            !string.IsNullOrEmpty(loadTemplatePresentation.TemplateData.TemplateConfig.Name))
+        {
+          this.tb_TemplateName.Text = loadTemplatePresentation.TemplateData.TemplateConfig.Name;
         }
       }
-      else
+      catch (Exception ex)
       {
+        string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
+        LogCons.Inst.Write(message);
+        MessageDialog.ShowWarning(string.Empty, message, this);
+
         this.pluginHandler.RestoreLastPluginLoadState();
       }
     }

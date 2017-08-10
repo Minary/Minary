@@ -84,6 +84,7 @@
       dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
       dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.dgv_Targets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+      this.dgv_Targets.ColumnHeadersHeight = 28;
       this.dgv_Targets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
       this.dgv_Targets.Location = new System.Drawing.Point(10, 118);
       this.dgv_Targets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);

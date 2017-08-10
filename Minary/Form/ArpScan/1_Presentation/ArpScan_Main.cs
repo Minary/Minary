@@ -84,6 +84,9 @@
       this.arpScanTask = new Task.ArpScan();
       this.isScanStarted = false;
       this.minaryMain = minaryMain;
+
+      // Set the owner to keep this form in the foreground/topmost
+      this.Owner = minaryMain;
     }
 
 
