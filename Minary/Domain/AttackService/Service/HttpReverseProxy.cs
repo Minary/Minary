@@ -82,6 +82,18 @@
         NativeWindowsLib.Crypto.Crypto.CreateNewCertificate(certificateFileFullPath, hostName, validityStartDate, validityEndDate);
       }
 
+      // Abort if HTTP port is already in use by another process.
+      if (NetworkFunctions.IsPortAvailable(80) == false)
+      {
+        throw new Exception("HTTP port is already in use");
+      }
+
+      // Abort if HTTPS port is already in use by another process.
+      if (NetworkFunctions.IsPortAvailable(443) == false)
+      {
+        throw new Exception("HTTPS port is already in use");
+      }
+
       // Start process
       this.httpReverseProxyProc = new Process();
       this.httpReverseProxyProc.StartInfo.WorkingDirectory = this.workingDirectory;

@@ -78,7 +78,8 @@
           catch (Exception ex)
           {
             LogCons.Inst.Write("Can't start named pipe - " + ex.StackTrace + "\n" + ex.ToString());
-            MessageBox.Show("Can't start named pipe : " + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            string message = string.Format("Can't start named pipe : {0}", ex.ToString());
+            MessageDialog.ShowError(string.Empty, message);
           }
 
           this.inputWorkerThreads[i] = new Thread(new ParameterizedThreadStart(this.DataInputThread));
@@ -88,7 +89,8 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
-        MessageBox.Show("An error occurred while starting the sniffer : " + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        string message = string.Format("An error occurred while starting the sniffer : ", ex.ToString());
+        MessageDialog.ShowError(string.Empty, message);
       }
     }
 

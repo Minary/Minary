@@ -7,7 +7,7 @@
   using System;
   using System.Collections.Generic;
   using System.IO;
-  using AService = Minary.Domain.AttackService.DataTypes.AttackService;
+  using AService = DataTypes.AttackService;
 
 
   public class AttackServiceHandler
@@ -54,14 +54,14 @@
       ArpPoisoning tmpDataSnifferArpPoison = new ArpPoisoning(this, AService.ArpPoisoning.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeServiceDir), arpPoisoningSubModules);
       this.attackServices.Add(AService.ArpPoisoning.Name, tmpDataSnifferArpPoison);
       this.MinaryMain.RegisterService(AService.ArpPoisoning.Name);
-      this.SetNewState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
+      this.MinaryMain.SetNewAttackServiceState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
 
       // APESniffer - Data sniffing
       Dictionary<string, SubModule> dataSniffingSubModules = new Dictionary<string, SubModule>();
       DataSniffer tmpDataSniffer = new DataSniffer(this, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeSnifferServiceDir), dataSniffingSubModules);
       this.attackServices.Add(AService.DataSniffer.Name, tmpDataSniffer);
       this.MinaryMain.RegisterService(AService.DataSniffer.Name);
-      this.SetNewState(AService.DataSniffer.Name, ServiceStatus.NotRunning);
+      this.MinaryMain.SetNewAttackServiceState(AService.DataSniffer.Name, ServiceStatus.NotRunning);
 
       // HttpReverseProxy
       Dictionary<string, SubModule> httpReverseProxySubModules = new Dictionary<string, SubModule>();
@@ -74,33 +74,28 @@
       HttpReverseProxy tmpDataSnifferHttpReverseProxy = new HttpReverseProxy(this, AService.HttpReverseProxyServer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyServiceDir), httpReverseProxySubModules);
       this.attackServices.Add(AService.HttpReverseProxyServer.Name, tmpDataSnifferHttpReverseProxy);
       this.MinaryMain.RegisterService(AService.HttpReverseProxyServer.Name);
-      this.SetNewState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
-
-      // ArpScan
-      //      Dictionary<string, SubModule> arpScanSubModules = new Dictionary<string, SubModule>();
-      //      arpScanSubModules.Add("ArpScan", new SubModule("ArpScan.ArpScan", arpScanWorkingDirectory, string.Empty));
-      //// DataSniffer tmpDataSnifferArpScan = new DataSniffer(this, "ArpScan", Path.Combine(Directory.GetCurrentDirectory(), Config.ARPScanServiceDir), arpScanSubModules);
-      //      this.attackServices.Add("ArpScan", tmpDataSnifferArpScan);
+      this.MinaryMain.SetNewAttackServiceState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
     }
 
 
-    public void StartAllServices(ServiceParameters serviceParameters)
-    {
-      foreach (string tmpKey in this.attackServices.Keys)
-      {
-        try
-        {
-          LogCons.Inst.Write("AttackServiceHandler.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServices[tmpKey].ServiceName);
-          ServiceStatus newServiceStatus = this.attackServices[tmpKey].StartService(serviceParameters);
-          this.SetNewState(tmpKey, newServiceStatus);
-        }
-        catch (Exception ex)
-        {
-          this.SetNewState(tmpKey, ServiceStatus.Error);
-          LogCons.Inst.Write("AttackServiceHandler.StartAllServices(Exception): {0}\r\n{1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
-        }
-      }
-    }
+
+    //public void StartAllServices(ServiceParameters serviceParameters)
+    //{
+    //  foreach (string tmpKey in this.attackServices.Keys)
+    //  {
+    //    try
+    //    {
+    //      LogCons.Inst.Write("AttackServiceHandler.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServices[tmpKey].ServiceName);
+    //      ServiceStatus newServiceStatus = this.attackServices[tmpKey].StartService(serviceParameters);
+    //      this.SetNewState(tmpKey, newServiceStatus);
+    //    }
+    //    catch (Exception)
+    //    {
+    //      this.SetNewState(tmpKey, ServiceStatus.Error);
+    //      throw;
+    //    }
+    //  }
+    //}
 
 
     public void StopAllServices()
@@ -113,12 +108,12 @@
           if (this.attackServices[tmpKey].Status == ServiceStatus.Running)
           {
             ServiceStatus newServiceStatus = this.attackServices[tmpKey].StopService();
-            this.SetNewState(tmpKey, newServiceStatus);
+            this.MinaryMain.SetNewAttackServiceState(tmpKey, newServiceStatus);
           }
         }
         catch (Exception ex)
         {
-          this.SetNewState(tmpKey, ServiceStatus.Error);
+          this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
           LogCons.Inst.Write("AttackServiceHandler.StopAllServices(Exception): {0}: {1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
         }
       }
@@ -132,11 +127,11 @@
         try
         {
           this.attackServices[tmpKey].StopService();
-          this.SetNewState(tmpKey, ServiceStatus.NotRunning);
+          this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.NotRunning);
         }
         catch (Exception ex)
         {
-          this.SetNewState(tmpKey, ServiceStatus.Error);
+          this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
           LogCons.Inst.Write("AttackServiceHandler.ShutDown(Exception): {0}", ex.Message);
         }
       }
@@ -146,7 +141,7 @@
     public void OnServiceExited(string serviceName)
     {
       LogCons.Inst.Write("AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly working", serviceName);
-      this.SetNewState(serviceName, ServiceStatus.Error);
+      this.MinaryMain.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
     }
 
@@ -155,6 +150,7 @@
 
     #region PRIVATE
 
+    /*
     private void SetNewState(string serviceName, ServiceStatus newStatus)
     {
       if (string.IsNullOrEmpty(serviceName))
@@ -162,13 +158,26 @@
         return;
       }
 
-      LogCons.Inst.Write("AttackServiceHandler.SetNewState(): {0} has new state {1}", serviceName, newStatus.ToString());
+      if (this.attackServices.ContainsKey(serviceName) == false)
+      {
+        LogCons.Inst.Write("AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
+        return;
+      }
+
+      if (this.attackServices[serviceName].Status == newStatus)
+      {
+        return;
+      }
+
+      LogCons.Inst.Write("AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());
       // Set actual service state
       this.attackServices[serviceName].Status = newStatus;
 
       // Propagate status switch to GUI
+      // TODO: Should be solved by an observer!
       this.minaryInstance.SetNewAttackServiceState(serviceName, newStatus);
     }
+    */
 
     #endregion
   }

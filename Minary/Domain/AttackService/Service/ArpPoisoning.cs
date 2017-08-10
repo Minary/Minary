@@ -19,7 +19,6 @@
     private readonly string workingDirectory;
     private readonly Dictionary<string, SubModule> subModules;
     private ServiceStatus serviceStatus;
-    private Minary.Form.ArpScan.Presentation.ArpScan arpScan;
 
     private Process poisoningEngProc;
     private AttackServiceHandler attackServiceHandler;
@@ -66,21 +65,18 @@
       string targetHostsPath = Config.APETargetHostsPath;
       string processParameters = string.Format("-x {0}", serviceParameters.SelectedIfcId);
 
-      if (this.arpScan.TargetList.Count <= 0)
+      if (serviceParameters.TargetList.Count <= 0)
       {
         this.serviceStatus = ServiceStatus.NotRunning;
-        LogCons.Inst.Write("ArpPoisoning.StartService(): There were no systems selected to attack");
+        LogCons.Inst.Write("ArpPoisoning.StartService(): No target system selected");
         return ServiceStatus.NotRunning;
       }
 
       // Write APE targetSystem hosts to list
-      foreach (TargetRecord targetRecord in this.arpScan.TargetList)
+      foreach (string tmpTargetMac in serviceParameters.TargetList.Keys)
       {
-        if (targetRecord.Attack)
-        {
-          targetHosts += string.Format("{0},{1}\r\n", targetRecord.IpAddress, targetRecord.MacAddress);
-          LogCons.Inst.Write("ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", targetRecord.MacAddress, targetRecord.IpAddress);
-        }
+          targetHosts += string.Format("{0},{1}\r\n", serviceParameters.TargetList[tmpTargetMac], tmpTargetMac);
+          LogCons.Inst.Write("ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", tmpTargetMac, serviceParameters.TargetList[tmpTargetMac]);
       }
 
       using (StreamWriter outputFile = new StreamWriter(targetHostsPath))

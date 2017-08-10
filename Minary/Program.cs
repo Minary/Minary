@@ -43,8 +43,8 @@
       }
       catch (Exception ex)
       {
-        string errorMsg = string.Format("Minary: The following error occured: {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
-        MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        string message = string.Format("Minary: The following error occured: {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
+        MessageDialog.ShowError(string.Empty, message);
       }
     }
 
@@ -70,9 +70,9 @@
 
       if (missingAttackServiceBinaries.Length > 0)
       {
-        string errorMsg = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
-        LogCons.Inst.Write(errorMsg);
-        MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
+        LogCons.Inst.Write(message);
+        MessageDialog.ShowWarning(string.Empty, message);
       }
     }
 
@@ -108,8 +108,8 @@
         }
         catch (Exception ex)
         {
-          string errorMsg = string.Format("Error occurred while creating \"{0}\"\r\nMessage: {1}", tmpDirectoryPath, ex.Message);
-          MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+          string message = string.Format("Error occurred while creating \"{0}\"\r\nMessage: {1}", tmpDirectoryPath, ex.Message);
+          MessageDialog.ShowError(string.Empty, message);
         }
       }
     }

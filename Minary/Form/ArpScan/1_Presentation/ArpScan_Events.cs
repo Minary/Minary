@@ -1,8 +1,8 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
+  using Minary.Common;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Form.ArpScan.DataTypes.Interface;
-  using Minary.Common;
   using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;
@@ -158,7 +158,7 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-        MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
         this.SetArpScanGuiOnStopped();
       }
     }
@@ -199,6 +199,7 @@
       this.tb_Netrange2.ReadOnly = true;
     }
 
+
     /// <summary>
     ///
     /// </summary>
@@ -209,6 +210,7 @@
       this.tb_Netrange1.ReadOnly = false;
       this.tb_Netrange2.ReadOnly = false;
     }
+
 
     /// <summary>
     ///
@@ -243,7 +245,7 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-        MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
         this.SetArpScanGuiOnStopped();
       }
     }
@@ -264,25 +266,25 @@
       this.targetRecords.Clear();
       this.SetArpScanGuiOnStarted();
 
+
+      ArpScanConfig arpConf = new ArpScanConfig()
+      {
+        InterfaceId = this.interfaceId,
+        GatewayIp = this.gatewayIp,
+        LocalIp = this.localIp,
+        NetworkStartIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange1.Text.ToString() : this.tb_Subnet1.ToString(),
+        NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
+        ObserverClass = this,
+        IsDebuggingOn = Debugging.IsDebuggingOn
+      };
       try
       {
-        ArpScanConfig arpConf = new ArpScanConfig()
-        {
-          InterfaceId = this.interfaceId,
-          GatewayIp = this.gatewayIp,
-          LocalIp = this.localIp,
-          NetworkStartIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange1.Text.ToString() : this.tb_Subnet1.ToString(),
-          NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
-          ObserverClass = this,
-          IsDebuggingOn = Debugging.IsDebuggingOn
-        };
-
         this.arpScanTask.StartArpScan(arpConf);
       }
       catch (Exception ex)
       {
         LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-        MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
         this.SetArpScanGuiOnStopped();
       }
     }
@@ -353,13 +355,7 @@
 
       for (int i = 0; i < this.dgv_Targets.Rows.Count; i++)
       {
-        try
-        {
-          this.dgv_Targets.Rows[i].Cells["status"].Value = false;
-        }
-        catch (Exception)
-        {
-        }
+        Utils.TryExecute2(() => { this.dgv_Targets.Rows[i].Cells["status"].Value = false; });
       }
     }
 

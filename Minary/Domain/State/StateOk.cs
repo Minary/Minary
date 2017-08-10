@@ -2,6 +2,7 @@
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
+  using Minary.Form;
   using System;
   using System.Windows.Forms;
 
@@ -33,14 +34,14 @@
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
       string message = string.Format("Status OK");
-      MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      MessageDialog.ShowWarning("Attack service error", message);
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
       string message = string.Format("Status OK");
-      MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      MessageDialog.ShowInformation(string.Empty, message);
     }
 
     #endregion

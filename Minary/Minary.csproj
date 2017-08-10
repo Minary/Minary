@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\WinRegistry.cs" />
+    <Compile Include="DataTypes\Enum\MinaryFileType.cs" />
     <Compile Include="DataTypes\Enum\MinaryState.cs" />
     <Compile Include="DataTypes\Interface\IMinaryState.cs" />
     <Compile Include="Domain\Main\MinaryFactory.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="Common\Debugging.cs" />
     <Compile Include="Common\Associations\ProgramIcon.cs" />
     <Compile Include="Common\Associations\RegistryUtilities.cs" />
-    <Compile Include="Common\HttpRequest.cs" />
     <Compile Include="Common\MinaryProcess.cs" />
     <Compile Include="Common\Updates.cs">
       <SubType>Component</SubType>
@@ -203,6 +203,7 @@
     <Compile Include="Form\Main\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Form\MessageDialogs.cs" />
     <Compile Include="Form\Plugin\1_Presentation\DefaultTabPageHandler_Minary.cs">
       <SubType>UserControl</SubType>
     </Compile>
