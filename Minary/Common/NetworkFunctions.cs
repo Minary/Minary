@@ -1,6 +1,9 @@
 ﻿namespace Minary.Common
 {
+  using Minary.DataTypes.Struct;
+  using Minary.LogConsole.Main;
   using System;
+  using System.Collections.Generic;
   using System.Net;
   using System.Net.NetworkInformation;
   using System.Runtime.InteropServices;
@@ -13,6 +16,13 @@
 
     [DllImport("iphlpapi.dll", ExactSpelling = true)]
     private static extern int SendARP(uint destIP, uint srcIP, byte[] macAddress, ref uint macAddressLength);
+
+    #endregion
+
+
+    #region PROPERTIES
+
+    public static NetworkInterfaceConfig[] Interfaces { get; set; }
 
     #endregion
 
@@ -136,6 +146,184 @@
       }
 
       return isPortAvailable;
+    }
+    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <param name="descr"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="neworkAddr"></param>
+    /// <param name="broadcastAddress"></param>
+    /// <param name="defaultGW"></param>
+    /// <param name="gatewayMac"></param>
+    public static void SetInterfaceInstance(string id, string name, string descr, string ipAddress, string neworkAddr, string broadcastAddress, string defaultGW, string gatewayMac)
+    {
+      Interfaces = new NetworkInterfaceConfig[32];
+
+      for (int i = 0; i < Interfaces.Length; i++)
+      {
+        if (Interfaces[i].IsUp != true)
+        {
+          Interfaces[i].IsUp = true;
+          Interfaces[i].Id = id;
+          Interfaces[i].Name = name;
+          Interfaces[i].Description = descr;
+          Interfaces[i].IpAddress = ipAddress;
+          Interfaces[i].BroadcastAddr = broadcastAddress;
+          Interfaces[i].NetworkAddr = neworkAddr;
+          Interfaces[i].DefaultGw = defaultGW;
+          Interfaces[i].GatewayMac = gatewayMac;
+
+          break;
+        }
+      }
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns></returns>
+    public static int NumInterfaces()
+    {
+      int numberInterfaces = 0;
+
+      if (Interfaces == null)
+      {
+        return 0;
+      }
+
+      foreach (NetworkInterfaceConfig tmpInterface in Interfaces)
+      {
+        if (tmpInterface.IsUp == false)
+        {
+          numberInterfaces++;
+        }
+      }
+
+      return numberInterfaces;
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="interfaceId"></param>
+    /// <returns></returns>
+    public static NetworkInterfaceConfig GetIfcById(string interfaceId)
+    {
+      NetworkInterfaceConfig retVal = new NetworkInterfaceConfig();
+
+      foreach (NetworkInterfaceConfig tmpInterface in Interfaces)
+      {
+        LogCons.Inst.Write("/" + tmpInterface.Id + "/" + interfaceId + "/");
+        if (tmpInterface.Id == interfaceId)
+        {
+          retVal = tmpInterface;
+          break;
+        }
+      }
+
+      return retVal;
+    }
+    
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public static string GetNetworkInterfaceIdByIndexNumber(int index)
+    {
+      string retVal = string.Empty;
+
+      if (index >= 0 && index < Interfaces.Length)
+      {
+        retVal = Interfaces[index].Id;
+      }
+
+      return retVal;
+    }
+
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="availableNetworkInterfaces"></param>
+    /// <returns></returns>
+    public static NetworkInterface[] DetermineActiveInterfaces(NetworkInterface[] availableNetworkInterfaces)
+    {
+      List<NetworkInterface> activeInterfaces = new List<NetworkInterface>();
+
+      foreach (NetworkInterface tmpInterface in availableNetworkInterfaces)
+      {
+        if (tmpInterface.OperationalStatus != OperationalStatus.Up)
+        {
+          continue;
+        }
+
+        if (tmpInterface.GetIPProperties() == null ||
+            tmpInterface.GetIPProperties().UnicastAddresses.Count <= 0)
+        {
+          continue;
+        }
+
+        UnicastIPAddressInformation ipAddress = null;
+        // Find entry with valid IPv4 address
+        foreach (UnicastIPAddressInformation tmpIPaddr in tmpInterface.GetIPProperties().UnicastAddresses)
+        {
+          if (tmpIPaddr.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+          {
+            ipAddress = tmpIPaddr;
+            break;
+          }
+        }
+
+        // Continue if no valid IP address and netmask is found
+        if (ipAddress == null || ipAddress.IPv4Mask == null)
+        {
+          continue;
+        }
+
+        // Put found interface with details on the interface batch
+        try
+        {
+          string ifcBroadcastAddress = NetworkFunctions.GetBroadcastAddress(ipAddress.Address, ipAddress.IPv4Mask).ToString();
+          string ifcNetworkAddress = NetworkFunctions.GetNetworkAddress(ipAddress.Address, ipAddress.IPv4Mask).ToString();
+          string ifcDescription = tmpInterface.Description;
+          string ifcId = tmpInterface.Id;
+          string ifcIPAddress = ipAddress.Address.ToString();
+          string ifcName = tmpInterface.Name;
+
+          string defaultGateway = string.Empty;
+
+          if (tmpInterface.GetIPProperties().GatewayAddresses.Count > 0)
+          {
+            foreach (GatewayIPAddressInformation tmpAddress in tmpInterface.GetIPProperties().GatewayAddresses)
+            {
+              if (!tmpAddress.Address.IsIPv6LinkLocal)
+              {
+                defaultGateway = tmpAddress.Address.ToString();
+                break;
+              }
+            }
+          }
+
+          string gatewayMac = NetworkFunctions.GetMacByIp(defaultGateway);
+          SetInterfaceInstance(ifcId, ifcName, ifcDescription, ifcIPAddress, ifcNetworkAddress, ifcBroadcastAddress, defaultGateway, gatewayMac);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(ex.Message);
+        }
+      }
+
+      return activeInterfaces.ToArray();
     }
 
     #endregion

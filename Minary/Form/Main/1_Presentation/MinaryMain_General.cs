@@ -1,5 +1,7 @@
 ﻿namespace Minary.Form
 {
+  using Minary.Common;
+  using Minary.DataTypes.Struct;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
@@ -101,7 +103,7 @@
       try
       {
         this.allAttachednetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-        activeInterfaces = Minary.Config.DetermineActiveInterfaces(this.allAttachednetworkInterfaces);
+        activeInterfaces = NetworkFunctions.DetermineActiveInterfaces(this.allAttachednetworkInterfaces);
       }
       catch (NetworkInformationException niex)
       {
@@ -114,7 +116,7 @@
         return;
       }
 
-      if (Config.NumInterfaces() <= 0)
+      if (NetworkFunctions.NumInterfaces() <= 0)
       {
         return;
       }
@@ -122,7 +124,7 @@
       // Determine interface name
 
       // Dump all interfaces to the Log console
-      foreach (Config.NetworkInterface tmpInterface in Config.Interfaces)
+      foreach (NetworkInterfaceConfig tmpInterface in NetworkFunctions.Interfaces)
       {
         if (tmpInterface.IsUp)
         {
@@ -151,12 +153,12 @@
       // Select a default interface.
       if (this.tb_NetworkStartIp.Text.Length == 0)
       {
-        this.tb_NetworkStartIp.Text = Config.Interfaces[0].NetworkAddr;
+        this.tb_NetworkStartIp.Text = NetworkFunctions.Interfaces[0].NetworkAddr;
       }
 
       if (this.tb_NetworkStopIp.Text.Length == 0)
       {
-        this.tb_NetworkStopIp.Text = Config.Interfaces[0].BroadcastAddr;
+        this.tb_NetworkStopIp.Text = NetworkFunctions.Interfaces[0].BroadcastAddr;
       }
 
       try

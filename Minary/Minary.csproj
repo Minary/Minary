@@ -115,6 +115,7 @@
     <Compile Include="DataTypes\Enum\MinaryFileType.cs" />
     <Compile Include="DataTypes\Enum\MinaryState.cs" />
     <Compile Include="DataTypes\Interface\IMinaryState.cs" />
+    <Compile Include="DataTypes\Struct\NetworkInterface.cs" />
     <Compile Include="Domain\Main\MinaryFactory.cs" />
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_DSL.cs">
       <SubType>Form</SubType>

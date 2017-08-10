@@ -232,7 +232,7 @@
 
       try
       {
-        retVal = Config.GetNetworkInterfaceIDByIndexNumber(this.cb_Interfaces.SelectedIndex);
+        retVal = NetworkFunctions.GetNetworkInterfaceIdByIndexNumber(this.cb_Interfaces.SelectedIndex);
       }
       catch (Exception)
       {
