@@ -6,6 +6,7 @@
     public string Name;
     public string Description;
     public string IpAddress;
+    public string MacAddress;
     public string NetworkAddr;
     public string BroadcastAddr;
     public string DefaultGw;

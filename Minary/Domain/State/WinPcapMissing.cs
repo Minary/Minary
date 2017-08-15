@@ -9,11 +9,18 @@
   public class WinPcapMissing : IMinaryState
   {
 
+    #region MEMBERS
+
+    private MinaryMain minaryObj;
+
+    #endregion
+
     #region PUBLIC
 
-    public WinPcapMissing(MinaryState state)
+    public WinPcapMissing(MinaryMain minaryObj)
     {
-      this.CurrentState = state;
+      this.minaryObj = minaryObj;
+      this.CurrentState = MinaryState.WinPcapMissing;
       this.Bt_Attack_Click += this.Bt_Attack_Click_Event;
       this.Bt_ScanLan_Click += this.Bt_ScanLan_Click_Event;
     }
@@ -32,15 +39,20 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Can't start Minary because WinPcap is not installed.");
-      MessageDialog.ShowError(string.Empty, message);
+      throw new Exception("Can't start Minary because WinPcap is not installed.");
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Can't scan network because WinPcap is not installed.");
-      MessageDialog.ShowError(string.Empty, message);
+      throw new Exception("Can't scan network because WinPcap is not installed.");
+    }
+
+
+    public void LoadState()
+    {
+      this.minaryObj.Bt_Attack_Click = this.Bt_Attack_Click;
+      this.minaryObj.Bt_ScanLan_Click = this.Bt_ScanLan_Click;
     }
 
     #endregion

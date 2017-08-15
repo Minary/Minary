@@ -34,6 +34,7 @@
       (this.dgv_MainPlugins.Rows[rowNum].Cells["Active"] as DataGridViewCheckBoxCell).Value = false;
     }
 
+
     /// <summary>
     ///
     /// </summary>
@@ -91,7 +92,6 @@
     public void LoadNicSettings()
     {
       string temp = string.Empty;
-      NetworkInterface[] activeInterfaces;
       // Empty Interfaces ComboBox and repopulate it with found interfaces.
       this.cb_Interfaces.Items.Clear();
 
@@ -100,31 +100,13 @@
         return;
       }
 
-      try
-      {
-        this.allAttachednetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-        activeInterfaces = NetworkFunctions.DetermineActiveInterfaces(this.allAttachednetworkInterfaces);
-      }
-      catch (NetworkInformationException niex)
-      {
-        LogCons.Inst.Write(niex.StackTrace);
-        return;
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(ex.StackTrace);
-        return;
-      }
-
-      if (NetworkFunctions.NumInterfaces() <= 0)
+      if (this.nicHandler.Interfaces.Count <= 0)
       {
         return;
       }
-
-      // Determine interface name
 
       // Dump all interfaces to the Log console
-      foreach (NetworkInterfaceConfig tmpInterface in NetworkFunctions.Interfaces)
+      foreach (NetworkInterfaceConfig tmpInterface in this.nicHandler.Interfaces)
       {
         if (tmpInterface.IsUp)
         {
@@ -153,12 +135,12 @@
       // Select a default interface.
       if (this.tb_NetworkStartIp.Text.Length == 0)
       {
-        this.tb_NetworkStartIp.Text = NetworkFunctions.Interfaces[0].NetworkAddr;
+        this.tb_NetworkStartIp.Text = this.nicHandler.IfcByIndex(0).NetworkAddr;
       }
 
       if (this.tb_NetworkStopIp.Text.Length == 0)
       {
-        this.tb_NetworkStopIp.Text = NetworkFunctions.Interfaces[0].BroadcastAddr;
+        this.tb_NetworkStopIp.Text = this.nicHandler.IfcByIndex(0).BroadcastAddr;
       }
 
       try

@@ -191,7 +191,7 @@
       {
         if (this.bgw_LoadTemplate.IsBusy)
         {
-          MessageDialog.ShowWarning(string.Empty, "System still busy loading template.", this);
+          MessageDialog.Inst.ShowWarning(string.Empty, "System still busy loading template.", this);
           return false;
         }
         else

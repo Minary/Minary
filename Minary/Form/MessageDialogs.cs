@@ -3,26 +3,44 @@
   using System.Windows.Forms;
 
 
-  public static class MessageDialog
+  public class MessageDialog
   {
 
+    #region MEMBERS
+
+    private static MessageDialog instance;
+
+    #endregion
+
+
+    #region PROPERTIES
+
+    public static MessageDialog Inst { get { return instance ?? (instance = new MessageDialog());  } set { } }
+
+    #endregion
+
+
     #region PUBLIC
-
-    public static void ShowError(string title, string message, IWin32Window owner = null)
+    
+    private MessageDialog()
     {
-      Show(string.Format($"Error: {title}"), message, MessageBoxButtons.OK, MessageBoxIcon.Error, owner);
+    }
+
+    public void ShowError(string title, string message, Form parentForm)
+    {
+      this.Show(string.Format($"Error: {title}"), message, MessageBoxButtons.OK, MessageBoxIcon.Error, parentForm);
     }
 
 
-    public static void ShowWarning(string title, string message, IWin32Window owner = null)
+    public void ShowWarning(string title, string message, Form parentForm)
     {
-      Show(string.Format($"Warning: {title}"), message, MessageBoxButtons.OK, MessageBoxIcon.Warning, owner);
+      this.Show(string.Format($"Warning: {title}"), message, MessageBoxButtons.OK, MessageBoxIcon.Warning, parentForm);
     }
 
 
-    public static void ShowInformation(string title, string message, IWin32Window owner = null)
+    public void ShowInformation(string title, string message, Form parentForm)
     {
-      Show(string.Format($"Info: {title}"), message, MessageBoxButtons.OK, MessageBoxIcon.Information, owner);
+      this.Show(string.Format($"Info: {title}"), message, MessageBoxButtons.OK, MessageBoxIcon.Information, parentForm);
     }
 
     #endregion
@@ -30,11 +48,18 @@
 
     #region PRIVATE
 
-    private static void Show(string title, string message, MessageBoxButtons buttons, MessageBoxIcon icon, IWin32Window owner = null)
+    private delegate void ShowDelegate(string title, string message, MessageBoxButtons buttons, MessageBoxIcon icon, Form parentForm = null);
+    private void Show(string title, string message, MessageBoxButtons buttons, MessageBoxIcon icon, Form parentForm = null)
     {
-      if (owner != null)
+      if (parentForm != null)
       {
-        MessageBox.Show(owner, message, title, buttons, icon);
+        if (parentForm.InvokeRequired)
+        {
+          parentForm.BeginInvoke(new ShowDelegate(this.Show), new object[] { title, message, buttons, icon, parentForm });
+          return;
+        }
+
+        MessageBox.Show(parentForm, message, title, buttons, icon);
       }
       else
       {

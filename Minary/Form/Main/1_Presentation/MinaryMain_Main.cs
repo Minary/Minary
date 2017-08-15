@@ -8,6 +8,7 @@
   using Minary.Domain.Input;
   using Minary.Domain.MacVendor;
   using Minary.Domain.Main;
+  using Minary.Domain.Network;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
@@ -16,7 +17,6 @@
   using System.Collections.Generic;
   using System.ComponentModel;
   using System.Linq;
-  using System.Net.NetworkInformation;
   using System.Threading;
   using System.Windows.Forms;
   using TemplateTask = Template.Task;
@@ -28,11 +28,11 @@
     #region MEMBERS
 
     private string[] commandLineArguments;
-    private NetworkInterface[] allAttachednetworkInterfaces;
     private BindingList<PluginTableRecord> usedPlugins;
     private BindingList<string> targetList;
     private TemplateTask.TemplateHandler templateTaskLayer;
     private string currentIpAddress;
+    private string currentMacAddress;
     private Browser miniBrowser;
     private bool attackStarted;
     private Minary.Form.TaskFacade minaryTaskFacade;
@@ -42,13 +42,14 @@
     private ArpScan.Presentation.ArpScan arpScanHandler;
 
     // Service handlers
-    private ManageServerCertificates caCertificateHandler;
-    private InputHandler inputModuleHandler;
     private AttackServiceHandler attackServiceHandler;
-    private MacVendorHandler macVendorHandler;
-    private MinaryProcess minaryProcessHandler;
     private PluginHandler pluginHandler;
     private TabPageHandler tabPageHandler;
+    private InputHandler inputModuleHandler;
+    private MacVendorHandler macVendorHandler;
+    private NetworkInterfaceHandler nicHandler;
+    private ManageServerCertificates caCertificateHandler;
+    private MinaryProcess minaryProcessHandler;
 
     #endregion
 
@@ -58,6 +59,8 @@
     public string[] CommandLineArguments { get { return this.commandLineArguments; } }
 
     public string CurrentLocalIp { get { return this.currentIpAddress ?? string.Empty; } }
+
+    public string CurrentLocalMac { get { return this.currentMacAddress ?? string.Empty; } }
 
     public string CurrentGatewayIp { get { return this.tb_GatewayIp.Text; } }
 
@@ -75,7 +78,7 @@
 
     public AttackServiceHandler MinaryAttackServiceHandler { get { return this.attackServiceHandler; } set { } }
 
-    public Minary.Form.ArpScan.Presentation.ArpScan ArpScan { get { return this.arpScanHandler; } set { } }
+    public ArpScan.Presentation.ArpScan ArpScan { get { return this.arpScanHandler; } set { } }
 
     public MacVendorHandler MacVendor { get { return this.macVendorHandler; } set { } }
 
@@ -106,12 +109,12 @@
     {
       this.attackServiceHandler = new AttackServiceHandler(this);
       this.pluginHandler = new PluginHandler(this);
-      this.inputModuleHandler = new InputHandler(this);
-      this.caCertificateHandler = new ManageServerCertificates(this);
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
+      this.inputModuleHandler = new InputHandler(this);
+      this.nicHandler = new NetworkInterfaceHandler();
+      this.caCertificateHandler = new ManageServerCertificates(this);
       this.macVendorHandler = new MacVendorHandler();
       this.minaryProcessHandler = new MinaryProcess();
-      
     }
 
 
@@ -175,7 +178,7 @@
       this.bgwOnStartAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
       this.bgwOnStartAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStartAttack);
       this.bgwOnStartAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStartAttackCompleted);
-      
+
       // Set AttackStop events
       this.bgwOnStopAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
       this.bgwOnStopAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStopAttack);
@@ -216,29 +219,16 @@
     }
 
 
-    public void SetInitialMinaryState()
+    public void SetMinaryState()
     {
-      // The click event handlers need an initial value
-      this.Bt_Attack_Click = this.Bt_Attack_Click_Event;
-      this.Bt_ScanLan_Click = this.Bt_ScanLan_Click_Event;
- 
-      this.InjectMinaryStateDependency();
+      IMinaryState minaryState = MinaryFactory.GetMinaryEventBase(this);
+      minaryState.LoadState();
     }
 
 
     public string GetCurrentInterface()
     {
-      string retVal = string.Empty;
-
-      try
-      {
-        retVal = NetworkFunctions.GetNetworkInterfaceIdByIndexNumber(this.cb_Interfaces.SelectedIndex);
-      }
-      catch (Exception)
-      {
-      }
-
-      return retVal;
+      return Utils.TryExecute(this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex).ToString);
     }
 
 
@@ -288,11 +278,6 @@
         return;
       }
 
-      // Set service status on GUI footer
-      ////      this.SetNewState(serviceName, Status.Error);
-      //// this.attackServiceHandler.AttackServices[serviceName].Status = MinaryLib.AttackService.ServiceStatus.Error;
-
-//      this.Cursor = Cursors.WaitCursor;
       this.EnableGuiElements();
 
       if (!this.bgwOnStopAttack.IsBusy)
@@ -300,17 +285,11 @@
         this.bgwOnStopAttack.RunWorkerAsync();
       }
 
-      // Set service status
-//      this.attackStarted = false;
-//  this.bt_Attack.BackgroundImage = (System.Drawing.Image)Minary.Properties.Resources.StartBig;
-//      this.Cursor = Cursors.Default;
-
       this.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
-
 
       // Report service failure
       string message = string.Format("The attack service \"{0}\" failed unexpectedly", serviceName);
-      MessageDialog.ShowWarning("Attack service error", message, this);
+      MessageDialog.Inst.ShowWarning("Attack service error", message, this);
     }
 
 
@@ -321,7 +300,7 @@
       {
         return;
       }
-      
+
       if (this.attackServiceHandler.AttackServices.ContainsKey(serviceName) == false)
       {
         LogCons.Inst.Write("AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
@@ -335,37 +314,24 @@
     }
 
 
-    public void RegisterService(string serviceName)
+    public void RegisterAttackService(string attackServiceName)
     {
-      if (string.IsNullOrEmpty(serviceName))
+      if (string.IsNullOrEmpty(attackServiceName))
       {
         return;
       }
 
       foreach (PictureBox guiElement in this.Controls.OfType<PictureBox>())
       {
-        if (guiElement.Tag != null && guiElement.Tag.ToString() == serviceName)
+        if (guiElement.Tag != null && guiElement.Tag.ToString() == attackServiceName)
         {
-          this.attackServiceMap.Add(serviceName, guiElement);
-          LogCons.Inst.Write("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", serviceName, guiElement.Name);
+          this.attackServiceMap.Add(attackServiceName, guiElement);
+          LogCons.Inst.Write("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", attackServiceName, guiElement.Name);
           break;
         }
       }
     }
 
     #endregion
-
-
-    #region PRIVATE
-
-    private void InjectMinaryStateDependency()
-    {
-      IMinaryState minaryState = MinaryFactory.GetMinaryEventBase(this);
-      this.bt_Attack.Click += new EventHandler(minaryState.Bt_Attack_Click);
-      this.bt_ScanLan.Click += new EventHandler(minaryState.Bt_ScanLan_Click);
-    }
-
-    #endregion
-
   }
 }

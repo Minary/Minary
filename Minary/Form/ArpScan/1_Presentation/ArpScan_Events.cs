@@ -1,17 +1,19 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
   using Minary.Common;
+  using Minary.DataTypes.ArpScan;
+  using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
-  using Minary.Form.ArpScan.DataTypes.Interface;
   using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;
+  using System.ComponentModel;
   using System.Windows.Forms;
 
 
   public partial class ArpScan : IObserver
   {
-    
+
     #region EVENTS
 
     /// <summary>
@@ -91,20 +93,9 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Bt_Close_Click(object sender, EventArgs e)
+    private void BT_Close_Click(object sender, EventArgs e)
     {
-      // Stopping scan process
-      this.arpScanTask.StopArpScan();
-
-      // Resetting GUI elements
-      this.SetArpScanGuiOnStopped();
-
-      // Sending targetSystem list to modules
-      this.minaryMain.PassNewTargetListToPlugins();
-
-      // Hiding form
-      this.Hide();
-      this.minaryMain.Focus();
+      this.HideArpScanWindow();
     }
 
 
@@ -113,54 +104,9 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Bt_Scan_Click(object sender, EventArgs e)
+    private void BT_Scan_Click(object sender, EventArgs e)
     {
-      if (this.isScanStarted == true)
-      {
-        this.SetArpScanGuiOnStopped();
-        return;
-      }
-
-      string startIp = string.Empty;
-      string stopIp = string.Empty;
-
-      this.targetRecords.Clear();
-      this.SetArpScanGuiOnStarted();
-
-      try
-      {
-        // User defined net range
-        if (this.rb_Netrange.Checked == true)
-        {
-          startIp = this.tb_Netrange1.Text.ToString();
-          stopIp = this.tb_Netrange2.Text.ToString();
-        }
-        else
-        {
-          startIp = this.tb_Subnet1.Text.ToString();
-          stopIp = this.tb_Subnet2.Text.ToString();
-        }
-
-        ArpScanConfig arpConf = new ArpScanConfig()
-        {
-          InterfaceId = this.interfaceId,
-          GatewayIp = this.gatewayIp,
-          LocalIp = this.localIp,
-          NetworkStartIp = startIp,
-          NetworkStopIp = stopIp,
-          MaxNumberSystemsToScan = -1,
-          ObserverClass = this,
-          IsDebuggingOn = Debugging.IsDebuggingOn
-        };
-
-        this.arpScanTask.StartArpScan(arpConf);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
-        this.SetArpScanGuiOnStopped();
-      }
+      this.StartArpScan();
     }
 
 
@@ -171,20 +117,8 @@
     /// <param name="e"></param>
     private void ArpScan_FormClosing(object sender, FormClosingEventArgs e)
     {
-      // Stopping scan process
-      this.arpScanTask.StopArpScan();
-
-      // Resetting GUI elements
-      this.SetArpScanGuiOnStopped();
-
-      // Sending targetSystem list to modules
-      this.minaryMain.PassNewTargetListToPlugins();
-
-      // Hiding form
-      this.Hide();
+      this.HideArpScanWindow();
       e.Cancel = true;
-
-      this.minaryMain.Activate();
     }
 
 
@@ -193,7 +127,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Rb_Subnet_CheckedChanged(object sender, EventArgs e)
+    private void RB_Subnet_CheckedChanged(object sender, EventArgs e)
     {
       this.tb_Netrange1.ReadOnly = true;
       this.tb_Netrange2.ReadOnly = true;
@@ -205,7 +139,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Rb_Netrange_CheckedChanged(object sender, EventArgs e)
+    private void RB_Netrange_CheckedChanged(object sender, EventArgs e)
     {
       this.tb_Netrange1.ReadOnly = false;
       this.tb_Netrange2.ReadOnly = false;
@@ -224,30 +158,7 @@
         return;
       }
 
-      this.targetRecords.Clear();
-      this.SetArpScanGuiOnStarted();
-
-      try
-      {
-        ArpScanConfig arpConf = new ArpScanConfig()
-        {
-          InterfaceId = this.interfaceId,
-          GatewayIp = this.gatewayIp,
-          LocalIp = this.localIp,
-          NetworkStartIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange1.Text.ToString() : this.tb_Subnet1.ToString(),
-          NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
-          ObserverClass = this,
-          IsDebuggingOn = Debugging.IsDebuggingOn
-        };
-
-        this.arpScanTask.StartArpScan(arpConf);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
-        this.SetArpScanGuiOnStopped();
-      }
+      this.StartArpScan();
     }
 
 
@@ -256,37 +167,14 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Tb_Netrange1_KeyUp(object sender, KeyEventArgs e)
+    private void TB_Netrange1_KeyUp(object sender, KeyEventArgs e)
     {
       if (e.KeyCode != Keys.Enter)
       {
         return;
       }
 
-      this.targetRecords.Clear();
-      this.SetArpScanGuiOnStarted();
-
-
-      ArpScanConfig arpConf = new ArpScanConfig()
-      {
-        InterfaceId = this.interfaceId,
-        GatewayIp = this.gatewayIp,
-        LocalIp = this.localIp,
-        NetworkStartIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange1.Text.ToString() : this.tb_Subnet1.ToString(),
-        NetworkStopIp = (this.rb_Netrange.Checked == true) ? this.tb_Netrange2.Text.ToString() : this.tb_Subnet2.ToString(),
-        ObserverClass = this,
-        IsDebuggingOn = Debugging.IsDebuggingOn
-      };
-      try
-      {
-        this.arpScanTask.StartArpScan(arpConf);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-        MessageDialog.ShowWarning(string.Empty, ex.Message, this);
-        this.SetArpScanGuiOnStopped();
-      }
+      this.StartArpScan();
     }
 
 
@@ -369,12 +257,11 @@
     {
       if (keyData == Keys.Escape)
       {
-        this.arpScanTask.StopArpScan();
-        this.Close();
+        this.HideArpScanWindow();
         return true;
       }
-      else
-        return base.ProcessDialogKey(keyData);
+
+      return base.ProcessDialogKey(keyData);
     }
 
 
@@ -484,23 +371,120 @@
     #endregion
 
 
-    #region INTERFACE: IObserver
+    #region EVENTS: BGW_ArpScan
 
-    public void UpdateProgressbar(int progress)
+    private void BGW_ArpScan_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      this.pb_ArpScan.Value = progress;
-    }
+      if (e.Error != null)
+      {
+        LogCons.Inst.Write("BGW_ArpScan(): Completed with error");
+        this.pb_ArpScan.Value = 0;
+      }
+      else if (e.Cancelled == true)
+      {
+        LogCons.Inst.Write("BGW_ArpScan(): Completed by cancellation");
+        this.pb_ArpScan.Value = 0;
+      }
+      else
+      {
+        LogCons.Inst.Write("BGW_ArpScan(): Completed successfully. value={0}, maximum={1}", this.pb_ArpScan.Value, this.pb_ArpScan.Maximum);
+        this.pb_ArpScan.PerformStep();
+      }
 
-
-    public void AddRecordToDgv(string inputData)
-    {
-      this.UpdateTextBox(inputData);
-    }
-
-
-    public void ProcessStopped()
-    {
       this.SetArpScanGuiOnStopped();
+    }
+
+
+    private void BGW_ArpScan_DoWork(object sender, DoWorkEventArgs e)
+    {
+      string startIp = string.Empty;
+      string stopIp = string.Empty;
+
+      try
+      {
+        // User defined net range
+        if (this.rb_Netrange.Checked == true)
+        {
+          startIp = this.tb_Netrange1.Text.ToString();
+          stopIp = this.tb_Netrange2.Text.ToString();
+        }
+        else
+        {
+          startIp = this.tb_Subnet1.Text.ToString();
+          stopIp = this.tb_Subnet2.Text.ToString();
+        }
+
+        ArpScanConfig arpConf = new ArpScanConfig()
+        {
+          InterfaceId = this.interfaceId,
+          GatewayIp = this.gatewayIp,
+          LocalIp = this.localIp,
+          LocalMac = this.localMac.Replace('-', ':'),
+          NetworkStartIp = startIp,
+          NetworkStopIp = stopIp,
+          MaxNumberSystemsToScan = -1,
+          ObserverClass = this
+        };
+
+var la = new ArpScanner(arpConf, this);
+la.AddObserver(this);
+la.StartScanning();
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("ArpScan: {0}\r\n{1}", ex.Message, ex.StackTrace);
+        this.SetArpScanGuiOnStopped();
+      }
+    }
+
+
+    private void HideArpScanWindow()
+    {
+      // Reset progress bar value
+      this.pb_ArpScan.Value = 0;
+
+      // Stop running ARP scan
+      this.bgw_ArpScan.CancelAsync();
+
+      // Send targetSystem list to modules
+      this.minaryMain.PassNewTargetListToPlugins();
+
+      // Hide form insead of closing.
+      this.Hide();
+      this.minaryMain.Activate();
+      this.minaryMain.Show();
+    }
+
+
+    private void StartArpScan()
+    {
+      // Initiate ARP scan cancellation
+      if (this.bgw_ArpScan.IsBusy == true &&
+          this.bgw_ArpScan.CancellationPending == false)
+      {
+        LogCons.Inst.Write("ArpScan: Cancelling running ARP scan");
+        this.bgw_ArpScan.CancelAsync();
+      }
+      else if (this.bgw_ArpScan.IsBusy == true &&
+               this.bgw_ArpScan.CancellationPending == true)
+      {
+        LogCons.Inst.Write("ArpScan: Cancellation running");
+      }
+      else
+      {
+        LogCons.Inst.Write("ArpScan: ArpScan started");
+
+        // Set Progress bar structure
+        this.pb_ArpScan.Maximum = 100;
+        this.pb_ArpScan.Minimum = 0;
+        this.pb_ArpScan.Value = 0;
+        this.pb_ArpScan.Step = 10;
+
+        // Initiate start
+        this.targetRecords.Clear();
+        this.SetArpScanGuiOnStarted();
+        this.bgw_ArpScan.RunWorkerAsync();
+      }
     }
 
     #endregion

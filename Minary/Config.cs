@@ -6,7 +6,7 @@
   using System.Security.Principal;
 
 
-  public partial class Config
+  public class Config
   {
 
     #region MEMBERS
