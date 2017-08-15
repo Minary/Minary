@@ -22,7 +22,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Bt_ScanLan_Click_Event(object sender, EventArgs e)
+    public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
       this.arpScanHandler.ShowArpScanGui(ref this.targetList);
     }
@@ -33,9 +33,14 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Bt_Attack_Click_Event(object sender, EventArgs e)
+    public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
       this.StartAttacksOnBackground();
+    }
+
+
+    public void LoadState()
+    {
     }
 
     #endregion

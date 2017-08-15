@@ -50,6 +50,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,7 +59,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup />
@@ -71,14 +72,51 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>Minary.manifest</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Minary.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibGit2Sharp, Version=0.23.1.0, Culture=neutral, PublicKeyToken=7cbde695407f0333, processorArchitecture=MSIL">
@@ -90,6 +128,18 @@
     </Reference>
     <Reference Include="NativeWindowsLib">
       <HintPath>..\EXTERNAL\NativeWindowsLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Base, Version=0.10.0.20588, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core, Version=0.10.0.20632, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=x86">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Core.Extensions, Version=0.10.0.20638, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Core.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PcapDotNet.Packets, Version=0.10.0.20603, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
+      <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Packets.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -111,20 +161,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\ArpScan\IObservable.cs" />
+    <Compile Include="DataTypes\ArpScan\IObserver.cs" />
+    <Compile Include="Domain\ArpScan\ReplyListener.cs" />
+    <Compile Include="Domain\ArpScan\ArpScanner.cs" />
     <Compile Include="Common\WinRegistry.cs" />
     <Compile Include="DataTypes\Enum\MinaryFileType.cs" />
     <Compile Include="DataTypes\Enum\MinaryState.cs" />
     <Compile Include="DataTypes\Interface\IMinaryState.cs" />
     <Compile Include="DataTypes\Struct\NetworkInterface.cs" />
     <Compile Include="Domain\Main\MinaryFactory.cs" />
+    <Compile Include="Domain\Network\NetworkInterfaceHandler.cs" />
+    <Compile Include="Domain\State\Service\ApeNotInstalled.cs" />
+    <Compile Include="Domain\State\Service\HttpReverseProxyNotInstalled.cs" />
+    <Compile Include="Domain\State\Service\SnifferNotInstalled.cs" />
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_DSL.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_Events.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\ArpScan\1_Presentation\ArpScan_Interface.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\ArpScan\2_Task\ArpScan.cs" />
-    <Compile Include="Form\ArpScan\3_Infrastructure\ArpScan.cs" />
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,8 +192,6 @@
       <DependentUpon>ArpScan_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\ArpScan\DataTypes\ArpScanConfig.cs" />
-    <Compile Include="Form\ArpScan\DataTypes\Interface\IObservable.cs" />
-    <Compile Include="Form\ArpScan\DataTypes\Interface\IObserver.cs" />
     <Compile Include="Form\ArpScan\DataTypes\ScanSystem.cs" />
     <Compile Include="Form\ArpScan\DataTypes\TargetRecord.cs" />
     <Compile Include="Form\ArpScan\DataTypes\IpHelper.cs">
@@ -175,7 +233,6 @@
     </Compile>
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\WinPcap.cs" />
-    <Compile Include="Config\NetworkIfc.cs" />
     <Compile Include="Domain\AttackService\DataType\AttackService.cs" />
     <Compile Include="DataTypes\MinaryExtension.cs" />
     <Compile Include="Domain\Input\InputHandler.cs" />
@@ -239,7 +296,7 @@
     <Compile Include="Form\Updates\1_Presentation\FormNewVersion.Designer.cs">
       <DependentUpon>FormNewVersion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\General.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Form\Main\1_Presentation\MinaryMain_Methods.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -249,7 +306,7 @@
     <Compile Include="Form\Main\1_Presentation\MinaryMain_Main.Designer.cs">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\NetworkFunctions.cs" />
+    <Compile Include="Common\Network\NetworkFunctions.cs" />
     <Compile Include="Form\Plugin\Config\PluginTableRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -298,11 +355,10 @@
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Form\Main\1_Presentation\app.config" />
-    <None Include="Form\Main\1_Presentation\app.manifest">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
-    <None Include="Minary.manifest" />
+    <None Include="Minary.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -369,6 +425,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Domain\LogConsole\" />
     <Folder Include="Form\Updates\2_Infrastructure\" />
   </ItemGroup>
   <ItemGroup>

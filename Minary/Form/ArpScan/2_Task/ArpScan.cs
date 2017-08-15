@@ -10,7 +10,7 @@
 
     #region MEMBERS
     
-    private Infrastructure.ArpScan infrastructure;
+//    private Infrastructure.ArpScan infrastructure;
 
     #endregion
 
@@ -23,7 +23,7 @@
     /// </summary>
     public ArpScan()
     {
-      this.infrastructure = new Infrastructure.ArpScan();
+ //     this.infrastructure = new Infrastructure.ArpScan();
     }
 
 
@@ -32,7 +32,7 @@
     /// </summary>
     public void StopArpScan()
     {
-      this.infrastructure.StopArpScan();
+ //     this.infrastructure.StopArpScan();
     }
 
 
@@ -75,7 +75,7 @@
         arpConfig.NetworkStopIp = IpHelper.IntToIpString(tmpStopIpInt);
       }
 
-      this.infrastructure.StartArpScan(arpConfig);
+ //     this.infrastructure.StartArpScan(arpConfig);
     }
 
 
@@ -84,7 +84,7 @@
     /// </summary>
     public void KillAllRunningArpScans()
     {
-      this.infrastructure.KillAllRunningArpScans();
+//      this.infrastructure.KillAllRunningArpScans();
     }
 
     #endregion

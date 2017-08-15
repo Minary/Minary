@@ -38,13 +38,13 @@
         minaryGuiObj.StartAllHandlers();
         minaryGuiObj.StartBackgroundThreads();
         minaryGuiObj.PreRun();
-        minaryGuiObj.SetInitialMinaryState();
+        minaryGuiObj.SetMinaryState();
         Application.Run(minaryGuiObj);
       }
       catch (Exception ex)
       {
         string message = string.Format("Minary: The following error occured: {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
-        MessageDialog.ShowError(string.Empty, message);
+        MessageDialog.Inst.ShowError(string.Empty, message, null);
       }
     }
 
@@ -72,7 +72,7 @@
       {
         string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
         LogCons.Inst.Write(message);
-        MessageDialog.ShowWarning(string.Empty, message);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, null);
       }
     }
 
@@ -109,7 +109,7 @@
         catch (Exception ex)
         {
           string message = string.Format("Error occurred while creating \"{0}\"\r\nMessage: {1}", tmpDirectoryPath, ex.Message);
-          MessageDialog.ShowError(string.Empty, message);
+          MessageDialog.Inst.ShowError(string.Empty, message, null);
         }
       }
     }

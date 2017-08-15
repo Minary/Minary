@@ -9,11 +9,19 @@
   public class NotAdmin : IMinaryState
   {
 
+    #region MEMBERS
+
+    private MinaryMain minaryObj;
+
+    #endregion 
+
+
     #region PUBLIC
 
-    public NotAdmin(MinaryState state)
+    public NotAdmin(MinaryMain minaryObj)
     {
-      this.CurrentState = state;
+      this.minaryObj = minaryObj;
+      this.CurrentState = MinaryState.NotAdmin;
       this.Bt_Attack_Click += this.Bt_Attack_Click_Event;
       this.Bt_ScanLan_Click += this.Bt_ScanLan_Click_Event;
     }
@@ -33,15 +41,20 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Can't start Minary because of missing admin privileges.");
-      MessageDialog.ShowError(string.Empty, message);
+      throw new Exception("Can't start Minary because of missing admin privileges.");
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Can't scan network because because of missing admin privileges.");
-      MessageDialog.ShowError(string.Empty, message);
+      throw new Exception("Can't scan network because because of missing admin privileges.");
+    }
+
+
+    public void LoadState()
+    {
+      this.minaryObj.Bt_Attack_Click = this.Bt_Attack_Click;
+      this.minaryObj.Bt_ScanLan_Click = this.Bt_ScanLan_Click;
     }
 
     #endregion

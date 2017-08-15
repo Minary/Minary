@@ -4,17 +4,24 @@
   using Minary.DataTypes.Interface;
   using Minary.Form;
   using System;
-  using System.Windows.Forms;
 
 
   public class StateOk : IMinaryState
   {
 
+    #region MEMBERS
+
+    private MinaryMain minaryObj;
+
+    #endregion
+
+
     #region PUBLIC
 
-    public StateOk(MinaryState state)
+    public StateOk(MinaryMain minaryObj)
     {
-      this.CurrentState = state;
+      this.minaryObj = minaryObj;
+      this.CurrentState = MinaryState.StateOk;
       this.Bt_Attack_Click += this.Bt_Attack_Click_Event;
       this.Bt_ScanLan_Click += this.Bt_ScanLan_Click_Event;
     }
@@ -34,14 +41,21 @@
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
       string message = string.Format("Status OK");
-      MessageDialog.ShowWarning("Attack service error", message);
+      MessageDialog.Inst.ShowInformation(string.Empty, message, this.minaryObj);
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
       string message = string.Format("Status OK");
-      MessageDialog.ShowInformation(string.Empty, message);
+      MessageDialog.Inst.ShowInformation(string.Empty, message, this.minaryObj);
+    }
+
+
+    public void LoadState()
+    {
+      this.minaryObj.Bt_Attack_Click = this.minaryObj.Bt_Attack_Click_Event;
+      this.minaryObj.Bt_ScanLan_Click = this.minaryObj.Bt_ScanLan_Click_Event;
     }
 
     #endregion

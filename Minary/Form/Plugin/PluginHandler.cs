@@ -97,7 +97,7 @@
           {
             LogCons.Inst.Write("Error occurred while loading plugin {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
             string message = string.Format("Error occurred while loading plugin {0} : {1}", fileName, ex.Message);
-            MessageDialog.ShowError(string.Empty, message, this);
+            MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
             continue;
           }
         }

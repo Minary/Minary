@@ -1,6 +1,7 @@
 ﻿namespace Minary.DataTypes.Interface
 {
   using Minary.DataTypes.Enum;
+  using Minary.Form;
   using System;
 
 
@@ -10,7 +11,11 @@
   public interface IMinaryState
   {
     MinaryState CurrentState { get; set; }
+
     Bt_ScanLan_Click_Delegate Bt_ScanLan_Click { get; set; }
+
     Bt_Attack_Click_Delegate Bt_Attack_Click { get; set; }
+
+    void LoadState();
   }
 }

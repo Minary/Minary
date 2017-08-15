@@ -1,6 +1,6 @@
 ﻿namespace Minary.Common
 {
-  using Minary.Form;
+  using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;
   using System.Diagnostics;
@@ -50,7 +50,7 @@
         catch (Exception ex)
         {
           string message = string.Format(@"An error occured while handling running instance of {0}:\r\n\r\n", tmpProcName, ex.Message);
-          MessageDialog.ShowInformation(string.Empty, message);
+          LogCons.Inst.Write(message);
         }
       }
     }

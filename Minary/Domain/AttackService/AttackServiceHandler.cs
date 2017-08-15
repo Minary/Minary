@@ -53,14 +53,14 @@
       arpPoisoningSubModules.Add(AService.ArpPoisoning.SubModule.Firewall, new SubModule(AService.ArpPoisoning.SubModule.Firewall, apeWorkingDirectory, Config.ApeFirewallRules));
       ArpPoisoning tmpDataSnifferArpPoison = new ArpPoisoning(this, AService.ArpPoisoning.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeServiceDir), arpPoisoningSubModules);
       this.attackServices.Add(AService.ArpPoisoning.Name, tmpDataSnifferArpPoison);
-      this.MinaryMain.RegisterService(AService.ArpPoisoning.Name);
+      this.MinaryMain.RegisterAttackService(AService.ArpPoisoning.Name);
       this.MinaryMain.SetNewAttackServiceState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
 
       // APESniffer - Data sniffing
       Dictionary<string, SubModule> dataSniffingSubModules = new Dictionary<string, SubModule>();
       DataSniffer tmpDataSniffer = new DataSniffer(this, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeSnifferServiceDir), dataSniffingSubModules);
       this.attackServices.Add(AService.DataSniffer.Name, tmpDataSniffer);
-      this.MinaryMain.RegisterService(AService.DataSniffer.Name);
+      this.MinaryMain.RegisterAttackService(AService.DataSniffer.Name);
       this.MinaryMain.SetNewAttackServiceState(AService.DataSniffer.Name, ServiceStatus.NotRunning);
 
       // HttpReverseProxy
@@ -73,7 +73,7 @@
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.HostMapping, new SubModule(AService.HttpReverseProxyServer.SubModule.HostMapping, hostMappingWorkingDirectory, "plugin.config"));
       HttpReverseProxy tmpDataSnifferHttpReverseProxy = new HttpReverseProxy(this, AService.HttpReverseProxyServer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyServiceDir), httpReverseProxySubModules);
       this.attackServices.Add(AService.HttpReverseProxyServer.Name, tmpDataSnifferHttpReverseProxy);
-      this.MinaryMain.RegisterService(AService.HttpReverseProxyServer.Name);
+      this.MinaryMain.RegisterAttackService(AService.HttpReverseProxyServer.Name);
       this.MinaryMain.SetNewAttackServiceState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
     }
 

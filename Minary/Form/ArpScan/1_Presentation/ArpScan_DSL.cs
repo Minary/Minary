@@ -12,7 +12,7 @@
 
     public void StartArpScanInBackground(Action onArpScanStopped, int maxNumberSystemsToScan = -1)
     {
-      if (this.isScanStarted == true)
+      if (this.bgw_ArpScan.IsBusy == true)
       {
         throw new Exception("Another ArpScan instance is already running");
       }
@@ -42,22 +42,17 @@
         NetworkStartIp = startIp,
         NetworkStopIp = stopIp,
         MaxNumberSystemsToScan = maxNumberSystemsToScan,
-        ObserverClass = this,
-        IsDebuggingOn = Debugging.IsDebuggingOn
+        ObserverClass = this
       };
 
-      try
-      {
-        this.isScanStarted = true;
-        this.arpScanTask.StartArpScan(arpConf);
-      }
-      catch (Exception)
-      {
-        this.arpScanTask.StopArpScan();
-        this.isScanStarted = false;
-
-        throw;
-      }
+      //try
+      //{
+      //  this.arpScanTask.StartArpScan(arpConf);
+      //}
+      //catch (Exception)
+      //{
+      //  this.arpScanTask.StopArpScan();
+      //}
     }
 
 

@@ -68,9 +68,16 @@
     /// </summary>
     /// <param name="message"></param>
     /// <param name="formatArgs"></param>
-    public delegate void LogMessageDelegate(string message, params object[] formatArgs);
+    public delegate void WriteDelegate(string message, params object[] formatArgs);
     public void Write(string message, params object[] formatArgs)
     {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new WriteDelegate(this.Write), new object[] { message, formatArgs });
+        return;
+      }
+
+
       if (string.IsNullOrEmpty(message))
       {
         return;
@@ -90,8 +97,9 @@
         this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
         this.tb_LogContent.ScrollToCaret();
       }
-      catch (Exception)
+      catch (Exception ex)
       {
+        // OOOPPPS!
       }
     }
 

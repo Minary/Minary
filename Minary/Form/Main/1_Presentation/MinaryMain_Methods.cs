@@ -58,7 +58,7 @@
       else if (this.cb_Interfaces.SelectedIndex < 0)
       {
         string message = "No network interface selected";
-        MessageDialog.ShowWarning(string.Empty, message, this);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
 
 
       // Notify user to select at least one target system
@@ -67,7 +67,7 @@
                this.arpScanHandler.TargetList.Where(elem => elem.Attack == true).Count() <= 0)
       {
         string message = "You must select at least one target system.";
-        MessageDialog.ShowWarning(string.Empty, message, this);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
 
 
       // Stop the attack
@@ -165,7 +165,7 @@
       {
         string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
         LogCons.Inst.Write(message);
-        MessageDialog.ShowWarning(string.Empty, message, this);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
 
       try
@@ -176,7 +176,7 @@
       {
         string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
         LogCons.Inst.Write(message);
-        MessageDialog.ShowWarning(string.Empty, message, this);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
 
       try
@@ -192,7 +192,7 @@
       {
         string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
         LogCons.Inst.Write(message);
-        MessageDialog.ShowWarning(string.Empty, message, this);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
 
         this.pluginHandler.RestoreLastPluginLoadState();
       }

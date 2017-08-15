@@ -67,7 +67,6 @@
       string certificateFileFullPath = Path.Combine(certificateDirectoryFullPath, certificateFileName);
       string certificateRelativePath = Path.Combine(certificateDirectoryName, certificateFileName);
 
-      NetworkInterfaceConfig ifcSelected = NetworkFunctions.GetIfcById(serviceParameters.SelectedIfcId);
       string httpReverseProxyBinaryPath = Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyBinaryPath);
       string processParameters = string.Format("/httpport 80 /httpsport 443 /loglevel info /certificate {0}", certificateRelativePath);
 

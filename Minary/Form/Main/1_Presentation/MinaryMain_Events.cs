@@ -21,6 +21,32 @@
 
     #region EVENTS
 
+    private void BT_ScanLan_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        this.Bt_ScanLan_Click(sender, e);
+      }
+      catch (Exception ex)
+      {
+        MessageDialog.Inst.ShowWarning("Exception occurred", ex.Message, this);
+      }
+    }
+
+
+    private void BT_Attack_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        this.Bt_Attack_Click(sender, e);
+      }
+      catch (Exception ex)
+      {
+        MessageDialog.Inst.ShowWarning("Exception occured", ex.Message, this);
+      }
+    }
+
+
     /// <summary>
     ///
     /// </summary>
@@ -30,8 +56,7 @@
     {
       try
       {
-        NetworkInterfaceConfig interfaceStruct = NetworkFunctions.GetIfcById(NetworkFunctions.Interfaces[this.cb_Interfaces.SelectedIndex].Id);
-
+        NetworkInterfaceConfig interfaceStruct = this.nicHandler.IfcByIndex(this.cb_Interfaces.SelectedIndex);
         if (interfaceStruct.Name != null && interfaceStruct.Name.Length > 0)
         {
           string interfaceName = interfaceStruct.Name.Length > 40 ? interfaceStruct.Name.Substring(0, 40) + " ..." : interfaceStruct.Name;
@@ -49,7 +74,8 @@
           this.tb_NetworkStopIp.Text = interfaceStruct.BroadcastAddr;
           this.gb_Interfaces.Text = string.Format("{0} / {1}", interfaceStruct.IpAddress, interfaceName);
 
-          this.currentIpAddress = interfaceStruct.IpAddress;
+this.currentIpAddress = interfaceStruct.IpAddress;
+this.currentMacAddress = interfaceStruct.MacAddress;
         }
       }
       catch (Exception ex)
@@ -141,7 +167,7 @@
       {
         string message = "Can't check for updates. Internet connection is down.";
         LogCons.Inst.Write(message);
-        MessageDialog.ShowInformation(string.Empty, message, this);
+        MessageDialog.Inst.ShowInformation(string.Empty, message, this);
 
         return;
       }
@@ -167,7 +193,7 @@
           {
             string message = "No new updates available.";
             LogCons.Inst.Write(message);
-            MessageDialog.ShowInformation("Update information", message, this);
+            MessageDialog.Inst.ShowInformation("Update information", message, this);
           }
         }
         catch (Exception)
@@ -242,7 +268,7 @@
       else
       {
         string message = "Another instance of Minibrowser is already running";
-        MessageDialog.ShowInformation("Update information", message, this);
+        MessageDialog.Inst.ShowInformation("Update information", message, this);
       }
     }
 
@@ -301,7 +327,7 @@
       {
         string message = string.Format("An error occurred while loading template \"{0}\".\r\n\r\n{1}", Path.GetFileName(templateFileName), ex.Message);
         LogCons.Inst.Write(message);
-        MessageDialog.ShowWarning(string.Empty, message, this);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
     }
 
@@ -408,7 +434,7 @@
       ServiceParameters currentServiceParams = new ServiceParameters()
       {
         SelectedIfcIndex = this.cb_Interfaces.SelectedIndex,
-        SelectedIfcId = NetworkFunctions.GetNetworkInterfaceIdByIndexNumber(this.cb_Interfaces.SelectedIndex),
+        SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex),
         TargetList = (from target in this.arpScanHandler.TargetList
                       where target.Attack == true
                       select new { target.MacAddress, target.IpAddress }).

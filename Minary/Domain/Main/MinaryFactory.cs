@@ -10,39 +10,35 @@
 
   public class MinaryFactory
   {
+
+    #region PUBLIC
+
     public static IMinaryState GetMinaryEventBase(MinaryMain minaryObj)
     {
       MinaryState state = DetermineSystemState();
-      IMinaryState newState;
-
+ 
       if ((state & MinaryState.NetworkMissing) == MinaryState.NetworkMissing)
       {
-        newState = new NetworkMissing(MinaryState.NetworkMissing);
-        return newState;
+        return new NetworkMissing(minaryObj);
       }
       else if ((state & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
       {
-        newState = new WinPcapMissing(MinaryState.WinPcapMissing);
-        return newState;
+        return new WinPcapMissing(minaryObj);
       }
       else if ((state & MinaryState.NotAdmin) == MinaryState.NotAdmin)
       {
-        newState = new NotAdmin(MinaryState.NotAdmin);
-        return newState;
+        return new NotAdmin(minaryObj);
       }
-      else
-      {
-        newState = new StateOk(MinaryState.StateOk);
-        newState.Bt_Attack_Click = null;
-        newState.Bt_ScanLan_Click = null;
-        newState.Bt_Attack_Click += minaryObj.Bt_Attack_Click;
-        newState.Bt_ScanLan_Click += minaryObj.Bt_ScanLan_Click;
-        return newState;
-      }
+
+      return new StateOk(minaryObj);
     }
 
+    #endregion
 
-    public static MinaryState DetermineSystemState()
+
+    #region PRIVATE
+
+    private static MinaryState DetermineSystemState()
     {
       MinaryState retVal = MinaryState.StateOk;
 
@@ -61,5 +57,8 @@
 
       return retVal;
     }
+
+    #endregion
+
   }
 }
