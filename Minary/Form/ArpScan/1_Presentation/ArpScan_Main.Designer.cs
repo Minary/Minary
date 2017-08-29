@@ -30,7 +30,7 @@
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
-      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArpScan));
       this.bt_Close = new System.Windows.Forms.Button();
       this.dgv_Targets = new System.Windows.Forms.DataGridView();
@@ -50,7 +50,8 @@
       this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.bt_Scan = new System.Windows.Forms.Button();
       this.pb_ArpScan = new System.Windows.Forms.ProgressBar();
-      this.bgw_ArpScan = new System.ComponentModel.BackgroundWorker();
+      this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
+      this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_Targets)).BeginInit();
       this.gb_Range.SuspendLayout();
       this.cms_ManageTargets.SuspendLayout();
@@ -77,14 +78,14 @@
       this.dgv_Targets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
       this.dgv_Targets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
       this.dgv_Targets.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-      dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-      dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-      dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-      dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-      dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-      dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-      this.dgv_Targets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+      dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+      dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+      dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+      dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+      dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+      dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+      this.dgv_Targets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
       this.dgv_Targets.ColumnHeadersHeight = 28;
       this.dgv_Targets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
       this.dgv_Targets.Location = new System.Drawing.Point(10, 118);
@@ -261,12 +262,18 @@
       this.pb_ArpScan.Size = new System.Drawing.Size(680, 23);
       this.pb_ArpScan.TabIndex = 0;
       // 
-      // bgw_ArpScan
+      // bgw_ArpScanSender
       // 
-      this.bgw_ArpScan.WorkerReportsProgress = true;
-      this.bgw_ArpScan.WorkerSupportsCancellation = true;
-      this.bgw_ArpScan.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScan_DoWork);
-      this.bgw_ArpScan.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScan_RunWorkerCompleted);
+      this.bgw_ArpScanSender.WorkerReportsProgress = true;
+      this.bgw_ArpScanSender.WorkerSupportsCancellation = true;
+      this.bgw_ArpScanSender.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanSender_DoWork);
+      this.bgw_ArpScanSender.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanSender_RunWorkerCompleted);
+      // 
+      // bgw_ArpScanListener
+      // 
+      this.bgw_ArpScanListener.WorkerSupportsCancellation = true;
+      this.bgw_ArpScanListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanListener_DoWork);
+      this.bgw_ArpScanListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanListener_RunWorkerCompleted);
       // 
       // ArpScan
       // 
@@ -315,6 +322,7 @@
     private System.Windows.Forms.ToolStripMenuItem thisSystemToolStripMenuItem;
     private System.Windows.Forms.Button bt_Scan;
     private System.Windows.Forms.ProgressBar pb_ArpScan;
-    private System.ComponentModel.BackgroundWorker bgw_ArpScan;
+    private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
+    private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
   }
 }

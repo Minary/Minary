@@ -36,7 +36,6 @@
         {
                                     Config.ApeProcessName,
                                     Config.ApeSnifferProcessName,
-                                    Config.ArpScanProcessName,
                                     Config.HttpReverseProxyName,
                                     Assembly.GetExecutingAssembly().GetName().Name
         };

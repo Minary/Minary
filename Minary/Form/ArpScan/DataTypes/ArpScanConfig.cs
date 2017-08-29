@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form.ArpScan.DataTypes
 {
   using Minary.DataTypes.ArpScan;
+  using PcapDotNet.Core;
 
 
   public class ArpScanConfig
@@ -22,9 +23,12 @@
 
     public int MaxNumberSystemsToScan { get; set; }
 
-    public IObserver ObserverClass { get; set; }
+    public IObserverArpRequest ObserverClass { get; set; }
+
+    public PacketCommunicator Communicator { get; set; }
 
     #endregion
 
   }
+
 }

@@ -8,7 +8,6 @@
   public class Utils
   {
 
-
     public static string IsProgrammInstalled(string appName)
     {
       string retVal = string.Empty;
@@ -54,7 +53,7 @@ END:
       return retVal;
     }
 
-    
+ 
     public static string TryExecute(Func<string> action)
     {
       try

@@ -47,11 +47,6 @@ public static readonly string ApeSnifferServiceDir = Path.Combine(AttackServices
 public static readonly string ApeSnifferBinaryPath = Path.Combine(ApeSnifferServiceDir, "ApeSniffer.exe");
 public static readonly string ApeSnifferProcessName = "ApeSniffer";
 
-// Service: ArpScan
-public static readonly string ArpScanServiceDir = Path.Combine(AttackServicesDir, "ArpScan");
-public static readonly string ArpScanBinaryPath = Path.Combine(ArpScanServiceDir, "ArpScan.exe");
-public static readonly string ArpScanProcessName = "ArpScan";
-
 // Service: HttpReverseProxy
 public static readonly string HttpReverseProxyServiceDir = Path.Combine(AttackServicesDir, "HttpReverseProxy");
 public static readonly string HttpReverseProxyBinaryPath = Path.Combine(HttpReverseProxyServiceDir, "HttpReverseProxy.exe");

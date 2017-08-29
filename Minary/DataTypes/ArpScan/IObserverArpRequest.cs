@@ -2,11 +2,12 @@
 {
 
 
-  public interface IObserver
+  public interface IObserverArpRequest
   {
     bool IsCancellationPending { get; set; }
 
+    bool IsStopped { get; set; }
+
     void UpdateProgressbar(int progress);
-    void UpdateNewRecord(string inputData);
   }
 }

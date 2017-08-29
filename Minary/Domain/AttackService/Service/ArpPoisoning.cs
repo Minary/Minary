@@ -1,7 +1,6 @@
 ﻿namespace Minary.Domain.AttackService.Service
 {
   using Minary.Common;
-  using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
@@ -35,6 +34,20 @@
       this.workingDirectory = serviceWorkingDir;
       this.subModules = subModules;
       this.serviceStatus = ServiceStatus.NotRunning;
+    }
+
+    #endregion
+
+
+    #region PRIVATE
+
+    private void OnServiceExited(object sender, System.EventArgs e)
+    {
+      LogCons.Inst.Write("ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
+
+      this.poisoningEngProc.EnableRaisingEvents = false;
+      this.poisoningEngProc.Exited += null;
+      this.attackServiceHandler.OnServiceExited(this.serviceName);
     }
 
     #endregion
@@ -136,20 +149,6 @@
     }
 
     #endregion
-
-    #endregion
-
-
-    #region PRIVATE
-
-    private void OnServiceExited(object sender, System.EventArgs e)
-    {
-      LogCons.Inst.Write("ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
-
-      this.poisoningEngProc.EnableRaisingEvents = false;
-      this.poisoningEngProc.Exited += null;
-      this.attackServiceHandler.OnServiceExited(this.serviceName);
-    }
 
     #endregion
 

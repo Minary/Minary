@@ -11,7 +11,7 @@
   using System.Windows.Forms;
 
 
-  public partial class ArpScan : IObserver
+  public partial class ArpScan : IObserverArpRequest
   {
 
     #region EVENTS
@@ -23,8 +23,6 @@
     /// <param name="e"></param>
     private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
     {
-      LogCons.Inst.Write("ArpScan.DGV_CellClick(): Start");
-
       // Ignore clicks that are not on button cells.
       if (e.RowIndex < 0)
       {
@@ -73,7 +71,7 @@
     /// <param name="e"></param>
     private void Dgv_CellValueChanged(object obj, DataGridViewCellEventArgs e)
     {
-      //// compare to checkBox column index
+      // compare to checkBox column index
       if (e.ColumnIndex != 0)
       {
         return;
@@ -223,7 +221,7 @@
           this.cms_ManageTargets.Show(this.dgv_Targets, e.Location);
         }
       }
-      catch (Exception)
+      catch
       {
       }
     }
@@ -371,23 +369,23 @@
     #endregion
 
 
-    #region EVENTS: BGW_ArpScan
+    #region EVENTS: BGW_ArpScanSender
 
-    private void BGW_ArpScan_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    private void BGW_ArpScanSender_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write("BGW_ArpScan(): Completed with error");
+        LogCons.Inst.Write("BGW_ArpScanSender(): Completed with error");
         this.pb_ArpScan.Value = 0;
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write("BGW_ArpScan(): Completed by cancellation");
+        LogCons.Inst.Write("BGW_ArpScanSender(): Completed by cancellation");
         this.pb_ArpScan.Value = 0;
       }
       else
       {
-        LogCons.Inst.Write("BGW_ArpScan(): Completed successfully. value={0}, maximum={1}", this.pb_ArpScan.Value, this.pb_ArpScan.Maximum);
+        LogCons.Inst.Write("BGW_ArpScanSender(): Completed successfully. value={0}, maximum={1}", this.pb_ArpScan.Value, this.pb_ArpScan.Maximum);
         this.pb_ArpScan.PerformStep();
       }
 
@@ -395,48 +393,92 @@
     }
 
 
-    private void BGW_ArpScan_DoWork(object sender, DoWorkEventArgs e)
+    private void BGW_ArpScanSender_DoWork(object sender, DoWorkEventArgs e)
     {
-      string startIp = string.Empty;
-      string stopIp = string.Empty;
+      ArpScanConfig arpScanConfig = null;
+      ArpScanner arpScanner = null;
 
       try
       {
-        // User defined net range
-        if (this.rb_Netrange.Checked == true)
-        {
-          startIp = this.tb_Netrange1.Text.ToString();
-          stopIp = this.tb_Netrange2.Text.ToString();
-        }
-        else
-        {
-          startIp = this.tb_Subnet1.Text.ToString();
-          stopIp = this.tb_Subnet2.Text.ToString();
-        }
-
-        ArpScanConfig arpConf = new ArpScanConfig()
-        {
-          InterfaceId = this.interfaceId,
-          GatewayIp = this.gatewayIp,
-          LocalIp = this.localIp,
-          LocalMac = this.localMac.Replace('-', ':'),
-          NetworkStartIp = startIp,
-          NetworkStopIp = stopIp,
-          MaxNumberSystemsToScan = -1,
-          ObserverClass = this
-        };
-
-var la = new ArpScanner(arpConf, this);
-la.AddObserver(this);
-la.StartScanning();
+        arpScanConfig = this.GetArpScanConfig();
+        arpScanner = new ArpScanner(arpScanConfig);
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("ArpScan: {0}\r\n{1}", ex.Message, ex.StackTrace);
+        LogCons.Inst.Write("BGW_ArpScanSender(EXCEPTION): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
         this.SetArpScanGuiOnStopped();
+      }
+
+      try
+      {
+        arpScanner.AddObserver(this);
+        arpScanner.StartScanning();
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("BGW_ArpScanSender(EXCEPTION2): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        this.SetArpScanGuiOnStopped();
+        return;
       }
     }
 
+    #endregion
+
+
+    #region EVENTS: BGW_ArpScanListener
+
+    private void BGW_ArpScanListener_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      if (e.Error != null)
+      {
+        LogCons.Inst.Write("BGW_ArpScanListener(): Completed with error");
+      }
+      else if (e.Cancelled == true)
+      {
+        LogCons.Inst.Write("BGW_ArpScanListener(): Completed by cancellation");
+      }
+      else
+      {
+        LogCons.Inst.Write("BGW_ArpScanListener(): Completed successfully");
+      }
+    }
+
+
+    private void BGW_ArpScanListener_DoWork(object sender, DoWorkEventArgs e)
+    {
+      ArpScanConfig arpScanConfig = null;
+      ReplyListener replyListener = null;
+
+      try
+      {
+        arpScanConfig = this.GetArpScanConfig();
+        replyListener = new ReplyListener(arpScanConfig);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("BGW_ArpScanListener(EXCEPTION1): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        this.SetArpScanGuiOnStopped();
+        return;
+      }
+
+      try
+      {
+        replyListener.AddObserver(this);
+        replyListener.StartReceivingArpPackets();
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write("BGW_ArpScanListener(EXCEPTION2): {0}\r\n{1}", ex.Message, ex.StackTrace);
+        this.SetArpScanGuiOnStopped();
+
+        return;
+      }
+    }
+
+    #endregion
+
+
+    #region PRIVATE
 
     private void HideArpScanWindow()
     {
@@ -444,7 +486,8 @@ la.StartScanning();
       this.pb_ArpScan.Value = 0;
 
       // Stop running ARP scan
-      this.bgw_ArpScan.CancelAsync();
+      this.bgw_ArpScanSender.CancelAsync();
+      this.bgw_ArpScanListener.CancelAsync();
 
       // Send targetSystem list to modules
       this.minaryMain.PassNewTargetListToPlugins();
@@ -459,14 +502,14 @@ la.StartScanning();
     private void StartArpScan()
     {
       // Initiate ARP scan cancellation
-      if (this.bgw_ArpScan.IsBusy == true &&
-          this.bgw_ArpScan.CancellationPending == false)
+      if (this.bgw_ArpScanSender.IsBusy == true &&
+          this.bgw_ArpScanSender.CancellationPending == false)
       {
         LogCons.Inst.Write("ArpScan: Cancelling running ARP scan");
-        this.bgw_ArpScan.CancelAsync();
+        this.bgw_ArpScanSender.CancelAsync();
       }
-      else if (this.bgw_ArpScan.IsBusy == true &&
-               this.bgw_ArpScan.CancellationPending == true)
+      else if (this.bgw_ArpScanSender.IsBusy == true &&
+               this.bgw_ArpScanSender.CancellationPending == true)
       {
         LogCons.Inst.Write("ArpScan: Cancellation running");
       }
@@ -483,8 +526,42 @@ la.StartScanning();
         // Initiate start
         this.targetRecords.Clear();
         this.SetArpScanGuiOnStarted();
-        this.bgw_ArpScan.RunWorkerAsync();
+        this.bgw_ArpScanSender.RunWorkerAsync();
+        this.bgw_ArpScanListener.RunWorkerAsync();
       }
+    }
+
+
+    private ArpScanConfig GetArpScanConfig()
+    {
+      string startIp = string.Empty;
+      string stopIp = string.Empty;
+
+      if (this.rb_Netrange.Checked == true)
+      {
+        startIp = this.tb_Netrange1.Text.ToString();
+        stopIp = this.tb_Netrange2.Text.ToString();
+      }
+      else
+      {
+        startIp = this.tb_Subnet1.Text.ToString();
+        stopIp = this.tb_Subnet2.Text.ToString();
+      }
+
+      ArpScanConfig arpScanConfig = new ArpScanConfig()
+      {
+        InterfaceId = this.interfaceId,
+        GatewayIp = this.gatewayIp,
+        LocalIp = this.localIp,
+        LocalMac = this.localMac.Replace('-', ':'),
+        NetworkStartIp = startIp,
+        NetworkStopIp = stopIp,
+        MaxNumberSystemsToScan = -1,
+        ObserverClass = this,
+        Communicator = this.communicator
+      };
+
+      return arpScanConfig;
     }
 
     #endregion

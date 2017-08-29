@@ -13,12 +13,12 @@
 
     #region MEMBERS
 
-    private Minary.Form.ArpScan.Presentation.ArpScan arpScan;
     private const int MaxArpScanRuntime = 100000;
     private const int MaxSelectedTargetSystems = 10;
     private const int MaxSystemsToScan = 255;
     private static ManualResetEvent manualEventArpScanStopped = new ManualResetEvent(false);
     private MinaryMain minaryMain;
+    private Form.ArpScan.Presentation.ArpScan arpScan;
     private RecordMinaryTemplate minaryTemplate;
 
     #endregion

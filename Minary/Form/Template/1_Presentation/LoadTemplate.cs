@@ -146,7 +146,7 @@
       {
         this.rtb_Logs.Rtf = @"{\rtf1\ansi " + this.rtfData.ToString() + @" }";
       }
-      catch (Exception ex)
+      catch
       {
       }
     }

@@ -1,10 +1,6 @@
 ﻿namespace Minary.Common
 {
-  using Minary.DataTypes.Struct;
-  using Minary.LogConsole.Main;
   using System;
-  using System.Collections.Generic;
-  using System.Linq;
   using System.Net;
   using System.Net.NetworkInformation;
   using System.Runtime.InteropServices;
@@ -19,14 +15,7 @@
     private static extern int SendARP(uint destIP, uint srcIP, byte[] macAddress, ref uint macAddressLength);
 
     #endregion
-
-
-    //#region PROPERTIES
-
-    //public static NetworkInterfaceConfig[] Interfaces { get; set; }
-
-    //#endregion
-
+    
 
     #region PUBLIC
 
@@ -102,7 +91,6 @@
       }
 
       remoteIpAddress = IPAddress.Parse(ipAddress);
-
       addressBytes = remoteIpAddress.GetAddressBytes();
       dest = ((uint)addressBytes[3] << 24)
            + ((uint)addressBytes[2] << 16)
@@ -145,7 +133,29 @@
 
       return isPortAvailable;
     }
-    
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <returns></returns>
+    public static string MacByteArrayToString(byte[] buf)
+    {
+      return string.Format("{0:X2}:{1:X2}:{2:X2}:{3:X2}:{4:X2}:{5:X2}", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5]);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buf"></param>
+    /// <returns></returns>
+    public static string IpByteArrayToString(byte[] buf)
+    {
+      return string.Format("{0}.{1}.{2}.{3}", buf[0], buf[1], buf[2], buf[3]);
+    }
+
     #endregion
 
   }
