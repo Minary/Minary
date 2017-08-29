@@ -5,8 +5,6 @@
   using Minary.LogConsole.Main;
   using System;
   using System.Collections;
-  using System.Collections.Generic;
-  using System.Linq;
   using System.Net.NetworkInformation;
 
 
@@ -94,15 +92,17 @@
     {
       string defaultGwIp = string.Empty;
 
-      if (ifc.GetIPProperties().GatewayAddresses.Count > 0)
+      if (ifc.GetIPProperties().GatewayAddresses.Count <= 0)
       {
-        foreach (GatewayIPAddressInformation tmpAddress in ifc.GetIPProperties().GatewayAddresses)
+        return defaultGwIp;
+      }
+
+      foreach (GatewayIPAddressInformation tmpAddress in ifc.GetIPProperties().GatewayAddresses)
+      {
+        if (!tmpAddress.Address.IsIPv6LinkLocal)
         {
-          if (!tmpAddress.Address.IsIPv6LinkLocal)
-          {
-            defaultGwIp = tmpAddress.Address.ToString();
-            break;
-          }
+          defaultGwIp = tmpAddress.Address.ToString();
+          break;
         }
       }
 

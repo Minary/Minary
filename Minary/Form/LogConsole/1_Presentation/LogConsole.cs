@@ -97,7 +97,7 @@
         this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
         this.tb_LogContent.ScrollToCaret();
       }
-      catch (Exception ex)
+      catch
       {
         // OOOPPPS!
       }

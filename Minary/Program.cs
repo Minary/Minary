@@ -55,7 +55,6 @@
       string[] attackServiceBinaries = new string[]
       {
         Config.ApeBinaryPath,
-        Config.ArpScanBinaryPath,
         Config.HttpReverseProxyBinaryPath
       };
 
@@ -88,7 +87,6 @@
                               Config.ApeServiceDir,
                               Config.HttpReverseProxyServiceDir,
                               Config.HttpReverseProxyCertrifcateDir,
-                              Config.ArpScanServiceDir,
                               Config.PluginsDir,
                               Config.TemplatesDir,
                               Config.CustomTemplatesDir,

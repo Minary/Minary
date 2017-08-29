@@ -1,8 +1,10 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
-  using Minary.Common;
+  using Minary.DataTypes.ArpScan;
+  using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
+  using PcapDotNet.Core;
   using System;
   using System.ComponentModel;
   using System.Linq;
@@ -14,7 +16,7 @@
   {
 
     #region MEMBERS
-    
+
     private BindingList<string> targetList;
     private string interfaceId;
     private string startIp;
@@ -24,6 +26,8 @@
     private string localMac;
     private MinaryMain minaryMain;
     private BindingList<TargetRecord> targetRecords;
+    private bool isStopped;
+    private PacketCommunicator communicator;
 
     #endregion
 
@@ -79,11 +83,13 @@
       this.dgv_Targets.CurrentCellDirtyStateChanged += new EventHandler(this.Dgv_CurrentCellDirtyStateChanged);
       this.dgv_Targets.CellValueChanged += new DataGridViewCellEventHandler(this.Dgv_CellValueChanged);
       this.dgv_Targets.CellClick += new DataGridViewCellEventHandler(this.Dgv_CellClick);
-      
+
       this.minaryMain = minaryMain;
 
       // Set the owner to keep this form in the foreground/topmost
       this.Owner = minaryMain;
+
+      this.isStopped = false;
     }
 
 
@@ -102,6 +108,8 @@
         this.gatewayIp = this.minaryMain.CurrentGatewayIp;
         this.localIp = this.minaryMain.CurrentLocalIp;
         this.localMac = this.minaryMain.CurrentLocalMac;
+
+        this.communicator = PcapHandler.Inst.OpenPcapDevice(this.interfaceId, 1);
 
         this.tb_Subnet1.Text = this.startIp;
         this.tb_Subnet2.Text = this.stopIp;
@@ -123,7 +131,7 @@
 
 
     #region PRIVATE
-    
+
     /// <summary>
     ///
     /// </summary>
@@ -155,6 +163,12 @@
       this.Cursor = Cursors.Default;
       this.dgv_Targets.Cursor = Cursors.Default;
       this.dgv_Targets.Refresh();
+
+      this.pb_ArpScan.MarqueeAnimationSpeed = 0;
+
+      // Set cancellation/stopping status
+      this.IsCancellationPending = true;
+      this.isStopped = true;
     }
 
 
@@ -173,6 +187,10 @@
         return;
       }
 
+      // Set cancellation/stopping status
+      this.IsCancellationPending = false;
+      this.isStopped = false;
+
       // Check start/stop IpAddress addresses.
       if (this.rb_Subnet.Checked)
       {
@@ -186,9 +204,10 @@
       }
 
       this.targetList.Clear();
-this.pb_ArpScan.Minimum = 0;
-this.pb_ArpScan.Value = 0;
-this.pb_ArpScan.Maximum = 100;
+      this.pb_ArpScan.Minimum = 0;
+      this.pb_ArpScan.Value = 0;
+      this.pb_ArpScan.Maximum = 100;
+      this.pb_ArpScan.MarqueeAnimationSpeed = 30;
 
       // Set GUI parameters
       this.dgv_Targets.Enabled = false;
@@ -215,58 +234,30 @@ this.pb_ArpScan.Maximum = 100;
     ///
     /// </summary>
     /// <param name="inputData"></param>
-    public delegate void UpdateTextBoxDelegate(string inputData);
-    public void UpdateTextBox(string inputData)
+    public delegate void UpdateTextBoxDelegate(SystemFound systemData);
+    public void UpdateTextBox(SystemFound systemData)
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new UpdateTextBoxDelegate(this.UpdateTextBox), new object[] { inputData });
+        this.BeginInvoke(new UpdateTextBoxDelegate(this.UpdateTextBox), new object[] { systemData });
         return;
       }
 
-      string type = string.Empty;
-      string ipAddress = string.Empty;
-      string macAddress = string.Empty;
-      string vendor = string.Empty;
-
       try
       {
-        XDocument xmlContent = XDocument.Parse(inputData);
+        // Determine vendor
+        string vendor = this.minaryMain.MacVendor.GetVendorByMac(systemData.MacAddress);
 
-        var packetEntries = from service in xmlContent.Descendants("arp")
-                            select new
-                            {
-                              Type = service.Element("type").Value,
-                              IP = service.Element("ip").Value,
-                              MAC = service.Element("mac").Value
-                            };
-
-        if (packetEntries == null)
+        if (systemData.IpAddress != this.gatewayIp && systemData.IpAddress != this.localIp)
         {
-          return;
+          this.targetList.Add(systemData.IpAddress);
+          this.targetRecords.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
+          LogCons.Inst.Write("ArpScan.UpdateTextBox(): 1");
         }
-
-        foreach (var entry in packetEntries)
+        else
         {
-          try
-          {
-            type = entry.Type;
-            ipAddress = entry.IP;
-            macAddress = entry.MAC;
 
-            // Determine vendor
-            vendor = this.minaryMain.MacVendor.GetVendorByMac(macAddress);
-
-            if (ipAddress != this.gatewayIp && ipAddress != this.localIp)
-            {
-              this.targetList.Add(ipAddress);
-              this.targetRecords.Add(new TargetRecord(ipAddress, macAddress, vendor));
-            }
-          }
-          catch (Exception ex)
-          {
-            LogCons.Inst.Write("ArpScan: {0}", ex.Message);
-          }
+          LogCons.Inst.Write("ArpScan.UpdateTextBox(): 2");
         }
       }
       catch (Exception ex)

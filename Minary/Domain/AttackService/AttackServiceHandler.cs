@@ -42,7 +42,6 @@
       string injectFileWorkingDirectory = Path.Combine(currentDirectory, Config.InjectFileDir);
       string requestRedirectWorkingDirectory = Path.Combine(currentDirectory, Config.RequestRedirectDir);
       string hostMappingWorkingDirectory = Path.Combine(currentDirectory, Config.HostMappingDir);
-      string arpScanWorkingDirectory = Path.Combine(currentDirectory, Config.ArpScanServiceDir);
 
       this.minaryInstance = minaryInstance;
       this.attackServices = new Dictionary<string, IAttackService>();

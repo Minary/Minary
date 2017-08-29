@@ -12,7 +12,7 @@
 
     public void StartArpScanInBackground(Action onArpScanStopped, int maxNumberSystemsToScan = -1)
     {
-      if (this.bgw_ArpScan.IsBusy == true)
+      if (this.bgw_ArpScanSender.IsBusy == true)
       {
         throw new Exception("Another ArpScan instance is already running");
       }

@@ -577,7 +577,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
           ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters);
           this.SetNewAttackServiceState(tmpKey, newServiceStatus);
         }
-        catch (Exception ex)
+        catch
         {
           this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
           throw;

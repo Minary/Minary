@@ -197,7 +197,7 @@
           this.dgv_ServerCertificates.CurrentCell = this.dgv_ServerCertificates.Rows[hti.RowIndex].Cells["ServerName"];
         }
       }
-      catch (Exception ex)
+      catch
       {
         this.dgv_ServerCertificates.ClearSelection();
       }
@@ -211,7 +211,7 @@
           this.cmsServerCertificates_Delete.Visible = (hti.RowIndex >= 0);
           this.cms_ManageCertificates.Show(this.dgv_ServerCertificates, e.Location);
         }
-        catch (Exception ex)
+        catch
         {
           //this.pluginProperties.HostApplication.LogMessage("ManageServerCertificate: {0}", ex.Message);
         }

@@ -2,9 +2,7 @@
 {
   using Minary.DataTypes.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
-  using Minary.Form.ArpScan.Presentation;
   using Minary.LogConsole.Main;
-  using PcapDotNet.Core;
   using PcapDotNet.Packets;
   using PcapDotNet.Packets.Arp;
   using PcapDotNet.Packets.Ethernet;
@@ -15,13 +13,12 @@
   using System.Net;
 
 
-  public class ArpScanner : IObservable
+  public class ArpScanner : IObservableArpRequest
   {
 
     #region MEMBERS
 
     private ArpScanConfig config;
-    private ArpScan arpScanForm;
 
     private byte[] localMacBytes = new byte[6];
     private byte[] localIpBytes = new byte[4];
@@ -29,22 +26,21 @@
     private ReadOnlyCollection<byte> localMacBytesCollection;
     private ReadOnlyCollection<byte> localIpBytesCollection;
 
-    private List<IObserver> observers = new List<IObserver>();
+    private List<IObserverArpRequest> observers = new List<IObserverArpRequest>();
 
     #endregion
 
 
     #region PUBLIC
 
-    public ArpScanner(ArpScanConfig config, ArpScan arpScanForm)
+    public ArpScanner(ArpScanConfig arpScanConfig)
     {
       char[] separators = { '-', ':', ' ', '.' };
-      this.config = config;
-      this.arpScanForm = arpScanForm;
+      this.config = arpScanConfig;
 
       // Byte arrays
-      this.localMacBytes = config.LocalMac.Split(separators).Select(s => Convert.ToByte(s, 16)).ToArray();
-      this.localIpBytes = IPAddress.Parse(config.LocalIp).GetAddressBytes();
+      this.localMacBytes = arpScanConfig.LocalMac.Split(separators).Select(s => Convert.ToByte(s, 16)).ToArray();
+      this.localIpBytes = IPAddress.Parse(arpScanConfig.LocalIp).GetAddressBytes();
 
       // Byte collections
       this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
@@ -54,8 +50,7 @@
 
     public void StartScanning()
     {
-      LivePacketDevice selectedDevice = this.GetPcapDevice(this.config.InterfaceId);
-      PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1);
+      int percentageCounter = 10;
       uint startIpInt = this.IpStringToInteger(this.config.NetworkStartIp);
       uint stopIpInt = this.IpStringToInteger(this.config.NetworkStopIp);
       uint totalIps = stopIpInt - startIpInt;
@@ -64,31 +59,31 @@
       {
         throw new Exception("Something is wrong with the start/stop addresses");
       }
-      int percentageCounter = 10;
-      string message = string.Format($"config.NetworkStartIp={this.config.NetworkStartIp}\r\n" +
-        $"config.NetworkStopIp={this.config.NetworkStopIp}\r\n" +
-        $"startIpInt={startIpInt}\r\n" +
-        $"stopIpInt={stopIpInt}\r\n" +
-        $"totalIps={totalIps}");
 
       for (int counter = 0; counter < totalIps; counter++)
       {
-        // Break the loop if an observer
-        // has set the cancelling flag
-        if (this.observers.Where(elem => elem.IsCancellationPending == true).Count() > 0)
+        // If ARP scan was cancelled break out of the loop
+        if (this.observers.Any(elem => elem.IsCancellationPending == true))
         {
-          LogCons.Inst.Write($"ArpScanner.StartScanning(): Cancelling was set");
+          LogCons.Inst.Write($"ArpScanner.StartScanning(): Cancellation detected");
           break;
         }
 
+        // If ARP scan has stopped break out of the loop
+        if (this.observers.Any(elem => elem.IsCancellationPending == true))
+        {
+          LogCons.Inst.Write($"ArpScanner.StartScanning(): ARP scan process has stopped");
+          break;
+        }
+
+        // Build and send ARP WhoHas packet
         uint tmpIpInt = (uint)(startIpInt + counter);
-        LogCons.Inst.Write($"ArpScanner.StartScanning(): ArpPing to: {tmpIpInt}");
 
         try
         {
           Packet arpPacket = this.BuildArpWhoHasPacket(tmpIpInt);
           System.Threading.Thread.Sleep(5);
-          communicator.SendPacket(arpPacket);
+          this.config.Communicator.SendPacket(arpPacket);
         }
         catch (Exception ex)
         {
@@ -96,6 +91,7 @@
           System.Threading.Thread.Sleep(5);
         }
 
+        // Notify observers about the progress
         int currentPercentage = this.CalculatePercentage(totalIps, counter);
         if (currentPercentage >= percentageCounter)
         {
@@ -145,11 +141,10 @@
 
       arpPacket.SenderHardwareAddress = this.localMacBytesCollection;
       arpPacket.SenderProtocolAddress = this.localIpBytesCollection;
-
       arpPacket.TargetHardwareAddress = new ReadOnlyCollection<byte>(new byte[6] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
 
-var la = this.IpIntegerToByteArray(remoteIpInt);
-arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(la);
+      byte[] ipAddresBytes = this.IpIntegerToByteArray(remoteIpInt);
+      arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(ipAddresBytes);
 
       PacketBuilder packet = new PacketBuilder(ethernetPacket, arpPacket);
       return packet.Build(DateTime.Now);
@@ -185,18 +180,12 @@ arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(la);
       return addressIntHostOrder;
     }
 
-
-    private LivePacketDevice GetPcapDevice(string deviceId)
-    {
-      return LivePacketDevice.AllLocalMachine.Where(elem => elem.Name.Contains(deviceId)).First();
-    }
-
     #endregion
 
 
     #region INTERFACE: IObservable
 
-    public void AddObserver(IObserver observer)
+    public void AddObserver(IObserverArpRequest observer)
     {
       this.observers.Add(observer);
     }
@@ -205,12 +194,6 @@ arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(la);
     public void NotifyProgressBar(int progress)
     {
       this.observers.ForEach(elem => elem.UpdateProgressbar(progress));
-    }
-
-
-    public void NotifyNewRecord(string inputData)
-    {
-      this.observers.ForEach(elem => elem.UpdateNewRecord(inputData));
     }
 
     #endregion
