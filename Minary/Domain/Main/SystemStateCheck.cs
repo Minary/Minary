@@ -8,7 +8,7 @@
   using System.Net.NetworkInformation;
 
 
-  public class MinaryFactory
+  public class SystemStateCheck
   {
 
     #region PUBLIC
