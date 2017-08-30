@@ -221,7 +221,7 @@
 
     public void SetMinaryState()
     {
-      IMinaryState minaryState = MinaryFactory.GetMinaryEventBase(this);
+      IMinaryState minaryState = SystemStateCheck.GetMinaryEventBase(this);
       minaryState.LoadState();
     }
 
