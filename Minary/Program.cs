@@ -26,7 +26,6 @@
       // Initialization
       Directory.SetCurrentDirectory(Application.StartupPath);
       DirectoryChecks(Application.StartupPath);
-      AttackServiceChecks(Application.StartupPath);
 
       Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
       Application.EnableVisualStyles();
@@ -49,32 +48,6 @@
       }
     }
 
-
-    private static void AttackServiceChecks(string baseDir)
-    {
-      string missingAttackServiceBinaries = string.Empty;
-      string[] attackServiceBinaries = new string[]
-      {
-        Config.ApeBinaryPath,
-        Config.HttpReverseProxyBinaryPath
-      };
-
-      foreach (string tmpBinPath in attackServiceBinaries)
-      {
-        string attackServiceBinaryFullPath = string.Format(@"{0}\{1}", baseDir, tmpBinPath);
-        if (!File.Exists(attackServiceBinaryFullPath))
-        {
-          missingAttackServiceBinaries += tmpBinPath + "\r\n";
-        }
-      }
-
-      if (missingAttackServiceBinaries.Length > 0)
-      {
-        string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
-        LogCons.Inst.Write(LogLevel.Error, message);
-        MessageDialog.Inst.ShowWarning(string.Empty, message, null);
-      }
-    }
 
     /// <summary>
     ///
