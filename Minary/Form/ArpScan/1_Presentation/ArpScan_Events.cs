@@ -193,7 +193,7 @@
       {
         try
         {
-          this.dgv_Targets.Rows[i].Cells["status"].Value = true;
+          this.dgv_Targets.Rows[i].Cells["Attack"].Value = true;
         }
         catch
         {
@@ -242,7 +242,7 @@
 
       for (int i = 0; i < this.dgv_Targets.Rows.Count; i++)
       {
-        Utils.TryExecute2(() => { this.dgv_Targets.Rows[i].Cells["status"].Value = false; });
+        Utils.TryExecute2(() => { this.dgv_Targets.Rows[i].Cells["Attack"].Value = false; });
       }
     }
 
@@ -262,85 +262,7 @@
 
       return base.ProcessDialogKey(keyData);
     }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void AllToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      List<Tuple<string, string>> targetList = new List<Tuple<string, string>>();
-      string ipAddress = string.Empty;
-      string macAddress = string.Empty;
-
-      foreach (DataGridViewRow tmpRow in this.dgv_Targets.Rows)
-      {
-        try
-        {
-          ipAddress = tmpRow.Cells["IpAddress"].Value.ToString();
-          macAddress = tmpRow.Cells["MacAddress"].Value.ToString();
-          targetList.Add(new Tuple<string, string>(macAddress, ipAddress));
-        }
-        catch (Exception)
-        {
-        }
-      }
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void UnscanedSystemsToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      List<Tuple<string, string>> targetList = new List<Tuple<string, string>>();
-      string ipAddress = string.Empty;
-      string macAddress = string.Empty;
-
-      foreach (DataGridViewRow tmpRow in this.dgv_Targets.Rows)
-      {
-        try
-        {
-          if (tmpRow.Cells["LastScanDate"] == null || tmpRow.Cells["LastScanDate"].Value == null || tmpRow.Cells["LastScanDate"].Value.ToString().Length <= 0)
-          {
-            ipAddress = tmpRow.Cells["IpAddress"].Value.ToString();
-            macAddress = tmpRow.Cells["MacAddress"].Value.ToString();
-            targetList.Add(new Tuple<string, string>(macAddress, ipAddress));
-          }
-        }
-        catch (Exception)
-        {
-        }
-      }
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void ThisSystemToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      List<Tuple<string, string>> targetList = new List<Tuple<string, string>>();
-      string ipAddress = string.Empty;
-      string macAddress = string.Empty;
-
-      try
-      {
-        ipAddress = this.dgv_Targets.SelectedRows[0].Cells["IpAddress"].Value.ToString();
-        macAddress = this.dgv_Targets.SelectedRows[0].Cells["MacAddress"].Value.ToString();
-        targetList.Add(new Tuple<string, string>(macAddress, ipAddress));
-      }
-      catch (Exception)
-      {
-      }
-    }
-
+    
 
     /// <summary>
     ///
