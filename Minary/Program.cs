@@ -24,9 +24,9 @@
       Application.SetCompatibleTextRenderingDefault(false);
 
       // Initialization
-      Directory.SetCurrentDirectory(System.Windows.Forms.Application.StartupPath);
-      DirectoryChecks(System.Windows.Forms.Application.StartupPath);
-      AttackServiceChecks(System.Windows.Forms.Application.StartupPath);
+      Directory.SetCurrentDirectory(Application.StartupPath);
+      DirectoryChecks(Application.StartupPath);
+      AttackServiceChecks(Application.StartupPath);
 
       Application.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
       Application.EnableVisualStyles();
@@ -68,12 +68,12 @@
         }
       }
 
-if (missingAttackServiceBinaries.Length > 0)
-{
-  string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
-  LogCons.Inst.Write(LogLevel.Error, message);
-  MessageDialog.Inst.ShowWarning(string.Empty, message, null);
-}
+      if (missingAttackServiceBinaries.Length > 0)
+      {
+        string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
+        LogCons.Inst.Write(LogLevel.Error, message);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, null);
+      }
     }
 
     /// <summary>
