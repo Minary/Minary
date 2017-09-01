@@ -1,5 +1,6 @@
 ﻿namespace Minary.Domain.DSL
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form;
   using Minary.Form.Template.DataTypes.Template;
   using Minary.LogConsole.Main;
@@ -35,7 +36,7 @@
 
     public void ScanNetwork()
     {
-      LogCons.Inst.Write(string.Format("Calls interface: ScanNetwork()"));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: ScanNetwork()");
 
       if (this.minaryTemplate == null || this.minaryTemplate.AttackConfig == null)
       {
@@ -68,7 +69,7 @@
 
     public void SelectTargetSystems(int noTargetSystems = MaxSelectedTargetSystems)
     {
-      LogCons.Inst.Write(string.Format("Calls interface: SelectTargetSystems()"));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: SelectTargetSystems()");
 
       if (noTargetSystems <= 0)
       {
@@ -86,35 +87,35 @@
 
     public void StartAttack()
     {
-      LogCons.Inst.Write(string.Format("Calls interface: StartAttack()"));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: StartAttack()");
       this.minaryMain.StartAttacksOnBackground();
     }
 
 
     public void HideAllTabPages()
     {
-      LogCons.Inst.Write(string.Format("Calls interface: HideAllTabPages()"));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: HideAllTabPages()");
       this.minaryMain.MinaryTabPageHandler.HideAllTabPages();
     }
 
 
     public void ActivatePlugin(string pluginName)
     {
-      LogCons.Inst.Write(string.Format("Calls interface: ActivatePlugin() \"{0}\"", pluginName));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: ActivatePlugin() \"{0}\"", pluginName);
       this.minaryMain.PluginHandler.ActivatePlugin(pluginName);
     }
 
 
     public void DeactivatePlugin(string pluginName)
     {
-      LogCons.Inst.Write(string.Format("Calls interface: DeactivatePlugin() \"{0}\"", pluginName));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: DeactivatePlugin() \"{0}\"", pluginName);
       this.minaryMain.PluginHandler.DeactivatePlugin(pluginName);
     }
 
 
     public void LoadPluginData(string tabPageName, TemplatePluginData pluginData)
     {
-      LogCons.Inst.Write(string.Format("Calls interface: LoadPluginData() \"{0}\"", tabPageName));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: LoadPluginData() \"{0}\"", tabPageName);
       Minary.DataTypes.MinaryExtension realPluginObj = this.minaryMain.PluginHandler.TabPagesCatalog[tabPageName];
       realPluginObj.PluginObject.OnLoadTemplateData(pluginData);
     }
@@ -122,7 +123,7 @@
 
     public void ResetAllPlugins()
     {
-      LogCons.Inst.Write(string.Format("Calls interface: ResetAllPluginsn()"));
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: ResetAllPluginsn()");
       this.minaryMain.ResetAllPlugins();
     }
 

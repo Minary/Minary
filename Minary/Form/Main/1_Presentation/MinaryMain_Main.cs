@@ -3,6 +3,7 @@
   using Minary.Certificates.Presentation;
   using Minary.Common;
   using Minary.Common.Associations;
+  using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
   using Minary.Domain.AttackService;
   using Minary.Domain.Input;
@@ -258,12 +259,12 @@
       {
         try
         {
-          LogCons.Inst.Write("Minary: Passing new target list to plugin \"{0}\". Total no. targets={1}", tmpKey, newTargetList.Count());
+          LogCons.Inst.Write(LogLevel.Debug, "Minary: Passing new target list to plugin \"{0}\". Total no. targets={1}", tmpKey, newTargetList.Count());
           this.pluginHandler.TabPagesCatalog[tmpKey].PluginObject.SetTargets(newTargetList.ToList());
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write("Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, "Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
         }
       }
     }
@@ -303,14 +304,14 @@
 
       if (this.attackServiceHandler.AttackServices.ContainsKey(serviceName) == false)
       {
-        LogCons.Inst.Write("AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
+        LogCons.Inst.Write(LogLevel.Warning, "AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
         return;
       }
 
       int tmpNewServiceStatus = (newStatus >= 0) ? (int)newStatus : (int)MinaryLib.AttackService.ServiceStatus.NotRunning;
 
       this.attackServiceMap[serviceName].Image = this.il_AttackServiceStat.Images[tmpNewServiceStatus];
-      LogCons.Inst.Write("AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());
+      LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());
     }
 
 
@@ -323,10 +324,11 @@
 
       foreach (PictureBox guiElement in this.Controls.OfType<PictureBox>())
       {
-        if (guiElement.Tag != null && guiElement.Tag.ToString() == attackServiceName)
+        if (guiElement.Tag != null && 
+            guiElement.Tag.ToString() == attackServiceName)
         {
           this.attackServiceMap.Add(attackServiceName, guiElement);
-          LogCons.Inst.Write("AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", attackServiceName, guiElement.Name);
+          LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", attackServiceName, guiElement.Name);
           break;
         }
       }

@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.ArpScan
 {
   using Minary.DataTypes.ArpScan;
+  using Minary.DataTypes.Enum;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using PcapDotNet.Core;
@@ -9,7 +10,6 @@
   using PcapDotNet.Packets.Ethernet;
   using System;
   using System.Collections.Generic;
-  using System.Linq;
 
 
   public class ReplyListener : IObservableArpResponse
@@ -18,7 +18,6 @@
     #region MEMBERS
 
     private ArpScanConfig arpScanConfig;
-    private Dictionary<string, SystemFound> systemsFound = new Dictionary<string, SystemFound>();
     private List<IObserverArpResponse> observers = new List<IObserverArpResponse>();
 
     #endregion
@@ -41,20 +40,6 @@
 
       while (true)
       {
-        // If ARP scan was cancelled break out of the loop
-        if (this.observers.Any(elem => elem.IsCancellationPending == true) == true)
-        {
-          LogCons.Inst.Write("ReplyListener.ReadArpPackets(): Cancellation detected");
-          break;
-        }
-
-        // If ARP scan has stopped break out of the loop
-        if (this.observers.Any(elem => elem.IsStopped == true) == true)
-        {
-          LogCons.Inst.Write("ReplyListener.ReadArpPackets(): ARP scan process has stopped");
-          break;
-        }
-
         // Receive and evaluate ARP response packet
         result = this.arpScanConfig.Communicator.ReceivePacket(out packet);
         if (result == PacketCommunicatorReceiveResult.Timeout)
@@ -69,7 +54,7 @@
           throw new Exception("Fatal Pcap exception occurred");
         }
 
-        System.Threading.Thread.Sleep(500);
+        System.Threading.Thread.Sleep(200);
       }
     }
 
@@ -97,18 +82,12 @@
       packet.Ethernet.Arp.SenderHardwareAddress.CopyTo(macAddrBytes, 0);
       string senderMac = Common.NetworkFunctions.MacByteArrayToString(macAddrBytes);
 
-      if (this.systemsFound.ContainsKey(senderMac))
-      {
-        return;
-      }
-
       byte[] ipAddrBytes = new byte[packet.Ethernet.Arp.SenderProtocolAddress.Count];
       packet.Ethernet.Arp.SenderProtocolAddress.CopyTo(ipAddrBytes, 0);
       string senderIp = Common.NetworkFunctions.IpByteArrayToString(ipAddrBytes);
 
       SystemFound newSystem = new SystemFound() { MacAddress = senderMac, IpAddress = senderIp };
-      this.systemsFound.Add(senderMac, newSystem);
-
+      LogCons.Inst.Write(LogLevel.Info, "ReplyListener.PacketHandler(): Found new target system {0}/{1}", senderMac, senderIp);
       SystemFound newRecord = new SystemFound(senderMac, senderIp);
       this.NotifyNewRecord(newRecord);
     }

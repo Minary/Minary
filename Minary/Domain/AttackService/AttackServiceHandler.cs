@@ -1,5 +1,6 @@
 ﻿namespace Minary.Domain.AttackService
 {
+  using Minary.DataTypes.Enum;
   using Minary.Domain.AttackService.Service;
   using Minary.Form;
   using Minary.LogConsole.Main;
@@ -113,7 +114,7 @@
         catch (Exception ex)
         {
           this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
-          LogCons.Inst.Write("AttackServiceHandler.StopAllServices(Exception): {0}: {1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.StopAllServices(Exception): {0}: {1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
         }
       }
     }
@@ -131,7 +132,7 @@
         catch (Exception ex)
         {
           this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
-          LogCons.Inst.Write("AttackServiceHandler.ShutDown(Exception): {0}", ex.Message);
+          LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.ShutDown(Exception): {0}", ex.Message);
         }
       }
     }
@@ -139,7 +140,7 @@
 
     public void OnServiceExited(string serviceName)
     {
-      LogCons.Inst.Write("AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly working", serviceName);
+      LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly working", serviceName);
       this.MinaryMain.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
     }

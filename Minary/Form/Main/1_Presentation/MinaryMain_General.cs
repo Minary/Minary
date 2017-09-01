@@ -1,6 +1,6 @@
 ﻿namespace Minary.Form
 {
-  using Minary.Common;
+  using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
@@ -128,7 +128,7 @@
           }
 
           this.cb_Interfaces.Items.Add(temp);
-          LogCons.Inst.Write(interfaceData);
+          LogCons.Inst.Write(LogLevel.Debug, interfaceData);
         }
       }
 
@@ -152,7 +152,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
       }
     }
 

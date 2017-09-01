@@ -2,6 +2,7 @@
 {
   using Minary.Common;
   using Minary.DataTypes.ArpScan;
+  using Minary.DataTypes.Enum;
   using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
@@ -13,7 +14,7 @@
 
   public partial class ArpScan : IObserverArpRequest
   {
-
+    
     #region EVENTS
 
     /// <summary>
@@ -361,7 +362,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("ArpScan: {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "ArpScan: {0}", ex.Message);
         this.dgv_Targets.ClearSelection();
       }
     }
@@ -375,17 +376,17 @@
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write("BGW_ArpScanSender(): Completed with error");
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanSender(): Completed with error");
         this.pb_ArpScan.Value = 0;
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write("BGW_ArpScanSender(): Completed by cancellation");
+        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanSender(): Completed by cancellation");
         this.pb_ArpScan.Value = 0;
       }
       else
       {
-        LogCons.Inst.Write("BGW_ArpScanSender(): Completed successfully. value={0}, maximum={1}", this.pb_ArpScan.Value, this.pb_ArpScan.Maximum);
+        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanSender(): Completed successfully. value={0}, maximum={1}", this.pb_ArpScan.Value, this.pb_ArpScan.Maximum);
         this.pb_ArpScan.PerformStep();
       }
 
@@ -405,7 +406,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("BGW_ArpScanSender(EXCEPTION): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanSender(EXCEPTION): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
         this.SetArpScanGuiOnStopped();
       }
 
@@ -416,7 +417,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("BGW_ArpScanSender(EXCEPTION2): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanSender(EXCEPTION2): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
         this.SetArpScanGuiOnStopped();
         return;
       }
@@ -431,15 +432,15 @@
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write("BGW_ArpScanListener(): Completed with error");
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(): Completed with error");
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write("BGW_ArpScanListener(): Completed by cancellation");
+        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Completed by cancellation");
       }
       else
       {
-        LogCons.Inst.Write("BGW_ArpScanListener(): Completed successfully");
+        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Completed successfully");
       }
     }
 
@@ -456,8 +457,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("BGW_ArpScanListener(EXCEPTION1): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
-        this.SetArpScanGuiOnStopped();
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(EXCEPTION1): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
         return;
       }
 
@@ -468,11 +468,11 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("BGW_ArpScanListener(EXCEPTION2): {0}\r\n{1}", ex.Message, ex.StackTrace);
-        this.SetArpScanGuiOnStopped();
-
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(EXCEPTION2): {0}\r\n{1}", ex.Message, ex.StackTrace);
         return;
       }
+
+      LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Background worker is started");
     }
 
     #endregion
@@ -487,7 +487,7 @@
 
       // Stop running ARP scan
       this.bgw_ArpScanSender.CancelAsync();
-      this.bgw_ArpScanListener.CancelAsync();
+//this.bgw_ArpScanListener.CancelAsync();
 
       // Send targetSystem list to modules
       this.minaryMain.PassNewTargetListToPlugins();
@@ -505,17 +505,17 @@
       if (this.bgw_ArpScanSender.IsBusy == true &&
           this.bgw_ArpScanSender.CancellationPending == false)
       {
-        LogCons.Inst.Write("ArpScan: Cancelling running ARP scan");
+        LogCons.Inst.Write(LogLevel.Info, "ArpScan: Cancel running ARP scan");
         this.bgw_ArpScanSender.CancelAsync();
       }
       else if (this.bgw_ArpScanSender.IsBusy == true &&
                this.bgw_ArpScanSender.CancellationPending == true)
       {
-        LogCons.Inst.Write("ArpScan: Cancellation running");
+        LogCons.Inst.Write(LogLevel.Info, "ArpScan: Cancellation running");
       }
       else
       {
-        LogCons.Inst.Write("ArpScan: ArpScan started");
+        LogCons.Inst.Write(LogLevel.Info, "ArpScan: ArpScan started");
 
         // Set Progress bar structure
         this.pb_ArpScan.Maximum = 100;
@@ -523,11 +523,13 @@
         this.pb_ArpScan.Value = 0;
         this.pb_ArpScan.Step = 10;
 
+        // R
+
         // Initiate start
         this.targetRecords.Clear();
         this.SetArpScanGuiOnStarted();
         this.bgw_ArpScanSender.RunWorkerAsync();
-        this.bgw_ArpScanListener.RunWorkerAsync();
+//this.bgw_ArpScanListener.RunWorkerAsync();
       }
     }
 

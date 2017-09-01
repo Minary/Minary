@@ -1,5 +1,6 @@
 ﻿namespace Minary.Domain.Input
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form;
   using Minary.LogConsole.Main;
   using System;
@@ -77,7 +78,7 @@
           }
           catch (Exception ex)
           {
-            LogCons.Inst.Write("Can't start named pipe - " + ex.StackTrace + "\n" + ex.ToString());
+            LogCons.Inst.Write(LogLevel.Fatal, "Can't start named pipe - " + ex.StackTrace + "\n" + ex.ToString());
             string message = string.Format("Can't start named pipe : {0}", ex.ToString());
             MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
           }
@@ -88,7 +89,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
+        LogCons.Inst.Write(LogLevel.Fatal, "An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
         string message = string.Format("An error occurred while starting the sniffer : ", ex.ToString());
         MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
       }
@@ -139,41 +140,27 @@
         }
         catch (TimeoutException tex)
         {
-          LogCons.Inst.Write(tex.StackTrace + "\n" + tex.ToString());
+          LogCons.Inst.Write(LogLevel.Error, tex.StackTrace + "\n" + tex.ToString());
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write("An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
+          LogCons.Inst.Write(LogLevel.Error, "An error occurred while starting the sniffer : {0}", ex.StackTrace + "\n" + ex.ToString());
         }
         finally
         {
           if (streamWriter != null)
           {
-            try
-            {
-              streamWriter.Close();
-            }
-            catch
-            {
-            }
+            Minary.Common.Utils.TryExecute2(streamWriter.Close);
           }
 
 
           if (namedPipeClient != null)
           {
-            try
-            {
-              namedPipeClient.Close();
-            }
-            catch
-            {
-            }
-
+            Minary.Common.Utils.TryExecute2(namedPipeClient.Close);
             namedPipeClient = null;
           }
         }
       }
-
 
       for (int i = 0; i < Config.PipeInstances; i++)
       {
@@ -217,7 +204,7 @@
           {
             if (tmpRecord.StartsWith("QUIT"))
             {
-              LogCons.Inst.Write("Minary.DataInput.InputModule.DataProcessingThread(): Received QUIT signal");
+              LogCons.Inst.Write(LogLevel.Info, "Minary.DataInput.InputModule.DataProcessingThread(): Received QUIT signal");
               processIsStopped = true;
               break;
             }
@@ -228,7 +215,7 @@
           }
           catch (Exception ex)
           {
-            LogCons.Inst.Write("Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
+            LogCons.Inst.Write(LogLevel.Error, "Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
           }
 
           // If activated in the GUI generate a short beep
@@ -242,7 +229,7 @@
         Thread.Sleep(300);
       }
 
-      LogCons.Inst.Write("Minary.DataInput.InputModule.DataProcessingThread(): Exiting thread");
+      LogCons.Inst.Write(LogLevel.Info, "Minary.DataInput.InputModule.DataProcessingThread(): Exiting thread");
     }
 
 
@@ -268,7 +255,7 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
 
           try
           {
@@ -312,19 +299,19 @@
             }
             catch (ObjectDisposedException odex)
             {
-              LogCons.Inst.Write(odex.StackTrace + "\n" + odex.ToString());
+              LogCons.Inst.Write(LogLevel.Error, odex.StackTrace + "\n" + odex.ToString());
               break;
             }
             catch (Exception ex)
             {
-              LogCons.Inst.Write(ex.StackTrace + "\n" + ex.ToString());
+              LogCons.Inst.Write(LogLevel.Error, ex.StackTrace + "\n" + ex.ToString());
               break;
             }
           }
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(ex.StackTrace + "\n" + ex.ToString());
+          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace + "\n" + ex.ToString());
         }
       }
     }
@@ -340,7 +327,6 @@
       {
         // TCP||aa:bb:cc:dd:ee:ff||192.168.0.123||51984||74.125.79.136||80||GET ...
         splitter = Regex.Split(newData, @"\|\|");
-
         if (splitter == null || splitter.Length < 7)
         {
           throw new Exception("Data packet has the wrong format");
@@ -348,7 +334,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("InputModules.UpdateMainTB(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "InputModules.UpdateMainTB(EXCEPTION): {0}", ex.Message);
         return;
       }
 
@@ -371,7 +357,7 @@
             }
             catch (Exception ex)
             {
-              LogCons.Inst.Write(ex.StackTrace);
+              LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
             }
           }
         }
@@ -391,7 +377,7 @@
             }
             catch (Exception ex)
             {
-              LogCons.Inst.Write(ex.StackTrace);
+              LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
             }
           }
         }
@@ -412,7 +398,7 @@
             }
             catch (Exception ex)
             {
-              LogCons.Inst.Write(ex.StackTrace);
+              LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
             }
           }
         }

@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.Template.Task
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form.Template.DataTypes.Template;
   using Minary.LogConsole.Main;
   using MinaryLib.Plugin;
@@ -42,7 +43,7 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write("TemplateHandler: {0}", ex.Message);
+          LogCons.Inst.Write(LogLevel.Error, "TemplateHandler: {0}", ex.Message);
         }
       }
     }

@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.Network
 {
   using Minary.Common;
+  using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
   using System;
@@ -38,7 +39,7 @@
       NetworkInterfaceConfig retVal = default(NetworkInterfaceConfig);
       foreach (NetworkInterfaceConfig tmpInterface in this.Interfaces)
       {
-        LogCons.Inst.Write("/" + tmpInterface.Id + "/" + interfaceId + "/");
+        LogCons.Inst.Write(LogLevel.Info, string.Format($"/{tmpInterface.Id}/{interfaceId}/"));
         if (tmpInterface.Id == interfaceId)
         {
           retVal = tmpInterface;
@@ -169,7 +170,7 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(ex.Message);
+          LogCons.Inst.Write(LogLevel.Error, ex.Message);
         }
       }
     }

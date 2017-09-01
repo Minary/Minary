@@ -1,5 +1,6 @@
 ﻿namespace Minary.Common
 {
+  using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
   using System;
   using System.Collections.Generic;
@@ -48,8 +49,7 @@
         }
         catch (Exception ex)
         {
-          string message = string.Format(@"An error occured while handling running instance of {0}:\r\n\r\n", tmpProcName, ex.Message);
-          LogCons.Inst.Write(message);
+          LogCons.Inst.Write(LogLevel.Error, @"An error occured while handling running instance of {0}:\r\n\r\n", tmpProcName, ex.Message);
         }
       }
     }

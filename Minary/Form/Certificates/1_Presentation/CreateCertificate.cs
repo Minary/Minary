@@ -1,5 +1,6 @@
 ﻿namespace Minary.Certificates.Presentation
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form;
   using Minary.LogConsole.Main;
   using System;
@@ -66,7 +67,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("CreateCertificate: {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "CreateCertificate: {0}", ex.Message);
         MessageDialog.Inst.ShowWarning(string.Empty, ex.Message, this);
       }
 

@@ -41,16 +41,14 @@
       // Another OnStopAttack instance is running
       if (this.bgwOnStopAttack.IsBusy == true)
       {
-        string message = "Another instance of the OnStopAttack back ground worker is already running.";
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Warning, "Another instance of the OnStopAttack back ground worker is already running.");
 
 
       // Another OnStartAttack instance is running
       }
       else if (this.bgwOnStartAttack.IsBusy == true)
       {
-        string message = "Another instance of the OnStartAttack back ground worker is already running.";
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Warning, "Another instance of the OnStartAttack back ground worker is already running.");
 
 
       // Fail if selected interface is invalid
@@ -164,7 +162,7 @@
       catch (Exception ex)
       {
         string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Error, message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
 
@@ -175,7 +173,7 @@
       catch (Exception ex)
       {
         string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Error, message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
 
@@ -191,7 +189,7 @@
       catch (Exception ex)
       {
         string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Error, message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
 
         this.pluginHandler.RestoreLastPluginLoadState();
