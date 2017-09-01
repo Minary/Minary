@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.Template.Presentation
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form.Template.DataTypes.Template;
   using Minary.LogConsole.Main;
   using MinaryLib.DataTypes;
@@ -125,7 +126,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("Error occurred while saving template : {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "Error occurred while saving template : {0}", ex.Message);
 
         string message = string.Format("Error occurred while saving template : {0}", ex.Message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);

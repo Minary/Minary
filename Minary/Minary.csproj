@@ -174,7 +174,7 @@
     <Compile Include="DataTypes\Enum\MinaryState.cs" />
     <Compile Include="DataTypes\Interface\IMinaryState.cs" />
     <Compile Include="DataTypes\Struct\NetworkInterface.cs" />
-    <Compile Include="Domain\Main\MinaryFactory.cs" />
+    <Compile Include="Domain\Main\SystemStateCheck.cs" />
     <Compile Include="Domain\Network\NetworkInterfaceHandler.cs" />
     <Compile Include="Domain\State\Service\ApeNotInstalled.cs" />
     <Compile Include="Domain\State\Service\HttpReverseProxyNotInstalled.cs" />
@@ -250,9 +250,10 @@
       <DependentUpon>LogConsole.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\LogConsole\2_Task\LogConsole.cs" />
-    <Compile Include="Form\LogConsole\DataTypes\IObservable.cs" />
-    <Compile Include="Form\LogConsole\DataTypes\IObserver.cs" />
+    <Compile Include="DataTypes\Interface\LogConsole\IObservable.cs" />
+    <Compile Include="DataTypes\Interface\LogConsole\IObserver.cs" />
     <Compile Include="Domain\MacVendor\MacVendorHandler.cs" />
+    <Compile Include="DataTypes\Enum\LogLevel.cs" />
     <Compile Include="Form\Main\1_Presentation\MinaryMain_Events.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -429,7 +430,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\LogConsole\" />
     <Folder Include="Form\Updates\2_Infrastructure\" />
   </ItemGroup>
   <ItemGroup>

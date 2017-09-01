@@ -1,7 +1,7 @@
 ﻿namespace Minary.Domain.AttackService.Service
 {
   using Minary.Common;
-  using Minary.DataTypes.Struct;
+  using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
@@ -104,7 +104,7 @@
       this.httpReverseProxyProc.EnableRaisingEvents = true;
       this.httpReverseProxyProc.Exited += new EventHandler(this.OnServiceExited);
 
-      LogCons.Inst.Write("HttpReverseProxy.StartService(): CommandLine:{0} {1}", httpReverseProxyBinaryPath, processParameters);
+      LogCons.Inst.Write(LogLevel.Debug, "HttpReverseProxy.StartService(): CommandLine:{0} {1}", httpReverseProxyBinaryPath, processParameters);
       this.serviceStatus = ServiceStatus.Running;
       this.httpReverseProxyProc.Start();
 
@@ -116,7 +116,7 @@
     {
       if (this.httpReverseProxyProc == null)
       {
-        LogCons.Inst.Write("HttpReverseProxy.StopService(): Can't stop attack service because it never was started");
+        LogCons.Inst.Write(LogLevel.Warning, "HttpReverseProxy.StopService(): Can't stop attack service because it never was started");
         this.serviceStatus = ServiceStatus.NotRunning;
         return ServiceStatus.NotRunning;
       }
@@ -124,7 +124,6 @@
       this.httpReverseProxyProc.EnableRaisingEvents = false;
       this.httpReverseProxyProc.Exited += null;
       this.serviceStatus = ServiceStatus.NotRunning;
-      LogCons.Inst.Write("HttpReverseProxy.StopService(): EnableRaisingEvents:{0}", this.httpReverseProxyProc.EnableRaisingEvents);
 
       try
       {
@@ -136,7 +135,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("HttpReverseProxy.StopService(Exception): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "HttpReverseProxy.StopService(Exception): {0}", ex.Message);
       }
 
       return ServiceStatus.NotRunning;
@@ -151,7 +150,7 @@
 
     private void OnServiceExited(object sender, System.EventArgs e)
     {
-      LogCons.Inst.Write("HttpReverseProxy.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.httpReverseProxyProc.ExitCode);
+      LogCons.Inst.Write(LogLevel.Error, "HttpReverseProxy.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.httpReverseProxyProc.ExitCode);
 
       this.httpReverseProxyProc.EnableRaisingEvents = false;
       this.httpReverseProxyProc.Exited += null;

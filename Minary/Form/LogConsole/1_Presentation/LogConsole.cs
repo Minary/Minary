@@ -1,6 +1,7 @@
 ﻿namespace Minary.LogConsole.Main
 {
-  using Minary.LogConsole.DataTypes;
+  using Minary.DataTypes.Enum;
+  using Minary.DataTypes.Interface;
   using System;
   using System.Collections.Generic;
   using System.Linq;
@@ -14,6 +15,8 @@
 
     private static LogCons instance;
     private Task.LogConsole logConsoleTask;
+    private LogLevel currentLevel;
+    private ToolStripMenuItem currentLevelObject;
 
     #endregion
 
@@ -50,16 +53,16 @@
     /// </summary>
     public void DumpSystemInformation()
     {
-      this.Write("Starting Log console");
-      this.Write("Minary version : {0}", Config.MinaryVersion);
-      this.Write("OS : {0}", Config.OS);
-      this.Write("Architecture : {0}", Config.Architecture);
-      this.Write("Language : {0}", Config.Language);
-      this.Write("Processor : {0}", Config.Processor);
-      this.Write("Num. processors : {0}", Config.NumProcessors);
-      this.Write(".Net version : {0}", Config.DotNetVersion);
-      this.Write("CLR version : {0}", Config.CommonLanguateRuntime);
-      this.Write("WinPcap version : {0}", Config.WinPcap);
+      this.Write(LogLevel.Info, "Starting Log console");
+      this.Write(LogLevel.Info, "Minary version : {0}", Config.MinaryVersion);
+      this.Write(LogLevel.Info, "OS : {0}", Config.OS);
+      this.Write(LogLevel.Info, "Architecture : {0}", Config.Architecture);
+      this.Write(LogLevel.Info, "Language : {0}", Config.Language);
+      this.Write(LogLevel.Info, "Processor : {0}", Config.Processor);
+      this.Write(LogLevel.Info, "Num. processors : {0}", Config.NumProcessors);
+      this.Write(LogLevel.Info, ".Net version : {0}", Config.DotNetVersion);
+      this.Write(LogLevel.Info, "CLR version : {0}", Config.CommonLanguateRuntime);
+      this.Write(LogLevel.Info, "WinPcap version : {0}", Config.WinPcap);
     }
 
 
@@ -68,8 +71,8 @@
     /// </summary>
     /// <param name="message"></param>
     /// <param name="formatArgs"></param>
-    public delegate void WriteDelegate(string message, params object[] formatArgs);
-    public void Write(string message, params object[] formatArgs)
+    public delegate void WriteDelegate(LogLevel level, string message, params object[] formatArgs);
+    public void Write(LogLevel level, string message, params object[] formatArgs)
     {
       if (this.InvokeRequired)
       {
@@ -77,6 +80,10 @@
         return;
       }
 
+      if (level < this.currentLevel)
+      {
+        return;
+      }
 
       if (string.IsNullOrEmpty(message))
       {
@@ -92,7 +99,7 @@
         }
 
         // this.logConsoleTask.AddLogMessage(message);
-        message += Environment.NewLine;
+        message = string.Format($"{level, -10}{message}{Environment.NewLine}");
         this.tb_LogContent.AppendText(message);
         this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
         this.tb_LogContent.ScrollToCaret();
@@ -146,6 +153,49 @@
       }
     }
 
+
+    private void LoglevelToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      ToolStripMenuItem clickedItem = sender as ToolStripMenuItem;
+      if (clickedItem != null)
+      {
+        this.currentLevelObject.CheckState = CheckState.Unchecked;
+        this.currentLevelObject = clickedItem;
+        this.currentLevelObject.CheckState = CheckState.Checked;
+
+        string tagName = clickedItem.Tag.ToString().ToLower();
+        if (tagName == "debug")
+        {
+          this.currentLevel = LogLevel.Debug;
+        }
+        else if (tagName == "info")
+        {
+          this.currentLevel = LogLevel.Info;
+        }
+        else if (tagName == "warning")
+        {
+          this.currentLevel = LogLevel.Warning;
+        }
+        else if (tagName == "error")
+        {
+          this.currentLevel = LogLevel.Error;
+        }
+        else if (tagName == "fatal")
+        {
+          this.currentLevel = LogLevel.Fatal;
+        }
+      }
+    }
+
+
+    private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      lock (this)
+      {
+        instance.tb_LogContent.Clear();
+      }
+    }
+
     #endregion
 
 
@@ -187,6 +237,10 @@
       this.InitializeComponent();
       this.logConsoleTask = new Task.LogConsole();
       this.logConsoleTask.AddObserver(this);
+
+      this.currentLevel = LogLevel.Info;
+      this.currentLevelObject = this.TSMI_Info;
+      this.currentLevelObject.CheckState = CheckState.Checked;
     }
 
     #endregion

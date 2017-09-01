@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.ArpScan
 {
   using Minary.DataTypes.ArpScan;
+  using Minary.DataTypes.Enum;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using PcapDotNet.Packets;
@@ -65,14 +66,14 @@
         // If ARP scan was cancelled break out of the loop
         if (this.observers.Any(elem => elem.IsCancellationPending == true))
         {
-          LogCons.Inst.Write($"ArpScanner.StartScanning(): Cancellation detected");
+          LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): Cancellation detected");
           break;
         }
 
         // If ARP scan has stopped break out of the loop
         if (this.observers.Any(elem => elem.IsCancellationPending == true))
         {
-          LogCons.Inst.Write($"ArpScanner.StartScanning(): ARP scan process has stopped");
+          LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): ARP scan process has stopped");
           break;
         }
 
@@ -87,7 +88,7 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write($"ArpScanner.StartScanning(): Exception occurred: {ex.Message}");
+          LogCons.Inst.Write(LogLevel.Error, $"ArpScanner.StartScanning(): Exception occurred: {ex.Message}");
           System.Threading.Thread.Sleep(5);
         }
 

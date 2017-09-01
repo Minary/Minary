@@ -1,6 +1,6 @@
 ﻿namespace Minary.LogConsole.Task
 {
-  using Minary.LogConsole.DataTypes;
+  using Minary.DataTypes.Interface;
   using System;
   using System.Collections.Concurrent;
   using System.Collections.Generic;

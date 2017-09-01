@@ -1,6 +1,7 @@
 ﻿namespace Minary.Domain.AttackService.Service
 {
   using Minary.Common;
+  using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
   using MinaryLib.AttackService;
   using System;
@@ -43,7 +44,7 @@
 
     private void OnServiceExited(object sender, System.EventArgs e)
     {
-      LogCons.Inst.Write("ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
+      LogCons.Inst.Write(LogLevel.Warning, "ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
 
       this.poisoningEngProc.EnableRaisingEvents = false;
       this.poisoningEngProc.Exited += null;
@@ -81,15 +82,15 @@
       if (serviceParameters.TargetList.Count <= 0)
       {
         this.serviceStatus = ServiceStatus.NotRunning;
-        LogCons.Inst.Write("ArpPoisoning.StartService(): No target system selected");
+        LogCons.Inst.Write(LogLevel.Warning, "ArpPoisoning.StartService(): No target system selected");
         return ServiceStatus.NotRunning;
       }
 
       // Write APE targetSystem hosts to list
       foreach (string tmpTargetMac in serviceParameters.TargetList.Keys)
       {
-          targetHosts += string.Format("{0},{1}\r\n", serviceParameters.TargetList[tmpTargetMac], tmpTargetMac);
-          LogCons.Inst.Write("ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", tmpTargetMac, serviceParameters.TargetList[tmpTargetMac]);
+        targetHosts += string.Format("{0},{1}\r\n", serviceParameters.TargetList[tmpTargetMac], tmpTargetMac);
+        LogCons.Inst.Write(LogLevel.Debug, "ArpPoisoning.StartService(): Poisoning targetSystem system: {0}/{1}", tmpTargetMac, serviceParameters.TargetList[tmpTargetMac]);
       }
 
       using (StreamWriter outputFile = new StreamWriter(targetHostsPath))
@@ -111,7 +112,7 @@
       this.poisoningEngProc.Exited += new EventHandler(this.OnServiceExited);
       this.serviceStatus = ServiceStatus.Running;
 
-      LogCons.Inst.Write("ArpPoisoning.StartService(): CommandLine:{0} {1}", apeBinaryPath, processParameters);
+      LogCons.Inst.Write(LogLevel.Debug, "ArpPoisoning.StartService(): CommandLine:{0} {1}", apeBinaryPath, processParameters);
       this.poisoningEngProc.Start();
 
       return ServiceStatus.Running;
@@ -122,7 +123,7 @@
     {
       if (this.poisoningEngProc == null)
       {
-        LogCons.Inst.Write("ArpPoisoning.StopService(): Can't stop attack service because it never was started");
+        LogCons.Inst.Write(LogLevel.Warning, "ArpPoisoning.StopService(): Can't stop attack service because it never was started");
         this.serviceStatus = ServiceStatus.NotRunning;
         return ServiceStatus.NotRunning;
       }
@@ -130,7 +131,7 @@
       this.poisoningEngProc.EnableRaisingEvents = false;
       this.poisoningEngProc.Exited += null;
       this.serviceStatus = ServiceStatus.NotRunning;
-      LogCons.Inst.Write("ArpPoisoning.StopService(): EnableRaisingEvents:{0}", this.poisoningEngProc.EnableRaisingEvents);
+      LogCons.Inst.Write(LogLevel.Info, "ArpPoisoning.StopService(): EnableRaisingEvents:{0}", this.poisoningEngProc.EnableRaisingEvents);
 
       try
       {
@@ -142,7 +143,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("ArpPoisoning.StopService(Exception): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "ArpPoisoning.StopService(Exception): {0}", ex.Message);
       }
 
       return ServiceStatus.NotRunning;

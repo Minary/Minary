@@ -1,5 +1,6 @@
 ﻿namespace Minary.Common
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form.Updates.Config;
   using Minary.LogConsole.Main;
   using System;
@@ -28,7 +29,7 @@
 
       if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
-        LogCons.Inst.Write("Can't check for new updates as no internet connection is available.");
+        LogCons.Inst.Write(LogLevel.Warning, "Can't check for new updates as no internet connection is available.");
         return;
       }
 
@@ -38,12 +39,12 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("CheckForMinarygUpdates(Exception): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "CheckForMinarygUpdates(Exception): {0}", ex.Message);
       }
 
       if (updateData == null || updateData.IsUpdateAvaliable == false)
       {
-        LogCons.Inst.Write("No new updates available.");
+        LogCons.Inst.Write(LogLevel.Info, "No new updates available.");
         return;
       }
 
@@ -68,7 +69,7 @@
 
       if (string.IsNullOrEmpty(repositoryRemote))
       {
-        LogCons.Inst.Write("Minary SyncAttackPatterns: Can't sync attack pattern files because no remote repository is defined in the configuration file");
+        LogCons.Inst.Write(LogLevel.Warning, "Minary SyncAttackPatterns: Can't sync attack pattern files because no remote repository is defined in the configuration file");
         return;
       }
 
@@ -78,18 +79,18 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("Minary SyncAttackPatterns: Initializing local attack pattern directory ({0}) failed: {1}", repositoryLocal, ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "Minary SyncAttackPatterns: Initializing local attack pattern directory ({0}) failed: {1}", repositoryLocal, ex.Message);
       }
 
       try
       {
         PatternFileManager.GitHubPatternFileMgr.SyncRepository(repositoryLocal, Config.GitUser, Config.GitEmail);
-        LogCons.Inst.Write("Minary SyncAttackPatterns: Attack pattern sync finished.");
+        LogCons.Inst.Write(LogLevel.Info, "Minary SyncAttackPatterns: Attack pattern sync finished.");
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("Minary SyncAttackPatterns: Syncing attack pattern failed: {0}", ex.Message);
-      }      
+        LogCons.Inst.Write(LogLevel.Error, "Minary SyncAttackPatterns: Syncing attack pattern failed: {0}", ex.Message);
+      }
     }
 
 
@@ -159,7 +160,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("FetchLatestReleaseMetaData(): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "FetchLatestReleaseMetaData(): {0}", ex.Message);
       }
       finally
       {

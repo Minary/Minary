@@ -1,4 +1,4 @@
-﻿namespace Minary.LogConsole.DataTypes
+﻿namespace Minary.DataTypes.Interface
 {
   using System.Collections.Generic;
 

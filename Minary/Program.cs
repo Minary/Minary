@@ -1,5 +1,6 @@
 ﻿namespace Minary
 {
+  using Minary.DataTypes.Enum;
   using Minary.Form;
   using System;
   using System.IO;
@@ -67,12 +68,12 @@
         }
       }
 
-      if (missingAttackServiceBinaries.Length > 0)
-      {
-        string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
-        LogCons.Inst.Write(message);
-        MessageDialog.Inst.ShowWarning(string.Empty, message, null);
-      }
+if (missingAttackServiceBinaries.Length > 0)
+{
+  string message = string.Format("The following attack services are missing: {0}", missingAttackServiceBinaries);
+  LogCons.Inst.Write(LogLevel.Error, message);
+  MessageDialog.Inst.ShowWarning(string.Empty, message, null);
+}
     }
 
     /// <summary>

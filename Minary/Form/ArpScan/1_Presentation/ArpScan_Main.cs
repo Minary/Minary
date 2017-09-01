@@ -1,15 +1,13 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
-  using Minary.DataTypes.ArpScan;
+  using Minary.DataTypes.Enum;
   using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using PcapDotNet.Core;
   using System;
   using System.ComponentModel;
-  using System.Linq;
   using System.Windows.Forms;
-  using System.Xml.Linq;
 
 
   public partial class ArpScan : Form
@@ -97,8 +95,16 @@
     /// 
     /// </summary>
     /// <param name="targetList"></param>
+    public delegate void ShowArpScanGuiDelegate(ref BindingList<string> targetList);
     public void ShowArpScanGui(ref BindingList<string> targetList)
     {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new ShowArpScanGuiDelegate(this.ShowArpScanGui), new object[] { targetList });
+        return;
+      }
+
+      // Initialize GUI values
       try
       {
         this.targetList = targetList;
@@ -119,11 +125,25 @@
 
         this.rb_Subnet.Checked = true;
         this.RB_Subnet_CheckedChanged(null, null);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(): {0}", ex.Message);
+      }
+
+      // Start ARP packet listener BGW
+      if (this.bgw_ArpScanListener.IsBusy == false)
+      {
+        this.bgw_ArpScanListener.RunWorkerAsync();
+      }
+
+      try
+      { 
         this.ShowDialog();
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("ArpScan.ShowDialog(): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(): {0}", ex.Message);
       }
     }
 
@@ -178,14 +198,14 @@
     private delegate void SetArpScanGuiOnStartedDelegate();
     private void SetArpScanGuiOnStarted()
     {
-      string startIp = string.Empty;
-      string stopIp = string.Empty;
-
       if (this.InvokeRequired)
       {
         this.BeginInvoke(new SetArpScanGuiOnStartedDelegate(this.SetArpScanGuiOnStarted), new object[] { });
         return;
       }
+
+      string startIp = string.Empty;
+      string stopIp = string.Empty;
 
       // Set cancellation/stopping status
       this.IsCancellationPending = false;
@@ -227,43 +247,6 @@
       this.bt_Scan.Text = "Stop";
       this.Cursor = Cursors.WaitCursor;
       this.dgv_Targets.Cursor = Cursors.WaitCursor;
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="inputData"></param>
-    public delegate void UpdateTextBoxDelegate(SystemFound systemData);
-    public void UpdateTextBox(SystemFound systemData)
-    {
-      if (this.InvokeRequired)
-      {
-        this.BeginInvoke(new UpdateTextBoxDelegate(this.UpdateTextBox), new object[] { systemData });
-        return;
-      }
-
-      try
-      {
-        // Determine vendor
-        string vendor = this.minaryMain.MacVendor.GetVendorByMac(systemData.MacAddress);
-
-        if (systemData.IpAddress != this.gatewayIp && systemData.IpAddress != this.localIp)
-        {
-          this.targetList.Add(systemData.IpAddress);
-          this.targetRecords.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
-          LogCons.Inst.Write("ArpScan.UpdateTextBox(): 1");
-        }
-        else
-        {
-
-          LogCons.Inst.Write("ArpScan.UpdateTextBox(): 2");
-        }
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(ex.StackTrace);
-      }
     }
 
     #endregion

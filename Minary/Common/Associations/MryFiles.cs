@@ -1,5 +1,6 @@
 ﻿namespace Minary.Common.Associations
 {
+  using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
   using System;
   using System.IO;
@@ -37,7 +38,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
       }
 
       try
@@ -51,7 +52,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write("Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
       }
 
       // Tell explorer the file association has been changed

@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form
 {
   using Minary.Common;
+  using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
   using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
@@ -80,7 +81,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
       }
     }
 
@@ -166,7 +167,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
       {
         string message = "Can't check for updates. Internet connection is down.";
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Warning, message);
         MessageDialog.Inst.ShowInformation(string.Empty, message, this);
 
         return;
@@ -192,7 +193,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
           else
           {
             string message = "No new updates available.";
-            LogCons.Inst.Write(message);
+            LogCons.Inst.Write(LogLevel.Info, message);
             MessageDialog.Inst.ShowInformation("Update information", message, this);
           }
         }
@@ -290,7 +291,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     /// <param name="e"></param>
     private void DGV_MainPlugins_DataError(object sender, DataGridViewDataErrorEventArgs e)
     {
-      LogCons.Inst.Write("Error occurred ({0}): {1}", sender.ToString(), e.ToString());
+      LogCons.Inst.Write(LogLevel.Error, "Error occurred ({0}): {1}", sender.ToString(), e.ToString());
     }
 
 
@@ -326,7 +327,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       catch (Exception ex)
       {
         string message = string.Format("An error occurred while loading template \"{0}\".\r\n\r\n{1}", Path.GetFileName(templateFileName), ex.Message);
-        LogCons.Inst.Write(message);
+        LogCons.Inst.Write(LogLevel.Error, message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
     }
@@ -458,18 +459,16 @@ this.currentMacAddress = interfaceStruct.MacAddress;
 
     private void BGW_OnStartAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-// bool retVal = (bool)e.Result;
-
       this.attackStarted = true;
 
       if (e.Error != null)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStartAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
         this.bgwOnStopAttack.RunWorkerAsync();
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Was cancelled");
+        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Was cancelled");
         this.bgwOnStopAttack.RunWorkerAsync();
       }
       //else if (retVal == false)
@@ -480,7 +479,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       //else if (retVal == true)
       else
       {
-        LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Procedure has completed successfully (bgwOnStopAttack==null:{0})", this.bgwOnStopAttack == null);
+        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Procedure has completed successfully (bgwOnStopAttack==null:{0})", this.bgwOnStopAttack == null);
       }
 
       this.Cursor = Cursors.Default;
@@ -518,15 +517,15 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStopAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Was cancelled");
+        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStopAttackCompleted(): Was cancelled");
       }
       else
       {
-        LogCons.Inst.Write("Minary.BGW_OnStopAttackCompleted(): Procedure completed");
+        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStopAttackCompleted(): Procedure completed");
       }
 
       this.attackStarted = false;
@@ -550,7 +549,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     {
       foreach (string key in this.pluginHandler.TabPagesCatalog.Keys)
       {
-        LogCons.Inst.Write("Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
+        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
 
         try
         {
@@ -561,7 +560,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
         }
       }
     }
@@ -573,7 +572,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       {
         try
         {
-          LogCons.Inst.Write("Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName);
+          LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName);
           ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters);
           this.SetNewAttackServiceState(tmpKey, newServiceStatus);
         }
