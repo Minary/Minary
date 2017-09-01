@@ -74,7 +74,7 @@ END:
       {
         action();
       }
-      catch (Exception)
+      catch (Exception ex)
       {
       }
     }

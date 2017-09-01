@@ -44,10 +44,6 @@
       this.cms_ManageTargets = new System.Windows.Forms.ContextMenuStrip(this.components);
       this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.unselectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.fingerprintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.thisSystemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.unscanedSystemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.bt_Scan = new System.Windows.Forms.Button();
       this.pb_ArpScan = new System.Windows.Forms.ProgressBar();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
@@ -193,55 +189,23 @@
       this.cms_ManageTargets.ImageScalingSize = new System.Drawing.Size(24, 24);
       this.cms_ManageTargets.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectAllToolStripMenuItem,
-            this.unselectAllToolStripMenuItem,
-            this.fingerprintToolStripMenuItem});
+            this.unselectAllToolStripMenuItem});
       this.cms_ManageTargets.Name = "cms_ManageTargets";
-      this.cms_ManageTargets.Size = new System.Drawing.Size(173, 94);
+      this.cms_ManageTargets.Size = new System.Drawing.Size(199, 97);
       // 
       // selectAllToolStripMenuItem
       // 
       this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-      this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
+      this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
       this.selectAllToolStripMenuItem.Text = "Select all";
       this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
       // 
       // unselectAllToolStripMenuItem
       // 
       this.unselectAllToolStripMenuItem.Name = "unselectAllToolStripMenuItem";
-      this.unselectAllToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
+      this.unselectAllToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
       this.unselectAllToolStripMenuItem.Text = "Unselect all";
       this.unselectAllToolStripMenuItem.Click += new System.EventHandler(this.UnselectAllToolStripMenuItem_Click);
-      // 
-      // fingerprintToolStripMenuItem
-      // 
-      this.fingerprintToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.thisSystemToolStripMenuItem,
-            this.unscanedSystemsToolStripMenuItem,
-            this.allToolStripMenuItem});
-      this.fingerprintToolStripMenuItem.Name = "fingerprintToolStripMenuItem";
-      this.fingerprintToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
-      this.fingerprintToolStripMenuItem.Text = "Fingerprint";
-      // 
-      // thisSystemToolStripMenuItem
-      // 
-      this.thisSystemToolStripMenuItem.Name = "thisSystemToolStripMenuItem";
-      this.thisSystemToolStripMenuItem.Size = new System.Drawing.Size(242, 30);
-      this.thisSystemToolStripMenuItem.Text = "This system";
-      this.thisSystemToolStripMenuItem.Click += new System.EventHandler(this.ThisSystemToolStripMenuItem_Click);
-      // 
-      // unscanedSystemsToolStripMenuItem
-      // 
-      this.unscanedSystemsToolStripMenuItem.Name = "unscanedSystemsToolStripMenuItem";
-      this.unscanedSystemsToolStripMenuItem.Size = new System.Drawing.Size(242, 30);
-      this.unscanedSystemsToolStripMenuItem.Text = "Unscaned systems";
-      this.unscanedSystemsToolStripMenuItem.Click += new System.EventHandler(this.UnscanedSystemsToolStripMenuItem_Click);
-      // 
-      // allToolStripMenuItem
-      // 
-      this.allToolStripMenuItem.Name = "allToolStripMenuItem";
-      this.allToolStripMenuItem.Size = new System.Drawing.Size(242, 30);
-      this.allToolStripMenuItem.Text = "All systems";
-      this.allToolStripMenuItem.Click += new System.EventHandler(this.AllToolStripMenuItem_Click);
       // 
       // bt_Scan
       // 
@@ -316,10 +280,6 @@
     private System.Windows.Forms.ContextMenuStrip cms_ManageTargets;
     private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem unselectAllToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem fingerprintToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem allToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem unscanedSystemsToolStripMenuItem;
-    private System.Windows.Forms.ToolStripMenuItem thisSystemToolStripMenuItem;
     private System.Windows.Forms.Button bt_Scan;
     private System.Windows.Forms.ProgressBar pb_ArpScan;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
