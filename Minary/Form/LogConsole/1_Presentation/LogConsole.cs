@@ -76,7 +76,7 @@
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new WriteDelegate(this.Write), new object[] { message, formatArgs });
+        this.BeginInvoke(new WriteDelegate(this.Write), new object[] { level, message, formatArgs });
         return;
       }
 
