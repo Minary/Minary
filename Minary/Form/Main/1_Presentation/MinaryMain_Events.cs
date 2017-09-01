@@ -471,12 +471,6 @@ this.currentMacAddress = interfaceStruct.MacAddress;
         LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Was cancelled");
         this.bgwOnStopAttack.RunWorkerAsync();
       }
-      //else if (retVal == false)
-      //{
-      //  LogCons.Inst.Write("Minary.BGW_OnStartAttackCompleted(): Procedure has completed unsuccessfully");
-      //  this.bgwOnStopAttack.RunWorkerAsync();
-      //}
-      //else if (retVal == true)
       else
       {
         LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Procedure has completed successfully (bgwOnStopAttack==null:{0})", this.bgwOnStopAttack == null);

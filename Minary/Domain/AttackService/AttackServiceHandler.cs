@@ -140,7 +140,7 @@
 
     public void OnServiceExited(string serviceName)
     {
-      LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly working", serviceName);
+      LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly", serviceName);
       this.MinaryMain.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
     }
