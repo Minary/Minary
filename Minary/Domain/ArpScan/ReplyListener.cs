@@ -10,6 +10,7 @@
   using PcapDotNet.Packets.Ethernet;
   using System;
   using System.Collections.Generic;
+  using System.Linq;
 
 
   public class ReplyListener : IObservableArpResponse
@@ -40,6 +41,13 @@
 
       while (true)
       {
+        System.Threading.Thread.Sleep(200);
+
+        if (this.observers.Any(elem => elem.IsStopped == true))
+        {
+          continue;
+        }
+
         // Receive and evaluate ARP response packet
         result = this.arpScanConfig.Communicator.ReceivePacket(out packet);
         if (result == PacketCommunicatorReceiveResult.Timeout)
@@ -53,8 +61,6 @@
         {
           throw new Exception("Fatal Pcap exception occurred");
         }
-
-        System.Threading.Thread.Sleep(200);
       }
     }
 
