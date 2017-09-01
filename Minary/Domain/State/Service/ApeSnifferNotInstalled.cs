@@ -6,7 +6,7 @@
   using System;
 
 
-  public class HttpReverseProxyNotInstalled : IMinaryState
+  public class ApeSnifferNotInstalled : IMinaryState
   {
 
     #region MEMBERS
@@ -18,7 +18,7 @@
 
     #region PUBLIC
 
-    public HttpReverseProxyNotInstalled(MinaryMain minaryObj)
+    public ApeSnifferNotInstalled(MinaryMain minaryObj)
     {
       this.minaryObj = minaryObj;
       this.CurrentState = MinaryState.NetworkMissing;
@@ -41,13 +41,13 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      throw new Exception("Can't start Minary because HttpReverseProxy is not installed.");
+      throw new Exception("Can't start Minary because APE is not installed.");
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      throw new Exception("Can't scan network because HttpReverseProxy is not installed.");
+      throw new Exception("Can't scan network because APE is not installed.");
     }
 
 
