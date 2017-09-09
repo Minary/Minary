@@ -104,10 +104,9 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       // Set the Wait cursor.
       this.Cursor = Cursors.WaitCursor;
 
-      // Shut down all plugins
-      if (!this.bgwOnStopAttack.IsBusy)
+      if (this.bgwOnStartAttack.IsBusy)
       {
-        this.bgwOnStopAttack.RunWorkerAsync();
+        this.StopAttack();
       }
 
       // Remove all static ARP entries
@@ -273,6 +272,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       }
     }
 
+
     /// <summary>
     ///
     /// </summary>
@@ -413,23 +413,9 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void BGW_OnStartAttackDelegate(object sender, DoWorkEventArgs e);
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
-      if (this.InvokeRequired)
-      {
-        this.BeginInvoke(new BGW_OnStartAttackDelegate(this.BGW_OnStartAttack), new object[] { sender, e });
-        return;
-      }
-
-      e.Result = false;
       this.Cursor = Cursors.WaitCursor;
-
-      // Disable all GUI elements
-      Utils.TryExecute2(this.DisableGuiElements);
-
-      // Start all plugins
-      Utils.TryExecute2(this.StartAllPlugins);
 
       // Start all services
       ServiceParameters currentServiceParams = new ServiceParameters()
@@ -442,38 +428,42 @@ this.currentMacAddress = interfaceStruct.MacAddress;
                         ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
       };
 
-      try
-      {
-        this.StartAllServices(currentServiceParams);
-
-        // NOTE: The "Completed" method does not receive the
-        //       caught exceptions. The outcome has to be done
-        //       via return value  :/
-        e.Result = true;
-      }
-      catch
-      {
-      }
+      this.StartAllServices(currentServiceParams);
     }
 
 
+    private delegate void BGW_OnStartAttackCompletedDelegate(object sender, RunWorkerCompletedEventArgs e);
     private void BGW_OnStartAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new BGW_OnStartAttackCompletedDelegate(this.BGW_OnStartAttackCompleted), new object[] { sender, e });
+        return;
+      }
+
       this.attackStarted = true;
 
       if (e.Error != null)
       {
-        LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStartAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
-        this.bgwOnStopAttack.RunWorkerAsync();
+        this.StopAttack();
+        string message = string.Format($"The following error occurred while starting attack services:\r\n\r\n{e.Error.Message}");
+        LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStartAttackCompleted(): {0}", message);
+        MessageDialog.Inst.ShowWarning("Attack services", message, this);
       }
       else if (e.Cancelled == true)
       {
         LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Was cancelled");
-        this.bgwOnStopAttack.RunWorkerAsync();
+        this.StopAttack();
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Procedure has completed successfully (bgwOnStopAttack==null:{0})", this.bgwOnStopAttack == null);
+        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAttackCompleted(): Procedure has completed successfully");
+
+        // Disable all GUI elements
+        Utils.TryExecute2(this.DisableGuiElements);
+
+        // Start all plugins
+        Utils.TryExecute2(this.StartAllPlugins);
       }
 
       this.Cursor = Cursors.Default;
@@ -485,16 +475,14 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void BGW_OnStopAttackDelegate(object sender, DoWorkEventArgs e);
-    private void BGW_OnStopAttack(object sender, DoWorkEventArgs e)
+    public delegate void StopAttackDelegate();
+    private void StopAttack()
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new BGW_OnStopAttackDelegate(this.BGW_OnStopAttack), new object[] { sender, e });
+        this.BeginInvoke(new StopAttackDelegate(this.StopAttack), new object[] { });
         return;
       }
-
-      this.Cursor = Cursors.WaitCursor;
 
       // Enable GUI elements
       Utils.TryExecute2(this.EnableGuiElements);

@@ -78,26 +78,6 @@
     }
 
 
-
-    //public void StartAllServices(ServiceParameters serviceParameters)
-    //{
-    //  foreach (string tmpKey in this.attackServices.Keys)
-    //  {
-    //    try
-    //    {
-    //      LogCons.Inst.Write("AttackServiceHandler.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServices[tmpKey].ServiceName);
-    //      ServiceStatus newServiceStatus = this.attackServices[tmpKey].StartService(serviceParameters);
-    //      this.SetNewState(tmpKey, newServiceStatus);
-    //    }
-    //    catch (Exception)
-    //    {
-    //      this.SetNewState(tmpKey, ServiceStatus.Error);
-    //      throw;
-    //    }
-    //  }
-    //}
-
-
     public void StopAllServices()
     {
       foreach (string tmpKey in this.attackServices.Keys)
