@@ -179,12 +179,7 @@
       this.bgwOnStartAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
       this.bgwOnStartAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStartAttack);
       this.bgwOnStartAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStartAttackCompleted);
-
-      // Set AttackStop events
-      this.bgwOnStopAttack = new BackgroundWorker() { WorkerSupportsCancellation = true };
-      this.bgwOnStopAttack.DoWork += new DoWorkEventHandler(this.BGW_OnStopAttack);
-      this.bgwOnStopAttack.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BGW_OnStopAttackCompleted);
-
+      
       // Instantiate (own + foreign) application layers
       this.minaryTaskFacade = new TaskFacade(this, this.dgv_MainPlugins);
       this.templateTaskLayer = new Template.Task.TemplateHandler(this);
@@ -280,10 +275,10 @@
       }
 
       this.EnableGuiElements();
-
-      if (!this.bgwOnStopAttack.IsBusy)
+      
+      if (this.bgwOnStartAttack.IsBusy)
       {
-        this.bgwOnStopAttack.RunWorkerAsync();
+        this.StopAttack();
       }
 
       this.SetNewAttackServiceState(serviceName, ServiceStatus.Error);

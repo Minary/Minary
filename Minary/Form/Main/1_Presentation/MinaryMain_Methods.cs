@@ -15,14 +15,18 @@
 
     #region MEMBERS
 
+    private BackgroundWorker bgwOnStartAttack;
+
+    #endregion
+
+
+    #region PROPERTIES
+
     public TabPage TabPagePluginCatalog { get { return this.tp_MinaryPluginCatalog; } }
 
     public TabControl TCPlugins { get { return this.tc_Plugins; } }
 
     public BindingList<PluginTableRecord> DgvUsedPlugins { get { return this.usedPlugins; } }
-
-    private BackgroundWorker bgwOnStartAttack;
-    private BackgroundWorker bgwOnStopAttack;
 
     #endregion
 
@@ -37,16 +41,9 @@
         this.BeginInvoke(new StartAttacksOnBackgroundDelegate(this.StartAttacksOnBackground), new object[] { });
         return;
       }
-
-      // Another OnStopAttack instance is running
-      if (this.bgwOnStopAttack.IsBusy == true)
-      {
-        LogCons.Inst.Write(LogLevel.Warning, "Another instance of the OnStopAttack back ground worker is already running.");
-
-
+      
       // Another OnStartAttack instance is running
-      }
-      else if (this.bgwOnStartAttack.IsBusy == true)
+      if (this.bgwOnStartAttack.IsBusy == true)
       {
         LogCons.Inst.Write(LogLevel.Warning, "Another instance of the OnStartAttack back ground worker is already running.");
 
@@ -79,7 +76,7 @@
       }
       else
       {
-        this.bgwOnStopAttack.RunWorkerAsync();
+        this.StopAttack();
       }
     }
 
