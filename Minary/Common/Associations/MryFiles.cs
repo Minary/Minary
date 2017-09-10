@@ -27,8 +27,8 @@
       string minaryFullPath = Application.ExecutablePath;
       string cwd = Directory.GetCurrentDirectory();
       string iconPath = Path.Combine(cwd, "images", "Minary.ico");
+      AF_FileAssociator assoc = new AF_FileAssociator(string.Format(".{0}", Config.MinaryFileExtension));
 
-      Minary.Common.Associations.AF_FileAssociator assoc = new Minary.Common.Associations.AF_FileAssociator(string.Format(".{0}", Minary.Config.MinaryFileExtension));
       try
       {
         if (assoc.Exists)
@@ -45,10 +45,10 @@
       {
         assoc.Create(
                      "Minary_250",
-                     string.Format("Minary .{0} file association", Minary.Config.MinaryFileExtension),
-                     new Minary.Common.Associations.ProgramIcon(iconPath),
-                     new Minary.Common.Associations.ExecApplication(minaryFullPath),
-                     new Minary.Common.Associations.OpenWithList(new string[] { "Minary_250" }));
+                     string.Format("Minary .{0} file association", Config.MinaryFileExtension),
+                     new ProgramIcon(iconPath),
+                     new ExecApplication(minaryFullPath),
+                     new OpenWithList(new string[] { "Minary_250" }));
       }
       catch (Exception ex)
       {
