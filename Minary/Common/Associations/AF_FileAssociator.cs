@@ -104,9 +104,8 @@
         throw new Exception("Either the icon or executable application object is invalid...");
       }
 
-      Registry.ClassesRoot.CreateSubKey(Extension).SetValue(string.Empty, progID);
-      RegistryKey key = Registry.ClassesRoot.CreateSubKey(progID,
-          RegistryKeyPermissionCheck.ReadWriteSubTree);
+      Registry.ClassesRoot.CreateSubKey(this.Extension).SetValue(string.Empty, progID);
+      RegistryKey key = Registry.ClassesRoot.CreateSubKey(progID, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
       if (description != null)
       {
@@ -155,15 +154,16 @@
 
         if (this.Exists)
         {
-          if (Registry.ClassesRoot.OpenSubKey(Extension,
-              RegistryKeyPermissionCheck.ReadWriteSubTree,
-              RegistryRights.FullControl) != null)
+          if (Registry.ClassesRoot.OpenSubKey(
+                                              this.Extension,
+                                              RegistryKeyPermissionCheck.ReadWriteSubTree,
+                                              RegistryRights.FullControl) != null)
           {
-            toReturn = GetProgID;
+            toReturn = this.GetProgID;
           }
           else
           {
-            throw new Exception("The extension's association tmpKeyKey (" + GetProgID + ") doesn't exist, please use the Create() function to setup everything...");
+            throw new Exception($"The extension's association tmpKeyKey ({this.GetProgID}) doesn't exist, please use the Create() function to setup everything...");
           }
         }
         else
