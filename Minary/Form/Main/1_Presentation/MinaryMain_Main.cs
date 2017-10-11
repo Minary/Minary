@@ -274,8 +274,7 @@
         return;
       }
 
-      this.EnableGuiElements();
-      
+      this.EnableGuiElements();      
       if (this.bgwOnStartAttack.IsBusy)
       {
         this.StopAttack();
