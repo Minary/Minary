@@ -441,8 +441,6 @@ this.currentMacAddress = interfaceStruct.MacAddress;
         return;
       }
 
-      this.attackStarted = true;
-
       if (e.Error != null)
       {
         this.StopAttack();
@@ -465,7 +463,8 @@ this.currentMacAddress = interfaceStruct.MacAddress;
         // Start all plugins
         Utils.TryExecute2(this.StartAllPlugins);
       }
-
+ 
+      this.attackStarted = true;
       this.Cursor = Cursors.Default;
     }
 
@@ -492,28 +491,9 @@ this.currentMacAddress = interfaceStruct.MacAddress;
 
       // Stop all services
       Utils.TryExecute2(this.attackServiceHandler.StopAllServices);
-    }
-
-
-    private void BGW_OnStopAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      if (e.Error != null)
-      {
-        LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStopAttackCompleted(): EXCEPTION: {0}\r\n\r\n{1}", e.Error.Message, e.Error.StackTrace);
-      }
-      else if (e.Cancelled == true)
-      {
-        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStopAttackCompleted(): Was cancelled");
-      }
-      else
-      {
-        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStopAttackCompleted(): Procedure completed");
-      }
-
       this.attackStarted = false;
-      this.Cursor = Cursors.Default;
     }
-
+    
 
     private void CertAuthorityToolStripMenuItem_Click(object sender, EventArgs e)
     {

@@ -47,14 +47,12 @@
       {
         LogCons.Inst.Write(LogLevel.Warning, "Another instance of the OnStartAttack back ground worker is already running.");
 
-
       // Fail if selected interface is invalid
       }
       else if (this.cb_Interfaces.SelectedIndex < 0)
       {
         string message = "No network interface selected";
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
-
 
       // Notify user to select at least one target system
       }
@@ -76,7 +74,9 @@
       }
       else
       {
+        this.Cursor = Cursors.WaitCursor;
         this.StopAttack();
+        this.Cursor = Cursors.Default;
       }
     }
 
