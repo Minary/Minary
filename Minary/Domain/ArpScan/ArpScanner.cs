@@ -83,7 +83,7 @@
         try
         {
           Packet arpPacket = this.BuildArpWhoHasPacket(tmpIpInt);
-          System.Threading.Thread.Sleep(5);
+          System.Threading.Thread.Sleep(13);
           this.config.Communicator.SendPacket(arpPacket);
         }
         catch (Exception ex)
