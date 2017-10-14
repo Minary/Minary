@@ -138,7 +138,7 @@
       }
 
       try
-      { 
+      {
         this.ShowDialog();
       }
       catch (Exception ex)

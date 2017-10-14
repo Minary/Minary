@@ -7,7 +7,6 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
-  using System.Collections.Generic;
   using System.ComponentModel;
   using System.Windows.Forms;
 
@@ -409,7 +408,6 @@
 
       // Stop running ARP scan
       this.bgw_ArpScanSender.CancelAsync();
-//this.bgw_ArpScanListener.CancelAsync();
 
       // Send targetSystem list to modules
       this.minaryMain.PassNewTargetListToPlugins();
@@ -445,13 +443,10 @@
         this.pb_ArpScan.Value = 0;
         this.pb_ArpScan.Step = 10;
 
-        // R
-
         // Initiate start
         this.targetRecords.Clear();
         this.SetArpScanGuiOnStarted();
         this.bgw_ArpScanSender.RunWorkerAsync();
-//this.bgw_ArpScanListener.RunWorkerAsync();
       }
     }
 
