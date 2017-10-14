@@ -358,7 +358,15 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     /// <param name="e"></param>
     private void SearchNetworkInterfacesToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      this.LoadNicSettings();
+      // If no interface was found reset current interface selection
+      if (this.LoadNicSettings() == false)
+      {
+        this.tb_GatewayIp.Text = string.Empty;
+        this.tb_GatewayMac.Text = string.Empty;
+        this.tb_NetworkStartIp.Text = string.Empty;
+        this.tb_NetworkStopIp.Text = string.Empty;
+        this.tb_Vendor.Text = string.Empty;
+      }
     }
 
 

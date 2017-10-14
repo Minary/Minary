@@ -127,8 +127,9 @@
     }
 
 
-    private void LoadInterfaces()
+    public void LoadInterfaces()
     {
+      this.Interfaces.Clear();
       this.AllAttachednetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
       foreach (NetworkInterface tmpInterface in this.AllAttachednetworkInterfaces)
       {

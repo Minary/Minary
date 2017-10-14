@@ -89,20 +89,21 @@
     /// <summary>
     ///
     /// </summary>
-    public void LoadNicSettings()
+    public bool LoadNicSettings()
     {
       string temp = string.Empty;
       // Empty Interfaces ComboBox and repopulate it with found interfaces.
       this.cb_Interfaces.Items.Clear();
-
       if (!NetworkInterface.GetIsNetworkAvailable())
       {
-        return;
+        return false;
       }
 
+      // Return if no internal interface listing could be generated
+      this.nicHandler.LoadInterfaces();
       if (this.nicHandler.Interfaces.Count <= 0)
       {
-        return;
+        return false;
       }
 
       // Dump all interfaces to the Log console
@@ -154,6 +155,8 @@
       {
         LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
       }
+
+      return true;
     }
 
 
