@@ -8,13 +8,6 @@
   public class ArpScan
   {
 
-    #region MEMBERS
-    
-//    private Infrastructure.ArpScan infrastructure;
-
-    #endregion
-
-
     #region PUBLIC
 
     /// <summary>
@@ -23,7 +16,6 @@
     /// </summary>
     public ArpScan()
     {
- //     this.infrastructure = new Infrastructure.ArpScan();
     }
 
 
@@ -32,7 +24,6 @@
     /// </summary>
     public void StopArpScan()
     {
- //     this.infrastructure.StopArpScan();
     }
 
 
@@ -74,17 +65,6 @@
         int tmpStopIpInt = startIpInt + arpConfig.MaxNumberSystemsToScan;
         arpConfig.NetworkStopIp = IpHelper.IntToIpString(tmpStopIpInt);
       }
-
- //     this.infrastructure.StartArpScan(arpConfig);
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    public void KillAllRunningArpScans()
-    {
-//      this.infrastructure.KillAllRunningArpScans();
     }
 
     #endregion
