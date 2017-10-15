@@ -41,7 +41,7 @@
         this.BeginInvoke(new StartAttacksOnBackgroundDelegate(this.StartAttacksOnBackground), new object[] { });
         return;
       }
-      
+
       // Another OnStartAttack instance is running
       if (this.bgwOnStartAttack.IsBusy == true)
       {
