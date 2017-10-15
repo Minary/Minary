@@ -123,6 +123,8 @@
       this.snifferProc.EnableRaisingEvents = false;
       this.snifferProc.Exited += null;
       this.attackServiceHandler.OnServiceExited(this.serviceName);
+
+      
     }
 
     #endregion
