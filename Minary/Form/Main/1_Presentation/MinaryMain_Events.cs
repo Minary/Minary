@@ -483,7 +483,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
     /// <param name="sender"></param>
     /// <param name="e"></param>
     public delegate void StopAttackDelegate();
-    private void StopAttack()
+    public void StopAttack()
     {
       if (this.InvokeRequired)
       {
