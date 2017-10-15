@@ -123,6 +123,7 @@
       LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly", serviceName);
       this.MinaryMain.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
+      this.StopAllServices();
     }
 
     #endregion
