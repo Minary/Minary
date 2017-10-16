@@ -36,7 +36,7 @@
       string[] processNameArray =
         {
                                     Config.ApeProcessName,
-                                    Config.ApeSnifferProcessName,
+                                    Config.SnifferProcessName,
                                     Config.HttpReverseProxyName,
                                     Assembly.GetExecutingAssembly().GetName().Name
         };

@@ -35,9 +35,9 @@
       {
         return new ApeNotInstalled(minaryObj);
       }
-      else if ((state & MinaryState.ApeSnifferMissing) == MinaryState.ApeSnifferMissing)
+      else if ((state & MinaryState.SnifferMissing) == MinaryState.SnifferMissing)
       {
-        return new ApeSnifferNotInstalled(minaryObj);
+        return new SnifferNotInstalled(minaryObj);
       }
       else if ((state & MinaryState.HttpProxyMissing) == MinaryState.HttpProxyMissing)
       {
@@ -75,10 +75,10 @@
         retVal |= MinaryState.ApeBinaryMissing;
       }
 
-      // Check SystemService: APESniffer
-      if (File.Exists(Config.ApeSnifferBinaryPath) == false)
+      // Check SystemService: Sniffer
+      if (File.Exists(Config.SnifferBinaryPath) == false)
       {
-        retVal |= MinaryState.ApeSnifferMissing;
+        retVal |= MinaryState.SnifferMissing;
       }
 
       // Check SystemService: HttpProxy

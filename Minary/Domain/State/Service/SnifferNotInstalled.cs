@@ -6,7 +6,7 @@
   using System;
 
 
-  public class ApeSnifferNotInstalled : IMinaryState
+  public class SnifferNotInstalled : IMinaryState
   {
 
     #region MEMBERS
@@ -18,7 +18,7 @@
 
     #region PUBLIC
 
-    public ApeSnifferNotInstalled(MinaryMain minaryObj)
+    public SnifferNotInstalled(MinaryMain minaryObj)
     {
       this.minaryObj = minaryObj;
       this.CurrentState = MinaryState.NetworkMissing;

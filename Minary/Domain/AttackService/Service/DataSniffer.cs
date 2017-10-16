@@ -59,12 +59,12 @@
 
     public ServiceStatus StartService(ServiceParameters serviceParameters)
     {
-      string apeSnifferBinaryPath = Path.Combine(Directory.GetCurrentDirectory(), Config.ApeSnifferBinaryPath);
-      string workingDirectory = Path.Combine(Directory.GetCurrentDirectory(), Config.ApeSnifferServiceDir);
+      string snifferBinaryPath = Path.Combine(Directory.GetCurrentDirectory(), Config.SnifferBinaryPath);
+      string workingDirectory = Path.Combine(Directory.GetCurrentDirectory(), Config.SnifferServiceDir);
       string processParameters = string.Format("-s {0} -p {1}", serviceParameters.SelectedIfcId, Config.PipeName);
 
       this.snifferProc = new Process();
-      this.snifferProc.StartInfo.FileName = apeSnifferBinaryPath;
+      this.snifferProc.StartInfo.FileName = snifferBinaryPath;
       this.snifferProc.StartInfo.Arguments = processParameters;
       this.snifferProc.StartInfo.WorkingDirectory = workingDirectory;
       this.snifferProc.StartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
@@ -72,7 +72,7 @@
       this.snifferProc.EnableRaisingEvents = true;
       this.snifferProc.Exited += new EventHandler(this.OnServiceExited);
 
-      LogCons.Inst.Write(LogLevel.Debug, "DataSniffer.StartService(): CommandLine:{0} {1}", apeSnifferBinaryPath, processParameters);
+      LogCons.Inst.Write(LogLevel.Debug, "DataSniffer.StartService(): CommandLine:{0} {1}", snifferBinaryPath, processParameters);
       this.serviceStatus = ServiceStatus.Running;
       this.snifferProc.Start();
 
