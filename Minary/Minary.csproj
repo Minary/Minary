@@ -178,7 +178,7 @@
     <Compile Include="Domain\Network\NetworkInterfaceHandler.cs" />
     <Compile Include="Domain\State\Service\ApeNotInstalled.cs" />
     <Compile Include="Domain\State\Service\HttpReverseProxyNotInstalled.cs" />
-    <Compile Include="Domain\State\Service\ApeSnifferNotInstalled.cs" />
+    <Compile Include="Domain\State\Service\SnifferNotInstalled.cs" />
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_DSL.cs">
       <SubType>Form</SubType>
     </Compile>

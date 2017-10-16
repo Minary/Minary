@@ -56,9 +56,9 @@
       this.MinaryMain.RegisterAttackService(AService.ArpPoisoning.Name);
       this.MinaryMain.SetNewAttackServiceState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
 
-      // APESniffer - Data sniffing
+      // Sniffer - Data sniffing
       Dictionary<string, SubModule> dataSniffingSubModules = new Dictionary<string, SubModule>();
-      DataSniffer tmpDataSniffer = new DataSniffer(this, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeSnifferServiceDir), dataSniffingSubModules);
+      DataSniffer tmpDataSniffer = new DataSniffer(this, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.SnifferServiceDir), dataSniffingSubModules);
       this.attackServices.Add(AService.DataSniffer.Name, tmpDataSniffer);
       this.MinaryMain.RegisterAttackService(AService.DataSniffer.Name);
       this.MinaryMain.SetNewAttackServiceState(AService.DataSniffer.Name, ServiceStatus.NotRunning);

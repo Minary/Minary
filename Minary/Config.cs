@@ -42,10 +42,10 @@ public static readonly string ApeFirewallRules = ".fwrules";
 public static readonly string ApeTargetHosts = ".targethosts";
 public static readonly string DnsPoisoningHosts = ".dnshosts";
 
-// Service: ApeSniffer
-public static readonly string ApeSnifferServiceDir = Path.Combine(AttackServicesDir, "ApeSniffer");
-public static readonly string ApeSnifferBinaryPath = Path.Combine(ApeSnifferServiceDir, "ApeSniffer.exe");
-public static readonly string ApeSnifferProcessName = "ApeSniffer";
+// Service: Sniffer
+public static readonly string SnifferServiceDir = Path.Combine(AttackServicesDir, "Sniffer");
+public static readonly string SnifferBinaryPath = Path.Combine(SnifferServiceDir, "Sniffer.exe");
+public static readonly string SnifferProcessName = "Sniffer";
 
 // Service: HttpReverseProxy
 public static readonly string HttpReverseProxyServiceDir = Path.Combine(AttackServicesDir, "HttpReverseProxy");
