@@ -110,24 +110,11 @@
       // Save template to file system
       try
       {
-        // Add .mry extension if missing
-        string minaryFileExtension = string.Format(".{0}", Minary.Config.MinaryFileExtension);
-        if (!this.sfd_TemplateFile.FileName.ToLower().EndsWith(minaryFileExtension))
-        {
-          this.sfd_TemplateFile.FileName += minaryFileExtension;
-        }
-
-        // Serialize and save template
-        this.taskLayerCreateTemplate.SaveAttackTemplate(newTemplateData, this.sfd_TemplateFile.FileName);
-        string message = string.Format("Template \"{0}\" was saved successfully.", newTemplateData.TemplateConfig.Name);
-        MessageDialog.Inst.ShowInformation(string.Empty, message, this);
-
-        base.Dispose(true);
+        this.SaveTemplateToFile(newTemplateData);
       }
       catch (Exception ex)
       {
         LogCons.Inst.Write(LogLevel.Error, "Error occurred while saving template : {0}", ex.Message);
-
         string message = string.Format("Error occurred while saving template : {0}", ex.Message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
@@ -189,6 +176,28 @@
       }
 
       return true;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="newTemplateData"></param>
+    private void SaveTemplateToFile(RecordMinaryTemplate newTemplateData)
+    {
+      // Add .mry extension if missing
+      string minaryFileExtension = string.Format(".{0}", Minary.Config.MinaryFileExtension);
+      if (!this.sfd_TemplateFile.FileName.ToLower().EndsWith(minaryFileExtension))
+      {
+        this.sfd_TemplateFile.FileName += minaryFileExtension;
+      }
+
+      // Serialize and save template
+      this.taskLayerCreateTemplate.SaveAttackTemplate(newTemplateData, this.sfd_TemplateFile.FileName);
+      string message = string.Format("Template \"{0}\" was saved successfully.", newTemplateData.TemplateConfig.Name);
+      MessageDialog.Inst.ShowInformation(string.Empty, message, this);
+
+      base.Dispose(true);
     }
 
     #endregion
