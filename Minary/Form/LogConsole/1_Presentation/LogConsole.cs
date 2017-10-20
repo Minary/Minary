@@ -199,6 +199,26 @@
     #endregion
 
 
+    #region PRIVATE
+
+    private LogCons()
+    {
+      this.InitializeComponent();
+      this.logConsoleTask = new Task.LogConsole();
+      this.logConsoleTask.AddObserver(this);
+
+      this.currentLevel = LogLevel.Info;
+      this.currentLevelObject = this.TSMI_Info;
+      this.currentLevelObject.CheckState = CheckState.Checked;
+
+      // The parent (Main GUI) must not have any visual/behavioral
+      // influence on the log console
+      this.Owner = null; 
+    }
+
+    #endregion
+
+
     #region INTERFACE: IObserver
 
     public delegate void UpdateLogDelegate(List<string> newLogMessages);
@@ -225,22 +245,6 @@
       this.tb_LogContent.AppendText(newLogChunk);
       this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
       this.tb_LogContent.ScrollToCaret();
-    }
-
-    #endregion
-
-
-    #region PRIVATE
-
-    public LogCons()
-    {
-      this.InitializeComponent();
-      this.logConsoleTask = new Task.LogConsole();
-      this.logConsoleTask.AddObserver(this);
-
-      this.currentLevel = LogLevel.Info;
-      this.currentLevelObject = this.TSMI_Info;
-      this.currentLevelObject.CheckState = CheckState.Checked;
     }
 
     #endregion
