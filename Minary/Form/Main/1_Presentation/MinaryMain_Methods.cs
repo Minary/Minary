@@ -15,7 +15,7 @@
 
     #region MEMBERS
 
-    private BackgroundWorker bgwOnStartAttack;
+    private BackgroundWorker bgw_OnStartAttack;
 
     #endregion
 
@@ -43,7 +43,7 @@
       }
 
       // Another OnStartAttack instance is running
-      if (this.bgwOnStartAttack.IsBusy == true)
+      if (this.bgw_OnStartAttack.IsBusy == true)
       {
         LogCons.Inst.Write(LogLevel.Warning, "Another instance of the OnStartAttack back ground worker is already running.");
 
@@ -67,7 +67,7 @@
       }
       else if (this.attackStarted == false)
       {
-        this.bgwOnStartAttack.RunWorkerAsync();
+        this.bgw_OnStartAttack.RunWorkerAsync();
 
 
       // In any other case stop a running attack

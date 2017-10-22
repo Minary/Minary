@@ -137,6 +137,10 @@
       {
         LogCons.Inst.Write(LogLevel.Error, "HttpReverseProxy.StopService(Exception): {0}", ex.Message);
       }
+      finally
+      {
+        this.httpReverseProxyProc = null;
+      }
 
       return ServiceStatus.NotRunning;
     }
