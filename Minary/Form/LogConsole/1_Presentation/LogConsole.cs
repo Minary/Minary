@@ -213,7 +213,7 @@
 
       // The parent (Main GUI) must not have any visual/behavioral
       // influence on the log console
-      this.Owner = null; 
+      this.Owner = null;
     }
 
     #endregion

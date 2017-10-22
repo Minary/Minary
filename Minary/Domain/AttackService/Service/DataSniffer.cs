@@ -92,7 +92,7 @@
       this.snifferProc.EnableRaisingEvents = false;
       this.snifferProc.Exited += null;
       this.serviceStatus = ServiceStatus.NotRunning;
-      
+
       try
       {
         if (this.snifferProc != null && !this.snifferProc.HasExited)
@@ -104,6 +104,10 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write(LogLevel.Error, "DataSniffer.StopService(Exception): {0}", ex.Message);
+      }
+      finally
+      {
+        this.snifferProc = null;
       }
 
       return ServiceStatus.NotRunning;

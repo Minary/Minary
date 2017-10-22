@@ -124,7 +124,6 @@
       this.MinaryMain.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
       this.MinaryMain.StopAttack();
-
     }
 
     #endregion

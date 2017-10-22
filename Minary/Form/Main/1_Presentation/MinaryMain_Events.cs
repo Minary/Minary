@@ -104,7 +104,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       // Set the Wait cursor.
       this.Cursor = Cursors.WaitCursor;
 
-      if (this.bgwOnStartAttack.IsBusy)
+      if (this.bgw_OnStartAttack.IsBusy)
       {
         this.StopAttack();
       }
@@ -452,7 +452,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       if (e.Error != null)
       {
         this.StopAttack();
-        string message = string.Format($"The following error occurred while starting attack services:\r\n\r\n{e.Error.Message}");
+        string message = string.Format($"The following error occurred while starting attack services: {e.Error.Message}");
         LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStartAttackCompleted(): {0}", message);
         MessageDialog.Inst.ShowWarning("Attack services", message, this);
       }
