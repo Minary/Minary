@@ -274,12 +274,9 @@
         return;
       }
 
+      // Reset GUI
       this.EnableGuiElements();
-      if (this.bgw_OnStartAttack.IsBusy)
-      {
-        this.StopAttack();
-      }
-
+      this.StopAttack();
       this.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
 
       // Report service failure
