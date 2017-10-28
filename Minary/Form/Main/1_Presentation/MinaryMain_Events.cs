@@ -75,8 +75,8 @@
           this.tb_NetworkStopIp.Text = interfaceStruct.BroadcastAddr;
           this.gb_Interfaces.Text = string.Format("{0} / {1}", interfaceStruct.IpAddress, interfaceName);
 
-this.currentIpAddress = interfaceStruct.IpAddress;
-this.currentMacAddress = interfaceStruct.MacAddress;
+          this.currentIpAddress = interfaceStruct.IpAddress;
+          this.currentMacAddress = interfaceStruct.MacAddress;
         }
       }
       catch (Exception ex)
@@ -367,6 +367,9 @@ this.currentMacAddress = interfaceStruct.MacAddress;
         this.tb_NetworkStopIp.Text = string.Empty;
         this.tb_Vendor.Text = string.Empty;
       }
+
+      // Redetermine current Minary system state
+      this.SetMinaryState();
     }
 
 
@@ -501,7 +504,7 @@ this.currentMacAddress = interfaceStruct.MacAddress;
       Utils.TryExecute2(this.attackServiceHandler.StopAllServices);
       this.attackStarted = false;
     }
-    
+ 
 
     private void CertAuthorityToolStripMenuItem_Click(object sender, EventArgs e)
     {
