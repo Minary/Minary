@@ -6,7 +6,7 @@
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
   using Minary.Domain.AttackService;
-  using Minary.Domain.Input;
+  using Minary.Domain.InputProcessor;
   using Minary.Domain.MacVendor;
   using Minary.Domain.Main;
   using Minary.Domain.Network;
@@ -46,7 +46,7 @@
     private AttackServiceHandler attackServiceHandler;
     private PluginHandler pluginHandler;
     private TabPageHandler tabPageHandler;
-    private InputHandler inputModuleHandler;
+    private IInputProcessor inputProcessorHandler;
     private MacVendorHandler macVendorHandler;
     private NetworkInterfaceHandler nicHandler;
     private ManageServerCertificates caCertificateHandler;
@@ -111,7 +111,8 @@
       this.attackServiceHandler = new AttackServiceHandler(this);
       this.pluginHandler = new PluginHandler(this);
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
-      this.inputModuleHandler = new InputHandler(this);
+      this.inputProcessorHandler = new HandlerNamedPipe(this);
+ //     this.inputProcessorHandler = new HandlerMessageQueue(this);
       this.nicHandler = new NetworkInterfaceHandler();
       this.caCertificateHandler = new ManageServerCertificates(this);
       this.macVendorHandler = new MacVendorHandler();
@@ -122,7 +123,7 @@
     public void StartBackgroundThreads()
     {
       // Start data input thread.
-      this.inputModuleHandler.StartInputThread();
+      this.inputProcessorHandler.StartInputProcessing();
 
       // Check if new Minary version is available
       Thread updateThread = new Thread(delegate ()
