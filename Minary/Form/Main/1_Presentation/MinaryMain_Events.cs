@@ -394,8 +394,8 @@
 
     private void BeepToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      this.tsmi_Beep.Text = string.Format("Beep (is {0})", !this.inputModuleHandler.IsBeepOn == true ? "on" : "off");
-      this.inputModuleHandler.IsBeepOn = !this.inputModuleHandler.IsBeepOn;
+      this.tsmi_Beep.Text = string.Format("Beep (is {0})", !this.inputProcessorHandler.IsBeepOn == true ? "on" : "off");
+      this.inputProcessorHandler.IsBeepOn = !this.inputProcessorHandler.IsBeepOn;
     }
 
 

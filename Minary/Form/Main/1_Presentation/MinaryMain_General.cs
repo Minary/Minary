@@ -92,6 +92,7 @@
     public bool LoadNicSettings()
     {
       string temp = string.Empty;
+
       // Empty Interfaces ComboBox and repopulate it with found interfaces.
       this.cb_Interfaces.Items.Clear();
       if (!NetworkInterface.GetIsNetworkAvailable())

@@ -1,6 +1,7 @@
-﻿namespace Minary.Domain.Input
+﻿namespace Minary.Domain.InputProcessor
 {
   using Minary.DataTypes.Enum;
+  using Minary.DataTypes.Interface;
   using Minary.Form;
   using Minary.LogConsole.Main;
   using System;
@@ -9,10 +10,9 @@
   using System.IO.Pipes;
   using System.Text.RegularExpressions;
   using System.Threading;
-  using System.Windows.Forms;
 
 
-  public class InputHandler
+  public class HandlerNamedPipe : IInputProcessor
   {
 
     #region MEMBERS
@@ -30,6 +30,11 @@
     #endregion
 
 
+
+
+    #region INTERFACE: IInputProcessor
+
+
     #region PROPERTIES
 
     public bool IsBeepOn { get; set; }
@@ -37,14 +42,9 @@
     #endregion
 
 
-    #region PUBLIC
+    #region PUBLIC METHODS
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InputHandler"/> class.
-    ///
-    /// </summary>
-    /// <param name="minaryMain"></param>
-    public InputHandler(MinaryMain minaryMain)
+    public HandlerNamedPipe(MinaryMain minaryMain)
     {
       this.minaryMain = minaryMain;
       this.IsBeepOn = false;
@@ -58,7 +58,7 @@
     /// <summary>
     ///
     /// </summary>
-    public void StartInputThread()
+    public void StartInputProcessing()
     {
       stopThreads = false;
 
@@ -89,8 +89,8 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Fatal, "An error occurred while starting the sniffer : " + ex.StackTrace + "\n" + ex.ToString());
-        string message = string.Format("An error occurred while starting the sniffer : ", ex.ToString());
+        LogCons.Inst.Write(LogLevel.Fatal, "An error occurred while starting the input processor NamedPipe : " + ex.StackTrace + "\n" + ex.ToString());
+        string message = string.Format("An error occurred while starting the input processor NamedPip : ", ex.ToString());
         MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
       }
     }
@@ -100,7 +100,7 @@
     /// <summary>
     ///
     /// </summary>
-    public void StopInputThreads()
+    public void StopInputProcessing()
     {
       NamedPipeClientStream namedPipeClient = null;
       StreamWriter streamWriter = null;
@@ -153,7 +153,6 @@
             Minary.Common.Utils.TryExecute2(streamWriter.Close);
           }
 
-
           if (namedPipeClient != null)
           {
             Minary.Common.Utils.TryExecute2(namedPipeClient.Close);
@@ -181,6 +180,13 @@
       }
     }
 
+    #endregion
+
+    #endregion
+
+
+
+    #region PRIVATE
 
     /// <summary>
     ///
@@ -362,7 +368,7 @@
           }
         }
 
-        // We got UDP data.
+      // We got UDP data.
       }
       else if (splitter[0] == "DNSREP" || splitter[0] == "DNSREQ" || splitter[0] == "UDP")
       {
@@ -381,7 +387,6 @@
             }
           }
         }
-
 
       // We got data
       }
@@ -405,10 +410,6 @@
       }
     }
 
-    #endregion
-
-
-    #region PRIVATE
 
     /// <summary>
     ///

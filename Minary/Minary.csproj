@@ -143,9 +143,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
@@ -166,6 +169,7 @@
     <Compile Include="DataTypes\ArpScan\IObserverArpRequest.cs" />
     <Compile Include="DataTypes\ArpScan\IObserverArpResponse.cs" />
     <Compile Include="DataTypes\ArpScan\SystemFound.cs" />
+    <Compile Include="DataTypes\Interface\IInputProcessor.cs" />
     <Compile Include="Domain\ArpScan\PcapHandler.cs" />
     <Compile Include="Domain\ArpScan\ReplyListener.cs" />
     <Compile Include="Domain\ArpScan\ArpScanner.cs" />
@@ -174,11 +178,15 @@
     <Compile Include="DataTypes\Enum\MinaryState.cs" />
     <Compile Include="DataTypes\Interface\IMinaryState.cs" />
     <Compile Include="DataTypes\Struct\NetworkInterface.cs" />
+    <Compile Include="Domain\Input\HandlerMessageQueue.cs" />
     <Compile Include="Domain\Main\SystemStateCheck.cs" />
     <Compile Include="Domain\Network\NetworkInterfaceHandler.cs" />
     <Compile Include="Domain\State\Service\ApeNotInstalled.cs" />
     <Compile Include="Domain\State\Service\HttpReverseProxyNotInstalled.cs" />
     <Compile Include="Domain\State\Service\SnifferNotInstalled.cs" />
+    <Compile Include="Domain\SystemComponents\MSMQHandler.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_DSL.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,7 +247,7 @@
     <Compile Include="Common\WinPcap.cs" />
     <Compile Include="Domain\AttackService\DataType\AttackService.cs" />
     <Compile Include="DataTypes\MinaryExtension.cs" />
-    <Compile Include="Domain\Input\InputHandler.cs" />
+    <Compile Include="Domain\Input\HandlerNamedPipe.cs" />
     <Compile Include="Domain\DSL\Calls.cs" />
     <Compile Include="Domain\DSL\Config.cs" />
     <Compile Include="Domain\DSL\CurrentSystemSettings.cs" />
