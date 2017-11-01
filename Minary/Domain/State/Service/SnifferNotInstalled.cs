@@ -54,7 +54,7 @@
     public void LoadState()
     {
       this.minaryObj.Bt_Attack_Click = this.Bt_Attack_Click;
-      this.minaryObj.Bt_ScanLan_Click = this.Bt_ScanLan_Click;
+      this.minaryObj.Bt_ScanLan_Click = this.minaryObj.Bt_ScanLan_Click_Event;
     }
 
     #endregion
