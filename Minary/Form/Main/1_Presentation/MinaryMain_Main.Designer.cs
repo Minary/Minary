@@ -374,7 +374,7 @@
       dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.WindowText;
       dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.dgv_MainPlugins.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-      this.dgv_MainPlugins.ColumnHeadersHeight = 25;
+      this.dgv_MainPlugins.ColumnHeadersHeight = 28;
       this.dgv_MainPlugins.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
       dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
       dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
