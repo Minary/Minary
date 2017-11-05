@@ -72,11 +72,11 @@
     /// <param name="message"></param>
     /// <param name="formatArgs"></param>
     public delegate void WriteDelegate(LogLevel level, string message, params object[] formatArgs);
-    public void Write(LogLevel level, string message, params object[] formatArgs)
+    public void Write(LogLevel level, string logMessage, params object[] formatArgs)
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new WriteDelegate(this.Write), new object[] { level, message, formatArgs });
+        this.BeginInvoke(new WriteDelegate(this.Write), new object[] { level, logMessage, formatArgs });
         return;
       }
 
@@ -85,22 +85,23 @@
         return;
       }
 
-      if (string.IsNullOrEmpty(message))
+      if (string.IsNullOrEmpty(logMessage))
       {
         return;
       }
 
       try
       {
-        message = message.Trim();
+        string timeStamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        logMessage = logMessage.Trim();
         if (formatArgs != null && formatArgs.Count() > 0)
         {
-          message = string.Format(message, formatArgs);
+          logMessage = string.Format(logMessage, formatArgs);
         }
 
         // this.logConsoleTask.AddLogMessage(message);
-        message = string.Format($"{level, -10}{message}{Environment.NewLine}");
-        this.tb_LogContent.AppendText(message);
+        logMessage = string.Format($"{timeStamp, -25}{level, -10}{logMessage}{Environment.NewLine}");
+        this.tb_LogContent.AppendText(logMessage);
         this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
         this.tb_LogContent.ScrollToCaret();
       }

@@ -86,6 +86,7 @@
       }
     }
 
+
     public void Notify(List<string> newLogRecords)
     {
       foreach (IObserver observer in this.observers)
