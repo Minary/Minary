@@ -170,6 +170,7 @@
     <Compile Include="DataTypes\ArpScan\IObserverArpResponse.cs" />
     <Compile Include="DataTypes\ArpScan\SystemFound.cs" />
     <Compile Include="DataTypes\Interface\IInputProcessor.cs" />
+    <Compile Include="DataTypes\Struct\MinaryConfig.cs" />
     <Compile Include="Domain\ArpScan\PcapHandler.cs" />
     <Compile Include="Domain\ArpScan\ReplyListener.cs" />
     <Compile Include="Domain\ArpScan\ArpScanner.cs" />

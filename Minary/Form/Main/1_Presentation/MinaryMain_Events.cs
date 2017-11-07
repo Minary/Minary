@@ -424,22 +424,36 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
+    private delegate void BGW_OnStartAttackDelegate(object sender, DoWorkEventArgs e);
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
-      this.Cursor = Cursors.WaitCursor;
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new BGW_OnStartAttackDelegate(this.BGW_OnStartAttack), new object[] { sender, e });
+      }
+
+      //this.Cursor = Cursors.WaitCursor;
 
       // Start all services
-      ServiceParameters currentServiceParams = new ServiceParameters()
-      {
-        SelectedIfcIndex = this.cb_Interfaces.SelectedIndex,
-        SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex),
-        TargetList = (from target in this.arpScanHandler.TargetList
-                      where target.Attack == true
-                      select new { target.MacAddress, target.IpAddress }).
-                        ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
-      };
+      // EXCEPTION caused by this.cb_Interfaces.SelectedIndex
 
-      this.StartAllServices(currentServiceParams);
+
+      this.cb_Interfaces.BeginInvoke((Action)delegate {
+        ServiceParameters currentServiceParams = new ServiceParameters()
+        {
+          SelectedIfcIndex = this.cb_Interfaces.SelectedIndex,
+          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex),
+          TargetList = (from target in this.arpScanHandler.TargetList
+                        where target.Attack == true
+                        select new { target.MacAddress, target.IpAddress }).
+                          ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
+        };
+        this.StartAllServices(currentServiceParams);
+      });
+
+
+
+
     }
 
 

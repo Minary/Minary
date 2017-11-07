@@ -14,11 +14,15 @@
 
     #region MEMBERS
 
+    private const int MAX_RELOAD_ATTEMPS = 10;
     private MinaryMain minaryMain;
     private Infrastructure.TemplateHandler infrastructure;
     private StringBuilder rtfData;
     private RecordMinaryTemplate templateData;
     private string templateFileName;
+    private Calls callObj;
+    private int noReloadAttemps;
+    private string templateFile;
 
     #endregion
 
@@ -40,6 +44,7 @@
       this.templateFileName = templateFileName;
       this.infrastructure = new Infrastructure.TemplateHandler();
       this.rtfData = new StringBuilder();
+      this.noReloadAttemps = 0;
     }
 
 
@@ -52,8 +57,10 @@
     ///
     /// </summary>
     /// <param name="templateFile"></param>
-    private RecordMinaryTemplate LoadAttackTemplate(string templateFile)
+    private void LoadAttackTemplate(string templateFile)
     {
+      this.templateFile = templateFile;
+
       // Verify if input file is  correct.
       if (string.IsNullOrEmpty(templateFile))
       {
@@ -72,53 +79,109 @@
 
       // Load tepmlate data into object
       this.templateData = this.infrastructure.LoadAttackTemplate(templateFile);
-      Calls calls = new Calls(this.minaryMain, this.templateData);
+      this.callObj = new Calls(this.minaryMain, this.templateData);
 
       // Activate relevant plugins. Deactivate non-relevant plugins
-      this.AddMessage("Hiding all plugins", string.Empty);
-      calls.HideAllTabPages();
+      this.HideAllTabPages();
+      this.LoadPlugins();
+      this.ExecuteArpScan();
+    }
 
+
+    private void HideAllTabPages()
+    {
+      this.AddMessage("Hiding all plugins", "Template");
+      this.callObj.HideAllTabPages();
+    }
+
+
+    private void LoadPlugins()
+    {
       foreach (Plugin tmpPluginObj in this.templateData.Plugins)
       {
         try
         {
-          this.AddMessage(string.Format("Loading plugin \"{0}\"", tmpPluginObj.Name), string.Empty);
-          calls.ActivatePlugin(tmpPluginObj.Name);
-          calls.LoadPluginData(tmpPluginObj.Name, tmpPluginObj.Data);
+          this.AddMessage(string.Format("Loading plugin \"{0}\"", tmpPluginObj.Name), "Plugin");
+          this.callObj.ActivatePlugin(tmpPluginObj.Name);
+          this.callObj.LoadPluginData(tmpPluginObj.Name, tmpPluginObj.Data);
         }
         catch (Exception ex)
         {
-          string message = string.Format("\"{0}\" {1}", tmpPluginObj.Name, ex.Message);
-          //throw new Exception(message);
+          this.AddMessage($"Error: {ex.Message}", "Plugin");
         }
+      }
+    }
+
+
+    private delegate void ExecuteArpScanDelegate();
+    private void ExecuteArpScan()
+    {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new ExecuteArpScanDelegate(this.ExecuteArpScan), new object[] { });
+        return;
       }
 
       // Scan network
-      this.AddMessage("Start ARP scanning network ...", string.Empty);
-      //calls.ScanNetwork();
-      //this.AddMessage("Arp scanning network done", string.Empty);
+      if (this.templateData == null || this.templateData.AttackConfig == null)
+      {
+        throw new Exception("The template is invalid");
+      }
 
-      //// Report and return if no target systems were found.
-      //if (calls.GetCurrentNumberOfTargetSystems() <= 0)
-      //{
-      //  this.AddMessage("No target systems were found", string.Empty);
-      //  this.AddMessage(string.Empty, "The attack is NOT running");
-      //  return this.templateData;
-      //}
+      if (this.templateData.AttackConfig.ScanNetwork == 1)
+      {
+        this.AddMessage("ARP scanning network", "ARP");
+        this.callObj.ScanNetwork(this.POSTArpScan_StartAttack);
+      }
+      else
+      {
+        this.AddMessage("ARP scanning disabled", "ARP");
+      }
+    }
 
-      //// Select target systems
-      //this.AddMessage(string.Format("Selecting the first {0} systems as targets", this.templateData.AttackConfig.NumberSelectedTargetSystems), string.Empty);
-      //calls.SelectTargetSystems(this.templateData.AttackConfig.NumberSelectedTargetSystems);
 
-      //// Attack systems
-      //if (this.templateData.AttackConfig.StartAttack == 1)
-      //{
-      //  this.AddMessage(@"Starting attacking target systems", string.Empty);
-      //  calls.StartAttack();
-      //  this.AddMessage(string.Empty, "The attack IS running");
-      //}
+    private void POSTArpScan_StartAttack()
+    {
 
-      return this.templateData;
+      // Attack systems
+      if (this.templateData.AttackConfig.StartAttack == 1)
+      {
+        this.AddMessage("Starting attacking target systems", "Template");
+
+        // Report and return if no target systems were found.
+        if (this.callObj.GetCurrentNumberOfTargetSystems() <= 0)
+        {
+          this.AddMessage("No target systems were found", "Template");
+          this.AddMessage("The attack was aborted", "Template");
+          string message = "No target systems were found.\r\n" +
+                           "Attack script aborted";
+
+          // If user wants to reload the template again 
+          // (because the previous loading procedure failed)
+          // initiate the reload procedure
+          if (this.noReloadAttemps >= MAX_RELOAD_ATTEMPS)
+          {
+            MessageDialog.Inst.ShowWarning(string.Empty, message, this, MessageBoxButtons.OK);
+          }
+          else if (MessageDialog.Inst.ShowWarning(string.Empty, message + "\r\n\r\nDo you want to reload the template?", this, MessageBoxButtons.YesNo) == DialogResult.Yes)
+          {
+            this.noReloadAttemps++;
+            this.LoadAttackTemplate(this.templateFile);
+          }
+
+          return;
+        }
+
+        // Select target systems
+        this.AddMessage(string.Format("Selecting the first {0} systems as targets", this.templateData.AttackConfig.NumberSelectedTargetSystems), "Template");
+        this.callObj.SelectTargetSystems(this.templateData.AttackConfig.NumberSelectedTargetSystems);
+
+        // Start actual attack
+        this.callObj.StartAttack();
+        this.AddMessage("The attack IS running", "Template");
+      }
+
+      this.AddMessage("Loading template done.", "Template");
     }
 
 
@@ -138,7 +201,7 @@
 
       message = message.Trim();
       string dateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
-      string formatedMessage = string.Format(@"{0}   \b {1}\b0  {2}\line ", dateTime, header, message);
+      string formatedMessage = string.Format(@"{0}   \b {1,-10}\b0  {2}\line ", dateTime, header, message);
 
       this.rtfData.Append(formatedMessage);
 
@@ -180,8 +243,6 @@
     {
       this.Cursor = Cursors.Default;
       this.bt_Close.Enabled = true;
-
-      this.AddMessage("Loading template done.", string.Empty);
     }
 
 
@@ -196,8 +257,7 @@
         }
         else
         {
-          this.Hide();
-          this.minaryMain.Activate();
+          this.Close();
           return false;
         }
       }
@@ -220,6 +280,6 @@
     }
 
     #endregion
-
+    
   }
 }

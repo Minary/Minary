@@ -1,7 +1,9 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
   using Minary.DataTypes.Enum;
+  using Minary.DataTypes.Struct;
   using Minary.Domain.ArpScan;
+  using Minary.Domain.MacVendor;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using PcapDotNet.Core;
@@ -22,7 +24,7 @@
     private string gatewayIp;
     private string localIp;
     private string localMac;
-    private MinaryMain minaryMain;
+    private MacVendorHandler macVendorHandler;
     private BindingList<TargetRecord> targetRecords;
     private bool isStopped;
     private PacketCommunicator communicator;
@@ -39,7 +41,7 @@
 
     #region PUBLIC
 
-    public ArpScan(MinaryMain minaryMain)
+    public ArpScan(MinaryMain owner)
     {
       this.InitializeComponent();
 
@@ -82,12 +84,12 @@
       this.dgv_Targets.CellValueChanged += new DataGridViewCellEventHandler(this.Dgv_CellValueChanged);
       this.dgv_Targets.CellClick += new DataGridViewCellEventHandler(this.Dgv_CellClick);
 
-      this.minaryMain = minaryMain;
-
       // Set the owner to keep this form in the foreground/topmost
-      this.Owner = minaryMain;
+      this.Owner = owner;
 
+      // Initialize members
       this.isStopped = false;
+      this.macVendorHandler = new MacVendorHandler();
     }
 
 
@@ -95,27 +97,29 @@
     /// 
     /// </summary>
     /// <param name="targetList"></param>
-    public delegate void ShowArpScanGuiDelegate(ref BindingList<string> targetList);
-    public void ShowArpScanGui(ref BindingList<string> targetList)
+    /// <param name="minaryConfig"></param>
+    /// <param name="isModal"></param>
+    public delegate void ShowArpScanGuiDelegate(ref BindingList<string> targetList, MinaryConfig minaryConfig, bool isModal = true);
+    public void ShowArpScanGui(ref BindingList<string> targetList, MinaryConfig minaryConfig, bool isModal = true)
     {
-      if (this.InvokeRequired)
+      if (this.InvokeRequired == true)
       {
-        this.BeginInvoke(new ShowArpScanGuiDelegate(this.ShowArpScanGui), new object[] { targetList });
+        this.BeginInvoke(new ShowArpScanGuiDelegate(this.ShowArpScanGui), new object[] { targetList, minaryConfig, isModal});
         return;
       }
 
       // Initialize GUI values
       try
       {
-        this.targetList = targetList;
-        this.interfaceId = this.minaryMain.GetCurrentInterface();
-        this.startIp = this.minaryMain.NetworkStartIp;
-        this.stopIp = this.minaryMain.NetworkStopIp;
-        this.gatewayIp = this.minaryMain.CurrentGatewayIp;
-        this.localIp = this.minaryMain.CurrentLocalIp;
-        this.localMac = this.minaryMain.CurrentLocalMac;
-
+        this.interfaceId = minaryConfig.InterfaceId;
+        this.startIp = minaryConfig.StartIp;
+        this.stopIp = minaryConfig.StopIp;
+        this.gatewayIp = minaryConfig.GatewayIp;
+        this.localIp = minaryConfig.LocalIp;
+        this.localMac = minaryConfig.LocalMac;
         this.communicator = PcapHandler.Inst.OpenPcapDevice(this.interfaceId, 1);
+
+        this.targetList = targetList;
 
         this.tb_Subnet1.Text = this.startIp;
         this.tb_Subnet2.Text = this.stopIp;
@@ -139,7 +143,14 @@
 
       try
       {
-        this.ShowDialog();
+        if (isModal == true)
+        {
+          this.ShowDialog();
+        }
+        else
+        {
+          this.Show();
+        }
       }
       catch (Exception ex)
       {

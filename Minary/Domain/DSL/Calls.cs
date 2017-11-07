@@ -17,13 +17,12 @@
     private const int MaxArpScanRuntime = 100000;
     private const int MaxSelectedTargetSystems = 10;
     private const int MaxSystemsToScan = 255;
-    private static ManualResetEvent manualEventArpScanStopped = new ManualResetEvent(false);
     private MinaryMain minaryMain;
-    private Form.ArpScan.Presentation.ArpScan arpScan;
     private RecordMinaryTemplate minaryTemplate;
+    private Minary.Form.ArpScan.Presentation.ArpScan arpScanHandler;
 
     #endregion
- 
+
 
     #region PUBLIC
 
@@ -31,45 +30,58 @@
     {
       this.minaryMain = minaryMain;
       this.minaryTemplate = minaryTemplate;
+      this.arpScanHandler = minaryMain.ArpScanHandler;
     }
 
 
-    public void ScanNetwork()
+    public delegate void ScanNetworkDelegate(Action onArpScanDone);
+    public void ScanNetwork(Action onArpScanDone)
     {
-      LogCons.Inst.Write(LogLevel.Info, "Calls interface: ScanNetwork()");
-
-      if (this.minaryTemplate == null || this.minaryTemplate.AttackConfig == null)
+      if (this.minaryMain.InvokeRequired)
       {
-        throw new Exception("The template is invalid");
-      }
-
-      if (this.minaryTemplate.AttackConfig.ScanNetwork != 1)
-      {
+        this.minaryMain.BeginInvoke(new ScanNetworkDelegate(this.ScanNetwork), new object[] { onArpScanDone });
         return;
       }
 
-      System.ComponentModel.BindingList<string> targetList = new System.ComponentModel.BindingList<string>();
-      manualEventArpScanStopped.Reset();
-      this.arpScan.StartArpScanInBackground(this.ArpScanStopped, MaxSystemsToScan);
+      this.onArpScanDone = onArpScanDone;
 
-      // If ArpScan did not return after "maxArpScanRuntime" milliseconds
-      // interrupt the scanning process.
-      if (manualEventArpScanStopped.WaitOne(MaxArpScanRuntime))
+      LogCons.Inst.Write(LogLevel.Info, "Calls interface: ScanNetwork()");
+      DataTypes.Struct.MinaryConfig minaryConfig = this.minaryMain.MinaryTaskFacade.GetCurrentMinaryConfig();
+
+      try
       {
-        this.arpScan.StopRunningArpScan();
+        this.arpScanHandler.ShowArpScanGui(ref this.minaryMain.targetList, minaryConfig, false);
+        this.arpScanHandler.StartArpScan(this.OnScanDone);
+      }
+      catch (Exception ex)
+      {
+        System.Windows.Forms.MessageBox.Show(string.Format($"Message:{ex.Message}\r\n\r\nStacktrace{ex.StackTrace}"), "ERROR");
+      }
+    }
+
+    private Action onArpScanDone;
+    public void OnScanDone()
+    {
+      this.arpScanHandler.HideArpScanWindow();
+      LogCons.Inst.Write(LogLevel.Info, "OnScanDone(): DONE, No. targets:{0}", this.minaryMain.targetList.Count);
+      LogCons.Inst.Write(LogLevel.Info, "OnScanDone(): TARGEST,{0}", string.Join(", ", this.minaryMain.targetList));
+
+      if (this.onArpScanDone != null)
+      {
+        this.onArpScanDone();
       }
     }
 
 
     public int GetCurrentNumberOfTargetSystems()
     {
-      return this.arpScan.NumberTargetSystems();
+      return this.arpScanHandler.NumberTargetSystems();
     }
 
 
     public void SelectTargetSystems(int noTargetSystems = MaxSelectedTargetSystems)
     {
-      LogCons.Inst.Write(LogLevel.Info, "Calls interface: SelectTargetSystems()");
+      LogCons.Inst.Write(LogLevel.Info, $"Calls interface: SelectTargetSystems() noTargetSystems={noTargetSystems}");
 
       if (noTargetSystems <= 0)
       {
@@ -81,14 +93,18 @@
         return;
       }
 
-      this.arpScan.SelectRandomSystems(noTargetSystems);
+      this.arpScanHandler.SelectRandomSystems(noTargetSystems);
     }
 
 
+    public delegate void StartAttackDelegate();
     public void StartAttack()
     {
       LogCons.Inst.Write(LogLevel.Info, "Calls interface: StartAttack()");
-      this.minaryMain.StartAttacksOnBackground();
+
+      this.minaryMain.BeginInvoke((Action)delegate {
+        this.minaryMain.StartAttacksOnBackground();
+      });
     }
 
 
@@ -125,16 +141,6 @@
     {
       LogCons.Inst.Write(LogLevel.Info, "Calls interface: ResetAllPluginsn()");
       this.minaryMain.ResetAllPlugins();
-    }
-
-    #endregion
-
-
-    #region PRIVATE
-
-    private void ArpScanStopped()
-    {
-      manualEventArpScanStopped.Set();
     }
 
     #endregion

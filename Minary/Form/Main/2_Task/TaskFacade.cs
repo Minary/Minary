@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form
 {
+  using Minary.DataTypes.Struct;
   using System.Windows.Forms;
 
 
@@ -43,7 +44,7 @@
       }
 
       TabPage tabPage;
-      int pluginRowDGV = this.GetPluginDGVRowByName(pluginName);
+      int pluginRowDGV = this.GetPluginDgvRowByName(pluginName);
 
       if (this.minaryMain.UsedPlugins[pluginRowDGV].Active != "0")
       {
@@ -74,7 +75,7 @@
       }
 
       TabPage tabPage;
-      int pluginRowDGV = this.GetPluginDGVRowByName(pluginName);
+      int pluginRowDGV = this.GetPluginDgvRowByName(pluginName);
 
       if (this.minaryMain.UsedPlugins[pluginRowDGV].Active != "1")
       {
@@ -99,7 +100,7 @@
     /// </summary>
     /// <param name="pluginName"></param>
     /// <returns></returns>
-    public int GetPluginDGVRowByName(string pluginName)
+    public int GetPluginDgvRowByName(string pluginName)
     {
       int retVal = -1;
 
@@ -113,6 +114,21 @@
       }
 
       return retVal;
+    }
+
+    public MinaryConfig GetCurrentMinaryConfig()
+    {
+      MinaryConfig config = new MinaryConfig()
+                                {
+                                  InterfaceId = this.minaryMain.GetCurrentInterface(),
+                                  StartIp = this.minaryMain.NetworkStartIp,
+                                  StopIp = this.minaryMain.NetworkStopIp,
+                                  GatewayIp = this.minaryMain.CurrentGatewayIp,
+                                  LocalIp = this.minaryMain.CurrentLocalIp,
+                                  LocalMac = this.minaryMain.CurrentLocalMac
+                                };
+
+      return config;
     }
 
     #endregion
