@@ -59,7 +59,7 @@
       try
       {
         // Determine vendor
-        string vendor = this.minaryMain.MacVendor.GetVendorByMac(systemData.MacAddress);
+        string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
         if (systemData.IpAddress != this.gatewayIp && systemData.IpAddress != this.localIp)
         {
           this.targetList.Add(systemData.IpAddress);

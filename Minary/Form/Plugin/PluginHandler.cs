@@ -222,16 +222,21 @@
       }
 
       TabPage tabPage;
-      int pluginRowDGV = this.minaryMain.MinaryTaskFacade.GetPluginDGVRowByName(pluginName);
+      int pluginRowDgv = this.minaryMain.MinaryTaskFacade.GetPluginDgvRowByName(pluginName);
 
-      if (this.minaryMain.UsedPlugins[pluginRowDGV].Active != "0")
+      if (pluginRowDgv < 0)
+      {
+        throw new Exception($"The plugin \"{pluginName}\" does not exist");
+      }
+
+      if (this.minaryMain.UsedPlugins[pluginRowDgv].Active != "0")
       {
         return;
       }
 
       if ((tabPage = this.minaryMain.PluginHandler.FindTabPageInCatalog(pluginName)) == null)
       {
-        throw new Exception("Plugin tab page could not be found");
+        throw new Exception($"The plugin tab page \"{pluginName}\" could not be found");
       }
 
       // Set new status in the registry (to survive the application stop)
@@ -260,7 +265,7 @@
       }
 
       TabPage tabPage;
-      int pluginRowDGV = this.minaryMain.MinaryTaskFacade.GetPluginDGVRowByName(pluginName);
+      int pluginRowDGV = this.minaryMain.MinaryTaskFacade.GetPluginDgvRowByName(pluginName);
 
       if (this.minaryMain.UsedPlugins[pluginRowDGV].Active != "1")
       {
@@ -463,7 +468,7 @@
       {
         List<Tuple<string, string, string>> retVal = new List<Tuple<string, string, string>>();
 
-        foreach (TargetRecord tmpTarget in this.minaryMain.ArpScan.TargetList)
+        foreach (TargetRecord tmpTarget in this.minaryMain.ArpScanHandler.TargetList)
         {
           retVal.Add(new Tuple<string, string, string>(tmpTarget.MacAddress, tmpTarget.IpAddress, tmpTarget.Vendor));
         }

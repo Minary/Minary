@@ -8,12 +8,50 @@
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
+  using System.Threading;
   using System.Windows.Forms;
 
 
   public partial class ArpScan : IObserverArpRequest
   {
-    
+
+
+    #region MEMBERS
+
+    private Action onScanDoneCallback;
+
+    #endregion
+
+
+    #region PUBLIC
+
+    public delegate void HideArpScanWindowDelegate();
+    public void HideArpScanWindow()
+    {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new HideArpScanWindowDelegate(this.HideArpScanWindow), new object[] { });
+        return;
+      }
+
+      // Reset progress bar value
+      this.pb_ArpScan.Value = 0;
+
+      // Stop running ARP scan
+      this.bgw_ArpScanSender.CancelAsync();
+
+      // Send targetSystem list to modules
+      //this.minaryMain.PassNewTargetListToPlugins();
+
+      // Hide form insead of closing.
+      this.Hide();
+      this.Owner.Activate();
+      this.Owner.Show();
+    }
+
+    #endregion
+
+
     #region EVENTS
 
     /// <summary>
@@ -312,6 +350,12 @@
       }
 
       this.SetArpScanGuiOnStopped();
+
+      // Call caller callback function after scan has completed.
+      if (this.onScanDoneCallback != null)
+      {
+        this.onScanDoneCallback();
+      }
     }
 
 
@@ -401,26 +445,11 @@
 
     #region PRIVATE
 
-    private void HideArpScanWindow()
+    public void StartArpScan(Action onScanDoneCallback = null)
     {
-      // Reset progress bar value
-      this.pb_ArpScan.Value = 0;
+      // Assign callers "done event". Important! For DSL calls!
+      this.onScanDoneCallback = onScanDoneCallback;
 
-      // Stop running ARP scan
-      this.bgw_ArpScanSender.CancelAsync();
-
-      // Send targetSystem list to modules
-      this.minaryMain.PassNewTargetListToPlugins();
-
-      // Hide form insead of closing.
-      this.Hide();
-      this.minaryMain.Activate();
-      this.minaryMain.Show();
-    }
-
-
-    private void StartArpScan()
-    {
       // Initiate ARP scan cancellation
       if (this.bgw_ArpScanSender.IsBusy == true &&
           this.bgw_ArpScanSender.CancellationPending == false)
@@ -458,13 +487,13 @@
 
       if (this.rb_Netrange.Checked == true)
       {
-        startIp = this.tb_Netrange1.Text.ToString();
-        stopIp = this.tb_Netrange2.Text.ToString();
+        startIp = this.tb_Netrange1.Text;
+        stopIp = this.tb_Netrange2.Text;
       }
       else
       {
-        startIp = this.tb_Subnet1.Text.ToString();
-        stopIp = this.tb_Subnet2.Text.ToString();
+        startIp = this.tb_Subnet1.Text;
+        stopIp = this.tb_Subnet2.Text;
       }
 
       ArpScanConfig arpScanConfig = new ArpScanConfig()
@@ -472,7 +501,7 @@
         InterfaceId = this.interfaceId,
         GatewayIp = this.gatewayIp,
         LocalIp = this.localIp,
-        LocalMac = this.localMac.Replace('-', ':'),
+        LocalMac = this.localMac?.Replace('-', ':'),
         NetworkStartIp = startIp,
         NetworkStopIp = stopIp,
         MaxNumberSystemsToScan = -1,

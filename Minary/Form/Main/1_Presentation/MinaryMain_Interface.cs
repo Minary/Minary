@@ -2,6 +2,7 @@
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
+  using Minary.DataTypes.Struct;
   using System;
 
 
@@ -24,7 +25,9 @@
     /// <param name="e"></param>
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      this.arpScanHandler.ShowArpScanGui(ref this.targetList);
+      MinaryConfig minaryConfig = this.minaryTaskFacade.GetCurrentMinaryConfig();
+      this.arpScanHandler.ShowArpScanGui(ref this.targetList, minaryConfig);
+      this.PassNewTargetListToPlugins();
     }
 
 

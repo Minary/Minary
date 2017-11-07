@@ -28,9 +28,9 @@
 
     #region MEMBERS
 
+    public BindingList<string> targetList;
     private string[] commandLineArguments;
     private BindingList<PluginTableRecord> usedPlugins;
-    private BindingList<string> targetList;
     private TemplateTask.TemplateHandler templateTaskLayer;
     private string currentIpAddress;
     private string currentMacAddress;
@@ -69,6 +69,8 @@
 
     public string NetworkStopIp { get { return this.tb_NetworkStopIp.Text; } set { } }
 
+    public BindingList<string> TargetList { get { return this.targetList; } set { } }
+
     public Minary.Form.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
 
     public PluginHandler PluginHandler { get { return this.pluginHandler; } }
@@ -79,7 +81,7 @@
 
     public AttackServiceHandler MinaryAttackServiceHandler { get { return this.attackServiceHandler; } set { } }
 
-    public ArpScan.Presentation.ArpScan ArpScan { get { return this.arpScanHandler; } set { } }
+    public ArpScan.Presentation.ArpScan ArpScanHandler { get { return this.arpScanHandler; } set { } }
 
     public MacVendorHandler MacVendor { get { return this.macVendorHandler; } set { } }
 
@@ -223,9 +225,18 @@
     }
 
 
+    public delegate string GetCurrentInterfaceDelegate();
     public string GetCurrentInterface()
     {
-      return Utils.TryExecute(this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex).ToString);
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new GetCurrentInterfaceDelegate(this.GetCurrentInterface), new object[] { });
+        return string.Empty;
+      }
+
+//string retVal = Utils.TryExecute(this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex).ToString);
+      string retVal = this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex);
+      return retVal;
     }
 
 
