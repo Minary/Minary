@@ -44,7 +44,18 @@
 
     private void OnServiceExited(object sender, System.EventArgs e)
     {
-      LogCons.Inst.Write(LogLevel.Warning, "ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.poisoningEngProc.ExitCode);
+      int exitCode = -99999;
+
+      try
+      {
+        exitCode = this.poisoningEngProc.ExitCode;
+      }
+      catch (Exception ex)
+      {
+        exitCode = -99999;
+      }
+
+      LogCons.Inst.Write(LogLevel.Warning, "ArpPoisoning.OnServiceExited(): Service exited unexpectedly. Exit code {0}", exitCode);
 
       this.poisoningEngProc.EnableRaisingEvents = false;
       this.poisoningEngProc.Exited += null;
