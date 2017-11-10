@@ -424,52 +424,36 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private delegate void BGW_OnStartAttackDelegate(object sender, DoWorkEventArgs e);
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
-      if (this.InvokeRequired == true)
-      {
-        this.BeginInvoke(new BGW_OnStartAttackDelegate(this.BGW_OnStartAttack), new object[] { sender, e });
-      }
-
-      //this.Cursor = Cursors.WaitCursor;
+      int interfaceIndex = -1;
 
       // Start all services
-      // EXCEPTION caused by this.cb_Interfaces.SelectedIndex
+      this.cb_Interfaces.BeginInvoke((Action)delegate
+      {
+        interfaceIndex = this.cb_Interfaces.SelectedIndex;
+      });
 
-
-      this.cb_Interfaces.BeginInvoke((Action)delegate {
-        ServiceParameters currentServiceParams = new ServiceParameters()
+      ServiceParameters currentServiceParams = new ServiceParameters()
         {
-          SelectedIfcIndex = this.cb_Interfaces.SelectedIndex,
-          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex),
+          SelectedIfcIndex = interfaceIndex,
+          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(interfaceIndex),
           TargetList = (from target in this.arpScanHandler.TargetList
                         where target.Attack == true
                         select new { target.MacAddress, target.IpAddress }).
                           ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
         };
-        this.StartAllServices(currentServiceParams);
-      });
 
-
-
-
+      this.StartAllServices(currentServiceParams);
     }
 
 
-    private delegate void BGW_OnStartAttackCompletedDelegate(object sender, RunWorkerCompletedEventArgs e);
     private void BGW_OnStartAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      if (this.InvokeRequired == true)
-      {
-        this.BeginInvoke(new BGW_OnStartAttackCompletedDelegate(this.BGW_OnStartAttackCompleted), new object[] { sender, e });
-        return;
-      }
-
       if (e.Error != null)
       {
         this.StopAttack();
-        string message = string.Format($"The following error occurred while starting attack services: {e.Error.Message}");
+        string message = string.Format($"The following error occurred while starting attack services: \r\n\r\n{e.Error.Message}");
         LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStartAttackCompleted(): {0}", message);
         MessageDialog.Inst.ShowWarning("Attack services", message, this);
       }
@@ -487,9 +471,9 @@
 
         // Start all plugins
         Utils.TryExecute2(this.StartAllPlugins);
+        this.attackStarted = true;
       }
- 
-      this.attackStarted = true;
+
       this.Cursor = Cursors.Default;
     }
 
@@ -499,15 +483,8 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public delegate void StopAttackDelegate();
     public void StopAttack()
     {
-      if (this.InvokeRequired)
-      {
-        this.BeginInvoke(new StopAttackDelegate(this.StopAttack), new object[] { });
-        return;
-      }
-
       // Enable GUI elements
       Utils.TryExecute2(this.EnableGuiElements);
 
@@ -516,6 +493,7 @@
 
       // Stop all services
       Utils.TryExecute2(this.attackServiceHandler.StopAllServices);
+
       this.attackStarted = false;
     }
  
@@ -531,12 +509,12 @@
       this.caCertificateHandler.ShowDialog();
     }
 
-    
+
     private void StartAllPlugins()
     {
       foreach (string key in this.pluginHandler.TabPagesCatalog.Keys)
       {
-        LogCons.Inst.Write(LogLevel.Info, "Minary.BGW_OnStartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
+        LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
 
         try
         {
@@ -547,7 +525,7 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, "Minary.StartAllPlugins(EXCEPTION): PluginName:{0}, Error:{1}\r\n{2}", key, ex.Message, ex.StackTrace);
         }
       }
     }
