@@ -122,13 +122,22 @@
 
     private void OnServiceExited(object sender, System.EventArgs e)
     {
-      LogCons.Inst.Write(LogLevel.Error, "DataSniffer.OnServiceExited(): Service exited unexpectedly. Exit code {0}", this.snifferProc.ExitCode);
+      int exitCode = -99999;
+
+      try
+      {
+        exitCode = this.snifferProc.ExitCode;
+      }
+      catch (Exception ex)
+      {
+        exitCode = -99999;
+      }
+
+      LogCons.Inst.Write(LogLevel.Error, "DataSniffer.OnServiceExited(): Service exited unexpectedly. Exit code {0}", exitCode);
 
       this.snifferProc.EnableRaisingEvents = false;
       this.snifferProc.Exited += null;
       this.attackServiceHandler.OnServiceExited(this.serviceName);
-
-      
     }
 
     #endregion
