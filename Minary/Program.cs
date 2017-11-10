@@ -1,11 +1,9 @@
 ﻿namespace Minary
 {
-  using Minary.DataTypes.Enum;
   using Minary.Form;
   using System;
   using System.IO;
   using System.Windows.Forms;
-  using Minary.LogConsole.Main;
 
 
   public static class Program
