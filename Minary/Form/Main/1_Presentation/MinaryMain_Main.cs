@@ -34,6 +34,7 @@
     private TemplateTask.TemplateHandler templateTaskLayer;
     private string currentIpAddress;
     private string currentMacAddress;
+    private int currentInterfaceId;
     private Browser miniBrowser;
     private bool attackStarted;
     private Minary.Form.TaskFacade minaryTaskFacade;
