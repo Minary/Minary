@@ -90,6 +90,11 @@
       string targetHostsPath = Config.APETargetHostsPath;
       string processParameters = string.Format("-x {0}", serviceParameters.SelectedIfcId);
 
+      if (string.IsNullOrEmpty(serviceParameters.SelectedIfcId))
+      {
+        throw new Exception("No interface was declared");
+      }
+
       if (serviceParameters.TargetList.Count <= 0)
       {
         this.serviceStatus = ServiceStatus.NotRunning;

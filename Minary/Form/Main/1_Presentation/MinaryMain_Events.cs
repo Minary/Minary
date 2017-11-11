@@ -77,6 +77,7 @@
 
           this.currentIpAddress = interfaceStruct.IpAddress;
           this.currentMacAddress = interfaceStruct.MacAddress;
+          this.currentInterfaceId = Convert.ToInt32(interfaceStruct.Id);
         }
       }
       catch (Exception ex)
@@ -426,18 +427,10 @@
     /// <param name="e"></param>
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
-      int interfaceIndex = -1;
-
-      // Start all services
-      this.cb_Interfaces.BeginInvoke((Action)delegate
-      {
-        interfaceIndex = this.cb_Interfaces.SelectedIndex;
-      });
-
       ServiceParameters currentServiceParams = new ServiceParameters()
         {
-          SelectedIfcIndex = interfaceIndex,
-          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(interfaceIndex),
+          SelectedIfcIndex = this.currentInterfaceId,
+          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceId),
           TargetList = (from target in this.arpScanHandler.TargetList
                         where target.Attack == true
                         select new { target.MacAddress, target.IpAddress }).
