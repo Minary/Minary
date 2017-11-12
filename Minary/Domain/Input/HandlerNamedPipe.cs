@@ -28,10 +28,8 @@
     private ConcurrentQueue<string> inputDataQueue;
 
     #endregion
-
-
-
-
+ 
+ 
     #region INTERFACE: IInputProcessor
 
 
@@ -60,11 +58,12 @@
     /// </summary>
     public void StartInputProcessing()
     {
+      int failedOpenPipes = 0;
       stopThreads = false;
 
       try
       {
-        // We have several concurrently running NamedPipes reading
+        // There are several concurrently running NamedPipes reading
         // input data. Start them all.
         for (int i = 0; i < Config.PipeInstances; i++)
         {
@@ -78,14 +77,22 @@
           }
           catch (Exception ex)
           {
-            LogCons.Inst.Write(LogLevel.Fatal, "Can't start named pipe - " + ex.StackTrace + "\n" + ex.ToString());
-            string message = string.Format("Can't start named pipe : {0}", ex.ToString());
-            MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
+            failedOpenPipes++;
+            LogCons.Inst.Write(LogLevel.Fatal, "Can't start named pipe no {0} - Message: {1}\r\n\r\nStackTrace\r\n{2}", i, ex.Message , ex.StackTrace);
+
+            continue;
           }
 
           this.inputWorkerThreads[i] = new Thread(new ParameterizedThreadStart(this.DataInputThread));
           this.inputWorkerThreads[i].Start(i);
         }
+
+        if (failedOpenPipes > 0)
+        {
+          string message = string.Format("{0} of {1} named pipes could not be started!", failedOpenPipes, Config.PipeInstances);
+          MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
+        }
+
       }
       catch (Exception ex)
       {
@@ -94,7 +101,6 @@
         MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
       }
     }
-
 
 
     /// <summary>
@@ -183,15 +189,14 @@
     #endregion
 
     #endregion
-
-
+ 
 
     #region PRIVATE
 
     /// <summary>
     ///
     /// </summary>
-    public void DataProcessingThread()
+    private void DataProcessingThread()
     {
       string tmpRecord;
       bool processIsStopped = false;
@@ -239,12 +244,11 @@
     }
 
 
-
     /// <summary>
     ///
     /// </summary>
     /// <param name="newData"></param>
-    public void DataInputThread(object data)
+    private void DataInputThread(object data)
     {
       int threadNo = (int)data;
       string tmpLine = string.Empty;
@@ -322,9 +326,12 @@
       }
     }
 
-
-    private delegate void UpdateMainTBDelegate(string newData);
-    public void UpdateMainTB(string newData)
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="newData"></param>
+    private void UpdateMainTB(string newData)
     {
       string[] splitter;
       int port;
