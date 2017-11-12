@@ -77,7 +77,8 @@
 
           this.currentIpAddress = interfaceStruct.IpAddress;
           this.currentMacAddress = interfaceStruct.MacAddress;
-          this.currentInterfaceId = Convert.ToInt32(interfaceStruct.Id);
+          this.currentInterfaceId = interfaceStruct.Id;
+          this.currentInterfaceIndex = this.cb_Interfaces.SelectedIndex;
         }
       }
       catch (Exception ex)
@@ -429,8 +430,8 @@
     {
       ServiceParameters currentServiceParams = new ServiceParameters()
         {
-          SelectedIfcIndex = this.currentInterfaceId,
-          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceId),
+          SelectedIfcIndex = this.currentInterfaceIndex,
+          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
           TargetList = (from target in this.arpScanHandler.TargetList
                         where target.Attack == true
                         select new { target.MacAddress, target.IpAddress }).
