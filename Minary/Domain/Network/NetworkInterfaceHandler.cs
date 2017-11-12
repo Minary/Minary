@@ -1,20 +1,32 @@
 ﻿namespace Minary.Domain.Network
 {
+  using Minary.Form;
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
   using System;
   using System.Collections;
+  using System.Linq;
   using System.Net.NetworkInformation;
 
 
   public class NetworkInterfaceHandler
   {
 
+    #region MEMBERS
+
+    private MinaryMain minaryInstance;
+
+    #endregion
+
+
     #region PROPERTIES
 
+    public LastConnectionState LastState { get; set; }
+
     public ArrayList Interfaces { get; set; }
+
     public NetworkInterface[] AllAttachednetworkInterfaces { get; set; }
 
     #endregion
@@ -22,32 +34,14 @@
 
     #region PUBLIC
 
-    public NetworkInterfaceHandler()
+    public NetworkInterfaceHandler(MinaryMain minaryMain)
     {
+      this.minaryInstance = minaryMain;
       this.Interfaces = new ArrayList();
       this.LoadInterfaces();
-    }
 
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="interfaceId"></param>
-    /// <returns></returns>
-    public NetworkInterfaceConfig GetIfcById(string interfaceId)
-    {
-      NetworkInterfaceConfig retVal = default(NetworkInterfaceConfig);
-      foreach (NetworkInterfaceConfig tmpInterface in this.Interfaces)
-      {
-        LogCons.Inst.Write(LogLevel.Info, string.Format($"/{tmpInterface.Id}/{interfaceId}/"));
-        if (tmpInterface.Id == interfaceId)
-        {
-          retVal = tmpInterface;
-          break;
-        }
-      }
-
-      return retVal;
+      // Register callback to handle network address changes
+      NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(this.AddressChangedCallback);
     }
 
 
@@ -174,6 +168,66 @@
           LogCons.Inst.Write(LogLevel.Error, ex.Message);
         }
       }
+    }
+
+    #endregion
+
+
+    #region PRIVATE
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="interfaceId"></param>
+    /// <returns></returns>
+    private NetworkInterfaceConfig GetInterfaceById(string interfaceId)
+    {
+      NetworkInterfaceConfig retVal = default(NetworkInterfaceConfig);
+      foreach (NetworkInterfaceConfig tmpInterface in this.Interfaces)
+      {
+        LogCons.Inst.Write(LogLevel.Info, $"/{tmpInterface.Id}/{interfaceId}/");
+        if (tmpInterface.Id == interfaceId)
+        {
+          retVal = tmpInterface;
+          break;
+        }
+      }
+
+      return retVal;
+    }
+
+
+    void AddressChangedCallback(object sender, EventArgs e)
+    {
+      string message = string.Empty;
+      NetworkInterfaceConfig currentNetConfig = this.GetInterfaceById(this.minaryInstance.CurrentInterfaceId);
+
+      // 1. Is there ANY network connection?
+      if (NetworkInterface.GetIsNetworkAvailable() == true &&
+          NetworkInterface.GetAllNetworkInterfaces().Length > 0)
+      {
+        if (this.LastState == LastConnectionState.Connected)
+        {
+          return;
+        }
+
+        this.LastState = LastConnectionState.Connected;
+        this.minaryInstance.SetMinaryState();
+        this.minaryInstance.LoadNicSettings();
+        MessageDialog.Inst.ShowInformation("Network connection", "A new network connection was detected", this.minaryInstance);
+        return;
+      }
+
+      if (this.LastState == LastConnectionState.Disconnected)
+      {
+        return;
+      }
+
+      this.LastState = LastConnectionState.Disconnected;
+      this.minaryInstance.SetMinaryState();
+      this.minaryInstance.ClearCurrentNetworkState();
+      MessageDialog.Inst.ShowWarning("Network connection", "The network connection was lost", this.minaryInstance);
+      return;
     }
 
     #endregion

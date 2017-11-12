@@ -169,6 +169,7 @@
     <Compile Include="DataTypes\ArpScan\IObserverArpRequest.cs" />
     <Compile Include="DataTypes\ArpScan\IObserverArpResponse.cs" />
     <Compile Include="DataTypes\ArpScan\SystemFound.cs" />
+    <Compile Include="DataTypes\Enum\LastConnectionState.cs" />
     <Compile Include="DataTypes\Interface\IInputProcessor.cs" />
     <Compile Include="DataTypes\Struct\MinaryConfig.cs" />
     <Compile Include="Domain\ArpScan\PcapHandler.cs" />

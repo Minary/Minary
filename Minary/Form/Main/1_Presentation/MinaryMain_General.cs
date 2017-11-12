@@ -89,8 +89,15 @@
     /// <summary>
     ///
     /// </summary>
+    public delegate bool LoadNicSettingsDelegate();
     public bool LoadNicSettings()
     {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new LoadNicSettingsDelegate(this.LoadNicSettings), new object[] { });
+        return true;
+      }
+
       string temp = string.Empty;
 
       // Empty Interfaces ComboBox and repopulate it with found interfaces.
