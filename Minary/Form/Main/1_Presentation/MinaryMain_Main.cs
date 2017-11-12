@@ -65,7 +65,9 @@
 
     public string CurrentLocalMac { get { return this.currentMacAddress ?? string.Empty; } }
 
-    public string CurrentGatewayIp { get { return this.tb_GatewayIp.Text; } }
+    public string CurrentGatewayIp { get { return this.tb_GatewayIp.Text ?? string.Empty; } }
+
+    public string CurrentInterfaceId { get { return this.currentInterfaceId ?? string.Empty; } }
 
     public string NetworkStartIp { get { return this.tb_NetworkStartIp.Text; } set { } }
 
@@ -86,6 +88,8 @@
     public ArpScan.Presentation.ArpScan ArpScanHandler { get { return this.arpScanHandler; } set { } }
 
     public MacVendorHandler MacVendor { get { return this.macVendorHandler; } set { } }
+
+    public NetworkInterfaceHandler NetworkHandler { get { return this.nicHandler; } set { } }
 
     #endregion
 
@@ -117,7 +121,7 @@
       this.tabPageHandler = new TabPageHandler(this.tc_Plugins, this);
       this.inputProcessorHandler = new HandlerNamedPipe(this);
  //     this.inputProcessorHandler = new HandlerMessageQueue(this);
-      this.nicHandler = new NetworkInterfaceHandler();
+      this.nicHandler = new NetworkInterfaceHandler(this);
       this.caCertificateHandler = new ManageServerCertificates(this);
       this.macVendorHandler = new MacVendorHandler();
       this.minaryProcessHandler = new MinaryProcess();

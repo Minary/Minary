@@ -100,14 +100,16 @@
         }
 
         // this.logConsoleTask.AddLogMessage(message);
-        logMessage = string.Format($"{timeStamp, -25}{level, -10}{logMessage}{Environment.NewLine}");
+        logMessage = $"{timeStamp, -25}{level, -10}{logMessage}{Environment.NewLine}";
+
         this.tb_LogContent.AppendText(logMessage);
         this.tb_LogContent.SelectionStart = this.tb_LogContent.Text.Length;
         this.tb_LogContent.ScrollToCaret();
       }
-      catch
+      catch (Exception ex)
       {
         // OOOPPPS!
+        string msg = ex.Message;
       }
     }
 

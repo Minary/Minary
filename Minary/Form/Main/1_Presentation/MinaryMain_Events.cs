@@ -361,17 +361,14 @@
     private void SearchNetworkInterfacesToolStripMenuItem_Click(object sender, EventArgs e)
     {
       // If no interface was found reset current interface selection
+      this.SetMinaryState();
+
+      // When NIC settings cannot be loaded (due to disconnected NIC adapter)
+      // clear network settings in the GUI
       if (this.LoadNicSettings() == false)
       {
-        this.tb_GatewayIp.Text = string.Empty;
-        this.tb_GatewayMac.Text = string.Empty;
-        this.tb_NetworkStartIp.Text = string.Empty;
-        this.tb_NetworkStopIp.Text = string.Empty;
-        this.tb_Vendor.Text = string.Empty;
+        this.ClearCurrentNetworkState();
       }
-
-      // Redetermine current Minary system state
-      this.SetMinaryState();
     }
 
 

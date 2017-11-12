@@ -80,6 +80,24 @@
       }
     }
 
+
+    public delegate void ClearCurrentNetworkStateDelegate();
+    public void ClearCurrentNetworkState()
+    {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new ClearCurrentNetworkStateDelegate(this.ClearCurrentNetworkState), new object[] { });
+        return;
+      }
+
+      this.cb_Interfaces.Items.Clear();
+      this.tb_GatewayIp.Text = string.Empty;
+      this.tb_GatewayMac.Text = string.Empty;
+      this.tb_NetworkStartIp.Text = string.Empty;
+      this.tb_NetworkStopIp.Text = string.Empty;
+      this.tb_Vendor.Text = string.Empty;
+    }
+
     #endregion
 
 

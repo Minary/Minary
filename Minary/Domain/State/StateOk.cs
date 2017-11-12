@@ -56,6 +56,7 @@
     {
       this.minaryObj.Bt_Attack_Click = this.minaryObj.Bt_Attack_Click_Event;
       this.minaryObj.Bt_ScanLan_Click = this.minaryObj.Bt_ScanLan_Click_Event;
+      this.minaryObj.NetworkHandler.LastState = LastConnectionState.Connected;
     }
 
     #endregion
