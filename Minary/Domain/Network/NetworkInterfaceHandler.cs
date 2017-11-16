@@ -78,49 +78,6 @@
       return retVal;
     }
 
-    #endregion
-
-
-    #region PRIVATE
-
-    private string DetermineGatewayIp(NetworkInterface ifc)
-    {
-      string defaultGwIp = string.Empty;
-
-      if (ifc.GetIPProperties().GatewayAddresses.Count <= 0)
-      {
-        return defaultGwIp;
-      }
-
-      foreach (GatewayIPAddressInformation tmpAddress in ifc.GetIPProperties().GatewayAddresses)
-      {
-        if (!tmpAddress.Address.IsIPv6LinkLocal)
-        {
-          defaultGwIp = tmpAddress.Address.ToString();
-          break;
-        }
-      }
-
-      return defaultGwIp;
-    }
-
-
-    private UnicastIPAddressInformation DetermineIpAddress(NetworkInterface ifc)
-    {
-      UnicastIPAddressInformation ipAddress = null;
-      foreach (UnicastIPAddressInformation tmpIPaddr in ifc.GetIPProperties().UnicastAddresses)
-      {
-        if (tmpIPaddr.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-        {
-          ipAddress = tmpIPaddr;
-          break;
-        }
-      }
-
-      return ipAddress;
-    }
-
-
     public void LoadInterfaces()
     {
       this.Interfaces.Clear();
@@ -174,6 +131,44 @@
 
 
     #region PRIVATE
+
+    private UnicastIPAddressInformation DetermineIpAddress(NetworkInterface ifc)
+    {
+      UnicastIPAddressInformation ipAddress = null;
+      foreach (UnicastIPAddressInformation tmpIPaddr in ifc.GetIPProperties().UnicastAddresses)
+      {
+        if (tmpIPaddr.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+        {
+          ipAddress = tmpIPaddr;
+          break;
+        }
+      }
+
+      return ipAddress;
+    }
+
+
+    private string DetermineGatewayIp(NetworkInterface ifc)
+    {
+      string defaultGwIp = string.Empty;
+
+      if (ifc.GetIPProperties().GatewayAddresses.Count <= 0)
+      {
+        return defaultGwIp;
+      }
+
+      foreach (GatewayIPAddressInformation tmpAddress in ifc.GetIPProperties().GatewayAddresses)
+      {
+        if (!tmpAddress.Address.IsIPv6LinkLocal)
+        {
+          defaultGwIp = tmpAddress.Address.ToString();
+          break;
+        }
+      }
+
+      return defaultGwIp;
+    }
+
 
     /// <summary>
     ///
