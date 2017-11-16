@@ -6,6 +6,8 @@
   using System;
   using System.IO;
   using System.Text;
+  using System.Threading;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
 
 
@@ -182,6 +184,15 @@
       }
 
       this.AddMessage("Loading template done.", "Template");
+
+      new Task(() =>
+      {
+        Thread.Sleep(4000);
+        this.BeginInvoke(new Action(() =>
+        {
+          this.Close();
+        }));
+      }).Start();
     }
 
 
@@ -280,6 +291,6 @@
     }
 
     #endregion
-    
+
   }
 }
