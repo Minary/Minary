@@ -197,7 +197,7 @@
       string message = string.Empty;
       NetworkInterfaceConfig currentNetConfig = this.GetInterfaceById(this.minaryInstance.CurrentInterfaceId);
 
-      // 1. Is there ANY network connection?
+      // Network connection is up
       if (NetworkInterface.GetIsNetworkAvailable() == true &&
           NetworkInterface.GetAllNetworkInterfaces().Length > 0)
       {
@@ -218,9 +218,12 @@
         return;
       }
 
+      // If the network connection down adjust Minary state
+      // and stop running attack.
       this.LastState = LastConnectionState.Disconnected;
       this.minaryInstance.SetMinaryState();
       this.minaryInstance.ClearCurrentNetworkState();
+      this.minaryInstance.StopAttack();
       MessageDialog.Inst.ShowWarning("Network connection", "The network connection was lost", this.minaryInstance);
       return;
     }
