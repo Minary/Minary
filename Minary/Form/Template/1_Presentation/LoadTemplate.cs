@@ -49,7 +49,6 @@
       this.noReloadAttemps = 0;
     }
 
-
     #endregion
 
 
@@ -184,10 +183,13 @@
       }
 
       this.AddMessage("Loading template done.", "Template");
+      this.AddMessage("Closing this view in 5 seconds ...", "Template");
 
+      // Start a task that closes the LoadTemplate winform
+      // in 5 seconds.
       new Task(() =>
       {
-        Thread.Sleep(4000);
+        Thread.Sleep(5000);
         this.BeginInvoke(new Action(() =>
         {
           this.Close();
