@@ -516,7 +516,7 @@
       this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
       this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(227, 30);
       this.tsmi_UnloadTemplate.Text = "Unload ";
-      this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.UnloadToolStripMenuItem_Click);
+      this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.UnloadTemplateToolStripMenuItem_Click);
       // 
       // tsmi_Tools
       // 

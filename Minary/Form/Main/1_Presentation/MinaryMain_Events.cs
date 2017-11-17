@@ -384,10 +384,10 @@
     }
 
 
-    private void UnloadToolStripMenuItem_Click(object sender, EventArgs e)
+    private void UnloadTemplateToolStripMenuItem_Click(object sender, EventArgs e)
     {
       this.tb_TemplateName.Text = string.Empty;
-      this.templateTaskLayer.RemoveAllTemplatePatternsFromPlugins();
+      this.templateTaskLayer.UnloadTemplatePatternsFromPlugins();
     }
 
 

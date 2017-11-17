@@ -32,7 +32,7 @@
     }
 
 
-    public void RemoveAllTemplatePatternsFromPlugins()
+    public void UnloadTemplatePatternsFromPlugins()
     {
       foreach (string tmpPluginName in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
       {
