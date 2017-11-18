@@ -85,13 +85,25 @@
       {
         try
         {
+          LogCons.Inst.Write(LogLevel.Debug, "Hiding tab page: {0}", tmpTabPage.Name);
+
           this.minaryMain.SetPluginStateByName(tmpTabPage.Text, "0");
           this.HideTabPage(tmpTabPage.Text);
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "Error occurred while hiding tab page: {0}", ex.Message);
+          LogCons.Inst.Write(LogLevel.Error, "HideAllTabPages(): Error occurred while hiding tab page: {0}", ex.Message);
         }
+      }
+
+      // Wait untill all tabe pages are hidden
+      // REMARK: Super ugly!! Maybe one day I'll fix it.
+      int maxWait = 1000;
+      int counter = 0;
+      while (this.tabController.TabPages.Count > 1 && counter < maxWait)
+      {
+        System.Threading.Thread.Sleep(10);
+        counter += 10;
       }
     }
 
@@ -180,17 +192,18 @@
       // Return if TabPage is not in catalog
       if (!this.minaryMain.PluginHandler.TabPagesCatalog.ContainsKey(tabPageName))
       {
-        LogCons.Inst.Write(LogLevel.Error, "{0} : Can't display plugin as it is not found in the catalog", tabPageName);
+        LogCons.Inst.Write(LogLevel.Error, "Minary.ShowTabPage(): Can't display plugin \"{0}\" as it is not found in the catalog", tabPageName);
         return;
       }
 
       // Return if TabPage is already shown
       if (this.tabController.TabPages.ContainsKey(tabPageName))
       {
-        LogCons.Inst.Write(LogLevel.Info, "{0} : Plugin is already activated and shown in the TabControl", tabPageName);
+        LogCons.Inst.Write(LogLevel.Info, "Minary.ShowTabPage(): Plugin \"{0}\" is already activated and shown in the TabControl", tabPageName);
         return;
       }
 
+      LogCons.Inst.Write(LogLevel.Info, "Minary.ShowTabPage(): Inserting plugin: {0}, No. loaded plugins:{1}", tabPageName, this.tabController.TabPages.Count);
       // Insert tab page into tab control
       for (int i = 0; i < this.tabController.TabPages.Count; i++)
       {
@@ -199,15 +212,16 @@
           if (this.tabController.TabPages[i].Text.Contains("Minary") ||
               tabPageName.CompareTo(this.tabController.TabPages[i].Text) < 0)
           {
+            LogCons.Inst.Write(LogLevel.Info, "Minary.ShowTabPage(): TRIAL {0}, Inserting plugin: {1}", i, tabPageName);
             this.tabController.Invoke((MethodInvoker)delegate { this.tabController.TabPages.Insert(i, this.minaryMain.PluginHandler.TabPagesCatalog[tabPageName].PluginTabPage); });
             this.minaryMain.SetPluginStateByName(tabPageName, "1");
-            LogCons.Inst.Write(LogLevel.Info, "{0} : Displaying page in PageHandler", tabPageName);
+            //LogCons.Inst.Write(LogLevel.Info, "{0} : Displaying page in PageHandler", tabPageName);
             break;
           }
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "{0} : {1}", tabPageName, ex.Message);
+          LogCons.Inst.Write(LogLevel.Error, "Minary.ShowTabPage(EXCEPTION): {0} : {1}", tabPageName, ex.Message);
         }
       }
 
