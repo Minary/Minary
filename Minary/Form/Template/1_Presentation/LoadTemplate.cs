@@ -133,11 +133,13 @@
       {
         this.AddMessage("ARP scanning network", "ARP");
         this.callObj.ScanNetwork(this.POSTArpScan_StartAttack);
+        return;
       }
-      else
-      {
-        this.AddMessage("ARP scanning disabled", "ARP");
-      }
+
+      this.AddMessage("ARP scanning disabled", "ARP");
+      this.AddMessage("Loading template done.", "Template");
+      this.AddMessage("Closing this view in 5 seconds ...", "Template");
+      this.CloseFormInXSeconds(5);
     }
 
 
@@ -185,16 +187,7 @@
       this.AddMessage("Loading template done.", "Template");
       this.AddMessage("Closing this view in 5 seconds ...", "Template");
 
-      // Start a task that closes the LoadTemplate winform
-      // in 5 seconds.
-      new Task(() =>
-      {
-        Thread.Sleep(5000);
-        this.BeginInvoke(new Action(() =>
-        {
-          this.Close();
-        }));
-      }).Start();
+      this.CloseFormInXSeconds(5);
     }
 
 
@@ -225,6 +218,19 @@
       catch
       {
       }
+    }
+
+
+    private void CloseFormInXSeconds(int seconds = 5)
+    {
+      new Task(() =>
+      {
+        Thread.Sleep(seconds * 1000);
+        this.BeginInvoke(new Action(() =>
+        {
+          this.Close();
+        }));
+      }).Start();
     }
 
     #endregion
