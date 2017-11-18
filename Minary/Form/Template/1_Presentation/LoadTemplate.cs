@@ -226,6 +226,11 @@
       new Task(() =>
       {
         Thread.Sleep(seconds * 1000);
+        if (this.Visible == false)
+        {
+          return;
+        }
+
         this.BeginInvoke(new Action(() =>
         {
           this.Close();
