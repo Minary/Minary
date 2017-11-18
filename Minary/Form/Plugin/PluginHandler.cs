@@ -175,7 +175,6 @@
     {
       foreach (string key in this.tabPagesCatalog.Keys)
       {
-        LogCons.Inst.Write(LogLevel.Info, "Minary.RestoreLastPluginLoadState(): PluginName:{0}", key);
         try
         {
           IPlugin tmpPluginObj = this.tabPagesCatalog[key].PluginObject;
@@ -187,10 +186,12 @@
           }
           else if (currentPluginState.ToLower() == "on")
           {
+            LogCons.Inst.Write(LogLevel.Info, "Minary.RestoreLastPluginLoadState(): PluginName:{0} State:on", key);
             this.ActivatePlugin(key);
           }
           else
           {
+            LogCons.Inst.Write(LogLevel.Info, "Minary.RestoreLastPluginLoadState(): PluginName:{0} State:off", key);
             this.DeactivatePlugin(key);
           }
         }
