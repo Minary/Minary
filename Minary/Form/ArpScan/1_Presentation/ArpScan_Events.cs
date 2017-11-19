@@ -7,8 +7,8 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
+  using System.Collections.Generic;
   using System.ComponentModel;
-  using System.Threading;
   using System.Windows.Forms;
 
 
@@ -22,7 +22,7 @@
 
     #endregion
 
-
+    
     #region PUBLIC
 
     public delegate void HideArpScanWindowDelegate();

@@ -37,31 +37,13 @@
       Packet packet = null;
       PacketCommunicatorReceiveResult result;
 
-      this.arpScanConfig.Communicator.SetFilter(this.arpScanConfig.Communicator.CreateFilter("arp and arp[6:2] = 2"));
-
-      while (true)
+      // Set "arp reply" filter
+      using (BerkeleyPacketFilter filter = this.arpScanConfig.Communicator.CreateFilter("arp and arp[6:2] = 2"))
       {
-        System.Threading.Thread.Sleep(200);
-
-        if (this.observers.Any(elem => elem.IsStopped == true))
-        {
-          continue;
-        }
-
-        // Receive and evaluate ARP response packet
-        result = this.arpScanConfig.Communicator.ReceivePacket(out packet);
-        if (result == PacketCommunicatorReceiveResult.Timeout)
-        {
-        }
-        else if (result == PacketCommunicatorReceiveResult.Ok)
-        {
-          this.PacketHandler(packet);
-        }
-        else
-        {
-          throw new Exception("Fatal Pcap exception occurred");
-        }
+        this.arpScanConfig.Communicator.SetFilter(filter);
       }
+
+      this.arpScanConfig.Communicator.ReceivePackets(0, this.PacketHandler);
     }
 
     #endregion
@@ -84,18 +66,27 @@
         return;
       }
 
-      byte[] macAddrBytes = new byte[packet.Ethernet.Arp.SenderHardwareAddress.Count];
-      packet.Ethernet.Arp.SenderHardwareAddress.CopyTo(macAddrBytes, 0);
-      string senderMac = Common.NetworkFunctions.MacByteArrayToString(macAddrBytes);
+      string senderMac = string.Join("-", this.ByteToHexString(packet.Ethernet.Arp.SenderHardwareAddress.ToArray()));
+      string senderIp = new System.Net.IPAddress(packet.Ethernet.Arp.SenderProtocolAddress.ToArray()).ToString();
 
-      byte[] ipAddrBytes = new byte[packet.Ethernet.Arp.SenderProtocolAddress.Count];
-      packet.Ethernet.Arp.SenderProtocolAddress.CopyTo(ipAddrBytes, 0);
-      string senderIp = Common.NetworkFunctions.IpByteArrayToString(ipAddrBytes);
+      LogCons.Inst.Write(LogLevel.Info, $"PacketHandler(): {senderMac}/{senderIp}");
 
-      SystemFound newSystem = new SystemFound() { MacAddress = senderMac, IpAddress = senderIp };
-      LogCons.Inst.Write(LogLevel.Info, "ReplyListener.PacketHandler(): Found new target system {0}/{1}", senderMac, senderIp);
       SystemFound newRecord = new SystemFound(senderMac, senderIp);
       this.NotifyNewRecord(newRecord);
+    }
+
+
+    private string[] ByteToHexString(byte[] bytes)
+    {
+      List<string> rs = new List<string>();
+
+      foreach (byte b in bytes)
+      {
+        string hex = string.Format("{0:x2}", b);
+        rs.Add(hex);
+      }
+
+      return rs.ToArray();
     }
 
     #endregion
