@@ -49,8 +49,7 @@
         return;
       }
 
-      if (this.targetRecords.Any(elem => elem.MacAddress == systemData.MacAddress &&
-                                          elem.IpAddress == systemData.IpAddress) == true)
+      if (this.targetList.Contains(systemData.IpAddress) == true)
       {
         LogCons.Inst.Write(LogLevel.Debug, "ArpScan.UpdateTextBox(): {0}/{1} already exists", systemData.MacAddress, systemData.IpAddress);
         return;
@@ -64,6 +63,7 @@
         {
           this.targetList.Add(systemData.IpAddress);
           this.targetRecords.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
+          LogCons.Inst.Write(LogLevel.Info, "UpdateNewRecord(): Found new target system {0}/{1}", systemData.MacAddress, systemData.IpAddress);
         }
       }
       catch (Exception ex)
