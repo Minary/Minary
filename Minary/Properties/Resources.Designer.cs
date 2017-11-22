@@ -63,9 +63,29 @@ namespace Minary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap HostsBig {
+        internal static System.Drawing.Bitmap FA_Play {
             get {
-                object obj = ResourceManager.GetObject("HostsBig", resourceCulture);
+                object obj = ResourceManager.GetObject("FA_Play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FA_Scan {
+            get {
+                object obj = ResourceManager.GetObject("FA_Scan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FA_Stop {
+            get {
+                object obj = ResourceManager.GetObject("FA_Stop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -77,26 +97,6 @@ namespace Minary.Properties {
             get {
                 object obj = ResourceManager.GetObject("Minary", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap StartBig {
-            get {
-                object obj = ResourceManager.GetObject("StartBig", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap StopBig {
-            get {
-                object obj = ResourceManager.GetObject("StopBig", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
