@@ -108,7 +108,8 @@
     /// </summary>
     private void DisableGuiElements()
     {
-      this.bt_Attack.BackgroundImage = Properties.Resources.StopBig;
+//      this.bt_Attack.BackgroundImage = Properties.Resources.StopBig;
+      this.bt_Attack.BackgroundImage = Properties.Resources.FA_Stop;
       this.bt_ScanLan.Enabled = false;
       this.cb_Interfaces.Enabled = false;
       this.dgv_MainPlugins.Enabled = false;
@@ -131,7 +132,8 @@
     /// </summary>
     private void EnableGuiElements()
     {
-      this.bt_Attack.BackgroundImage = Properties.Resources.StartBig;
+//      this.bt_Attack.BackgroundImage = Properties.Resources.StartBig;
+      this.bt_Attack.BackgroundImage = Properties.Resources.FA_Play;
       this.bt_ScanLan.Enabled = true;
       this.cb_Interfaces.Enabled = true;
       this.dgv_MainPlugins.Enabled = true;

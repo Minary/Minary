@@ -119,6 +119,9 @@
     <ApplicationManifest>Minary.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.Sharp, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.Sharp.4.7.0\lib\net40\FontAwesome.Sharp.dll</HintPath>
+    </Reference>
     <Reference Include="LibGit2Sharp, Version=0.23.1.0, Culture=neutral, PublicKeyToken=7cbde695407f0333, processorArchitecture=MSIL">
       <HintPath>..\packages\LibGit2Sharp.0.23.1\lib\net40\LibGit2Sharp.dll</HintPath>
     </Reference>
@@ -141,6 +144,8 @@
     <Reference Include="PcapDotNet.Packets, Version=0.10.0.20603, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
       <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Packets.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -151,6 +156,7 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -162,6 +168,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\ArpScan\IObservableArpRequest.cs" />
@@ -394,6 +401,11 @@
     <None Include="Resources\HostsBig.jpg" />
     <None Include="Resources\StartBig.jpg" />
     <None Include="Resources\StopBig.jpg" />
+    <None Include="Resources\FA_Play.bmp" />
+    <None Include="Resources\fa_play.png" />
+    <None Include="Resources\font-awesome_4-7-0_stop_100_0_ad1923_none.png" />
+    <None Include="Resources\FA_Stop.png" />
+    <None Include="Resources\FA_Scan.png" />
     <Content Include="Resources\Minary.ico" />
   </ItemGroup>
   <ItemGroup>
