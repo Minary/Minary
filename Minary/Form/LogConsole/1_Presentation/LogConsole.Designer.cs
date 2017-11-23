@@ -58,9 +58,6 @@
       // MS_LogConsole
       // 
       this.MS_LogConsole.ImageScalingSize = new System.Drawing.Size(24, 24);
-      this.MS_LogConsole.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_Level,
-            this.editToolStripMenuItem});
       this.MS_LogConsole.Location = new System.Drawing.Point(0, 0);
       this.MS_LogConsole.Name = "MS_LogConsole";
       this.MS_LogConsole.Size = new System.Drawing.Size(1810, 33);
@@ -82,7 +79,7 @@
       // TSMI_Debug
       // 
       this.TSMI_Debug.Name = "TSMI_Debug";
-      this.TSMI_Debug.Size = new System.Drawing.Size(210, 30);
+      this.TSMI_Debug.Size = new System.Drawing.Size(162, 30);
       this.TSMI_Debug.Tag = "Debug";
       this.TSMI_Debug.Text = "Debug";
       this.TSMI_Debug.Click += new System.EventHandler(this.LoglevelToolStripMenuItem_Click);
@@ -90,7 +87,7 @@
       // TSMI_Info
       // 
       this.TSMI_Info.Name = "TSMI_Info";
-      this.TSMI_Info.Size = new System.Drawing.Size(210, 30);
+      this.TSMI_Info.Size = new System.Drawing.Size(162, 30);
       this.TSMI_Info.Tag = "Info";
       this.TSMI_Info.Text = "Info";
       this.TSMI_Info.Click += new System.EventHandler(this.LoglevelToolStripMenuItem_Click);
@@ -98,7 +95,7 @@
       // TSMI_Warning
       // 
       this.TSMI_Warning.Name = "TSMI_Warning";
-      this.TSMI_Warning.Size = new System.Drawing.Size(210, 30);
+      this.TSMI_Warning.Size = new System.Drawing.Size(162, 30);
       this.TSMI_Warning.Tag = "Warning";
       this.TSMI_Warning.Text = "Warning";
       this.TSMI_Warning.Click += new System.EventHandler(this.LoglevelToolStripMenuItem_Click);
@@ -106,7 +103,7 @@
       // TSMI_Error
       // 
       this.TSMI_Error.Name = "TSMI_Error";
-      this.TSMI_Error.Size = new System.Drawing.Size(210, 30);
+      this.TSMI_Error.Size = new System.Drawing.Size(162, 30);
       this.TSMI_Error.Tag = "Error";
       this.TSMI_Error.Text = "Error";
       this.TSMI_Error.Click += new System.EventHandler(this.LoglevelToolStripMenuItem_Click);
@@ -114,7 +111,7 @@
       // TSMI_Fatal
       // 
       this.TSMI_Fatal.Name = "TSMI_Fatal";
-      this.TSMI_Fatal.Size = new System.Drawing.Size(210, 30);
+      this.TSMI_Fatal.Size = new System.Drawing.Size(162, 30);
       this.TSMI_Fatal.Tag = "Fatal";
       this.TSMI_Fatal.Text = "Fatal";
       this.TSMI_Fatal.Click += new System.EventHandler(this.LoglevelToolStripMenuItem_Click);

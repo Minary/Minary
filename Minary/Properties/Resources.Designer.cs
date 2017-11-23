@@ -73,6 +73,36 @@ namespace Minary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FA_Plugin_Pause {
+            get {
+                object obj = ResourceManager.GetObject("FA_Plugin_Pause", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FA_Plugin_Play {
+            get {
+                object obj = ResourceManager.GetObject("FA_Plugin_Play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FA_Plugin_Stop {
+            get {
+                object obj = ResourceManager.GetObject("FA_Plugin_Stop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FA_Scan {
             get {
                 object obj = ResourceManager.GetObject("FA_Scan", resourceCulture);
