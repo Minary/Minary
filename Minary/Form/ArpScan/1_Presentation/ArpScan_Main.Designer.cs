@@ -191,19 +191,19 @@
             this.selectAllToolStripMenuItem,
             this.unselectAllToolStripMenuItem});
       this.cms_ManageTargets.Name = "cms_ManageTargets";
-      this.cms_ManageTargets.Size = new System.Drawing.Size(199, 97);
+      this.cms_ManageTargets.Size = new System.Drawing.Size(173, 64);
       // 
       // selectAllToolStripMenuItem
       // 
       this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-      this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+      this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
       this.selectAllToolStripMenuItem.Text = "Select all";
       this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
       // 
       // unselectAllToolStripMenuItem
       // 
       this.unselectAllToolStripMenuItem.Name = "unselectAllToolStripMenuItem";
-      this.unselectAllToolStripMenuItem.Size = new System.Drawing.Size(198, 30);
+      this.unselectAllToolStripMenuItem.Size = new System.Drawing.Size(172, 30);
       this.unselectAllToolStripMenuItem.Text = "Unselect all";
       this.unselectAllToolStripMenuItem.Click += new System.EventHandler(this.UnselectAllToolStripMenuItem_Click);
       // 
