@@ -4,6 +4,7 @@
   using System.Text;
   using System.Windows.Forms;
 
+
   public partial class FormNewVersion : Form
   {
 
@@ -14,12 +15,14 @@
       this.InitializeComponent();
 
       StringBuilder newVersionMessageStr = new System.Text.StringBuilder();
+      string autoupdateStateStr = Minary.Common.WinRegistry.GetValue("Updates", "Autoupdate");
+      int autoupdateState = Convert.ToInt32(autoupdateStateStr);
+      this.CB_AutoUpdate.Checked = autoupdateState <= 0 ? false : true;
 
       try
       {
         Config.UpdateData updateMetaData = Minary.Common.Updates.FetchUpdateInformationFromServer();
-
-        newVersionMessageStr.Append(@"{\rtf1\ansi There is a new Minary version (" + updateMetaData.AvailableVersionStr + @") available.\line Click on the link below to download it.");
+        newVersionMessageStr.Append(@"{\rtf1\ansi There is a new Minary version (" + updateMetaData.AvailableVersionStr + @") available.\line Click on the link below to get to the download site.");
         newVersionMessageStr.Append(@"\line \line \line");
         newVersionMessageStr.Append(@"{\b \fs20 Changes } \line ");
 
@@ -83,6 +86,24 @@
       else
       {
         return base.ProcessDialogKey(keyData);
+      }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CB_StateChange(object sender, EventArgs e)
+    {
+      if (this.CB_AutoUpdate.Checked == false)
+      {
+        Common.WinRegistry.CreateOrUpdateValue($@"Software\{Minary.Config.ApplicationName}\Updates", "Autoupdate", "0");
+      }
+      else
+      {
+        Common.WinRegistry.CreateOrUpdateValue($@"Software\{Minary.Config.ApplicationName}\Updates", "Autoupdate", "1");
       }
     }
 

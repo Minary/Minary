@@ -133,7 +133,7 @@
 
         // Parse latest version data
         var data = xmlDoc.SelectNodes("/minary");
-        updateMetaData.AvailableVersionStr = data.Item(0)["version"].InnerText;
+        updateMetaData.AvailableVersionStr = data.Item(0)["version"].InnerText.Trim();
 
         // Parse messages from XML
         updateMetaData.Messages.Clear();
@@ -144,16 +144,10 @@
         }
 
         // Compare current and latest version.
-        if (Regex.Match(Minary.Config.MinaryVersion, @"^\d+\.\d+\.\d+$").Success  == false ||
-           Regex.Match(updateMetaData.AvailableVersionStr, @"^\d+\.\d+\.\d+$").Success == false)
-        {
-          goto END;
-        }
+        long currentVersionInt = DetermineVersion(Config.MinaryVersion);
+        long availableVersionInt = DetermineVersion(updateMetaData.AvailableVersionStr);
 
-        int availableVersionInt = int.Parse(Regex.Replace(updateMetaData.AvailableVersionStr, @"[^\d]+", string.Empty));
-        int toolVersionInt = int.Parse(Regex.Replace(Minary.Config.MinaryVersion, @"[^\d]+", string.Empty));
-
-        if (availableVersionInt.CompareTo(toolVersionInt) > 0)
+        if (availableVersionInt.CompareTo(currentVersionInt) > 0)
         {
           updateMetaData.IsUpdateAvaliable = true;
         }
@@ -178,6 +172,27 @@
 END:
 
       return updateMetaData;
+    }
+
+
+    private static long DetermineVersion(string versionString)
+    {
+      int[] versionArray = new int[3];
+      MatchCollection versionMatches = Regex.Matches(versionString, @"^(\d+)\.(\d+)\.(\d+)");
+
+      if (versionMatches.Count != 1)
+      {
+        throw new Exception("Pattern not found");
+      }
+
+      foreach (int i in Enumerable.Range(0, 3))
+      {
+        versionArray[i] = Convert.ToInt32(versionMatches[0].Groups[i + 1].Value);
+      }
+
+      long versionInt = (versionArray[0] + 1) * 1000000 + (versionArray[1] + 1) * 1000 + (versionArray[2] + 1) * 1;
+
+      return versionInt;
     }
 
     #endregion
