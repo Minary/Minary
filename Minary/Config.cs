@@ -14,14 +14,10 @@
     public static readonly string ApplicationName = "Minary";
 
     //// TODO : Candidates to export the app.config file
-//public static readonly string MinaryVersion = "1.0.0";
-//public static string MinaryVersion { get { return System.Windows.Forms.Application.ProductVersion;  } set { } }
 public static string MinaryVersion { get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(); } set { } }
 
-    
-
-public static readonly string CurrentVersionURL = "http://buglist.io/download/currentVersion.xml";
-public static readonly string ToolHomepage = "http://www.buglist.io/downloads.php";
+    public static readonly string CurrentVersionURL = "https://minary.io/download/currentVersion.xml";
+    public static readonly string ToolHomepage = "https://minary.io/download/";
 
     public static readonly string PipeName = "Minary";
     public static readonly string MinaryFileExtension = "mry";

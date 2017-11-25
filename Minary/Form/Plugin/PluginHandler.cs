@@ -178,7 +178,7 @@
         try
         {
           IPlugin tmpPluginObj = this.tabPagesCatalog[key].PluginObject;
-          string currentPluginState = WinRegistry.GetRegistryValue(key, "state");
+          string currentPluginState = WinRegistry.GetValue(key, "state");
 
           if (currentPluginState == null)
           {
@@ -241,7 +241,7 @@
       }
 
       // Set new status in the registry (to survive the application stop)
-      WinRegistry.SetRegistryValue(pluginName, "state", "on");
+      WinRegistry.SetValue(pluginName, "state", "on");
 
       // Set new status in the main GUI DGV
       this.minaryMain.MinaryTaskFacade.ActivatePlugin(pluginName);
@@ -279,7 +279,7 @@
       }
 
       // Set new status in the registry (to survive the application stop)
-      WinRegistry.SetRegistryValue(this.minaryMain.UsedPlugins[pluginRowDGV].PluginName, "state", "off");
+      WinRegistry.SetValue(this.minaryMain.UsedPlugins[pluginRowDGV].PluginName, "state", "off");
 
       // Set new status in the main GUI DGV
       this.minaryMain.MinaryTaskFacade.DeactivatePlugin(pluginName);

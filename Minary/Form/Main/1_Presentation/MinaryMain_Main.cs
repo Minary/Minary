@@ -136,7 +136,13 @@
       // Check if new Minary version is available
       Thread updateThread = new Thread(delegate ()
       {
-        Minary.Common.Updates.CheckForMinaryUpdates();
+        string autoupdateStateStr = Minary.Common.WinRegistry.GetValue("Updates", "Autoupdate");
+        int autoupdateState = Convert.ToInt32(autoupdateStateStr);
+
+        if (autoupdateState > 0)
+        {
+          Minary.Common.Updates.CheckForMinaryUpdates();
+        }
       });
       updateThread.Start();
 

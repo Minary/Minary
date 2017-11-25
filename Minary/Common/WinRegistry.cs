@@ -13,7 +13,7 @@
     /// <param name="regKeyName"></param>
     /// <param name="regSubValueName"></param>
     /// <returns></returns>
-    public static string GetRegistryValue(string regKeyName, string regSubValueName)
+    public static string GetValue(string regKeyName, string regSubValueName)
     {
       RegistryKey regKey = Registry.CurrentUser;
       string retVal = string.Empty;
@@ -32,14 +32,13 @@
     }
 
 
-
     /// <summary>
     ///
     /// </summary>
     /// <param name="parentKey"></param>
     /// <param name="regKeyName"></param>
     /// <returns></returns>
-    public static bool CreateRegistryKey(string parentKey, string regKeyName)
+    public static bool CreateKey(string parentKey, string regKeyName)
     {
       RegistryKey regKey = Registry.CurrentUser;
       bool retVal = false;
@@ -58,6 +57,31 @@
     }
 
 
+    public static bool CreateOrUpdateValue(string keyName, string subValueName, string valueContent)
+    {
+      bool retVal = false;
+      RegistryKey regKey = null;
+
+      try
+      {
+        regKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(keyName);
+        regKey.SetValue(subValueName, valueContent);
+        retVal = true;
+      }
+      catch (Exception)
+      {
+      }
+      finally
+      {
+        if (regKey != null)
+        {
+          regKey.Close();
+        }
+      }
+
+      return retVal;
+    }
+
 
     /// <summary>
     ///
@@ -65,7 +89,7 @@
     /// <param name="regKeyName"></param>
     /// <param name="regSubValueName"></param>
     /// <param name="regValueContent"></param>
-    public static void SetRegistryValue(string regKeyName, string regSubValueName, string regValueContent)
+    public static void SetValue(string regKeyName, string regSubValueName, string regValueContent)
     {
       RegistryKey regKey = Registry.CurrentUser;
 
