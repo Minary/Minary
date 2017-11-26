@@ -22,19 +22,24 @@
 
     private Process poisoningEngProc;
     private AttackServiceHandler attackServiceHandler;
+    private IAttackServiceHost attackServiceHost;
 
     #endregion
 
 
     #region PUBLIC
 
-    public ArpPoisoning(AttackServiceHandler attackServiceHandler, string serviceName, string serviceWorkingDir, Dictionary<string, SubModule> subModules)
+    public ArpPoisoning(AttackServiceHandler attackServiceHandler, IAttackServiceHost attackServiceHost, string serviceName, string serviceWorkingDir, Dictionary<string, SubModule> subModules)
     {
       this.attackServiceHandler = attackServiceHandler;
       this.serviceName = serviceName;
       this.workingDirectory = serviceWorkingDir;
       this.subModules = subModules;
       this.serviceStatus = ServiceStatus.NotRunning;
+      this.attackServiceHost = attackServiceHost;
+
+      // Register attack service
+      this.attackServiceHost.Register(this);
     }
 
     #endregion
@@ -50,7 +55,7 @@
       {
         exitCode = this.poisoningEngProc.ExitCode;
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         exitCode = -99999;
       }
@@ -76,6 +81,8 @@
     public Dictionary<string, SubModule> SubModules { get { return this.subModules; } set { } }
 
     public ServiceStatus Status { get { return this.serviceStatus; } set { this.serviceStatus = value; } }
+
+    public IAttackServiceHost AttackServiceHost { get; set; }
 
     #endregion
 
