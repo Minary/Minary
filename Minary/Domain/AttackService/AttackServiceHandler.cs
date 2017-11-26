@@ -11,13 +11,14 @@
   using AService = DataTypes.AttackService;
 
 
-  public class AttackServiceHandler
+  public class AttackServiceHandler: IAttackServiceHost
   {
 
     #region MEMBERS
 
     private MinaryMain minaryInstance;
     private Dictionary<string, IAttackService> attackServices;
+    private IAttackServiceHost attackServiceHost;
 
     #endregion
 
@@ -46,22 +47,22 @@
 
       this.minaryInstance = minaryInstance;
       this.attackServices = new Dictionary<string, IAttackService>();
-
+      this.attackServiceHost = (IAttackServiceHost)this;
       // APE - ARP Poisoning
       Dictionary<string, SubModule> arpPoisoningSubModules = new Dictionary<string, SubModule>();
       arpPoisoningSubModules.Add(AService.ArpPoisoning.SubModule.DnsPoisoning, new SubModule(AService.ArpPoisoning.SubModule.DnsPoisoning, apeWorkingDirectory, Config.DnsPoisoningHosts));
       arpPoisoningSubModules.Add(AService.ArpPoisoning.SubModule.Firewall, new SubModule(AService.ArpPoisoning.SubModule.Firewall, apeWorkingDirectory, Config.ApeFirewallRules));
-      ArpPoisoning tmpDataSnifferArpPoison = new ArpPoisoning(this, AService.ArpPoisoning.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeServiceDir), arpPoisoningSubModules);
+      ArpPoisoning tmpDataSnifferArpPoison = new ArpPoisoning(this, this.attackServiceHost, AService.ArpPoisoning.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeServiceDir), arpPoisoningSubModules);
       this.attackServices.Add(AService.ArpPoisoning.Name, tmpDataSnifferArpPoison);
       this.MinaryMain.RegisterAttackService(AService.ArpPoisoning.Name);
-      this.MinaryMain.SetNewAttackServiceState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
+//      this.MinaryMain.SetNewAttackServiceState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
 
       // Sniffer - Data sniffing
       Dictionary<string, SubModule> dataSniffingSubModules = new Dictionary<string, SubModule>();
-      DataSniffer tmpDataSniffer = new DataSniffer(this, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.SnifferServiceDir), dataSniffingSubModules);
+      DataSniffer tmpDataSniffer = new DataSniffer(this, this.attackServiceHost, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.SnifferServiceDir), dataSniffingSubModules);
       this.attackServices.Add(AService.DataSniffer.Name, tmpDataSniffer);
       this.MinaryMain.RegisterAttackService(AService.DataSniffer.Name);
-      this.MinaryMain.SetNewAttackServiceState(AService.DataSniffer.Name, ServiceStatus.NotRunning);
+//      this.MinaryMain.SetNewAttackServiceState(AService.DataSniffer.Name, ServiceStatus.NotRunning);
 
       // HttpReverseProxy
       Dictionary<string, SubModule> httpReverseProxySubModules = new Dictionary<string, SubModule>();
@@ -71,10 +72,10 @@
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.InjectFile, new SubModule(AService.HttpReverseProxyServer.SubModule.InjectFile, injectFileWorkingDirectory, "plugin.config"));
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.RequestRedirect, new SubModule(AService.HttpReverseProxyServer.SubModule.RequestRedirect, requestRedirectWorkingDirectory, "plugin.config"));
       httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.HostMapping, new SubModule(AService.HttpReverseProxyServer.SubModule.HostMapping, hostMappingWorkingDirectory, "plugin.config"));
-      HttpReverseProxy tmpDataSnifferHttpReverseProxy = new HttpReverseProxy(this, AService.HttpReverseProxyServer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyServiceDir), httpReverseProxySubModules);
+      HttpReverseProxy tmpDataSnifferHttpReverseProxy = new HttpReverseProxy(this, this.attackServiceHost, AService.HttpReverseProxyServer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyServiceDir), httpReverseProxySubModules);
       this.attackServices.Add(AService.HttpReverseProxyServer.Name, tmpDataSnifferHttpReverseProxy);
       this.MinaryMain.RegisterAttackService(AService.HttpReverseProxyServer.Name);
-      this.MinaryMain.SetNewAttackServiceState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
+//      this.MinaryMain.SetNewAttackServiceState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
     }
 
 
@@ -127,37 +128,15 @@
     #endregion
 
 
-    #region PRIVATE
+    #region INTERFACE: IAttackServiceHandler
 
-    /*
-    private void SetNewState(string serviceName, ServiceStatus newStatus)
+    void IAttackServiceHost.Register(IAttackService attackService)
     {
-      if (string.IsNullOrEmpty(serviceName))
-      {
-        return;
-      }
-
-      if (this.attackServices.ContainsKey(serviceName) == false)
-      {
-        LogCons.Inst.Write("AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
-        return;
-      }
-
-      if (this.attackServices[serviceName].Status == newStatus)
-      {
-        return;
-      }
-
-      LogCons.Inst.Write("AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());
-      // Set actual service state
-      this.attackServices[serviceName].Status = newStatus;
-
-      // Propagate status switch to GUI
-      // TODO: Should be solved by an observer!
-      this.minaryInstance.SetNewAttackServiceState(serviceName, newStatus);
+      LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.Register(): Service {0} registered", attackService.ServiceName);
+      this.MinaryMain.SetNewAttackServiceState(attackService.ServiceName, ServiceStatus.NotRunning);
     }
-    */
 
     #endregion
+
   }
 }
