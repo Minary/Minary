@@ -216,9 +216,6 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Domain\AttackService\AttackServiceHandler.cs" />
-    <Compile Include="Domain\AttackService\Service\ArpPoisoning.cs" />
-    <Compile Include="Domain\AttackService\Service\DataSniffer.cs" />
-    <Compile Include="Domain\AttackService\Service\HttpReverseProxy.cs" />
     <Compile Include="Form\Certificates\1_Presentation\CertificateDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,7 +248,6 @@
     </Compile>
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\WinPcap.cs" />
-    <Compile Include="Domain\AttackService\DataType\AttackService.cs" />
     <Compile Include="DataTypes\MinaryExtension.cs" />
     <Compile Include="Domain\Input\HandlerNamedPipe.cs" />
     <Compile Include="Domain\DSL\Calls.cs" />

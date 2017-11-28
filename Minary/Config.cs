@@ -31,30 +31,29 @@ public static string MinaryVersion { get { return System.Reflection.Assembly.Get
     public static readonly string PatternDir = "patterns";
     public static readonly string DataDir = "data";
 
-    // Services
-    public static readonly string AttackServicesDir = "attackservices";
+    // Attack services
+    public static readonly string AttackServicesPluginsDir = "attackservices";
 
-    // Service: APE
-    public static readonly string ApeServiceDir = Path.Combine(AttackServicesDir, "APE");
-    public static readonly string ApeBinaryPath = Path.Combine(ApeServiceDir, "Ape.exe");
-    public static readonly string ApeProcessName = "Ape";
+// Service: APE
+public static readonly string ApeServiceDir = Path.Combine(AttackServicesPluginsDir, "ArpPoisoning");
+public static readonly string ApeBinaryPath = Path.Combine(ApeServiceDir, "Ape.exe");
+public static readonly string ApeProcessName = "Ape";
 
 public static readonly string ApeFirewallRules = ".fwrules";
 public static readonly string ApeTargetHosts = ".targethosts";
 public static readonly string DnsPoisoningHosts = ".dnshosts";
 
 // Service: Sniffer
-public static readonly string SnifferServiceDir = Path.Combine(AttackServicesDir, "Sniffer");
+public static readonly string SnifferServiceDir = Path.Combine(AttackServicesPluginsDir, "Sniffer");
 public static readonly string SnifferBinaryPath = Path.Combine(SnifferServiceDir, "Sniffer.exe");
 public static readonly string SnifferProcessName = "Sniffer";
 
 // Service: HttpReverseProxy
-public static readonly string HttpReverseProxyServiceDir = Path.Combine(AttackServicesDir, "HttpReverseProxy");
+public static readonly string HttpReverseProxyServiceDir = Path.Combine(AttackServicesPluginsDir, "HttpReverseProxy");
 public static readonly string HttpReverseProxyBinaryPath = Path.Combine(HttpReverseProxyServiceDir, "HttpReverseProxy.exe");
-public static readonly string HttpReverseProxyConfigFilePath = Path.Combine(HttpReverseProxyServiceDir, "plugin.config");
 public static readonly string HttpReverseProxyName = "HttpReverseProxy";
 public static readonly string HttpReverseProxyCertrifcateDir = Path.Combine(HttpReverseProxyServiceDir, "Certificates");
-// public static string HttpReverseProxyPath { get { return (Path.Combine(Directory.GetCurrentDirectory(), Config.BinaryDir, Config.HttpReverseProxyBinaryPath)); } }
+
 
 // Service: HttpReverseProxy/SslStrip
 public static readonly string SslStripDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\SslStrip");
@@ -111,12 +110,6 @@ public static readonly string GitEmail = "Minary@";
 
     public static string WinPcap { get; set; }
 
-    public static string APEFWRulesPath { get { return Path.Combine(Config.ApeServiceDir, Config.ApeFirewallRules); } }
-
-    public static string APETargetHostsPath { get { return Path.Combine(Config.ApeServiceDir, Config.ApeTargetHosts); } }
-
-    public static string DNSPoisoningHostsPath { get { return Path.Combine(Config.ApeServiceDir, Config.DnsPoisoningHosts); } }
-    
     #endregion
 
 

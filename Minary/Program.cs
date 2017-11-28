@@ -55,10 +55,10 @@
     {
       string[] directoryList = new string[]
                             {
-                              Config.AttackServicesDir,
-                              Config.ApeServiceDir,
-                              Config.HttpReverseProxyServiceDir,
-                              Config.HttpReverseProxyCertrifcateDir,
+                              Config.AttackServicesPluginsDir,
+//                              Config.ApeServiceDir,
+//                              Config.HttpReverseProxyServiceDir,
+//                              Config.HttpReverseProxyCertrifcateDir,
                               Config.PluginsDir,
                               Config.TemplatesDir,
                               Config.CustomTemplatesDir,

@@ -5,7 +5,7 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using MinaryLib;
-  using MinaryLib.AttackService;
+  using MinaryLib.AttackService.Interface;
   using MinaryLib.Plugin;
   using System;
   using System.Collections.Concurrent;
@@ -142,30 +142,6 @@
         }
       }
     }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-//    public void StartAllPlugins()
-//    {
-//      foreach (string key in this.TabPagesCatalog.Keys)
-//      {
-//LogCons.Inst.Write("PluginHandler.StartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.IsPluginActive(key));
-//        if (this.IsPluginActive(key))
-//        {
-//          try
-//          {
-//            this.TabPagesCatalog[key].PluginObject.OnStartAttack();
-//          }
-//          catch (Exception ex)
-//          {
-//LogCons.Inst.Write("PluginHandler.StartAllPlugins(): EXCEPTION Plugin:{0}, msg:{1}",
-//  key, ex.Message);
-//          }
-//        }
-//      }
-//    }
 
 
     /// <summary>
@@ -495,8 +471,8 @@
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="pluginObj"></param>
-    /// <param name="status"></param>
+    /// <param name="callingPluginObj"></param>
+    /// <param name="newPluginStatus"></param>
     public delegate void PluginSetStatusDelegate(object callingPluginObj, MinaryLib.Plugin.Status newPluginStatus);
     public void ReportPluginSetStatus(object callingPluginObj, MinaryLib.Plugin.Status newPluginStatus)
     {
@@ -548,7 +524,7 @@
     /// Plugin is connecting back to register itself actively.
     /// Create ControlTab and customize the plugin/tab appearance.
     /// </summary>
-    /// <param name="pPlugin"></param>
+    /// <param name="plugin"></param>
     /// <returns></returns>
     public void Register(IPlugin plugin)
     {
