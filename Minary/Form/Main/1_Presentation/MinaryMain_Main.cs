@@ -13,7 +13,7 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
-  using MinaryLib.AttackService;
+  using MinaryLib.AttackService.Enum;
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
@@ -147,10 +147,7 @@
       updateThread.Start();
 
       // Download attack pattern updates
-      Thread syncThread = new Thread(delegate ()
-      {
-        Minary.Common.Updates.SyncAttackPatterns();
-      });
+      Thread syncThread = new Thread(() => { Minary.Common.Updates.SyncAttackPatterns(); });
       syncThread.Start();
     }
 
@@ -222,11 +219,14 @@
       this.arpScanHandler = new ArpScan.Presentation.ArpScan(this);
       this.attackStarted = false;
 
+      // Check if an other instance is running.
+      this.minaryProcessHandler.HandleRunningInstances();
+
       // Load and initialize all plugins
       this.pluginHandler.LoadPlugins();
 
-      // Check if an other instance is running.
-      this.minaryProcessHandler.HandleRunningInstances();
+      // Load and initialize all attack services
+      this.attackServiceHandler.LoadAttackServicePlugins();
     }
 
 
@@ -323,7 +323,7 @@
         return;
       }
 
-      int tmpNewServiceStatus = (newStatus >= 0) ? (int)newStatus : (int)MinaryLib.AttackService.ServiceStatus.NotRunning;
+      int tmpNewServiceStatus = (newStatus >= 0) ? (int)newStatus : (int)ServiceStatus.NotRunning;
 
       this.attackServiceMap[serviceName].Image = this.il_AttackServiceStat.Images[tmpNewServiceStatus];
       LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());

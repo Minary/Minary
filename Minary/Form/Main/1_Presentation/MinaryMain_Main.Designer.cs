@@ -44,10 +44,10 @@
     {
       this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MinaryMain));
-      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+      System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
       this.gb_Interfaces = new System.Windows.Forms.GroupBox();
       this.tb_TemplateName = new System.Windows.Forms.TextBox();
       this.l_Template = new System.Windows.Forms.Label();
@@ -82,11 +82,11 @@
       this.tsmi_CreateTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_UnloadTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Tools = new System.Windows.Forms.ToolStripMenuItem();
-      this.tsmi_Minibrowser = new System.Windows.Forms.ToolStripMenuItem();
-      this.tsmi_DetectInterfaces = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Help = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_GetUpdates = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LogConsole = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_Minibrowser = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_DetectInterfaces = new System.Windows.Forms.ToolStripMenuItem();
       this.ofd_ImportSession = new System.Windows.Forms.OpenFileDialog();
       this.l_AS_Proxy_Key = new System.Windows.Forms.Label();
       this.l_AS_APE_Key = new System.Windows.Forms.Label();
@@ -365,25 +365,25 @@
       this.dgv_MainPlugins.BorderStyle = System.Windows.Forms.BorderStyle.None;
       this.dgv_MainPlugins.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
       this.dgv_MainPlugins.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-      dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-      dataGridViewCellStyle13.BackColor = System.Drawing.Color.White;
-      dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-      dataGridViewCellStyle13.Padding = new System.Windows.Forms.Padding(0, 0, 0, 5);
-      dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.White;
-      dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.WindowText;
-      dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-      this.dgv_MainPlugins.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+      dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+      dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+      dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+      dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(0, 0, 0, 5);
+      dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White;
+      dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+      dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+      this.dgv_MainPlugins.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
       this.dgv_MainPlugins.ColumnHeadersHeight = 28;
       this.dgv_MainPlugins.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-      dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-      dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-      dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-      dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Window;
-      dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-      dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-      this.dgv_MainPlugins.DefaultCellStyle = dataGridViewCellStyle14;
+      dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+      dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+      dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+      dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Window;
+      dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+      dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+      this.dgv_MainPlugins.DefaultCellStyle = dataGridViewCellStyle6;
       this.dgv_MainPlugins.EnableHeadersVisualStyles = false;
       this.dgv_MainPlugins.GridColor = System.Drawing.Color.White;
       this.dgv_MainPlugins.Location = new System.Drawing.Point(69, 31);
@@ -391,17 +391,17 @@
       this.dgv_MainPlugins.MultiSelect = false;
       this.dgv_MainPlugins.Name = "dgv_MainPlugins";
       this.dgv_MainPlugins.ReadOnly = true;
-      dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-      dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
-      dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-      dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-      dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-      dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-      this.dgv_MainPlugins.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
+      dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+      dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+      dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+      dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+      dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+      dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+      this.dgv_MainPlugins.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
       this.dgv_MainPlugins.RowHeadersVisible = false;
-      dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.dgv_MainPlugins.RowsDefaultCellStyle = dataGridViewCellStyle16;
+      dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.dgv_MainPlugins.RowsDefaultCellStyle = dataGridViewCellStyle8;
       this.dgv_MainPlugins.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.dgv_MainPlugins.RowTemplate.DefaultCellStyle.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
       this.dgv_MainPlugins.RowTemplate.ReadOnly = true;
@@ -524,25 +524,11 @@
       this.tsmi_Tools.Size = new System.Drawing.Size(65, 29);
       this.tsmi_Tools.Text = "Tools";
       // 
-      // tsmi_Minibrowser
-      // 
-      this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
-      this.tsmi_Minibrowser.Size = new System.Drawing.Size(296, 30);
-      this.tsmi_Minibrowser.Text = "Minibrowser ...";
-      this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
-      // 
-      // tsmi_DetectInterfaces
-      // 
-      this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
-      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(296, 30);
-      this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
-      this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.SearchNetworkInterfacesToolStripMenuItem_Click);
-      // 
       // tsmi_Help
       // 
       this.tsmi_Help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_GetUpdates,
-            this.tsmi_LogConsole });
+            this.tsmi_LogConsole});
       this.tsmi_Help.Name = "tsmi_Help";
       this.tsmi_Help.Size = new System.Drawing.Size(61, 29);
       this.tsmi_Help.Text = "Help";
@@ -561,6 +547,20 @@
       this.tsmi_LogConsole.Size = new System.Drawing.Size(268, 30);
       this.tsmi_LogConsole.Text = "Log console ...";
       this.tsmi_LogConsole.Click += new System.EventHandler(this.LogConsoleToolStripMenuItem_Click);
+      // 
+      // tsmi_Minibrowser
+      // 
+      this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
+      this.tsmi_Minibrowser.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_Minibrowser.Text = "Minibrowser ...";
+      this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
+      // 
+      // tsmi_DetectInterfaces
+      // 
+      this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
+      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
+      this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.SearchNetworkInterfacesToolStripMenuItem_Click);
       // 
       // ofd_ImportSession
       // 
@@ -613,7 +613,7 @@
       this.pb_StatusProxy.Size = new System.Drawing.Size(27, 22);
       this.pb_StatusProxy.TabIndex = 8;
       this.pb_StatusProxy.TabStop = false;
-      this.pb_StatusProxy.Tag = "HttpReverseProxyServer";
+      this.pb_StatusProxy.Tag = "HttpReverseProxy";
       // 
       // il_AttackServiceStat
       // 
@@ -643,7 +643,7 @@
       this.pb_StatusDataSniffer.Size = new System.Drawing.Size(27, 22);
       this.pb_StatusDataSniffer.TabIndex = 10;
       this.pb_StatusDataSniffer.TabStop = false;
-      this.pb_StatusDataSniffer.Tag = "DataSniffer";
+      this.pb_StatusDataSniffer.Tag = "Sniffer";
       // 
       // MinaryMain
       // 

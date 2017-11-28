@@ -1,24 +1,25 @@
 ﻿namespace Minary.Domain.AttackService
 {
   using Minary.DataTypes.Enum;
-  using Minary.Domain.AttackService.Service;
   using Minary.Form;
   using Minary.LogConsole.Main;
-  using MinaryLib.AttackService;
+  using MinaryLib.AttackService.Class;
+  using MinaryLib.AttackService.Enum;
+  using MinaryLib.AttackService.Interface;
   using System;
   using System.Collections.Generic;
   using System.IO;
-  using AService = DataTypes.AttackService;
+  using System.Reflection;
 
 
-  public class AttackServiceHandler: IAttackServiceHost
+  public class AttackServiceHandler : IAttackServiceHost
   {
 
     #region MEMBERS
 
     private MinaryMain minaryInstance;
     private Dictionary<string, IAttackService> attackServices;
-    private IAttackServiceHost attackServiceHost;
+    private Dictionary<string, Assembly> dynamicallyLoadedAttackServices;
 
     #endregion
 
@@ -47,35 +48,57 @@
 
       this.minaryInstance = minaryInstance;
       this.attackServices = new Dictionary<string, IAttackService>();
-      this.attackServiceHost = (IAttackServiceHost)this;
-      // APE - ARP Poisoning
-      Dictionary<string, SubModule> arpPoisoningSubModules = new Dictionary<string, SubModule>();
-      arpPoisoningSubModules.Add(AService.ArpPoisoning.SubModule.DnsPoisoning, new SubModule(AService.ArpPoisoning.SubModule.DnsPoisoning, apeWorkingDirectory, Config.DnsPoisoningHosts));
-      arpPoisoningSubModules.Add(AService.ArpPoisoning.SubModule.Firewall, new SubModule(AService.ArpPoisoning.SubModule.Firewall, apeWorkingDirectory, Config.ApeFirewallRules));
-      ArpPoisoning tmpDataSnifferArpPoison = new ArpPoisoning(this, this.attackServiceHost, AService.ArpPoisoning.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.ApeServiceDir), arpPoisoningSubModules);
-      this.attackServices.Add(AService.ArpPoisoning.Name, tmpDataSnifferArpPoison);
-      this.MinaryMain.RegisterAttackService(AService.ArpPoisoning.Name);
-//      this.MinaryMain.SetNewAttackServiceState(AService.ArpPoisoning.Name, ServiceStatus.NotRunning);
+      this.dynamicallyLoadedAttackServices = new Dictionary<string, Assembly>();
+    }
 
-      // Sniffer - Data sniffing
-      Dictionary<string, SubModule> dataSniffingSubModules = new Dictionary<string, SubModule>();
-      DataSniffer tmpDataSniffer = new DataSniffer(this, this.attackServiceHost, AService.DataSniffer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.SnifferServiceDir), dataSniffingSubModules);
-      this.attackServices.Add(AService.DataSniffer.Name, tmpDataSniffer);
-      this.MinaryMain.RegisterAttackService(AService.DataSniffer.Name);
-//      this.MinaryMain.SetNewAttackServiceState(AService.DataSniffer.Name, ServiceStatus.NotRunning);
 
-      // HttpReverseProxy
-      Dictionary<string, SubModule> httpReverseProxySubModules = new Dictionary<string, SubModule>();
-      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.SslStrip, new SubModule(AService.HttpReverseProxyServer.SubModule.SslStrip, sslStripWorkingDirectory, "plugin.config"));
-      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.DataSniffer, new SubModule(AService.HttpReverseProxyServer.SubModule.DataSniffer, dataSnifferWorkingDirectory, "plugin.config"));
-      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.InjectCode, new SubModule(AService.HttpReverseProxyServer.SubModule.InjectCode, injectCodeWorkingDirectory, "plugin.config"));
-      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.InjectFile, new SubModule(AService.HttpReverseProxyServer.SubModule.InjectFile, injectFileWorkingDirectory, "plugin.config"));
-      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.RequestRedirect, new SubModule(AService.HttpReverseProxyServer.SubModule.RequestRedirect, requestRedirectWorkingDirectory, "plugin.config"));
-      httpReverseProxySubModules.Add(AService.HttpReverseProxyServer.SubModule.HostMapping, new SubModule(AService.HttpReverseProxyServer.SubModule.HostMapping, hostMappingWorkingDirectory, "plugin.config"));
-      HttpReverseProxy tmpDataSnifferHttpReverseProxy = new HttpReverseProxy(this, this.attackServiceHost, AService.HttpReverseProxyServer.Name, Path.Combine(Directory.GetCurrentDirectory(), Config.HttpReverseProxyServiceDir), httpReverseProxySubModules);
-      this.attackServices.Add(AService.HttpReverseProxyServer.Name, tmpDataSnifferHttpReverseProxy);
-      this.MinaryMain.RegisterAttackService(AService.HttpReverseProxyServer.Name);
-//      this.MinaryMain.SetNewAttackServiceState(AService.HttpReverseProxyServer.Name, ServiceStatus.NotRunning);
+    public void LoadAttackServicePlugins()
+    {
+      string fileName;
+      string tempPluginPath;
+      List<string> pluginList = null;
+
+      try
+      {
+        pluginList = this.GetAttackServicePluginList();
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, "Minary LoadAttackServicePlugins Exception: {0}", ex.Message);
+        pluginList = new List<string>();
+        return;
+      }
+
+      // Iterate through all plugin directories.
+      for (int plugCount = 0; plugCount < pluginList.Count; plugCount++)
+      {
+        if (!Directory.Exists(pluginList[plugCount]))
+        {
+          continue;
+        }
+
+        tempPluginPath = pluginList[plugCount];
+        string[] pluginFiles = Directory.GetFiles(tempPluginPath, "as_*.dll");
+
+        for (int i = 0; i < pluginFiles.Length; i++)
+        {
+          fileName = Path.GetFileNameWithoutExtension(pluginFiles[i]);
+          LogCons.Inst.Write(LogLevel.Info, "Found attack service plugin: {0}", pluginFiles[i]);
+
+          // Create/Load instance of attack serviceplugin.
+          try
+          {
+            this.InsertPluginIntoMainGui(pluginFiles[i]);
+          }
+          catch (Exception ex)
+          {
+            LogCons.Inst.Write(LogLevel.Error, "Error occurred while loading attack service {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
+            string message = string.Format("Error occurred while loading attack service {0} : {1}", fileName, ex.Message);
+            MessageDialog.Inst.ShowError(string.Empty, message, this.minaryInstance);
+            continue;
+          }
+        }
+      }
     }
 
 
@@ -118,11 +141,62 @@
       }
     }
 
+    #endregion
 
-    public void OnServiceExited(string serviceName)
+
+    #region PRIVATE
+
+    private List<string> GetAttackServicePluginList()
     {
-      LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.OnServiceExited(): Service {0} stopped unexpectedly", serviceName);
-      this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
+      string baseDir = Directory.GetCurrentDirectory();
+      string tempPluginPath = Path.Combine(baseDir, Config.AttackServicesPluginsDir);
+      string[] tempPluginList = Directory.GetDirectories(tempPluginPath);
+      List<string> pluginList = new List<string>();
+
+      for (int i = 0; i < tempPluginList.Length; i++)
+      {
+        string[] pluginFiles = Directory.GetFiles(tempPluginList[i], "as_*.dll");
+
+        if (pluginFiles.Length > 0)
+        {
+          pluginList.Add(tempPluginList[i]);
+        }
+      }
+
+      return pluginList;
+    }
+
+
+    private void InsertPluginIntoMainGui(string currentPluginFile)
+    {
+      Type objType;
+      Assembly assemblyObj;
+      string fileName = Path.GetFileNameWithoutExtension(currentPluginFile);
+
+      if ((assemblyObj = Assembly.LoadFrom(currentPluginFile)) == null)
+      {
+        return;
+      }
+
+      this.dynamicallyLoadedAttackServices.Add(assemblyObj.FullName, assemblyObj);
+
+      string pluginName = string.Format("Minary.AttackService.Main.{0}", fileName);
+      objType = assemblyObj.GetType(pluginName, false, false);
+
+      if (objType == null)
+      {
+        return;
+      }
+
+      AttackServiceParameters attackServiceParams = new AttackServiceParameters()
+      {
+        AttackServiceHost = this,
+        AttackServicesWorkingDirFullPath = Path.Combine(Directory.GetCurrentDirectory(), Config.AttackServicesPluginsDir),
+//        MinaryWorkingFullPath = Path.Combine(Directory.GetCurrentDirectory()),
+        PipeName = Config.PipeName
+      };
+
+      object tmpPluginObj = Activator.CreateInstance(objType, attackServiceParams);
     }
 
     #endregion
@@ -130,10 +204,33 @@
 
     #region INTERFACE: IAttackServiceHandler
 
-    void IAttackServiceHost.Register(IAttackService attackService)
+    public bool IsDebuggingOn { get { return Minary.Common.Debugging.IsDebuggingOn; } }
+
+    public void Register(IAttackService attackService)
     {
       LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.Register(): Service {0} registered", attackService.ServiceName);
+
+      // Register the service inside the main form
+      this.minaryInstance.RegisterAttackService(attackService.ServiceName);
+
+      // Register the service in the attack service handler
+      this.attackServices.Add(attackService.ServiceName, attackService);
+
+      // Set neutral plugin state
       this.MinaryMain.SetNewAttackServiceState(attackService.ServiceName, ServiceStatus.NotRunning);
+    }
+
+
+    public void OnServiceExited(string serviceName, int exitCode)
+    {
+      LogCons.Inst.Write(LogLevel.Error, "OnServiceExited(): Service \"{0}\" exited unexpectedly. Exit code {0}", serviceName, exitCode);
+      this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
+    }
+
+
+    public void LogMessage(string message, params object[] formatArgs)
+    {
+      LogCons.Inst.Write(LogLevel.Info, message, formatArgs);
     }
 
     #endregion

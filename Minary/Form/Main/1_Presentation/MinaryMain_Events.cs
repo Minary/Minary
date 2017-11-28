@@ -6,7 +6,8 @@
   using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
-  using MinaryLib.AttackService;
+  using MinaryLib.AttackService.Class;
+  using MinaryLib.AttackService.Enum;
   using System;
   using System.ComponentModel;
   using System.Diagnostics;
@@ -425,7 +426,7 @@
     /// <param name="e"></param>
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
-      ServiceParameters currentServiceParams = new ServiceParameters()
+      StartServiceParameters currentServiceParams = new StartServiceParameters()
         {
           SelectedIfcIndex = this.currentInterfaceIndex,
           SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
@@ -522,7 +523,7 @@
     }
 
 
-    private void StartAllServices(ServiceParameters serviceParameters)
+    private void StartAllServices(StartServiceParameters serviceParameters)
     {
       foreach (string tmpKey in this.attackServiceHandler.AttackServices.Keys)
       {
