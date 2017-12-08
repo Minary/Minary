@@ -29,6 +29,7 @@
     #region MEMBERS
 
     public BindingList<string> targetList;
+    private static IMinaryState minaryState;
     private string[] commandLineArguments;
     private BindingList<PluginTableRecord> usedPlugins;
     private TemplateTask.TemplateHandler templateTaskLayer;
@@ -232,7 +233,7 @@
 
     public void SetMinaryState()
     {
-      IMinaryState minaryState = SystemStateCheck.GetMinaryEventBase(this);
+      minaryState = SystemStateCheck.GetMinaryEventBase(this);
       minaryState.LoadState();
     }
 

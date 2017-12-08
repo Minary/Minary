@@ -41,13 +41,13 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      throw new Exception("Can't start Minary because APE is not installed.");
+      throw new Exception("Can't start Minary because Sniffer is not installed.");
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      throw new Exception("Can't scan network because APE is not installed.");
+      throw new Exception("Can't scan network because Sniffer is not installed.");
     }
 
 

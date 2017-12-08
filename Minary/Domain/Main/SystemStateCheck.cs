@@ -6,6 +6,7 @@
   using Minary.Domain.State;
   using Minary.Domain.State.Service;
   using Minary.Form;
+  using System;
   using System.IO;
   using System.Net.NetworkInformation;
 
@@ -47,12 +48,8 @@
       return new StateOk(minaryObj);
     }
 
-    #endregion
 
-
-    #region PRIVATE
-
-    private static MinaryState DetermineSystemState()
+    public static MinaryState DetermineSystemState()
     {
       MinaryState retVal = MinaryState.StateOk;
 
@@ -88,6 +85,37 @@
       }
 
       return retVal;
+    }
+
+
+    public static void EvaluateMinaryState(out MinaryState minaryState)
+    {
+      minaryState = Minary.Domain.Main.SystemStateCheck.DetermineSystemState();
+
+      if ((minaryState & MinaryState.NotAdmin) == MinaryState.NotAdmin)
+      {
+        throw new Exception("Can't start Minary because of missing admin privileges.");
+      }
+
+      if ((minaryState & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
+      {
+        throw new Exception("Can't start Minary because WinPcap is not installed.");
+      }
+
+      if ((minaryState & MinaryState.ApeBinaryMissing) == MinaryState.ApeBinaryMissing)
+      {
+        throw new Exception("Can't start Minary because APE is not installed.");
+      }
+
+      if ((minaryState & MinaryState.SnifferMissing) == MinaryState.SnifferMissing)
+      {
+        throw new Exception("Can't scan network because Sniffer is not installed.");
+      }
+
+      if ((minaryState & MinaryState.NetworkMissing) == MinaryState.NetworkMissing)
+      {
+        throw new Exception("Can't start Minary because no network interface was found.");
+      }
     }
 
     #endregion

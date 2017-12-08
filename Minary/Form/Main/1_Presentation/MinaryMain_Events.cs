@@ -406,6 +406,27 @@
     /// <param name="e"></param>
     private void MinaryMain_Shown(object sender, EventArgs e)
     {
+      // Verify whether system state is intact.
+      MinaryState minaryState = MinaryState.StateOk;
+      try
+      {
+        Minary.Domain.Main.SystemStateCheck.EvaluateMinaryState(out minaryState);
+      }
+      catch (Exception ex)
+      {
+        if ((minaryState & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
+        {
+          FormWinPcapMissing pcapMissing = new FormWinPcapMissing();
+          pcapMissing.ShowDialog();
+        }
+        else
+        {
+          string message = string.Format("The following error occurred ({1}):\r\n\r\n{0}", ex.Message, minaryState);
+          this.LogAndShowMessage(message, LogLevel.Error);
+        }
+        return;
+      }
+
       // Import and load session/template file
       if (this.CommandLineArguments != null && this.CommandLineArguments.Length > 0)
       {

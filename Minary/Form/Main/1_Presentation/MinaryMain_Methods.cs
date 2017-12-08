@@ -2,6 +2,7 @@
 {
   using Minary.Common;
   using Minary.DataTypes.Enum;
+  using Minary.Domain.Main;
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
@@ -163,7 +164,6 @@
     private void LoadUserTemplate(string cmdLineArgument)
     {
       MinaryFileType fileType = this.DetermineFileType(cmdLineArgument);
-
       if (fileType != MinaryFileType.TemplateFile)
       {
         this.pluginHandler.RestoreLastPluginLoadState();
@@ -177,8 +177,7 @@
       catch (Exception ex)
       {
         string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-        LogCons.Inst.Write(LogLevel.Error, message);
-        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
+        this.LogAndShowMessage(message, LogLevel.Error);
       }
 
       try
@@ -188,15 +187,14 @@
       catch (Exception ex)
       {
         string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-        LogCons.Inst.Write(LogLevel.Error, message);
-        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
+        this.LogAndShowMessage(message, LogLevel.Error);
       }
 
       try
       {
         if (loadTemplatePresentation != null &&
             loadTemplatePresentation.TemplateData != null &&
-            !string.IsNullOrEmpty(loadTemplatePresentation.TemplateData.TemplateConfig.Name))
+            string.IsNullOrEmpty(loadTemplatePresentation.TemplateData.TemplateConfig.Name) == false)
         {
           this.tb_TemplateName.Text = loadTemplatePresentation.TemplateData.TemplateConfig.Name;
         }
@@ -204,11 +202,16 @@
       catch (Exception ex)
       {
         string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
-        LogCons.Inst.Write(LogLevel.Error, message);
-        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
-
+        this.LogAndShowMessage(message, LogLevel.Error);
         this.pluginHandler.RestoreLastPluginLoadState();
       }
+    }
+
+
+    private void LogAndShowMessage(string message, LogLevel level)
+    {
+      LogCons.Inst.Write(level, message);
+      MessageDialog.Inst.ShowWarning(string.Empty, message, this);
     }
 
     #endregion
