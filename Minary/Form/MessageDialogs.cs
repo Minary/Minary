@@ -22,7 +22,7 @@
 
 
     #region PUBLIC
-    
+
     private MessageDialog()
     {
     }
