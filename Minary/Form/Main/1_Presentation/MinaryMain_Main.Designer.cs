@@ -117,7 +117,7 @@
       this.gb_Interfaces.Controls.Add(this.lab_Interface);
       this.gb_Interfaces.Controls.Add(this.lab_StartIP);
       this.gb_Interfaces.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.gb_Interfaces.Location = new System.Drawing.Point(633, 35);
+      this.gb_Interfaces.Location = new System.Drawing.Point(593, 35);
       this.gb_Interfaces.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.gb_Interfaces.Name = "gb_Interfaces";
       this.gb_Interfaces.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -220,10 +220,10 @@
       this.bt_Attack.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_Attack.BackgroundImage")));
       this.bt_Attack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_Attack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_Attack.Location = new System.Drawing.Point(1456, 48);
+      this.bt_Attack.Location = new System.Drawing.Point(1418, 44);
       this.bt_Attack.Margin = new System.Windows.Forms.Padding(0);
       this.bt_Attack.Name = "bt_Attack";
-      this.bt_Attack.Size = new System.Drawing.Size(184, 149);
+      this.bt_Attack.Size = new System.Drawing.Size(184, 151);
       this.bt_Attack.TabIndex = 6;
       this.bt_Attack.UseVisualStyleBackColor = true;
       this.bt_Attack.Click += new System.EventHandler(this.BT_Attack_Click);
@@ -233,10 +233,10 @@
       this.bt_ScanLan.BackgroundImage = global::Minary.Properties.Resources.FA_Scan;
       this.bt_ScanLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_ScanLan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_ScanLan.Location = new System.Drawing.Point(1251, 48);
+      this.bt_ScanLan.Location = new System.Drawing.Point(1213, 44);
       this.bt_ScanLan.Margin = new System.Windows.Forms.Padding(0);
       this.bt_ScanLan.Name = "bt_ScanLan";
-      this.bt_ScanLan.Size = new System.Drawing.Size(184, 149);
+      this.bt_ScanLan.Size = new System.Drawing.Size(184, 151);
       this.bt_ScanLan.TabIndex = 5;
       this.bt_ScanLan.UseVisualStyleBackColor = true;
       this.bt_ScanLan.Click += new System.EventHandler(this.BT_ScanLan_Click);
@@ -336,7 +336,7 @@
       this.tc_Plugins.Multiline = true;
       this.tc_Plugins.Name = "tc_Plugins";
       this.tc_Plugins.SelectedIndex = 0;
-      this.tc_Plugins.Size = new System.Drawing.Size(1629, 640);
+      this.tc_Plugins.Size = new System.Drawing.Size(1584, 640);
       this.tc_Plugins.TabIndex = 7;
       // 
       // tp_MinaryPluginCatalog
@@ -348,7 +348,7 @@
       this.tp_MinaryPluginCatalog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tp_MinaryPluginCatalog.Name = "tp_MinaryPluginCatalog";
       this.tp_MinaryPluginCatalog.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.tp_MinaryPluginCatalog.Size = new System.Drawing.Size(1621, 609);
+      this.tp_MinaryPluginCatalog.Size = new System.Drawing.Size(1576, 609);
       this.tp_MinaryPluginCatalog.TabIndex = 0;
       this.tp_MinaryPluginCatalog.Text = "Minary";
       // 
@@ -408,7 +408,7 @@
       this.dgv_MainPlugins.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
       this.dgv_MainPlugins.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
       this.dgv_MainPlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.dgv_MainPlugins.Size = new System.Drawing.Size(1515, 518);
+      this.dgv_MainPlugins.Size = new System.Drawing.Size(1470, 518);
       this.dgv_MainPlugins.TabIndex = 0;
       this.dgv_MainPlugins.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dgv_MainPlugins_CellContentClick);
       this.dgv_MainPlugins.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DGV_MainPlugins_DataError);
@@ -433,7 +433,7 @@
       this.ms_MainWindow.Location = new System.Drawing.Point(0, 0);
       this.ms_MainWindow.Name = "ms_MainWindow";
       this.ms_MainWindow.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-      this.ms_MainWindow.Size = new System.Drawing.Size(1671, 35);
+      this.ms_MainWindow.Size = new System.Drawing.Size(1622, 35);
       this.ms_MainWindow.TabIndex = 0;
       this.ms_MainWindow.Text = "ms_MainGUI";
       // 
@@ -649,7 +649,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1671, 906);
+      this.ClientSize = new System.Drawing.Size(1622, 906);
       this.Controls.Add(this.pb_StatusDataSniffer);
       this.Controls.Add(this.pb_StatusArpPoison);
       this.Controls.Add(this.pb_StatusProxy);
@@ -665,7 +665,7 @@
       this.Icon = global::Minary.Properties.Resources.Minary;
       this.MainMenuStrip = this.ms_MainWindow;
       this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.MinimumSize = new System.Drawing.Size(1684, 934);
+      this.MinimumSize = new System.Drawing.Size(1644, 934);
       this.Name = "MinaryMain";
       this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
       this.Text = " Minary ";
