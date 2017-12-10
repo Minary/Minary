@@ -1,7 +1,7 @@
 ﻿namespace Minary.LogConsole.Main
 {
   using Minary.DataTypes.Enum;
-  using Minary.DataTypes.Interface;
+  using Minary.DataTypes.Interface.LogConsole;
   using System;
   using System.Collections.Generic;
   using System.Linq;
