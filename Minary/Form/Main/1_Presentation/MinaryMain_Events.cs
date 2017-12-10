@@ -175,36 +175,8 @@
         return;
       }
 
-      Thread updateAvailableThread = new Thread(delegate ()
-      {
-        if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
-        {
-          return;
-        }
-
-        try
-        {
-          Minary.Form.Updates.Config.UpdateData updateMetaData = Minary.Common.Updates.FetchUpdateInformationFromServer();
-
-          if (updateMetaData.IsUpdateAvaliable == true)
-          {
-            Updates.FormNewVersion newVersion = new Updates.FormNewVersion();
-            newVersion.TopMost = true;
-            newVersion.ShowDialog();
-          }
-          else
-          {
-            string message = "No new updates available.";
-            LogCons.Inst.Write(LogLevel.Info, message);
-            MessageDialog.Inst.ShowInformation("Update information", message, this);
-          }
-        }
-        catch (Exception)
-        {
-        }
-      });
-
-      updateAvailableThread.Start();
+      Updates.Presentation.FormCheckNewVersion newVersionCheck = new Updates.Presentation.FormCheckNewVersion();
+      newVersionCheck.ShowDialog();
     }
 
 
