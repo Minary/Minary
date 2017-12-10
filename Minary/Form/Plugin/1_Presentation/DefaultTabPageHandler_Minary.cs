@@ -5,7 +5,6 @@
   using MinaryLib.Plugin;
   using System;
   using System.Collections.Generic;
-  using System.IO;
   using System.Windows.Forms;
 
   public partial class DefaultTabPageMinary : UserControl, IPlugin

@@ -520,6 +520,9 @@
       // 
       // tsmi_Tools
       // 
+      this.tsmi_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmi_Minibrowser,
+            this.tsmi_DetectInterfaces});
       this.tsmi_Tools.Name = "tsmi_Tools";
       this.tsmi_Tools.Size = new System.Drawing.Size(65, 29);
       this.tsmi_Tools.Text = "Tools";

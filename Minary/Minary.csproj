@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Minary</RootNamespace>
     <AssemblyName>Minary</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ApplicationIcon>Resources\Minary.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -143,6 +143,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=106.1.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.1.0\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -173,8 +176,11 @@
     <Compile Include="DataTypes\ArpScan\IObserverArpRequest.cs" />
     <Compile Include="DataTypes\ArpScan\IObserverArpResponse.cs" />
     <Compile Include="DataTypes\ArpScan\SystemFound.cs" />
+    <Compile Include="DataTypes\DTO\Release.cs" />
     <Compile Include="DataTypes\Enum\LastConnectionState.cs" />
     <Compile Include="DataTypes\Interface\IInputProcessor.cs" />
+    <Compile Include="DataTypes\Interface\Updates\IObservable.cs" />
+    <Compile Include="DataTypes\Interface\Updates\IObserver.cs" />
     <Compile Include="DataTypes\Struct\MinaryConfig.cs" />
     <Compile Include="Domain\ArpScan\PcapHandler.cs" />
     <Compile Include="Domain\ArpScan\ReplyListener.cs" />
@@ -243,7 +249,7 @@
     <Compile Include="Common\Associations\ProgramIcon.cs" />
     <Compile Include="Common\Associations\RegistryUtilities.cs" />
     <Compile Include="Common\MinaryProcess.cs" />
-    <Compile Include="Common\Updates.cs">
+    <Compile Include="Common\Updates\Updates.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Common\Utils.cs" />
@@ -305,11 +311,11 @@
     <Compile Include="Form\Template\DataTypes\Template\Plugin.cs" />
     <Compile Include="Form\Template\DataTypes\Template\RecordSessionTemplate.cs" />
     <Compile Include="Form\Template\DataTypes\Template\TemplateConfig.cs" />
-    <Compile Include="Form\Updates\1_Presentation\FormNewVersion.cs">
+    <Compile Include="Form\Updates\1_Presentation\FormCheckNewVersion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Updates\1_Presentation\FormNewVersion.Designer.cs">
-      <DependentUpon>FormNewVersion.cs</DependentUpon>
+    <Compile Include="Form\Updates\1_Presentation\FormCheckNewVersion.Designer.cs">
+      <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Form\Main\1_Presentation\MinaryMain_Methods.cs">
@@ -329,9 +335,10 @@
     <Compile Include="Form\FormWinPcapMissing.Designer.cs">
       <DependentUpon>FormWinPcapMissing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Updates\2_Task\TaskFacade.cs" />
+    <Compile Include="Form\Updates\Config\UpdateData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Form\Updates\Config\UpdateData.cs" />
     <Compile Include="Domain\State\NetworkMissing.cs" />
     <Compile Include="Domain\State\NotAdmin.cs" />
     <Compile Include="Domain\State\StateOk.cs" />
@@ -360,6 +367,10 @@
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\Updates\1_Presentation\FormCheckNewVersion.resx">
+      <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -371,10 +382,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Template\1_Presentation\LoadTemplate.resx">
       <DependentUpon>LoadTemplate.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form\Updates\1_Presentation\FormNewVersion.resx">
-      <DependentUpon>FormNewVersion.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config" />
@@ -399,8 +406,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Minary_Logo_Small.png" />
+    <None Include="Resources\Minary_Logo_Big.png" />
     <None Include="Resources\winpcap_logo.png" />
-    <None Include="Resources\fa_play.png" />
+    <None Include="Resources\FA_play.png" />
     <None Include="Resources\FA_Stop.png" />
     <None Include="Resources\FA_Scan.png" />
     <None Include="Resources\FA_Plugin_Pause.png" />
@@ -451,9 +460,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Form\Updates\2_Infrastructure\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />

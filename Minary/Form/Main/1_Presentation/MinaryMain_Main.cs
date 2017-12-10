@@ -146,7 +146,9 @@
 
         if (autoupdateState > 0)
         {
-          Minary.Common.Updates.CheckForMinaryUpdates();
+          Updates.Presentation.FormCheckNewVersion newVersionCheck = new Updates.Presentation.FormCheckNewVersion();
+          newVersionCheck.ShowDialog();
+          //Minary.Common.Updates.CheckForMinaryUpdates();
         }
       });
       updateThread.Start();

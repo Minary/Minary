@@ -16,7 +16,7 @@
     //// TODO : Candidates to export the app.config file
 public static string MinaryVersion { get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(); } set { } }
 
-    public static readonly string CurrentVersionURL = "https://minary.io/download/currentVersion.xml";
+    public static readonly string LatestVersionOnGithub = "https://api.github.com/repos/Minary/Minary/releases/latest";
     public static readonly string ToolHomepage = "https://minary.io/download/";
 
     public static readonly string PipeName = "Minary";
@@ -38,10 +38,6 @@ public static string MinaryVersion { get { return System.Reflection.Assembly.Get
 public static readonly string ApeServiceDir = Path.Combine(AttackServicesPluginsDir, "ArpPoisoning");
 public static readonly string ApeBinaryPath = Path.Combine(ApeServiceDir, "Ape.exe");
 public static readonly string ApeProcessName = "Ape";
-
-public static readonly string ApeFirewallRules = ".fwrules";
-public static readonly string ApeTargetHosts = ".targethosts";
-public static readonly string DnsPoisoningHosts = ".dnshosts";
 
 // Service: Sniffer
 public static readonly string SnifferServiceDir = Path.Combine(AttackServicesPluginsDir, "Sniffer");
