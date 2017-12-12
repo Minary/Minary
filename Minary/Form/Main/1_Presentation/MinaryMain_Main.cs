@@ -110,8 +110,6 @@
 
       this.commandLineArguments = args;
 
-// this.bt_Attack.BackgroundImageLayout = ImageLayout.Tile;
-//this.bt_ScanLan.BackgroundImageLayout = ImageLayout.Stretch;
       this.bt_Attack.AutoSize = true;
       this.bt_ScanLan.AutoSize = true;
       // Set .mry file extension association
