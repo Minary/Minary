@@ -45,7 +45,7 @@
 #
 Winpcap/
 ipch/
-
+.vs/
 **/bin/Release/*
 **/bin/Debug/*
 **/obj/
