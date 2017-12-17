@@ -124,10 +124,10 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MinaryLib">
-      <HintPath>..\EXTERNAL\MinaryLib.dll</HintPath>
+      <HintPath>LIBRARIES\MinaryLib.dll</HintPath>
     </Reference>
     <Reference Include="NativeWindowsLib">
-      <HintPath>..\EXTERNAL\NativeWindowsLib.dll</HintPath>
+      <HintPath>LIBRARIES\NativeWindowsLib.dll</HintPath>
     </Reference>
     <Reference Include="PcapDotNet.Base, Version=0.10.0.20588, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
       <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Base.dll</HintPath>
@@ -470,6 +470,15 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
     <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.164\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.164\build\LibGit2Sharp.NativeBinaries.props'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>if not exist "$(ProjectDir)LIBRARIES" (
+  mkdir "$(ProjectDir)LIBRARIES"
+)
+echo xcopy /Y "$(ProjectDir)..\..\LIBRARIES\MinaryLib.dll"  "$(ProjectDir)LIBRARIES\" 
+xcopy /Y "$(ProjectDir)..\..\LIBRARIES\MinaryLib.dll"  "$(ProjectDir)LIBRARIES\"
+echo xcopy /Y "$(ProjectDir)..\..\LIBRARIES\NativeWindowsLib.dll"  "$(ProjectDir)LIBRARIES\" 
+xcopy /Y "$(ProjectDir)..\..\LIBRARIES\NativeWindowsLib.dll"  "$(ProjectDir)LIBRARIES\"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
