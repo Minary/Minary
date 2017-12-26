@@ -150,10 +150,6 @@
         }
       });
       updateThread.Start();
-
-      // Download attack pattern updates
-      Thread syncThread = new Thread(() => { Minary.Common.Updates.SyncAttackPatterns(); });
-      syncThread.Start();
     }
 
 
