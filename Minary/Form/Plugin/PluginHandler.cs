@@ -529,10 +529,8 @@
     public void Register(IPlugin plugin)
     {
       // After plugin called back the host application for registration
-      // call plugin initialization methods
+      // call plugin initialization method
       this.tabPagesCatalog[plugin.Config.PluginName].PluginObject.OnResetPlugin();
-      this.tabPagesCatalog[plugin.Config.PluginName].PluginObject.OnStartUpdate();
-
       LogCons.Inst.Write(LogLevel.Info, "{0} : Plugin is calling back for registration", plugin.Config.PluginName);
     }
 
