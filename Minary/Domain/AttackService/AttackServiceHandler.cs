@@ -84,7 +84,7 @@
         {
           fileName = Path.GetFileNameWithoutExtension(pluginFiles[i]);
           LogCons.Inst.Write(LogLevel.Info, "Found attack service plugin: {0}", pluginFiles[i]);
-
+          
           // Create/Load instance of attack serviceplugin.
           try
           {
@@ -192,7 +192,6 @@
       {
         AttackServiceHost = this,
         AttackServicesWorkingDirFullPath = Path.Combine(Directory.GetCurrentDirectory(), Config.AttackServicesPluginsDir),
-//        MinaryWorkingFullPath = Path.Combine(Directory.GetCurrentDirectory()),
         PipeName = Config.PipeName
       };
 
@@ -210,14 +209,11 @@
     {
       LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.Register(): Service {0} registered", attackService.ServiceName);
 
-      // Register the service inside the main form
-      this.minaryInstance.RegisterAttackService(attackService.ServiceName);
-
       // Register the service in the attack service handler
       this.attackServices.Add(attackService.ServiceName, attackService);
 
-      // Set neutral plugin state
-      this.MinaryMain.SetNewAttackServiceState(attackService.ServiceName, ServiceStatus.NotRunning);
+      // Register the service in the GUI 
+      this.MinaryMain.RegisterAttackService(attackService.ServiceName);
     }
 
 

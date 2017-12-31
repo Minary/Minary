@@ -14,6 +14,7 @@
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Enum;
+  using MinaryLib.AttackService.Interface;
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
@@ -28,10 +29,10 @@
 
     #region MEMBERS
 
-    public BindingList<string> targetList;
+    public BindingList<string> targetList = new BindingList<string>();
     private static IMinaryState minaryState;
     private string[] commandLineArguments;
-    private BindingList<PluginTableRecord> usedPlugins;
+    private BindingList<PluginTableRecord> usedPlugins = new BindingList<PluginTableRecord>();
     private TemplateTask.TemplateHandler templateTaskLayer;
     private string currentIpAddress;
     private string currentMacAddress;
@@ -92,6 +93,12 @@
 
     public NetworkInterfaceHandler NetworkHandler { get { return this.nicHandler; } set { } }
 
+
+
+    public FlowLayoutPanel AttackServicePanel { get { return this.flp_AttackServices; } }
+
+    public Dictionary<string, PictureBox> AttackServiceMap { get { return this.attackServiceMap; } }
+
     #endregion
 
 
@@ -101,19 +108,7 @@
     {
       this.InitializeComponent();
 
-      // Initialize logging
-      Config.CollectSystemInformation();
-      LogCons.Inst.DumpSystemInformation();
-
-      this.usedPlugins = new BindingList<PluginTableRecord>();
-      this.targetList = new BindingList<string>();
-
       this.commandLineArguments = args;
-
-      this.bt_Attack.AutoSize = true;
-      this.bt_ScanLan.AutoSize = true;
-      // Set .mry file extension association
-      MryFiles.InstallMryFileAssociation();
     }
 
 
@@ -228,6 +223,13 @@
 
       // Load and initialize all attack services
       this.attackServiceHandler.LoadAttackServicePlugins();
+
+      // Initialize logging
+      Config.CollectSystemInformation();
+      LogCons.Inst.DumpSystemInformation();
+
+      // Set .mry file extension association
+      MryFiles.InstallMryFileAssociation();
     }
 
 
@@ -310,8 +312,15 @@
     }
 
 
+    public delegate void SetNewAttackServiceStateDelegate(string serviceName, ServiceStatus newStatus);
     public void SetNewAttackServiceState(string serviceName, ServiceStatus newStatus)
     {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new SetNewAttackServiceStateDelegate(this.SetNewAttackServiceState), new object[] { serviceName, newStatus });
+        return;
+      }
+
       if (string.IsNullOrEmpty(serviceName) ||
           this.attackServiceHandler?.AttackServices == null)
       {
@@ -333,21 +342,21 @@
 
     public void RegisterAttackService(string attackServiceName)
     {
-      if (string.IsNullOrEmpty(attackServiceName))
-      {
-        return;
-      }
+      Label tmpLabel = new Label() { Name = attackServiceName, Text = attackServiceName, Tag = attackServiceName };
+      tmpLabel.AutoSize = true;
 
-      foreach (PictureBox guiElement in this.Controls.OfType<PictureBox>())
-      {
-        if (guiElement.Tag != null && 
-            guiElement.Tag.ToString() == attackServiceName)
-        {
-          this.attackServiceMap.Add(attackServiceName, guiElement);
-          LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.RegisterService(): Registered attack service {0}, linked to label {1}", attackServiceName, guiElement.Name);
-          break;
-        }
-      }
+      PictureBox tmpPictureBox = new PictureBox() { Name = attackServiceName, Text = attackServiceName, Tag = attackServiceName };
+      tmpPictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
+
+      // Append new attack service to (flow layout) panel
+      this.flp_AttackServices.Controls.Add(tmpPictureBox);
+      this.flp_AttackServices.Controls.Add(tmpLabel);
+
+      // Cache new attack service record
+      this.attackServiceMap.Add(attackServiceName, tmpPictureBox);
+
+      // Set neutral attack service state
+      this.SetNewAttackServiceState(attackServiceName, ServiceStatus.NotRunning);
     }
 
     #endregion

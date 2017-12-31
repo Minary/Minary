@@ -82,28 +82,20 @@
       this.tsmi_CreateTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_UnloadTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Tools = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_Minibrowser = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_DetectInterfaces = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Help = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_GetUpdates = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LogConsole = new System.Windows.Forms.ToolStripMenuItem();
-      this.tsmi_Minibrowser = new System.Windows.Forms.ToolStripMenuItem();
-      this.tsmi_DetectInterfaces = new System.Windows.Forms.ToolStripMenuItem();
       this.ofd_ImportSession = new System.Windows.Forms.OpenFileDialog();
-      this.l_AS_Proxy_Key = new System.Windows.Forms.Label();
-      this.l_AS_APE_Key = new System.Windows.Forms.Label();
-      this.l_AS_Sniffer_Key = new System.Windows.Forms.Label();
-      this.pb_StatusProxy = new System.Windows.Forms.PictureBox();
       this.il_AttackServiceStat = new System.Windows.Forms.ImageList(this.components);
-      this.pb_StatusArpPoison = new System.Windows.Forms.PictureBox();
-      this.pb_StatusDataSniffer = new System.Windows.Forms.PictureBox();
+      this.flp_AttackServices = new System.Windows.Forms.FlowLayoutPanel();
       this.gb_Interfaces.SuspendLayout();
       this.gb_TargetRange.SuspendLayout();
       this.tc_Plugins.SuspendLayout();
       this.tp_MinaryPluginCatalog.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_MainPlugins)).BeginInit();
       this.ms_MainWindow.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.pb_StatusProxy)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.pb_StatusArpPoison)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.pb_StatusDataSniffer)).BeginInit();
       this.SuspendLayout();
       // 
       // gb_Interfaces
@@ -217,6 +209,7 @@
       // 
       // bt_Attack
       // 
+      this.bt_Attack.AutoSize = true;
       this.bt_Attack.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_Attack.BackgroundImage")));
       this.bt_Attack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_Attack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -230,6 +223,7 @@
       // 
       // bt_ScanLan
       // 
+      this.bt_ScanLan.AutoSize = true;
       this.bt_ScanLan.BackgroundImage = global::Minary.Properties.Resources.FA_Scan;
       this.bt_ScanLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_ScanLan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -527,6 +521,20 @@
       this.tsmi_Tools.Size = new System.Drawing.Size(65, 29);
       this.tsmi_Tools.Text = "Tools";
       // 
+      // tsmi_Minibrowser
+      // 
+      this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
+      this.tsmi_Minibrowser.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_Minibrowser.Text = "Minibrowser ...";
+      this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
+      // 
+      // tsmi_DetectInterfaces
+      // 
+      this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
+      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
+      this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.SearchNetworkInterfacesToolStripMenuItem_Click);
+      // 
       // tsmi_Help
       // 
       this.tsmi_Help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -551,72 +559,11 @@
       this.tsmi_LogConsole.Text = "Log console ...";
       this.tsmi_LogConsole.Click += new System.EventHandler(this.LogConsoleToolStripMenuItem_Click);
       // 
-      // tsmi_Minibrowser
-      // 
-      this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
-      this.tsmi_Minibrowser.Size = new System.Drawing.Size(296, 30);
-      this.tsmi_Minibrowser.Text = "Minibrowser ...";
-      this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
-      // 
-      // tsmi_DetectInterfaces
-      // 
-      this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
-      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(296, 30);
-      this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
-      this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.SearchNetworkInterfacesToolStripMenuItem_Click);
-      // 
       // ofd_ImportSession
       // 
       this.ofd_ImportSession.DefaultExt = "mry";
       this.ofd_ImportSession.Filter = "Minary session file | *.mry";
       this.ofd_ImportSession.Title = "Select Minary session file";
-      // 
-      // l_AS_Proxy_Key
-      // 
-      this.l_AS_Proxy_Key.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.l_AS_Proxy_Key.AutoSize = true;
-      this.l_AS_Proxy_Key.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_AS_Proxy_Key.Location = new System.Drawing.Point(24, 872);
-      this.l_AS_Proxy_Key.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-      this.l_AS_Proxy_Key.Name = "l_AS_Proxy_Key";
-      this.l_AS_Proxy_Key.Size = new System.Drawing.Size(62, 20);
-      this.l_AS_Proxy_Key.TabIndex = 0;
-      this.l_AS_Proxy_Key.Text = "Proxy:";
-      // 
-      // l_AS_APE_Key
-      // 
-      this.l_AS_APE_Key.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.l_AS_APE_Key.AutoSize = true;
-      this.l_AS_APE_Key.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_AS_APE_Key.Location = new System.Drawing.Point(159, 872);
-      this.l_AS_APE_Key.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-      this.l_AS_APE_Key.Name = "l_AS_APE_Key";
-      this.l_AS_APE_Key.Size = new System.Drawing.Size(113, 20);
-      this.l_AS_APE_Key.TabIndex = 0;
-      this.l_AS_APE_Key.Text = "ARP poison:";
-      // 
-      // l_AS_Sniffer_Key
-      // 
-      this.l_AS_Sniffer_Key.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.l_AS_Sniffer_Key.AutoSize = true;
-      this.l_AS_Sniffer_Key.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_AS_Sniffer_Key.Location = new System.Drawing.Point(350, 872);
-      this.l_AS_Sniffer_Key.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-      this.l_AS_Sniffer_Key.Name = "l_AS_Sniffer_Key";
-      this.l_AS_Sniffer_Key.Size = new System.Drawing.Size(71, 20);
-      this.l_AS_Sniffer_Key.TabIndex = 0;
-      this.l_AS_Sniffer_Key.Text = "Sniffer:";
-      // 
-      // pb_StatusProxy
-      // 
-      this.pb_StatusProxy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.pb_StatusProxy.Location = new System.Drawing.Point(94, 871);
-      this.pb_StatusProxy.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.pb_StatusProxy.Name = "pb_StatusProxy";
-      this.pb_StatusProxy.Size = new System.Drawing.Size(27, 22);
-      this.pb_StatusProxy.TabIndex = 8;
-      this.pb_StatusProxy.TabStop = false;
-      this.pb_StatusProxy.Tag = "HttpReverseProxy";
       // 
       // il_AttackServiceStat
       // 
@@ -626,39 +573,19 @@
       this.il_AttackServiceStat.Images.SetKeyName(1, "fa_play_plugin.png");
       this.il_AttackServiceStat.Images.SetKeyName(2, "fa_stop_plugin.png");
       // 
-      // pb_StatusArpPoison
+      // flp_AttackServices
       // 
-      this.pb_StatusArpPoison.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.pb_StatusArpPoison.Location = new System.Drawing.Point(284, 871);
-      this.pb_StatusArpPoison.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.pb_StatusArpPoison.Name = "pb_StatusArpPoison";
-      this.pb_StatusArpPoison.Size = new System.Drawing.Size(27, 22);
-      this.pb_StatusArpPoison.TabIndex = 9;
-      this.pb_StatusArpPoison.TabStop = false;
-      this.pb_StatusArpPoison.Tag = "ArpPoisoning";
-      // 
-      // pb_StatusDataSniffer
-      // 
-      this.pb_StatusDataSniffer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.pb_StatusDataSniffer.Location = new System.Drawing.Point(432, 871);
-      this.pb_StatusDataSniffer.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.pb_StatusDataSniffer.Name = "pb_StatusDataSniffer";
-      this.pb_StatusDataSniffer.Size = new System.Drawing.Size(27, 22);
-      this.pb_StatusDataSniffer.TabIndex = 10;
-      this.pb_StatusDataSniffer.TabStop = false;
-      this.pb_StatusDataSniffer.Tag = "Sniffer";
+      this.flp_AttackServices.Location = new System.Drawing.Point(22, 866);
+      this.flp_AttackServices.Name = "flp_AttackServices";
+      this.flp_AttackServices.Size = new System.Drawing.Size(1576, 28);
+      this.flp_AttackServices.TabIndex = 0;
       // 
       // MinaryMain
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1622, 906);
-      this.Controls.Add(this.pb_StatusDataSniffer);
-      this.Controls.Add(this.pb_StatusArpPoison);
-      this.Controls.Add(this.pb_StatusProxy);
-      this.Controls.Add(this.l_AS_Sniffer_Key);
-      this.Controls.Add(this.l_AS_APE_Key);
-      this.Controls.Add(this.l_AS_Proxy_Key);
+      this.Controls.Add(this.flp_AttackServices);
       this.Controls.Add(this.tc_Plugins);
       this.Controls.Add(this.gb_TargetRange);
       this.Controls.Add(this.bt_Attack);
@@ -683,9 +610,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.dgv_MainPlugins)).EndInit();
       this.ms_MainWindow.ResumeLayout(false);
       this.ms_MainWindow.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.pb_StatusProxy)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.pb_StatusArpPoison)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.pb_StatusDataSniffer)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -725,13 +649,7 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_CreateTemplate;
     private System.Windows.Forms.TextBox tb_TemplateName;
     private System.Windows.Forms.Label l_Template;
-    private System.Windows.Forms.Label l_AS_Proxy_Key;
-    private System.Windows.Forms.Label l_AS_APE_Key;
-    private System.Windows.Forms.Label l_AS_Sniffer_Key;
-    private System.Windows.Forms.PictureBox pb_StatusProxy;
     private System.Windows.Forms.ImageList il_AttackServiceStat;
-    private System.Windows.Forms.PictureBox pb_StatusArpPoison;
-    private System.Windows.Forms.PictureBox pb_StatusDataSniffer;
     private System.Windows.Forms.ToolStripMenuItem tsmi_UnloadTemplate;
     private System.Windows.Forms.ToolStripMenuItem tsmi_ResetMinary;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Tools;
@@ -740,6 +658,6 @@
     private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Beep;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Debugging;
-    private System.Windows.Forms.ToolStripMenuItem tsmi_About;
+    private System.Windows.Forms.FlowLayoutPanel flp_AttackServices;
   }
 }
