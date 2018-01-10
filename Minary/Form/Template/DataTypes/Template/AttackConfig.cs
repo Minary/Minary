@@ -7,22 +7,13 @@
   public class AttackConfig
   {
 
-    #region MEMBERS
-
-    private int scanNetwork;
-    private int numberSelectedTargetSystems;
-    private int startAttack;
-
-    #endregion
-
-
     #region PROPERTIES
 
-    public int ScanNetwork { get { return this.scanNetwork; } set { this.scanNetwork = value; } }
+    public int ScanNetwork { get; set; } = 1;
 
-    public int NumberSelectedTargetSystems { get { return this.numberSelectedTargetSystems; } set { this.numberSelectedTargetSystems = value; } }
+    public int NumberSelectedTargetSystems { get; set; } = 5;
 
-    public int StartAttack { get { return this.startAttack; } set { this.startAttack = value; } }
+    public int StartAttack { get; set; } = 1;
 
     #endregion
 
@@ -34,9 +25,6 @@
     /// </summary>
     public AttackConfig()
     {
-      this.scanNetwork = 1;
-      this.numberSelectedTargetSystems = 5;
-      this.startAttack = 1;
     }
 
 
@@ -48,9 +36,9 @@
     /// <param name="startAttack"></param>
     public AttackConfig(int scanNetwork, int numberSelectedTargetSystems, int startAttack)
     {
-      this.scanNetwork = scanNetwork;
-      this.numberSelectedTargetSystems = numberSelectedTargetSystems;
-      this.startAttack = startAttack;
+      this.ScanNetwork = scanNetwork;
+      this.NumberSelectedTargetSystems = numberSelectedTargetSystems;
+      this.StartAttack = startAttack;
     }
 
     #endregion

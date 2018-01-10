@@ -7,15 +7,9 @@
   using System.Collections.Generic;
   using System.Windows.Forms;
 
+
   public partial class DefaultTabPageMinary : UserControl, IPlugin
   {
-
-    #region MEMBERS
-
-    private PluginProperties pluginProperties;
-
-    #endregion
-
 
     #region PROPERTIES
 

@@ -236,8 +236,8 @@
     private void CmsServerCertificates_Delete_Click(object sender, EventArgs e)
     {
       CertificateRecord certificateRecord = null;
-      int selectedIndex = -1;
-      string serverName = string.Empty;
+      var selectedIndex = -1;
+      var serverName = string.Empty;
 
       if (this.dgv_ServerCertificates.CurrentCell == null || this.dgv_ServerCertificates.CurrentCell.RowIndex < 0)
       {
@@ -265,7 +265,7 @@
         return;
       }
 
-      string filePath = Path.Combine(Config.HttpReverseProxyCertrifcateDir, certificateRecord.FileName);
+      var filePath = Path.Combine(Config.HttpReverseProxyCertrifcateDir, certificateRecord.FileName);
       if (!File.Exists(filePath))
       {
         return;
@@ -280,8 +280,8 @@
     private void DGV_ServerCertificates_DoubleClick(object sender, EventArgs e)
     {
       CertificateRecord certificateRecord = null;
-      int selectedIndex = -1;
-      string serverName = string.Empty;
+      var selectedIndex = -1;
+      var serverName = string.Empty;
 
       if (this.dgv_ServerCertificates.CurrentCell == null || this.dgv_ServerCertificates.CurrentCell.RowIndex < 0)
       {

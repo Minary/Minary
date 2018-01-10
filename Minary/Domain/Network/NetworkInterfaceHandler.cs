@@ -7,7 +7,6 @@
   using Minary.LogConsole.Main;
   using System;
   using System.Collections;
-  using System.Linq;
   using System.Net.NetworkInformation;
 
 
@@ -52,7 +51,8 @@
     /// <returns></returns>
     public NetworkInterfaceConfig IfcByIndex(int index)
     {
-      if (index < 0 || index >= this.Interfaces.Count)
+      if (index < 0 || 
+          index >= this.Interfaces.Count)
       {
         throw new Exception("The interface index is invalid");
       }
@@ -68,9 +68,10 @@
     /// <returns></returns>
     public string GetNetworkInterfaceIdByIndex(int index)
     {
-      string retVal = string.Empty;
+      var retVal = string.Empty;
 
-      if (index >= 0 && index < this.Interfaces.Count)
+      if (index >= 0 && 
+          index < this.Interfaces.Count)
       {
         retVal = ((NetworkInterfaceConfig)this.Interfaces[index]).Id;
       }
@@ -78,10 +79,12 @@
       return retVal;
     }
 
+
     public void LoadInterfaces()
     {
       this.Interfaces.Clear();
       this.AllAttachednetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+
       foreach (NetworkInterface tmpInterface in this.AllAttachednetworkInterfaces)
       {
         if (tmpInterface.OperationalStatus != OperationalStatus.Up)
@@ -106,7 +109,7 @@
         // Append found interface with details to interface array
         try
         {
-          NetworkInterfaceConfig newInterface = default(NetworkInterfaceConfig);
+          var newInterface = default(NetworkInterfaceConfig);
           newInterface.IsUp = true;
           newInterface.Id = tmpInterface.Id;
           newInterface.Name = tmpInterface.Name;
@@ -150,7 +153,7 @@
 
     private string DetermineGatewayIp(NetworkInterface ifc)
     {
-      string defaultGwIp = string.Empty;
+      var defaultGwIp = string.Empty;
 
       if (ifc.GetIPProperties().GatewayAddresses.Count <= 0)
       {
@@ -177,7 +180,7 @@
     /// <returns></returns>
     private NetworkInterfaceConfig GetInterfaceById(string interfaceId)
     {
-      NetworkInterfaceConfig retVal = default(NetworkInterfaceConfig);
+      var retVal = default(NetworkInterfaceConfig);
       foreach (NetworkInterfaceConfig tmpInterface in this.Interfaces)
       {
         LogCons.Inst.Write(LogLevel.Info, $"/{tmpInterface.Id}/{interfaceId}/");
@@ -194,8 +197,8 @@
 
     void AddressChangedCallback(object sender, EventArgs e)
     {
-      string message = string.Empty;
-      NetworkInterfaceConfig currentNetConfig = this.GetInterfaceById(this.minaryInstance.CurrentInterfaceId);
+      var message = string.Empty;
+      var currentNetConfig = this.GetInterfaceById(this.minaryInstance.CurrentInterfaceId);
 
       // Network connection is up
       if (NetworkInterface.GetIsNetworkAvailable() == true &&
@@ -225,6 +228,7 @@
       this.minaryInstance.ClearCurrentNetworkState();
       this.minaryInstance.StopAttack();
       MessageDialog.Inst.ShowWarning("Network connection", "The network connection was lost", this.minaryInstance);
+
       return;
     }
 

@@ -3,6 +3,7 @@
   using Microsoft.Win32;
   using System.Security.AccessControl;
 
+
   public class RegistryUtilities
   {
 
@@ -17,6 +18,7 @@
     {
       CopyKey(parentKey, subKeyName, newSubKeyName);
       parentKey.DeleteSubKeyTree(subKeyName);
+
       return true;
     }
 
@@ -35,7 +37,6 @@
 
       // Open the sourceKey we are copying from
       RegistryKey sourceKey = parentKey.OpenSubKey(keyNameToCopy, RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-
       RecurseCopyKey(sourceKey, destinationKey);
 
       return true;

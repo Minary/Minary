@@ -24,10 +24,10 @@
     public static void InstallMryFileAssociation()
     {
       // Set .mry file extension association
-      string minaryFullPath = Application.ExecutablePath;
-      string cwd = Directory.GetCurrentDirectory();
-      string iconPath = Path.Combine(cwd, "images", "Minary.ico");
-      AF_FileAssociator assoc = new AF_FileAssociator(string.Format(".{0}", Config.MinaryFileExtension));
+      var minaryFullPath = Application.ExecutablePath;
+      var cwd = Directory.GetCurrentDirectory();
+      var iconPath = Path.Combine(cwd, "images", "Minary.ico");
+      var assoc = new AF_FileAssociator($".{Config.MinaryFileExtension}");
 
       try
       {
@@ -38,21 +38,21 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, $"Minary.MainForm_Start(EXCEPTION): {ex.Message}");
       }
 
       try
       {
         assoc.Create(
                      "Minary_250",
-                     string.Format("Minary .{0} file association", Config.MinaryFileExtension),
+                     $"Minary .{Config.MinaryFileExtension} file association",
                      new ProgramIcon(iconPath),
                      new ExecApplication(minaryFullPath),
                      new OpenWithList(new string[] { "Minary_250" }));
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "Minary.MainForm_Start(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, $"Minary.MainForm_Start(EXCEPTION): {ex.Message}");
       }
 
       // Tell explorer the file association has been changed

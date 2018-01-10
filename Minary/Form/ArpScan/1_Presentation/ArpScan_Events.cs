@@ -67,9 +67,9 @@
         return;
       }
 
-      string ipAddress = this.dgv_Targets.Rows[e.RowIndex].Cells[0].Value.ToString();
-      string macAddress = this.dgv_Targets.Rows[e.RowIndex].Cells[1].Value.ToString();
-      string vendor = this.dgv_Targets.Rows[e.RowIndex].Cells[2].Value.ToString();
+      var ipAddress = this.dgv_Targets.Rows[e.RowIndex].Cells[0].Value.ToString();
+      var macAddress = this.dgv_Targets.Rows[e.RowIndex].Cells[1].Value.ToString();
+      var vendor = this.dgv_Targets.Rows[e.RowIndex].Cells[2].Value.ToString();
 
       // (De)Activate targetSystem system
       if (e.ColumnIndex != 3)
@@ -77,11 +77,12 @@
         return;
       }
 
-      for (int i = 0; i < this.targetRecords.Count; i++)
+      for (var i = 0; i < this.TargetList.Count; i++)
       {
-        if (this.targetRecords[i].MacAddress == macAddress && this.targetRecords[i].IpAddress == ipAddress)
+        if (this.TargetList[i].MacAddress == macAddress && 
+            this.TargetList[i].IpAddress == ipAddress)
         {
-          this.targetRecords[i].Attack = this.targetRecords[i].Attack ? false : true;
+          this.TargetList[i].Attack = this.TargetList[i].Attack ? false : true;
           break;
         }
       }
@@ -221,7 +222,8 @@
     /// <param name="e"></param>
     private void SelectAllToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (this.targetRecords == null || this.targetRecords.Count <= 0)
+      if (this.TargetList == null ||
+          this.TargetList.Count <= 0)
       {
         return;
       }
@@ -272,12 +274,13 @@
     /// <param name="e"></param>
     private void UnselectAllToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (this.targetRecords == null || this.targetRecords.Count <= 0)
+      if (this.TargetList == null || 
+          this.TargetList.Count <= 0)
       {
         return;
       }
 
-      for (int i = 0; i < this.dgv_Targets.Rows.Count; i++)
+      for (var i = 0; i < this.dgv_Targets.Rows.Count; i++)
       {
         Utils.TryExecute2(() => { this.dgv_Targets.Rows[i].Cells["Attack"].Value = false; });
       }
@@ -321,7 +324,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ArpScan: {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, $"ArpScan: {ex.Message}");
         this.dgv_Targets.ClearSelection();
       }
     }
@@ -345,7 +348,7 @@
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanSender(): Completed successfully. value={0}, maximum={1}", this.pb_ArpScan.Value, this.pb_ArpScan.Maximum);
+        LogCons.Inst.Write(LogLevel.Info, $"BGW_ArpScanSender(): Completed successfully. value={this.pb_ArpScan.Value}, maximum={this.pb_ArpScan.Maximum}");
         this.pb_ArpScan.PerformStep();
       }
 
@@ -371,7 +374,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanSender(EXCEPTION): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanSender(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
         this.SetArpScanGuiOnStopped();
       }
 
@@ -382,7 +385,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanSender(EXCEPTION2): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanSender(EXCEPTION2): {ex.Message}\r\n{ex.StackTrace}");
         this.SetArpScanGuiOnStopped();
         return;
       }
@@ -422,7 +425,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(EXCEPTION1): {0}\r\n{1}\r\n{2}", ex.Message, (ex.InnerException == null), ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION1): {ex.Message}\r\n{ex.StackTrace}");
         return;
       }
 
@@ -433,7 +436,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(EXCEPTION2): {0}\r\n{1}", ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}\r\n{ex.StackTrace}");
         return;
       }
 
@@ -473,7 +476,7 @@
         this.pb_ArpScan.Step = 10;
 
         // Initiate start
-        this.targetRecords.Clear();
+        this.TargetList.Clear();
         this.SetArpScanGuiOnStarted();
         this.bgw_ArpScanSender.RunWorkerAsync();
       }
@@ -482,8 +485,8 @@
 
     private ArpScanConfig GetArpScanConfig()
     {
-      string startIp = string.Empty;
-      string stopIp = string.Empty;
+      var startIp = string.Empty;
+      var stopIp = string.Empty;
 
       if (this.rb_Netrange.Checked == true)
       {

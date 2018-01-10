@@ -91,8 +91,8 @@
 
       // Show save file dialog
       this.sfd_TemplateFile.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), Minary.Config.CustomTemplatesDir);
-      this.sfd_TemplateFile.Filter = string.Format("Minary template files|*.{0}", Minary.Config.MinaryFileExtension);
-      this.sfd_TemplateFile.Title = string.Format("Export current configuration to a .{0} file", Minary.Config.MinaryFileExtension);
+      this.sfd_TemplateFile.Filter = $"Minary template files|*.{Minary.Config.MinaryFileExtension}";
+      this.sfd_TemplateFile.Title = $"Export current configuration to a .{Minary.Config.MinaryFileExtension} file";
       this.sfd_TemplateFile.AddExtension = true;
       DialogResult dialogResult = this.sfd_TemplateFile.ShowDialog();
 
@@ -102,7 +102,7 @@
       }
       else if (string.IsNullOrEmpty(this.sfd_TemplateFile.FileName))
       {
-        string message = "You didn't define an output file";
+        var message = "You didn't define an output file";
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
         return;
       }
@@ -114,8 +114,8 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "Error occurred while saving template : {0}", ex.Message);
-        string message = string.Format("Error occurred while saving template : {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, $"Error occurred while saving template : {ex.Message}");
+        string message = $"Error occurred while saving template : {ex.Message}";
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
     }
@@ -186,7 +186,7 @@
     private void SaveTemplateToFile(RecordMinaryTemplate newTemplateData)
     {
       // Add .mry extension if missing
-      string minaryFileExtension = string.Format(".{0}", Minary.Config.MinaryFileExtension);
+      var minaryFileExtension = $".{Minary.Config.MinaryFileExtension}";
       if (!this.sfd_TemplateFile.FileName.ToLower().EndsWith(minaryFileExtension))
       {
         this.sfd_TemplateFile.FileName += minaryFileExtension;
@@ -194,7 +194,7 @@
 
       // Serialize and save template
       this.taskLayerCreateTemplate.SaveAttackTemplate(newTemplateData, this.sfd_TemplateFile.FileName);
-      string message = string.Format("Template \"{0}\" was saved successfully.", newTemplateData.TemplateConfig.Name);
+      var message = $"Template \"{newTemplateData.TemplateConfig.Name}\" was saved successfully.";
       MessageDialog.Inst.ShowInformation(string.Empty, message, this);
 
       base.Dispose(true);

@@ -66,8 +66,8 @@
         return;
       }
 
-      string senderMac = string.Join("-", this.ByteToHexString(packet.Ethernet.Arp.SenderHardwareAddress.ToArray()));
-      string senderIp = new System.Net.IPAddress(packet.Ethernet.Arp.SenderProtocolAddress.ToArray()).ToString();
+      var senderMac = string.Join("-", this.ByteToHexString(packet.Ethernet.Arp.SenderHardwareAddress.ToArray()));
+      var senderIp = new System.Net.IPAddress(packet.Ethernet.Arp.SenderProtocolAddress.ToArray()).ToString();
 
       LogCons.Inst.Write(LogLevel.Info, $"PacketHandler(): {senderMac}/{senderIp}");
 
@@ -78,11 +78,11 @@
 
     private string[] ByteToHexString(byte[] bytes)
     {
-      List<string> rs = new List<string>();
+      var rs = new List<string>();
 
-      foreach (byte b in bytes)
+      foreach (var b in bytes)
       {
-        string hex = string.Format("{0:x2}", b);
+        var hex = $"{b:x2}";
         rs.Add(hex);
       }
 

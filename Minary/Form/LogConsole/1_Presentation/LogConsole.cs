@@ -54,15 +54,15 @@
     public void DumpSystemInformation()
     {
       this.Write(LogLevel.Info, "Starting Log console");
-      this.Write(LogLevel.Info, "Minary version : {0}", Config.MinaryVersion);
-      this.Write(LogLevel.Info, "OS : {0}", Config.OS);
-      this.Write(LogLevel.Info, "Architecture : {0}", Config.Architecture);
-      this.Write(LogLevel.Info, "Language : {0}", Config.Language);
-      this.Write(LogLevel.Info, "Processor : {0}", Config.Processor);
-      this.Write(LogLevel.Info, "Num. processors : {0}", Config.NumProcessors);
-      this.Write(LogLevel.Info, ".Net version : {0}", Config.DotNetVersion);
-      this.Write(LogLevel.Info, "CLR version : {0}", Config.CommonLanguateRuntime);
-      this.Write(LogLevel.Info, "WinPcap version : {0}", Config.WinPcap);
+      this.Write(LogLevel.Info, $"Minary version : {Config.MinaryVersion}");
+      this.Write(LogLevel.Info, $"OS : {Config.OS}");
+      this.Write(LogLevel.Info, $"Architecture : {Config.Architecture}");
+      this.Write(LogLevel.Info, $"Language : {Config.Language}");
+      this.Write(LogLevel.Info, $"Processor : {Config.Processor}");
+      this.Write(LogLevel.Info, $"Num. processors : {Config.NumProcessors}");
+      this.Write(LogLevel.Info, $".Net version : {Config.DotNetVersion}");
+      this.Write(LogLevel.Info, $"CLR version : {Config.CommonLanguateRuntime}");
+      this.Write(LogLevel.Info, $"WinPcap version : {Config.WinPcap}");
     }
 
 
@@ -92,9 +92,9 @@
 
       try
       {
-        string timeStamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        var timeStamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         logMessage = logMessage.Trim();
-        if (formatArgs != null && formatArgs.Count() > 0)
+        if (formatArgs?.Count() > 0)
         {
           logMessage = string.Format(logMessage, formatArgs);
         }
@@ -109,7 +109,7 @@
       catch (Exception ex)
       {
         // OOOPPPS!
-        string msg = ex.Message;
+        var msg = ex.Message;
       }
     }
 
@@ -159,14 +159,14 @@
 
     private void LoglevelToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      ToolStripMenuItem clickedItem = sender as ToolStripMenuItem;
+      var clickedItem = sender as ToolStripMenuItem;
       if (clickedItem != null)
       {
         this.currentLevelObject.CheckState = CheckState.Unchecked;
         this.currentLevelObject = clickedItem;
         this.currentLevelObject.CheckState = CheckState.Checked;
 
-        string tagName = clickedItem.Tag.ToString().ToLower();
+        var tagName = clickedItem.Tag.ToString().ToLower();
         if (tagName == "debug")
         {
           this.currentLevel = LogLevel.Debug;
@@ -233,13 +233,13 @@
         return;
       }
 
-      if (newLogMessages == null && newLogMessages.Count <= 0)
+      if (newLogMessages == null || 
+          newLogMessages.Count <= 0)
       {
         return;
       }
 
-      string newLogChunk = string.Join(Environment.NewLine, newLogMessages.Where(elem => elem != null && elem.Length > 0));
-
+      var newLogChunk = string.Join(Environment.NewLine, newLogMessages.Where(elem => elem != null && elem.Length > 0));
       if (string.IsNullOrEmpty(newLogChunk))
       {
         return;

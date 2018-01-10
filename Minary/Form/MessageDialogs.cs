@@ -29,19 +29,19 @@
 
     public DialogResult ShowError(string title, string message, Form parentForm, MessageBoxButtons button = MessageBoxButtons.OK)
     {
-      return this.Show(string.Format($"Error: {title}"), message, button, MessageBoxIcon.Error, parentForm);
+      return this.Show($"Error: {title}", message, button, MessageBoxIcon.Error, parentForm);
     }
 
 
     public DialogResult ShowWarning(string title, string message, Form parentForm, MessageBoxButtons button = MessageBoxButtons.OK)
     {
-      return this.Show(string.Format($"Warning: {title}"), message, button, MessageBoxIcon.Warning, parentForm);
+      return this.Show($"Warning: {title}", message, button, MessageBoxIcon.Warning, parentForm);
     }
 
 
     public DialogResult ShowInformation(string title, string message, Form parentForm, MessageBoxButtons button = MessageBoxButtons.OK)
     {
-      return this.Show(string.Format($"Info: {title}"), message, button, MessageBoxIcon.Information, parentForm);
+      return this.Show($"Info: {title}", message, button, MessageBoxIcon.Information, parentForm);
     }
 
     #endregion

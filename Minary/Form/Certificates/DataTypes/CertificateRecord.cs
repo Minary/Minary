@@ -9,16 +9,16 @@
 
     #region MEMBERS
 
-    private string fileName;
-    private string serverName;
-    private string issuer;
-    private string subject;
-    private DateTime startDate;
-    private DateTime expirationDate;
-    private string serialNumber;
-    private string signatureAlgorithm;
-    private string thumbprint;
-    private int version;
+    private string fileName = string.Empty;
+    private string serverName = string.Empty;
+    private string issuer = string.Empty;
+    private string subject = string.Empty;
+    private DateTime startDate = DateTime.MinValue;
+    private DateTime expirationDate = DateTime.MinValue;
+    private string serialNumber = string.Empty;
+    private string signatureAlgorithm = string.Empty;
+    private string thumbprint = string.Empty;
+    private int version = -1;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -29,16 +29,6 @@
 
     public CertificateRecord()
     {
-      this.fileName = string.Empty;
-      this.serverName = string.Empty;
-      this.issuer = string.Empty;
-      this.subject = string.Empty;
-      this.startDate = DateTime.MinValue;
-      this.expirationDate = DateTime.MinValue;
-      this.serialNumber = string.Empty;
-      this.signatureAlgorithm = string.Empty;
-      this.thumbprint = string.Empty;
-      this.version = -1;
     }
 
 

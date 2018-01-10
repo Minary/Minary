@@ -24,7 +24,8 @@
       {
         FileInfo getInfo = new FileInfo(this.IconPath);
 
-        if (getInfo.Exists && getInfo.Extension == ".ico")
+        if (getInfo.Exists && 
+            getInfo.Extension == ".ico")
         {
           return true;
         }

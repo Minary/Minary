@@ -40,14 +40,14 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Status OK");
+      var message = "Status OK";
       MessageDialog.Inst.ShowInformation(string.Empty, message, this.minaryObj);
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      string message = string.Format("Status OK");
+      var message = "Status OK";
       MessageDialog.Inst.ShowInformation(string.Empty, message, this.minaryObj);
     }
 

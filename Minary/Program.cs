@@ -31,7 +31,7 @@
       // Load GUI
       try
       {
-        MinaryMain minaryGuiObj = new MinaryMain(args);
+        var minaryGuiObj = new MinaryMain(args);
         minaryGuiObj.LoadAllFormElements();
         minaryGuiObj.StartAllHandlers();
         minaryGuiObj.StartBackgroundThreads();
@@ -41,7 +41,7 @@
       }
       catch (Exception ex)
       {
-        string message = string.Format("Minary: The following error occured: {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
+        var message = $"Minary: The following error occured: {ex.Message}\r\n\r\nStacktrace: {ex.StackTrace}";
         MessageDialog.Inst.ShowError(string.Empty, message, null);
       }
     }
@@ -67,7 +67,7 @@
       {
         try
         {
-          string tmpAttackServiceDirectory = string.Format(@"{0}\{1}", baseDir, tmpDirectoryPath);
+          string tmpAttackServiceDirectory = $@"{baseDir}\{tmpDirectoryPath}";
           if (!Directory.Exists(tmpAttackServiceDirectory))
           {
             Directory.CreateDirectory(tmpAttackServiceDirectory);
@@ -75,7 +75,7 @@
         }
         catch (Exception ex)
         {
-          string message = string.Format("Error occurred while creating \"{0}\"\r\nMessage: {1}", tmpDirectoryPath, ex.Message);
+          string message = $"Error occurred while creating \"{tmpDirectoryPath}\"\r\nMessage: {ex.Message}";
           MessageDialog.Inst.ShowError(string.Empty, message, null);
         }
       }

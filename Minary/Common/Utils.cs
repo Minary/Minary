@@ -10,15 +10,15 @@
 
     public static string IsProgrammInstalled(string appName)
     {
-      string retVal = string.Empty;
+      var retVal = string.Empty;
 
       // The registry tmpKeyKey:
-      string[] softwareDirs = new string[2] {
-                                              @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-                                              @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
-                                           };
+      var softwareDirs = new string[2] {
+                                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                                        @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+                                       };
 
-      foreach (string directory in softwareDirs)
+      foreach (var directory in softwareDirs)
       {
         using (RegistryKey regKey = Registry.LocalMachine.OpenSubKey(directory))
         {
@@ -31,7 +31,7 @@
               {
                 if (regSubKey.GetValue("DisplayName") != null)
                 {
-                  string softwareName = regSubKey.GetValue("DisplayName").ToString();
+                  var softwareName = regSubKey.GetValue("DisplayName").ToString();
 
                   if (Regex.Match(softwareName, appName, RegexOptions.IgnoreCase).Success)
                   {
@@ -74,7 +74,7 @@ END:
       {
         action();
       }
-      catch (Exception ex)
+      catch (Exception)
       {
       }
     }

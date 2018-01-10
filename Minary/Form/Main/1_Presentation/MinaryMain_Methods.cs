@@ -2,7 +2,6 @@
 {
   using Minary.Common;
   using Minary.DataTypes.Enum;
-  using Minary.Domain.Main;
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
@@ -23,11 +22,10 @@
 
     #region PROPERTIES
 
+    // Proxy properties
     public TabPage TabPagePluginCatalog { get { return this.tp_MinaryPluginCatalog; } }
 
     public TabControl TCPlugins { get { return this.tc_Plugins; } }
-
-    public BindingList<PluginTableRecord> DgvUsedPlugins { get { return this.usedPlugins; } }
 
     #endregion
 
@@ -176,7 +174,7 @@
       }
       catch (Exception ex)
       {
-        string message = string.Format("Error 1 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
+        var message = $"Error 1 occurred while loading template file \"{Path.GetFileName(cmdLineArgument)}\".\r\n\r\n{ex.Message}";
         this.LogAndShowMessage(message, LogLevel.Error);
       }
 
@@ -186,7 +184,7 @@
       }
       catch (Exception ex)
       {
-        string message = string.Format("Error 2 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
+        var message = $"Error 2 occurred while loading template file \"{Path.GetFileName(cmdLineArgument)}\".\r\n\r\n{ex.Message}";
         this.LogAndShowMessage(message, LogLevel.Error);
       }
 
@@ -201,7 +199,7 @@
       }
       catch (Exception ex)
       {
-        string message = string.Format("Error 3 occurred while loading template file \"{0}\".\r\n\r\n{1}", Path.GetFileName(cmdLineArgument), ex.Message);
+        var message = $"Error 3 occurred while loading template file \"{Path.GetFileName(cmdLineArgument)}\".\r\n\r\n{ex.Message}";
         this.LogAndShowMessage(message, LogLevel.Error);
         this.pluginHandler.RestoreLastPluginLoadState();
       }

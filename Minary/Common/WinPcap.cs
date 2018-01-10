@@ -15,7 +15,7 @@
     /// <returns></returns>
     public static string GetWinPcapVersion()
     {
-      string retVal = string.Empty;
+      var retVal = string.Empty;
 
       try
       {
@@ -23,12 +23,12 @@
       }
       catch (Exception)
       {
-        throw new Exception(string.Format("WinPcap is not present and {0} probably won't work as expected. You can download WinPcap under http://www.winpcap.org", Config.ApplicationName));
+        throw new Exception($"WinPcap is not present and { Config.ApplicationName} probably won't work as expected. You can download WinPcap under http://www.winpcap.org");
       }
 
       if (Config.WinPcap == null || Config.WinPcap.Length <= 0)
       {
-        throw new Exception(string.Format("WinPcap is not present and {0} probably won't work as expected. You can download WinPcap under http://www.winpcap.org", Config.ApplicationName));
+        throw new Exception($"WinPcap is not present and {Config.ApplicationName} probably won't work as expected. You can download WinPcap under http://www.winpcap.org");
       }
 
       return retVal;

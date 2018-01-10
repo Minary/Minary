@@ -18,17 +18,14 @@
     #region MEMBERS
 
     private MinaryMain minaryInstance;
-    private Dictionary<string, IAttackService> attackServices;
-    private Dictionary<string, Assembly> dynamicallyLoadedAttackServices;
+    private Dictionary<string, Assembly> dynamicallyLoadedAttackServices = new Dictionary<string, Assembly>();
 
     #endregion
 
 
     #region PROPERTIES
 
-    public MinaryMain MinaryMain { get { return this.minaryInstance; } set { } }
-
-    public Dictionary<string, IAttackService> AttackServices { get { return this.attackServices; } }
+    public Dictionary<string, IAttackService> AttackServices { get; private set; } = new Dictionary<string, IAttackService>();
 
     #endregion
 
@@ -37,25 +34,14 @@
 
     public AttackServiceHandler(MinaryMain minaryInstance)
     {
-      string currentDirectory = Directory.GetCurrentDirectory();
-      string apeWorkingDirectory = Path.Combine(currentDirectory, Config.ApeServiceDir);
-      string sslStripWorkingDirectory = Path.Combine(currentDirectory, Config.SslStripDir);
-      string dataSnifferWorkingDirectory = Path.Combine(currentDirectory, Config.DataSnifferDir);
-      string injectCodeWorkingDirectory = Path.Combine(currentDirectory, Config.InjectCodeDir);
-      string injectFileWorkingDirectory = Path.Combine(currentDirectory, Config.InjectFileDir);
-      string requestRedirectWorkingDirectory = Path.Combine(currentDirectory, Config.RequestRedirectDir);
-      string hostMappingWorkingDirectory = Path.Combine(currentDirectory, Config.HostMappingDir);
-
       this.minaryInstance = minaryInstance;
-      this.attackServices = new Dictionary<string, IAttackService>();
-      this.dynamicallyLoadedAttackServices = new Dictionary<string, Assembly>();
     }
 
 
     public void LoadAttackServicePlugins()
     {
-      string fileName;
-      string tempPluginPath;
+      var fileName = string.Empty;
+      var tempPluginPath = string.Empty;
       List<string> pluginList = null;
 
       try
@@ -70,7 +56,7 @@
       }
 
       // Iterate through all plugin directories.
-      for (int plugCount = 0; plugCount < pluginList.Count; plugCount++)
+      for (var plugCount = 0; plugCount < pluginList.Count; plugCount++)
       {
         if (!Directory.Exists(pluginList[plugCount]))
         {
@@ -80,10 +66,10 @@
         tempPluginPath = pluginList[plugCount];
         string[] pluginFiles = Directory.GetFiles(tempPluginPath, "as_*.dll");
 
-        for (int i = 0; i < pluginFiles.Length; i++)
+        for (var i = 0; i < pluginFiles.Length; i++)
         {
           fileName = Path.GetFileNameWithoutExtension(pluginFiles[i]);
-          LogCons.Inst.Write(LogLevel.Info, "Found attack service plugin: {0}", pluginFiles[i]);
+          LogCons.Inst.Write(LogLevel.Info, $"Found attack service plugin: {pluginFiles[i]}");
           
           // Create/Load instance of attack serviceplugin.
           try
@@ -92,8 +78,8 @@
           }
           catch (Exception ex)
           {
-            LogCons.Inst.Write(LogLevel.Error, "Error occurred while loading attack service {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
-            string message = string.Format("Error occurred while loading attack service {0} : {1}", fileName, ex.Message);
+            LogCons.Inst.Write(LogLevel.Error, $"Error occurred while loading attack service {fileName} : {ex.StackTrace}\r\n{ex.ToString()}");
+            var message = $"Error occurred while loading attack service {fileName} : {ex.Message}";
             MessageDialog.Inst.ShowError(string.Empty, message, this.minaryInstance);
             continue;
           }
@@ -104,21 +90,21 @@
 
     public void StopAllServices()
     {
-      foreach (string tmpKey in this.attackServices.Keys)
+      foreach (var tmpKey in this.AttackServices.Keys)
       {
         try
         {
           // Stop attack services that have the current state RUNNING.
-          if (this.attackServices[tmpKey].Status == ServiceStatus.Running)
+          if (this.AttackServices[tmpKey].Status == ServiceStatus.Running)
           {
-            ServiceStatus newServiceStatus = this.attackServices[tmpKey].StopService();
-            this.MinaryMain.SetNewAttackServiceState(tmpKey, newServiceStatus);
+            ServiceStatus newServiceStatus = this.AttackServices[tmpKey].StopService();
+            this.minaryInstance.SetNewAttackServiceState(tmpKey, newServiceStatus);
           }
         }
         catch (Exception ex)
         {
-          this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
-          LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.StopAllServices(Exception): {0}: {1}\r\n{2}", this.attackServices[tmpKey].ServiceName, ex.Message, ex.StackTrace);
+          this.minaryInstance.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
+          LogCons.Inst.Write(LogLevel.Error, $"AttackServiceHandler.StopAllServices(Exception): {this.AttackServices[tmpKey].ServiceName}: {ex.Message}\r\n{ex.StackTrace}");
         }
       }
     }
@@ -126,16 +112,16 @@
 
     public void ShutDown()
     {
-      foreach (string tmpKey in this.attackServices.Keys)
+      foreach (var tmpKey in this.AttackServices.Keys)
       {
         try
         {
-          this.attackServices[tmpKey].StopService();
-          this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.NotRunning);
+          this.AttackServices[tmpKey].StopService();
+          this.minaryInstance.SetNewAttackServiceState(tmpKey, ServiceStatus.NotRunning);
         }
         catch (Exception ex)
         {
-          this.MinaryMain.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
+          this.minaryInstance.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
           LogCons.Inst.Write(LogLevel.Error, "AttackServiceHandler.ShutDown(Exception): {0}", ex.Message);
         }
       }
@@ -148,12 +134,12 @@
 
     private List<string> GetAttackServicePluginList()
     {
-      string baseDir = Directory.GetCurrentDirectory();
-      string tempPluginPath = Path.Combine(baseDir, Config.AttackServicesPluginsDir);
+      var baseDir = Directory.GetCurrentDirectory();
+      var tempPluginPath = Path.Combine(baseDir, Config.AttackServicesPluginsDir);
       string[] tempPluginList = Directory.GetDirectories(tempPluginPath);
       List<string> pluginList = new List<string>();
 
-      for (int i = 0; i < tempPluginList.Length; i++)
+      for (var i = 0; i < tempPluginList.Length; i++)
       {
         string[] pluginFiles = Directory.GetFiles(tempPluginList[i], "as_*.dll");
 
@@ -180,7 +166,7 @@
 
       this.dynamicallyLoadedAttackServices.Add(assemblyObj.FullName, assemblyObj);
 
-      string pluginName = string.Format("Minary.AttackService.Main.{0}", fileName);
+      var pluginName = $"Minary.AttackService.Main.{fileName}";
       objType = assemblyObj.GetType(pluginName, false, false);
 
       if (objType == null)
@@ -207,19 +193,19 @@
 
     public void Register(IAttackService attackService)
     {
-      LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.Register(): Service {0} registered", attackService.ServiceName);
+      LogCons.Inst.Write(LogLevel.Info, $"AttackServiceHandler.Register(): Service {attackService.ServiceName} registered");
 
       // Register the service in the attack service handler
-      this.attackServices.Add(attackService.ServiceName, attackService);
+      this.AttackServices.Add(attackService.ServiceName, attackService);
 
       // Register the service in the GUI 
-      this.MinaryMain.RegisterAttackService(attackService.ServiceName);
+      this.minaryInstance.RegisterAttackService(attackService.ServiceName);
     }
 
 
     public void OnServiceExited(string serviceName, int exitCode)
     {
-      LogCons.Inst.Write(LogLevel.Error, "OnServiceExited(): Service \"{0}\" exited unexpectedly. Exit code {0}", serviceName, exitCode);
+      LogCons.Inst.Write(LogLevel.Error, $"OnServiceExited(): Service \"{serviceName}\" exited unexpectedly. Exit code {exitCode}");
       this.minaryInstance.OnServiceExicedUnexpectedly(serviceName);
     }
 

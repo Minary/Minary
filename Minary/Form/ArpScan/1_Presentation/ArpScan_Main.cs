@@ -17,16 +17,14 @@
 
     #region MEMBERS
 
-    private BindingList<string> targetList;
+    private BindingList<string> targetStringList;
     private string interfaceId;
     private string startIp;
     private string stopIp;
     private string gatewayIp;
     private string localIp;
     private string localMac;
-    private MacVendorHandler macVendorHandler;
-    private BindingList<TargetRecord> targetRecords;
-    private bool isStopped;
+    private MacVendorHandler macVendorHandler = new MacVendorHandler();
     private PacketCommunicator communicator;
 
     #endregion
@@ -34,7 +32,7 @@
 
     #region PROPERTIES
 
-    public BindingList<TargetRecord> TargetList { get { return this.targetRecords; } set { } }
+    public BindingList<TargetRecord> TargetList { get; private set; } = new BindingList<TargetRecord>();
 
     #endregion
 
@@ -77,19 +75,14 @@
       columnVendor.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
       columnVendor.MinimumWidth = 180;
       this.dgv_Targets.Columns.Add(columnVendor);
-
-      this.targetRecords = new BindingList<TargetRecord>();
-      this.dgv_Targets.DataSource = this.targetRecords;
+      
+      this.dgv_Targets.DataSource = this.TargetList;
       this.dgv_Targets.CurrentCellDirtyStateChanged += new EventHandler(this.Dgv_CurrentCellDirtyStateChanged);
       this.dgv_Targets.CellValueChanged += new DataGridViewCellEventHandler(this.Dgv_CellValueChanged);
       this.dgv_Targets.CellClick += new DataGridViewCellEventHandler(this.Dgv_CellClick);
 
       // Set the owner to keep this form in the foreground/topmost
       this.Owner = owner;
-
-      // Initialize members
-      this.isStopped = false;
-      this.macVendorHandler = new MacVendorHandler();
     }
 
 
@@ -100,11 +93,11 @@
     /// <param name="minaryConfig"></param>
     /// <param name="isModal"></param>
     public delegate void ShowArpScanGuiDelegate(ref BindingList<string> targetList, MinaryConfig minaryConfig, bool isModal = true);
-    public void ShowArpScanGui(ref BindingList<string> targetList, MinaryConfig minaryConfig, bool isModal = true)
+    public void ShowArpScanGui(ref BindingList<string> targetStringList, MinaryConfig minaryConfig, bool isModal = true)
     {
       if (this.InvokeRequired == true)
       {
-        this.BeginInvoke(new ShowArpScanGuiDelegate(this.ShowArpScanGui), new object[] { targetList, minaryConfig, isModal});
+        this.BeginInvoke(new ShowArpScanGuiDelegate(this.ShowArpScanGui), new object[] { targetStringList, minaryConfig, isModal});
         return;
       }
 
@@ -119,7 +112,7 @@
         this.localMac = minaryConfig.LocalMac;
         this.communicator = PcapHandler.Inst.OpenPcapDevice(this.interfaceId, 1);
 
-        this.targetList = targetList;
+        this.targetStringList = targetStringList;
 
         this.tb_Subnet1.Text = this.startIp;
         this.tb_Subnet2.Text = this.stopIp;
@@ -199,7 +192,7 @@
 
       // Set cancellation/stopping status
       this.IsCancellationPending = true;
-      this.isStopped = true;
+      this.IsStopped = true;
     }
 
 
@@ -215,12 +208,12 @@
         return;
       }
 
-      string startIp = string.Empty;
-      string stopIp = string.Empty;
+      var startIp = string.Empty;
+      var stopIp = string.Empty;
 
       // Set cancellation/stopping status
       this.IsCancellationPending = false;
-      this.isStopped = false;
+      this.IsStopped = false;
 
       // Check start/stop IpAddress addresses.
       if (this.rb_Subnet.Checked)
@@ -234,7 +227,7 @@
         stopIp = this.tb_Netrange2.Text;
       }
 
-      this.targetList.Clear();
+      this.targetStringList.Clear();
       this.pb_ArpScan.Minimum = 0;
       this.pb_ArpScan.Value = 0;
       this.pb_ArpScan.Maximum = 100;

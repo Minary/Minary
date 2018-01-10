@@ -77,11 +77,11 @@
     {
       if (appTitle.Length > 0)
       {
-        this.Text = string.Format("{0}  {1:0.0} ({2})", Config.ApplicationName, Config.MinaryVersion, appTitle);
+        this.Text = $"{Config.ApplicationName}  {Config.MinaryVersion:0.0} ({appTitle})";
       }
       else
       {
-        this.Text = string.Format("{0}  {1:0.0}", Config.ApplicationName, Config.MinaryVersion);
+        this.Text = $"{Config.ApplicationName}  {Config.MinaryVersion:0.0}";
       }
     }
 
@@ -98,7 +98,7 @@
         return true;
       }
 
-      string temp = string.Empty;
+      var temp = string.Empty;
 
       // Empty Interfaces ComboBox and repopulate it with found interfaces.
       this.cb_Interfaces.Items.Clear();
@@ -119,13 +119,9 @@
       {
         if (tmpInterface.IsUp)
         {
-          string interfaceData = string.Format(
-                                               "Ifc descr : {0}\r\nIfc ID : {1}\r\nIpAddress : {2}\r\nGW IpAddress : {3}\r\nGW MacAddress : {4}",
-                                               tmpInterface.Description,
-                                               tmpInterface.Id,
-                                               tmpInterface.IpAddress,
-                                               tmpInterface.DefaultGw,
-                                               tmpInterface.GatewayMac);
+          var interfaceData = $"Ifc descr : {tmpInterface.Description}\r\nIfc ID : {tmpInterface.Id}\r\n" +
+                              $"IpAddress : {tmpInterface.IpAddress}\r\nGW IpAddress : {tmpInterface.DefaultGw}\r\n" +
+                              $"GW MacAddress : {tmpInterface.GatewayMac}";
           // Add interface to combo box in GUI
           if (tmpInterface.Description.Length > 50)
           {
@@ -188,14 +184,14 @@
     /// <returns></returns>
     private int TargetCounter(BindingList<TargetRecord> targetList)
     {
-      int reval = 0;
+      var reval = 0;
 
       if (targetList == null || targetList.Count <= 0)
       {
         return reval;
       }
 
-      foreach (TargetRecord tmpRecord in targetList)
+      foreach (var tmpRecord in targetList)
       {
         if (tmpRecord.Attack)
         {

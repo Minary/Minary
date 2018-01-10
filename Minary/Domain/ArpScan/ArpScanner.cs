@@ -109,8 +109,8 @@
 
     private int CalculatePercentage(long totalIps, int counter)
     {
-      double percentage = (double)100 / totalIps * counter;
-      int roundedPercentage = (int)Math.Round(percentage, MidpointRounding.AwayFromZero);
+      var percentage = (double)100 / totalIps * counter;
+      var roundedPercentage = (int)Math.Round(percentage, MidpointRounding.AwayFromZero);
 
       return roundedPercentage;
     }
@@ -130,13 +130,13 @@
     private Packet BuildArpWhoHasPacket(uint remoteIpInt)
     {
       // Build ethernet layer
-      EthernetLayer ethernetPacket = new EthernetLayer();
+      var ethernetPacket = new EthernetLayer();
       ethernetPacket.EtherType = EthernetType.Arp;
       ethernetPacket.Source = new MacAddress(this.config.LocalMac);
       ethernetPacket.Destination = new MacAddress("ff:ff:ff:ff:ff:ff");
 
       // Build ARP layer
-      ArpLayer arpPacket = new ArpLayer();
+      var arpPacket = new ArpLayer();
       arpPacket.ProtocolType = EthernetType.IpV4;
       arpPacket.Operation = ArpOperation.Request;
 
@@ -147,7 +147,7 @@
       byte[] ipAddresBytes = this.IpIntegerToByteArray(remoteIpInt);
       arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(ipAddresBytes);
 
-      PacketBuilder packet = new PacketBuilder(ethernetPacket, arpPacket);
+      var packet = new PacketBuilder(ethernetPacket, arpPacket);
       return packet.Build(DateTime.Now);
     }
 
@@ -166,7 +166,7 @@
 
     private uint IpStringToInteger(string address)
     {
-      uint intAddressHostOrder = (uint)System.Net.IPAddress.NetworkToHostOrder(BitConverter.ToInt32(System.Net.IPAddress.Parse(address).GetAddressBytes(), 0));
+      var intAddressHostOrder = (uint)System.Net.IPAddress.NetworkToHostOrder(BitConverter.ToInt32(System.Net.IPAddress.Parse(address).GetAddressBytes(), 0));
 
       return intAddressHostOrder;
     }

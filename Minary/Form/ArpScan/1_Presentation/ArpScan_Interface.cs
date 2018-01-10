@@ -5,7 +5,6 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
-  using System.Linq;
 
 
   public partial class ArpScan : IObserverArpRequest, IObserverArpResponse
@@ -15,7 +14,7 @@
 
     public bool IsCancellationPending { get { return this.bgw_ArpScanSender.CancellationPending; } set { this.bgw_ArpScanSender.CancelAsync(); } }
 
-    public bool IsStopped { get { return this.isStopped; } set { } }
+    public bool IsStopped { get; set; } = false;
 
     #endregion
 
@@ -49,9 +48,9 @@
         return;
       }
 
-      if (this.targetList.Contains(systemData.IpAddress) == true)
+      if (this.targetStringList.Contains(systemData.IpAddress) == true)
       {
-        LogCons.Inst.Write(LogLevel.Debug, "ArpScan.UpdateTextBox(): {0}/{1} already exists", systemData.MacAddress, systemData.IpAddress);
+        LogCons.Inst.Write(LogLevel.Debug, $"ArpScan.UpdateTextBox(): {systemData.MacAddress}/{systemData.IpAddress} already exists");
         return;
       }
 
@@ -59,11 +58,12 @@
       {
         // Determine vendor
         string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
-        if (systemData.IpAddress != this.gatewayIp && systemData.IpAddress != this.localIp)
+        if (systemData.IpAddress != this.gatewayIp && 
+            systemData.IpAddress != this.localIp)
         {
-          this.targetList.Add(systemData.IpAddress);
-          this.targetRecords.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
-          LogCons.Inst.Write(LogLevel.Info, "UpdateNewRecord(): Found new target system {0}/{1}", systemData.MacAddress, systemData.IpAddress);
+          this.targetStringList.Add(systemData.IpAddress);
+          this.TargetList.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
+          LogCons.Inst.Write(LogLevel.Info, $"UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
         }
       }
       catch (Exception ex)

@@ -18,12 +18,11 @@
 
     private const int MAX_RELOAD_ATTEMPS = 10;
     private MinaryMain minaryMain;
-    private Infrastructure.TemplateHandler infrastructure;
-    private StringBuilder rtfData;
-    private RecordMinaryTemplate templateData;
     private string templateFileName;
+    private Infrastructure.TemplateHandler infrastructure = new Infrastructure.TemplateHandler();
+    private StringBuilder rtfData = new StringBuilder();
     private Calls callObj;
-    private int noReloadAttemps;
+    private int noReloadAttemps = 0;
     private string templateFile;
 
     #endregion
@@ -31,7 +30,7 @@
 
     #region PROPERTIES
 
-    public RecordMinaryTemplate TemplateData { get { return this.templateData; } set { } }
+    public RecordMinaryTemplate TemplateData { get; private set; }
 
     #endregion
 
@@ -44,9 +43,6 @@
 
       this.minaryMain = minaryMain;
       this.templateFileName = templateFileName;
-      this.infrastructure = new Infrastructure.TemplateHandler();
-      this.rtfData = new StringBuilder();
-      this.noReloadAttemps = 0;
     }
 
     #endregion
@@ -73,14 +69,14 @@
         throw new Exception("The template file does not exist");
       }
 
-      if (Path.GetExtension(templateFile).ToLower() != string.Format(".{0}", Minary.Config.MinaryFileExtension))
+      if (Path.GetExtension(templateFile).ToLower() != $".{Minary.Config.MinaryFileExtension}")
       {
         throw new Exception("The defined file is no Minary template file");
       }
 
       // Load tepmlate data into object
-      this.templateData = this.infrastructure.LoadAttackTemplate(templateFile);
-      this.callObj = new Calls(this.minaryMain, this.templateData);
+      this.TemplateData = this.infrastructure.LoadAttackTemplate(templateFile);
+      this.callObj = new Calls(this.minaryMain, this.TemplateData);
 
       // Activate relevant plugins. Deactivate non-relevant plugins
       this.HideAllTabPages();
@@ -98,11 +94,11 @@
 
     private void LoadPlugins()
     {
-      foreach (Plugin tmpPluginObj in this.templateData.Plugins)
+      foreach (Plugin tmpPluginObj in this.TemplateData.Plugins)
       {
         try
         {
-          this.AddMessage(string.Format("Loading plugin \"{0}\"", tmpPluginObj.Name), "Plugin");
+          this.AddMessage($"Loading plugin \"{tmpPluginObj.Name}\"",  "Plugin");
           this.callObj.ActivatePlugin(tmpPluginObj.Name);
           this.callObj.LoadPluginData(tmpPluginObj.Name, tmpPluginObj.Data);
         }
@@ -124,12 +120,13 @@
       }
 
       // Scan network
-      if (this.templateData == null || this.templateData.AttackConfig == null)
+      if (this.TemplateData == null || 
+          this.TemplateData.AttackConfig == null)
       {
         throw new Exception("The template is invalid");
       }
 
-      if (this.templateData.AttackConfig.ScanNetwork == 1)
+      if (this.TemplateData?.AttackConfig?.ScanNetwork == 1)
       {
         this.AddMessage("ARP scanning network", "ARP");
         this.callObj.ScanNetwork(this.POSTArpScan_StartAttack);
@@ -147,7 +144,7 @@
     {
 
       // Attack systems
-      if (this.templateData.AttackConfig.StartAttack == 1)
+      if (this.TemplateData?.AttackConfig?.StartAttack == 1)
       {
         this.AddMessage("Starting attacking target systems", "Template");
 
@@ -156,8 +153,8 @@
         {
           this.AddMessage("No target systems were found", "Template");
           this.AddMessage("The attack was aborted", "Template");
-          string message = "No target systems were found.\r\n" +
-                           "Attack script aborted";
+          var message = "No target systems were found.\r\n" +
+                        "Attack script aborted";
 
           // If user wants to reload the template again 
           // (because the previous loading procedure failed)
@@ -166,7 +163,7 @@
           {
             MessageDialog.Inst.ShowWarning(string.Empty, message, this, MessageBoxButtons.OK);
           }
-          else if (MessageDialog.Inst.ShowWarning(string.Empty, message + "\r\n\r\nDo you want to reload the template?", this, MessageBoxButtons.YesNo) == DialogResult.Yes)
+          else if (MessageDialog.Inst.ShowWarning(string.Empty, $"{message}\r\n\r\nDo you want to reload the template?", this, MessageBoxButtons.YesNo) == DialogResult.Yes)
           {
             this.noReloadAttemps++;
             this.LoadAttackTemplate(this.templateFile);
@@ -176,8 +173,9 @@
         }
 
         // Select target systems
-        this.AddMessage(string.Format("Selecting the first {0} systems as targets", this.templateData.AttackConfig.NumberSelectedTargetSystems), "Template");
-        this.callObj.SelectTargetSystems(this.templateData.AttackConfig.NumberSelectedTargetSystems);
+        int noSelectedSystems = this.TemplateData.AttackConfig.NumberSelectedTargetSystems;
+        this.AddMessage($"Selecting the first {noSelectedSystems} systems as targets", "Template");
+        this.callObj.SelectTargetSystems(this.TemplateData.AttackConfig.NumberSelectedTargetSystems);
 
         // Start actual attack
         this.callObj.StartAttack();
@@ -186,7 +184,6 @@
 
       this.AddMessage("Loading template done.", "Template");
       this.AddMessage("Closing this view in 5 seconds ...", "Template");
-
       this.CloseFormInXSeconds(5);
     }
 
@@ -206,14 +203,13 @@
       }
 
       message = message.Trim();
-      string dateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
-      string formatedMessage = string.Format(@"{0}   \b {1,-10}\b0  {2}\line ", dateTime, header, message);
-
+      var dateTime = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
+      var formatedMessage = $@"{dateTime}   \b {header,-10}\b0  {message}\line ";
       this.rtfData.Append(formatedMessage);
 
       try
       {
-        this.rtb_Logs.Rtf = @"{\rtf1\ansi " + this.rtfData.ToString() + @" }";
+        this.rtb_Logs.Rtf = $@"{{\rtf1\ansi {this.rtfData.ToString()} }}";
       }
       catch
       {
@@ -257,7 +253,8 @@
       }
       catch (Exception ex)
       {
-        string message = string.Format("An error occurred while loading template file \"{0}\": {1}", Path.GetFileName(this.templateFileName), ex.Message);
+        var fileName = Path.GetFileName(this.templateFileName);
+        var message = $"An error occurred while loading template file \"{fileName}\": {ex.Message}";
         this.AddMessage(message, "Exception");
       }
     }

@@ -24,15 +24,8 @@
     {
       get
       {
-        FileInfo getInfo = new FileInfo(this.Path);
-        if (getInfo.Exists)
-        {
-          return true;
-        }
-        else
-        {
-          return false;
-        }
+        var getInfo = new FileInfo(this.Path);
+        return getInfo.Exists;
       }
     }
 
@@ -49,5 +42,4 @@
     #endregion
 
   }
-
 }

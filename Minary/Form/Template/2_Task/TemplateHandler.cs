@@ -12,38 +12,34 @@
 
     #region MEMBERS
     
-    private Infrastructure.TemplateHandler infrastructure;
+    private Infrastructure.TemplateHandler infrastructure = new Infrastructure.TemplateHandler();
     private MinaryMain minaryMain;
 
     #endregion
-
-
-    #region PROPERTIES
-
-    #endregion
-
+    
 
     #region PUBLIC
 
     public TemplateHandler(Minary.Form.MinaryMain minaryMain)
     {
       this.minaryMain = minaryMain;
-      this.infrastructure = new Infrastructure.TemplateHandler();
     }
 
 
     public void UnloadTemplatePatternsFromPlugins()
     {
-      foreach (string tmpPluginName in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
+      foreach (var tmpPluginName in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
       {
         try
         {
-          IPlugin tmpPluginObj = this.minaryMain.PluginHandler.TabPagesCatalog[tmpPluginName].PluginObject;
-          tmpPluginObj.OnUnloadTemplateData();
+          // This could be done in one method call but 
+          // it is nested too deeply :/
+          var tabPageCatalog = this.minaryMain.PluginHandler.TabPagesCatalog;
+          tabPageCatalog[tmpPluginName].PluginObject.OnUnloadTemplateData();
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "TemplateHandler: {0}", ex.Message);
+          LogCons.Inst.Write(LogLevel.Error, $"TemplateHandler: {ex.Message}");
         }
       }
     }

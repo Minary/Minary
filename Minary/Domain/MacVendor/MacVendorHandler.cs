@@ -40,24 +40,25 @@
     /// <returns></returns>
     public string GetVendorByMac(string macAddress)
     {
-      string retVal = string.Empty;
-      string vendor = string.Empty;
+      var retVal = string.Empty;
+      var vendor = string.Empty;
       Match match;
 
-      if (!string.IsNullOrEmpty(macAddress))
+      if (string.IsNullOrEmpty(macAddress))
       {
+        return retVal;
+      }
 
-        // Determine vendor
-        vendor = string.Empty;
-        if ((match = Regex.Match(macAddress, @"([\da-f]{1,2})[:\-]{1}([\da-f]{1,2})[:\-]{1}([\da-f]{1,2})[:\-]{1}.*", RegexOptions.IgnoreCase)).Success)
-        {
-          string octet1 = match.Groups[1].Value.ToString();
-          string octet2 = match.Groups[2].Value.ToString();
-          string octet3 = match.Groups[3].Value.ToString();
-          string vendorId = string.Format("{0}{1}{2}", octet1, octet2, octet3).ToLower();
+      // Determine vendor
+      vendor = string.Empty;
+      if ((match = Regex.Match(macAddress, @"([\da-f]{1,2})[:\-]{1}([\da-f]{1,2})[:\-]{1}([\da-f]{1,2})[:\-]{1}.*", RegexOptions.IgnoreCase)).Success)
+      {
+        var octet1 = match.Groups[1].Value.ToString();
+        var octet2 = match.Groups[2].Value.ToString();
+        var octet3 = match.Groups[3].Value.ToString();
+        var vendorId = $"{octet1}{octet2}{octet3}".ToLower();
 
-          retVal = this.macVendorMap.ContainsKey(vendorId) ? this.macVendorMap[vendorId].ToString() : string.Empty;
-        }
+        retVal = this.macVendorMap.ContainsKey(vendorId) ? this.macVendorMap[vendorId].ToString() : string.Empty;
       }
 
       return retVal;
@@ -73,11 +74,11 @@
     /// </summary>
     private void LoadMacVendorList()
     {
-      string tmpLine = string.Empty;
+      var tmpLine = string.Empty;
       StreamReader reader = null;
-      char[] delimiterCharacters = "\t ".ToCharArray();
-      string macAddress = string.Empty;
-      string vendorName = string.Empty;
+      var delimiterCharacters = "\t ".ToCharArray();
+      var macAddress = string.Empty;
+      var vendorName = string.Empty;
 
       try
       {

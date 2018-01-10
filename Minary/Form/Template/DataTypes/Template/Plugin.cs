@@ -8,34 +8,16 @@
   public class Plugin
   {
 
-    #region MEMBERS
-
-    private string pluginName;
-    private TemplatePluginData pluginData;
-
-    #endregion MEMBERS
-
-
     #region PROPERTIES
 
-    public string Name { get { return this.pluginName; } set { this.pluginName = value; } }
+    public string Name { get; set; } = string.Empty;
  
-    public TemplatePluginData Data { get { return this.pluginData; } set { this.pluginData = value; } }
+    public TemplatePluginData Data { get; set; } = new TemplatePluginData();
 
     #endregion PROPERTIES
 
 
     #region PUBLIC
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Plugin"/> class.
-    ///
-    /// </summary>
-    public Plugin()
-    {
-      this.pluginName = string.Empty;
-      this.pluginData = new TemplatePluginData();
-    }
 
     /// <summary>
     /// 
@@ -44,8 +26,8 @@
     /// <param name="pluginData"></param>
     public Plugin(string pluginName, TemplatePluginData pluginData)
     {
-      this.pluginName = pluginName;
-      this.pluginData = pluginData;
+      this.Name = pluginName;
+      this.Data = pluginData;
     }
 
     #endregion PUBLIC

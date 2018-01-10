@@ -129,7 +129,7 @@
       {
         if (Environment.OSVersion.Version.Major < 6) // Windows XP or earlier
         {
-          string fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "MSMQAnswer.ans");
+          var fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "MSMQAnswer.ans");
 
           using (System.IO.StreamWriter writer = new System.IO.StreamWriter(fileName))
           {
@@ -146,9 +146,9 @@
             writer.WriteLine("msmq_LocalStorage = ON");
           }
 
-          using (System.Diagnostics.Process p = new System.Diagnostics.Process())
+          using (var p = new System.Diagnostics.Process())
           {
-            System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo("sysocmgr.exe", "/i:sysoc.inf /u:\"" + fileName + "\"");
+            var start = new System.Diagnostics.ProcessStartInfo("sysocmgr.exe", $"/i:sysoc.inf /u:\"{fileName}\"");
 
             p.StartInfo = start;
             p.Start();

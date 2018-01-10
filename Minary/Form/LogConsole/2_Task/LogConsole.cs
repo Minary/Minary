@@ -14,8 +14,8 @@
 
     private static bool stopThreads = false;
     private Thread processLogDataThread;
-    private ConcurrentQueue<string> logDataQueue;
-    private List<IObserver> observers;
+    private ConcurrentQueue<string> logDataQueue = new ConcurrentQueue<string>();
+    private List<IObserver> observers = new List<IObserver>();
 
     #endregion
 
@@ -24,17 +24,15 @@
 
     public LogConsole()
     {
-      this.logDataQueue = new ConcurrentQueue<string>();
       this.processLogDataThread = new Thread(this.LogDataProcessingThread);
       this.processLogDataThread.Start();
-      this.observers = new List<IObserver>();
     }
 
 
     public void AddLogMessage(string logMessage)
     {
-      string timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
-      string realLogMessage = string.Format("{0} - {1}", timeStamp, logMessage);
+      var timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HH:mm:ss");
+      var realLogMessage = $"{timeStamp} - {logMessage}";
 
       this.logDataQueue.Enqueue(realLogMessage);
     }
@@ -46,8 +44,8 @@
 
     public void LogDataProcessingThread()
     {
-      List<string> tmpDataQueue = new List<string>();
-      string tmpRecord = string.Empty;
+      var tmpDataQueue = new List<string>();
+      var tmpRecord = string.Empty;
 
       while (stopThreads == false)
       {
@@ -89,7 +87,7 @@
 
     public void Notify(List<string> newLogRecords)
     {
-      foreach (IObserver observer in this.observers)
+      foreach (var observer in this.observers)
       {
         observer.UpdateLog(newLogRecords);
       }

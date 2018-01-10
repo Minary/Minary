@@ -6,22 +6,13 @@
   public class CurrentSystemSettings
   {
 
-    #region MEMBERS
-
-    private string localIpAddress;
-    private string defaultGatewayAddress;
-    private string dnsIpAddress;
-
-    #endregion
-
-
     #region PROPERTIES
 
-    public string LocalIpAddress { get { return this.localIpAddress; } set { } }
+    public string LocalIpAddress { get; private set; }
 
-    public string DefaultGatewayAddress { get { return this.defaultGatewayAddress; } set { } }
+    public string DefaultGatewayAddress { get; private set; }
 
-    public string DnsIpAddress { get { return this.dnsIpAddress; } set { } }
+    public string DnsIpAddress { get; private set; }
 
     #endregion
 
@@ -30,9 +21,9 @@
 
     public CurrentSystemSettings(string localIpAddress, string defaultGatewayAddress, string dnsIpAddress)
     {
-      this.localIpAddress = localIpAddress;
-      this.defaultGatewayAddress = defaultGatewayAddress;
-      this.dnsIpAddress = dnsIpAddress;
+      this.LocalIpAddress = localIpAddress;
+      this.DefaultGatewayAddress = defaultGatewayAddress;
+      this.DnsIpAddress = dnsIpAddress;
     }
 
 
@@ -43,10 +34,9 @@
         throw new System.Exception("No template data was defined");
       }
 
-      string configuredTemplateData = templateData;
-
-      configuredTemplateData = Regex.Replace(configuredTemplateData, Config.CONSTANT_LOCAL_IP, this.localIpAddress);
-      configuredTemplateData = Regex.Replace(configuredTemplateData, Config.CONSTANT_LOCAL_GW, this.defaultGatewayAddress);
+      var configuredTemplateData = templateData;
+      configuredTemplateData = Regex.Replace(configuredTemplateData, Config.CONSTANT_LOCAL_IP, this.LocalIpAddress);
+      configuredTemplateData = Regex.Replace(configuredTemplateData, Config.CONSTANT_LOCAL_GW, this.DefaultGatewayAddress);
 
       return configuredTemplateData;
     }

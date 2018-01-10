@@ -10,11 +10,9 @@
   using Minary.Domain.MacVendor;
   using Minary.Domain.Main;
   using Minary.Domain.Network;
-  using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Enum;
-  using MinaryLib.AttackService.Interface;
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
@@ -29,14 +27,11 @@
 
     #region MEMBERS
 
-    public BindingList<string> targetList = new BindingList<string>();
+    public BindingList<string> targetList = new BindingList<string>(); // Must be public because Calls() ref params! 
     private static IMinaryState minaryState;
     private string[] commandLineArguments;
     private BindingList<PluginTableRecord> usedPlugins = new BindingList<PluginTableRecord>();
     private TemplateTask.TemplateHandler templateTaskLayer;
-    private string currentIpAddress;
-    private string currentMacAddress;
-    private string currentInterfaceId;
     private int currentInterfaceIndex;
     private Browser miniBrowser;
     private bool attackStarted;
@@ -61,27 +56,27 @@
 
     #region PROPERTIES
 
-    public string[] CommandLineArguments { get { return this.commandLineArguments; } }
+    public string CurrentLocalIp { get; set; } = string.Empty;
 
-    public string CurrentLocalIp { get { return this.currentIpAddress ?? string.Empty; } }
+    public string CurrentLocalMac { get; set; } = string.Empty;
 
-    public string CurrentLocalMac { get { return this.currentMacAddress ?? string.Empty; } }
+    public string CurrentInterfaceId { get; set; } = string.Empty;
 
+    public BindingList<PluginTableRecord> UsedPlugins { get { return this.usedPlugins; } }
+
+
+    // Proxy properties
     public string CurrentGatewayIp { get { return this.tb_GatewayIp.Text ?? string.Empty; } }
-
-    public string CurrentInterfaceId { get { return this.currentInterfaceId ?? string.Empty; } }
 
     public string NetworkStartIp { get { return this.tb_NetworkStartIp.Text; } set { } }
 
     public string NetworkStopIp { get { return this.tb_NetworkStopIp.Text; } set { } }
 
-    public BindingList<string> TargetList { get { return this.targetList; } set { } }
 
+    // Handlers
     public Minary.Form.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
 
     public PluginHandler PluginHandler { get { return this.pluginHandler; } }
-
-    public BindingList<PluginTableRecord> UsedPlugins { get { return this.usedPlugins; } }
 
     public TabPageHandler MinaryTabPageHandler { get { return this.tabPageHandler; } }
 
@@ -89,15 +84,9 @@
 
     public ArpScan.Presentation.ArpScan ArpScanHandler { get { return this.arpScanHandler; } set { } }
 
-    public MacVendorHandler MacVendor { get { return this.macVendorHandler; } set { } }
+    public MacVendorHandler MacVendorHandler { get { return this.macVendorHandler; } set { } }
 
     public NetworkInterfaceHandler NetworkHandler { get { return this.nicHandler; } set { } }
-
-
-
-    public FlowLayoutPanel AttackServicePanel { get { return this.flp_AttackServices; } }
-
-    public Dictionary<string, PictureBox> AttackServiceMap { get { return this.attackServiceMap; } }
 
     #endregion
 
@@ -257,15 +246,15 @@
 
     public void PassNewTargetListToPlugins()
     {
-      List<Tuple<string, string, string>> newTargetList = new List<Tuple<string, string, string>>();
-      List<TargetRecord> reachableTargetSystems = this.arpScanHandler.TargetList.ToList();
+      var newTargetList = new List<Tuple<string, string, string>>();
+      var reachableTargetSystems = this.arpScanHandler.TargetList.ToList();
 
       if (reachableTargetSystems == null || reachableTargetSystems.Count <= 0)
       {
         return;
       }
 
-      foreach (TargetRecord targetSystem in reachableTargetSystems)
+      foreach (var targetSystem in reachableTargetSystems)
       {
         try
         {
@@ -277,7 +266,7 @@
       }
 
       // newTargetList.Add("0.0.0.0");
-      foreach (string tmpKey in this.pluginHandler.TabPagesCatalog.Keys)
+      foreach (var tmpKey in this.pluginHandler.TabPagesCatalog.Keys)
       {
         try
         {
@@ -307,7 +296,7 @@
       this.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
 
       // Report service failure
-      string message = string.Format("The attack service \"{0}\" failed unexpectedly", serviceName);
+      string message = "The attack service \"{serviceName}\" failed unexpectedly";
       MessageDialog.Inst.ShowWarning("Attack service error", message, this);
     }
 

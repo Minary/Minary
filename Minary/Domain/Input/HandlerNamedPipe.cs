@@ -31,8 +31,7 @@
  
  
     #region INTERFACE: IInputProcessor
-
-
+    
     #region PROPERTIES
 
     public bool IsBeepOn { get; set; }
@@ -58,14 +57,14 @@
     /// </summary>
     public void StartInputProcessing()
     {
-      int failedOpenPipes = 0;
+      var failedOpenPipes = 0;
       stopThreads = false;
 
       try
       {
         // There are several concurrently running NamedPipes reading
         // input data. Start them all.
-        for (int i = 0; i < Config.PipeInstances; i++)
+        for (var i = 0; i < Config.PipeInstances; i++)
         {
           try
           {
@@ -78,7 +77,7 @@
           catch (Exception ex)
           {
             failedOpenPipes++;
-            LogCons.Inst.Write(LogLevel.Fatal, "Can't start named pipe no {0} - Message: {1}\r\n\r\nStackTrace\r\n{2}", i, ex.Message , ex.StackTrace);
+            LogCons.Inst.Write(LogLevel.Fatal, $"Can't start named pipe no {i} - Message: {ex.Message}\r\n\r\nStackTrace\r\n{ex.StackTrace}");
 
             continue;
           }
@@ -89,15 +88,15 @@
 
         if (failedOpenPipes > 0)
         {
-          string message = string.Format("{0} of {1} named pipes could not be started!", failedOpenPipes, Config.PipeInstances);
+          var message = $"{failedOpenPipes} of {Config.PipeInstances} named pipes could not be started!";
           MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
         }
 
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Fatal, "An error occurred while starting the input processor NamedPipe : " + ex.StackTrace + "\n" + ex.ToString());
-        string message = string.Format("An error occurred while starting the input processor NamedPip : ", ex.ToString());
+        LogCons.Inst.Write(LogLevel.Fatal, $"An error occurred while starting the input processor NamedPipe : {ex.StackTrace} \n{ex.ToString()}");
+        var message = $"An error occurred while starting the input processor NamedPip : {ex.ToString()} ";
         MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
       }
     }
@@ -118,15 +117,13 @@
         return;
       }
 
-      for (int i = 0; i < Config.PipeInstances; i++)
+      for (var i = 0; i < Config.PipeInstances; i++)
       {
         try
         {
           ClosePipeStream(this.pipeStream[i], this.streamReader[i]);
-
           namedPipeClient = new NamedPipeClientStream(".", Config.PipeName, PipeDirection.InOut);
           streamWriter = new StreamWriter(namedPipeClient);
-
           namedPipeClient.Connect(500);
           streamWriter.AutoFlush = true;
           streamWriter.WriteLine("QUIT\r\n");
@@ -146,11 +143,11 @@
         }
         catch (TimeoutException tex)
         {
-          LogCons.Inst.Write(LogLevel.Error, tex.StackTrace + "\n" + tex.ToString());
+          LogCons.Inst.Write(LogLevel.Error, $"{tex.StackTrace}\n{tex.ToString()}");
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "An error occurred while starting the sniffer : {0}", ex.StackTrace + "\n" + ex.ToString());
+          LogCons.Inst.Write(LogLevel.Error, $"An error occurred while starting the sniffer : {ex.StackTrace}\n{ex.ToString()}");
         }
         finally
         {
@@ -167,7 +164,7 @@
         }
       }
 
-      for (int i = 0; i < Config.PipeInstances; i++)
+      for (var i = 0; i < Config.PipeInstances; i++)
       {
         if (this.pipeStream == null || this.pipeStream[i] == null)
         {
@@ -198,13 +195,13 @@
     /// </summary>
     private void DataProcessingThread()
     {
-      string tmpRecord;
-      bool processIsStopped = false;
+      var tmpRecord = string.Empty;
+      var processIsStopped = false;
 
       while (processIsStopped == false)
       {
         // Process all records in queue
-        while (!this.inputDataQueue.IsEmpty)
+        while (this.inputDataQueue.IsEmpty == false)
         {
           if (this.inputDataQueue.TryDequeue(out tmpRecord) == false)
           {
@@ -226,7 +223,7 @@
           }
           catch (Exception ex)
           {
-            LogCons.Inst.Write(LogLevel.Error, "Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {0}", ex.Message);
+            LogCons.Inst.Write(LogLevel.Error, $"Minary.DataInput.InputModule.DataProcessingThread(): The following exception occurred: {ex.Message}");
           }
 
           // If activated in the GUI generate a short beep
@@ -250,8 +247,8 @@
     /// <param name="newData"></param>
     private void DataInputThread(object data)
     {
-      int threadNo = (int)data;
-      string tmpLine = string.Empty;
+      var threadNo = (int)data;
+      var tmpLine = string.Empty;
 
       while (stopThreads == false)
       {
@@ -309,19 +306,19 @@
             }
             catch (ObjectDisposedException odex)
             {
-              LogCons.Inst.Write(LogLevel.Error, odex.StackTrace + "\n" + odex.ToString());
+              LogCons.Inst.Write(LogLevel.Error, $"{odex.StackTrace}\n{odex.ToString()}");
               break;
             }
             catch (Exception ex)
             {
-              LogCons.Inst.Write(LogLevel.Error, ex.StackTrace + "\n" + ex.ToString());
+              LogCons.Inst.Write(LogLevel.Error, $"{ex.StackTrace}\n{ex.ToString()}");
               break;
             }
           }
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace + "\n" + ex.ToString());
+          LogCons.Inst.Write(LogLevel.Error, $"{ex.StackTrace}\n{ex.ToString()}");
         }
       }
     }
@@ -347,7 +344,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "InputModules.UpdateMainTB(EXCEPTION): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, $"InputModules.UpdateMainTB(EXCEPTION): {ex.Message}");
         return;
       }
 
@@ -359,7 +356,7 @@
       // We got TCP data.
       if (splitter[0] == "TCP")
       {
-        foreach (string tmpKey in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
+        foreach (var tmpKey in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
         {
           if (this.minaryMain.PluginHandler.IsPluginActive(tmpKey) &&
               this.minaryMain.PluginHandler.TabPagesCatalog[tmpKey].PluginObject.Config.Ports.ContainsKey(port))
@@ -377,9 +374,11 @@
 
       // We got UDP data.
       }
-      else if (splitter[0] == "DNSREP" || splitter[0] == "DNSREQ" || splitter[0] == "UDP")
+      else if (splitter[0] == "DNSREP" || 
+               splitter[0] == "DNSREQ" || 
+               splitter[0] == "UDP")
       {
-        foreach (string tmpKey in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
+        foreach (var tmpKey in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
         {
           if (this.minaryMain.PluginHandler.IsPluginActive(tmpKey) &&
               this.minaryMain.PluginHandler.TabPagesCatalog[tmpKey].PluginObject.Config.Ports.ContainsKey(port))
@@ -399,7 +398,7 @@
       }
       else if (splitter[0] == "GENERIC")
       {
-        foreach (string key in this.tabPageCatalog.Keys)
+        foreach (var key in this.tabPageCatalog.Keys)
         {
           if (this.minaryMain.PluginHandler.IsPluginActive(key) &&
               this.tabPageCatalog[key].PluginObject.Config.Ports.ContainsKey(port))

@@ -17,14 +17,5 @@
 
     #endregion
 
-
-    #region PUBLIC
-
-    public MinaryExtension()
-    {
-    }
-
-    #endregion
-
   }
 }

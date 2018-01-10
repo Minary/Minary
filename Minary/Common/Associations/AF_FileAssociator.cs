@@ -5,6 +5,7 @@
   using System.Collections.Generic;
   using System.Security.AccessControl;
 
+
   /// <summary>
   /// AF_Lib's class for associating files with programs and icons.
   /// </summary>
@@ -29,7 +30,7 @@
     {
       get
       {
-        string toReturn = string.Empty;
+        var toReturn = string.Empty;
 
         if (Registry.ClassesRoot.OpenSubKey(Extension,
             RegistryKeyPermissionCheck.ReadWriteSubTree,
@@ -56,8 +57,8 @@
     {
       get
       {
-        bool extKeyExists = false;
-        bool progIDkeyExists = false;
+        var extKeyExists = false;
+        var progIDkeyExists = false;
 
         if (Registry.ClassesRoot.OpenSubKey(Extension) != null)
         {
@@ -150,7 +151,7 @@
     {
       get
       {
-        string toReturn = string.Empty;
+        var toReturn = string.Empty;
 
         if (this.Exists)
         {
@@ -190,7 +191,7 @@
           }
           else
           {
-            throw new Exception("The extension's association tmpKeyKey (" + GetProgID + ") doesn't exist, please use the Create() function to setup everything...");
+            throw new Exception($"The extension's association tmpKeyKey ({GetProgID}) doesn't exist, please use the Create() function to setup everything...");
           }
         }
         else
@@ -207,7 +208,7 @@
     {
       get
       {
-        string toReturn = string.Empty;
+        var toReturn = string.Empty;
 
         if (this.Exists)
         {
@@ -264,7 +265,7 @@
             }
             else
             {
-              throw new Exception("The extension's progam association tmpKeyKey (" + GetProgID + ") doesn't exist, please use the Create() function to setup everything...");
+              throw new Exception($"The extension's progam association tmpKeyKey ({GetProgID}) doesn't exist, please use the Create() function to setup everything...");
             }
           }
           else

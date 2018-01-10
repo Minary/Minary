@@ -16,7 +16,7 @@
     /// <returns></returns>
     public static int IPAddressToInt(IPAddress ipAddress)
     {
-      int result = 0;
+      var result = 0;
 
       byte[] bytes = ipAddress.GetAddressBytes();
       result = (int)(bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]);
@@ -27,7 +27,7 @@
 
     public static IPAddress IntToIPAddress(int ipAddressInt)
     {
-      IPAddress ipAddress = new IPAddress(ipAddressInt);
+      var ipAddress = new IPAddress(ipAddressInt);
 
       return ipAddress;
     }
@@ -35,9 +35,8 @@
 
     public static string IntToIpString(int ipAddressInt)
     {
-      string ipAddressString = string.Empty;
-
-      ipAddressString = new System.Net.IPAddress(BitConverter.GetBytes(ipAddressInt)).ToString();
+      var ipAddress = new System.Net.IPAddress(BitConverter.GetBytes(ipAddressInt));
+      var ipAddressString = ipAddress.ToString();
 
       return ipAddressString;
     }

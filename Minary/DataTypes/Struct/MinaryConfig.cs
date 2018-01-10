@@ -1,12 +1,25 @@
 ﻿namespace Minary.DataTypes.Struct
 {
+
+
   public class MinaryConfig
   {
-    public string InterfaceId;
-    public string StartIp;
-    public string StopIp;
-    public string GatewayIp;
-    public string LocalIp;
-    public string LocalMac;
+
+    #region PROPERTIES
+
+    public string InterfaceId { get; set; }
+
+    public string StartIp { get; set; }
+
+    public string StopIp { get; set; }
+
+    public string GatewayIp { get; set; }
+
+    public string LocalIp { get; set; }
+
+    public string LocalMac { get; set; }
+
+    #endregion
+
   }
 }

@@ -6,7 +6,6 @@
   using Minary.LogConsole.Main;
   using MinaryLib.DataTypes;
   using System;
-  using System.Threading;
 
 
   public class Calls
@@ -44,7 +43,6 @@
       }
 
       this.onArpScanDone = onArpScanDone;
-
       LogCons.Inst.Write(LogLevel.Info, "Calls interface: ScanNetwork()");
       DataTypes.Struct.MinaryConfig minaryConfig = this.minaryMain.MinaryTaskFacade.GetCurrentMinaryConfig();
 
@@ -55,7 +53,7 @@
       }
       catch (Exception ex)
       {
-        System.Windows.Forms.MessageBox.Show(string.Format($"Message:{ex.Message}\r\n\r\nStacktrace{ex.StackTrace}"), "ERROR");
+        System.Windows.Forms.MessageBox.Show($"Message:{ex.Message}\r\n\r\nStacktrace{ex.StackTrace}", "ERROR");
       }
     }
 
@@ -63,7 +61,7 @@
     public void OnScanDone()
     {
       this.arpScanHandler.HideArpScanWindow();
-      LogCons.Inst.Write(LogLevel.Info, "OnScanDone(): DONE, No. targets:{0}", this.minaryMain.targetList.Count);
+      LogCons.Inst.Write(LogLevel.Info, $"OnScanDone(): DONE, No. targets:{this.minaryMain.targetList.Count}");
       LogCons.Inst.Write(LogLevel.Info, "OnScanDone(): TARGEST,{0}", string.Join(", ", this.minaryMain.targetList));
 
       if (this.onArpScanDone != null)
@@ -117,21 +115,21 @@
 
     public void ActivatePlugin(string pluginName)
     {
-      LogCons.Inst.Write(LogLevel.Info, "Calls interface: ActivatePlugin() \"{0}\"", pluginName);
+      LogCons.Inst.Write(LogLevel.Info, $"Calls interface: ActivatePlugin() \"{pluginName}\"");
       this.minaryMain.PluginHandler.ActivatePlugin(pluginName);
     }
 
 
     public void DeactivatePlugin(string pluginName)
     {
-      LogCons.Inst.Write(LogLevel.Info, "Calls interface: DeactivatePlugin() \"{0}\"", pluginName);
+      LogCons.Inst.Write(LogLevel.Info, $"Calls interface: DeactivatePlugin() \"{pluginName}\"");
       this.minaryMain.PluginHandler.DeactivatePlugin(pluginName);
     }
 
 
     public void LoadPluginData(string tabPageName, TemplatePluginData pluginData)
     {
-      LogCons.Inst.Write(LogLevel.Info, "Calls interface: LoadPluginData() \"{0}\"", tabPageName);
+      LogCons.Inst.Write(LogLevel.Info, $"Calls interface: LoadPluginData() \"{tabPageName}\"");
       Minary.DataTypes.MinaryExtension realPluginObj = this.minaryMain.PluginHandler.TabPagesCatalog[tabPageName];
       realPluginObj.PluginObject.OnLoadTemplateData(pluginData);
     }

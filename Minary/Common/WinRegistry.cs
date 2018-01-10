@@ -16,11 +16,11 @@
     public static string GetValue(string regKeyName, string regSubValueName)
     {
       RegistryKey regKey = Registry.CurrentUser;
-      string retVal = string.Empty;
+      var retVal = string.Empty;
 
       try
       {
-        regKey = regKey.CreateSubKey(string.Format("Software\\{0}\\{1}", Minary.Config.ApplicationName, regKeyName));
+        regKey = regKey.CreateSubKey($"Software\\{Minary.Config.ApplicationName}\\{regKeyName}");
         retVal = (string)regKey.GetValue(regSubValueName);
         regKey.Close();
       }
@@ -41,11 +41,11 @@
     public static bool CreateKey(string parentKey, string regKeyName)
     {
       RegistryKey regKey = Registry.CurrentUser;
-      bool retVal = false;
+      var retVal = false;
 
       try
       {
-        regKey = regKey.CreateSubKey(string.Format("Software\\{0}\\{1}", parentKey, regKeyName));
+        regKey = regKey.CreateSubKey($"Software\\{parentKey}\\{regKeyName}");
         regKey.Close();
         retVal = true;
       }
@@ -59,7 +59,7 @@
 
     public static bool CreateOrUpdateValue(string keyName, string subValueName, string valueContent)
     {
-      bool retVal = false;
+      var retVal = false;
       RegistryKey regKey = null;
 
       try
@@ -95,7 +95,7 @@
 
       try
       {
-        regKey = regKey.CreateSubKey(string.Format("Software\\{0}\\{1}", Minary.Config.ApplicationName, regKeyName));
+        regKey = regKey.CreateSubKey($"Software\\{Minary.Config.ApplicationName}\\{regKeyName}");
         regKey.SetValue(regSubValueName, regValueContent, RegistryValueKind.String);
         regKey.Close();
       }

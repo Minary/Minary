@@ -20,16 +20,15 @@
 
     #region MEMBERS
 
-    private readonly IDictionary<string, Assembly> dynamicallyLoadedAssembly;
+    private readonly IDictionary<string, Assembly> dynamicallyLoadedAssembly = new Dictionary<string, Assembly>();
     private MinaryMain minaryMain;
-    private ConcurrentDictionary<string, DataTypes.MinaryExtension> tabPagesCatalog;
 
     #endregion
 
 
     #region PROPERTIES
 
-    public ConcurrentDictionary<string, DataTypes.MinaryExtension> TabPagesCatalog { get { return this.tabPagesCatalog; } set { } }
+    public ConcurrentDictionary<string, DataTypes.MinaryExtension> TabPagesCatalog { get; private set; } = new ConcurrentDictionary<string, DataTypes.MinaryExtension>();
 
     #endregion
 
@@ -44,8 +43,6 @@
     public PluginHandler(MinaryMain minaryMain)
     {
       this.minaryMain = minaryMain;
-      this.tabPagesCatalog = new ConcurrentDictionary<string, DataTypes.MinaryExtension>();
-      this.dynamicallyLoadedAssembly = new Dictionary<string, Assembly>();
 
       // Hook "asslembly loading" events
       AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += this.ResolveAssembly;
@@ -58,8 +55,8 @@
     /// </summary>
     public void LoadPlugins()
     {
-      string fileName;
-      string tempPluginPath;
+      var fileName = string.Empty;
+      var tempPluginPath = string.Empty;
       List<string> pluginList = null;
 
       try
@@ -74,7 +71,7 @@
       }
 
       // Iterate through all plugin directories.
-      for (int plugCount = 0; plugCount < pluginList.Count; plugCount++)
+      for (var plugCount = 0; plugCount < pluginList.Count; plugCount++)
       {
         if (!Directory.Exists(pluginList[plugCount]))
         {
@@ -84,7 +81,7 @@
         tempPluginPath = pluginList[plugCount];
         string[] pluginFiles = Directory.GetFiles(tempPluginPath, "plugin_*.dll");
 
-        for (int i = 0; i < pluginFiles.Length; i++)
+        for (var i = 0; i < pluginFiles.Length; i++)
         {
           fileName = Path.GetFileNameWithoutExtension(pluginFiles[i]);
           LogCons.Inst.Write(LogLevel.Info, "Found plugin: {0}", pluginFiles[i]);
@@ -96,8 +93,8 @@
           }
           catch (Exception ex)
           {
-            LogCons.Inst.Write(LogLevel.Error, "Error occurred while loading plugin {0} : {1}\r\n{2}", fileName, ex.StackTrace, ex.ToString());
-            string message = string.Format("Error occurred while loading plugin {0} : {1}", fileName, ex.Message);
+            LogCons.Inst.Write(LogLevel.Error, $"Error occurred while loading plugin {fileName} : {ex.StackTrace}\r\n{ex.ToString()}");
+            string message = $"Error occurred while loading plugin {fileName} : {ex.Message}";
             MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
             continue;
           }
@@ -111,15 +108,15 @@
     /// </summary>
     public void ResetAllPlugins()
     {
-      foreach (string key in this.tabPagesCatalog.Keys)
+      foreach (var key in this.TabPagesCatalog.Keys)
       {
         try
         {
-          this.tabPagesCatalog[key].PluginObject.OnResetPlugin();
+          this.TabPagesCatalog[key].PluginObject.OnResetPlugin();
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "PluginHandler.ResetAllPlugins(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, $"PluginHandler.ResetAllPlugins(): Exception: {ex.Message}\r\n{ex.StackTrace}");
         }
       }
     }
@@ -130,15 +127,15 @@
     /// </summary>
     public void StopAllPlugins()
     {
-      foreach (string key in this.tabPagesCatalog.Keys)
+      foreach (var key in this.TabPagesCatalog.Keys)
       {
         try
         {
-          this.tabPagesCatalog[key].PluginObject.OnStopAttack();
+          this.TabPagesCatalog[key].PluginObject.OnStopAttack();
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "PluginHandler.ResetAllPlugins(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, $"PluginHandler.ResetAllPlugins(): Exception: {ex.Message}\r\n{ex.StackTrace}");
         }
       }
     }
@@ -149,31 +146,31 @@
     /// </summary>
     public void RestoreLastPluginLoadState()
     {
-      foreach (string key in this.tabPagesCatalog.Keys)
+      foreach (string key in this.TabPagesCatalog.Keys)
       {
         try
         {
-          IPlugin tmpPluginObj = this.tabPagesCatalog[key].PluginObject;
+          IPlugin tmpPluginObj = this.TabPagesCatalog[key].PluginObject;
           string currentPluginState = WinRegistry.GetValue(key, "state");
 
           if (currentPluginState == null)
           {
-            LogCons.Inst.Write(LogLevel.Info, "RestoreLastPluginLoadState(): No former state found for plugin {0}", key);
+            LogCons.Inst.Write(LogLevel.Info, $"RestoreLastPluginLoadState(): No former state found for plugin {key}");
           }
           else if (currentPluginState.ToLower() == "on")
           {
-            LogCons.Inst.Write(LogLevel.Info, "Minary.RestoreLastPluginLoadState(): PluginName:{0} State:on", key);
+            LogCons.Inst.Write(LogLevel.Info, $"Minary.RestoreLastPluginLoadState(): PluginName:{key} State:on");
             this.ActivatePlugin(key);
           }
           else
           {
-            LogCons.Inst.Write(LogLevel.Info, "Minary.RestoreLastPluginLoadState(): PluginName:{0} State:off", key);
+            LogCons.Inst.Write(LogLevel.Info, $"Minary.RestoreLastPluginLoadState(): PluginName:{key} State:off");
             this.DeactivatePlugin(key);
           }
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "RestoreLastPluginLoadState(): Exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, $"RestoreLastPluginLoadState(): Exception: {ex.Message}\r\n{ex.StackTrace}");
         }
       }
     }
@@ -224,7 +221,7 @@
       this.minaryMain.MinaryTabPageHandler.ShowTabPage(tabPage.Text);
 
       // Set new status in the tab page catalog
-      this.tabPagesCatalog[pluginName].IsActive = true;
+      this.TabPagesCatalog[pluginName].IsActive = true;
     }
 
 
@@ -262,7 +259,7 @@
       this.minaryMain.MinaryTabPageHandler.HideTabPage(tabPage.Text);
 
       // Set new status in the tab page catalog
-      this.tabPagesCatalog[pluginName].IsActive = false;
+      this.TabPagesCatalog[pluginName].IsActive = false;
     }
 
     #endregion
@@ -276,12 +273,12 @@
     /// <returns></returns>
     private List<string> GetPluginList()
     {
-      string baseDir = Directory.GetCurrentDirectory();
-      string tempPluginPath = Path.Combine(baseDir, Config.PluginsDir);
+      var baseDir = Directory.GetCurrentDirectory();
+      var tempPluginPath = Path.Combine(baseDir, Config.PluginsDir);
       string[] tempPluginList = Directory.GetDirectories(tempPluginPath);
-      List<string> pluginList = new List<string>();
+      var pluginList = new List<string>();
 
-      for (int i = 0; i < tempPluginList.Length; i++)
+      for (var i = 0; i < tempPluginList.Length; i++)
       {
         string[] pluginFiles = Directory.GetFiles(tempPluginList[i], "plugin_*.dll");
 
@@ -307,8 +304,7 @@
       }
 
       this.dynamicallyLoadedAssembly.Add(assemblyObj.FullName, assemblyObj);
-
-      string pluginName = string.Format("Minary.Plugin.Main.{0}", fileName);
+      var pluginName = $"Minary.Plugin.Main.{fileName}";
       objType = assemblyObj.GetType(pluginName, false, false);
 
       if (objType == null)
@@ -316,7 +312,7 @@
         return;
       }
 
-      PluginProperties pluginProperties = new PluginProperties()
+      var pluginProperties = new PluginProperties()
       {
         ApplicationBaseDir = Directory.GetCurrentDirectory(),
         PluginBaseDir = tempPluginPath,
@@ -338,9 +334,9 @@
 
       try
       {
-        IPlugin newPluginIPlugin = (IPlugin)tmpPluginObj;
-        UserControl newPluginUserControl = (UserControl)tmpPluginObj;
-        TabPage newPluginTabPage = new TabPage(newPluginIPlugin.Config.PluginName);
+        var newPluginIPlugin = (IPlugin)tmpPluginObj;
+        var newPluginUserControl = (UserControl)tmpPluginObj;
+        var newPluginTabPage = new TabPage(newPluginIPlugin.Config.PluginName);
 
         // Initialize new tab page ...
         newPluginTabPage.Controls.Add(newPluginIPlugin.PluginControl);
@@ -355,49 +351,49 @@
         this.minaryMain.MinaryTabPageHandler.AddTabPageToCatalog(newPluginIPlugin.Config.PluginName, newPluginIPlugin, newPluginTabPage);
 
         // Add new plugin to Minary plugins TabPage
-        this.minaryMain.DgvUsedPlugins.Add(new PluginTableRecord(newPluginIPlugin.Config.PluginName, newPluginIPlugin.Config.PluginType, newPluginIPlugin.Config.PluginDescription, "0"));
+        this.minaryMain.UsedPlugins.Add(new PluginTableRecord(newPluginIPlugin.Config.PluginName, newPluginIPlugin.Config.PluginType, newPluginIPlugin.Config.PluginDescription, "0"));
 
         // Call plugin initialization methods
-        this.tabPagesCatalog[newPluginIPlugin.Config.PluginName].PluginObject.OnInit();
+        this.TabPagesCatalog[newPluginIPlugin.Config.PluginName].PluginObject.OnInit();
       }
       catch (ArgumentNullException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ArgumentNullException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"ArgumentNullException {fileName}: {ex.Message} {ex.StackTrace}");
       }
       catch (ArgumentException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ArgumentException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"ArgumentException {fileName}: {ex.Message} {ex.StackTrace}", fileName, ex.Message, ex.StackTrace);
       }
       catch (NotSupportedException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "NotSupportedException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"NotSupportedException {fileName}: {ex.Message} {ex.StackTrace}", fileName, ex.Message, ex.StackTrace);
       }
       catch (TargetInvocationException ex)
       {
         if (ex.InnerException != null)
         {
-          LogCons.Inst.Write(LogLevel.Error, "TargetInvocationException {0}: {1} - {2}", fileName, ex.Message, ex.InnerException.Message);
+          LogCons.Inst.Write(LogLevel.Error, $"TargetInvocationException {fileName}: {ex.Message} - {ex.InnerException.Message}");
         }
         else
         {
-          LogCons.Inst.Write(LogLevel.Error, "TargetInvocationException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, $"TargetInvocationException {fileName}: {ex.Message} {ex.StackTrace}");
         }
       }
       catch (MethodAccessException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "MethodAccessException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"MethodAccessException {fileName}: {ex.Message} {ex.StackTrace}");
       }
       catch (MemberAccessException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "MemberAccessException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"MemberAccessException {fileName}: {ex.Message} {ex.StackTrace}");
       }
       catch (TypeLoadException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "TypeLoadException {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"TypeLoadException {fileName}: {ex.Message} {ex.StackTrace}");
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "Exception {0}: {1} {2}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"Exception {fileName}: {ex.Message} {ex.StackTrace}");
       }
     }
 
@@ -409,7 +405,7 @@
     /// <param name="status"></param>
     private void SetStateInMinaryTable(string pluginName, string status)
     {
-      foreach (PluginTableRecord tmpRecord in this.minaryMain.DgvUsedPlugins)
+      foreach (PluginTableRecord tmpRecord in this.minaryMain.UsedPlugins)
       {
         if (tmpRecord.PluginName == pluginName)
         {
@@ -497,7 +493,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ReportPluginSetStatus(): {0}", ex.ToString());
+        LogCons.Inst.Write(LogLevel.Error, "ReportPluginSetStatus(): {ex.ToString()}");
       }
 
       if (tabPage == null)
@@ -505,7 +501,7 @@
         return;
       }
 
-      int tmpNewPluginStatus = (int)newPluginStatus;
+      var tmpNewPluginStatus = (int)newPluginStatus;
       int oldPluginStatus = tabPage.ImageIndex;
 
       tmpNewPluginStatus = (newPluginStatus >= 0) ? (int)newPluginStatus : (int)MinaryLib.Plugin.Status.NotRunning;
@@ -516,7 +512,7 @@
         return;
       }
 
-      LogCons.Inst.Write(LogLevel.Info, "{0} : CurrentState:{1}, NewState:{2}", plugin.Config.PluginName, oldPluginStatus, tmpNewPluginStatus);
+      LogCons.Inst.Write(LogLevel.Info, $"{plugin.Config.PluginName} : CurrentState:{oldPluginStatus}, NewState:{tmpNewPluginStatus}");
     }
 
 
@@ -530,7 +526,7 @@
     {
       // After plugin called back the host application for registration
       // call plugin initialization method
-      this.tabPagesCatalog[plugin.Config.PluginName].PluginObject.OnResetPlugin();
+      this.TabPagesCatalog[plugin.Config.PluginName].PluginObject.OnResetPlugin();
       LogCons.Inst.Write(LogLevel.Info, "{0} : Plugin is calling back for registration", plugin.Config.PluginName);
     }
 
@@ -543,10 +539,9 @@
     public TabPage FindTabPageInCatalog(string tabName)
     {
       if (!string.IsNullOrEmpty(tabName) &&
-          this.tabPagesCatalog != null &&
-          this.tabPagesCatalog.ContainsKey(tabName))
+          this.TabPagesCatalog?.ContainsKey(tabName) == true)
       {
-        return this.tabPagesCatalog[tabName].PluginTabPage;
+        return this.TabPagesCatalog[tabName].PluginTabPage;
       }
 
       return null;

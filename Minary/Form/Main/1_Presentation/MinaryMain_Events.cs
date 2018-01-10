@@ -3,7 +3,6 @@
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
-  using Minary.DataTypes.Struct;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Class;
@@ -14,7 +13,6 @@
   using System.IO;
   using System.Linq;
   using System.Net.NetworkInformation;
-  using System.Threading;
   using System.Windows.Forms;
 
 
@@ -58,15 +56,15 @@
     {
       try
       {
-        NetworkInterfaceConfig interfaceStruct = this.nicHandler.IfcByIndex(this.cb_Interfaces.SelectedIndex);
-        if (interfaceStruct.Name != null && interfaceStruct.Name.Length > 0)
+        var interfaceStruct = this.nicHandler.IfcByIndex(this.cb_Interfaces.SelectedIndex);
+        if (interfaceStruct.Name?.Length > 0)
         {
-          string interfaceName = interfaceStruct.Name.Length > 40 ? interfaceStruct.Name.Substring(0, 40) + " ..." : interfaceStruct.Name;
-          string vendor = this.macVendorHandler.GetVendorByMac(interfaceStruct.GatewayMac);
+          var interfaceName = interfaceStruct.Name.Length > 40 ? interfaceStruct.Name.Substring(0, 40) + " ..." : interfaceStruct.Name;
+          var vendor = this.macVendorHandler.GetVendorByMac(interfaceStruct.GatewayMac);
 
-          if (vendor != null && vendor.Length > 50)
+          if (vendor?.Length > 50)
           {
-            vendor = string.Format("{0} ...", vendor.Substring(0, 50));
+            vendor = $"{vendor.Substring(0, 50)} ...";
           }
 
           this.tb_GatewayIp.Text = interfaceStruct.DefaultGw;
@@ -74,11 +72,12 @@
           this.tb_Vendor.Text = vendor;
           this.tb_NetworkStartIp.Text = interfaceStruct.NetworkAddr;
           this.tb_NetworkStopIp.Text = interfaceStruct.BroadcastAddr;
-          this.gb_Interfaces.Text = string.Format("{0} / {1}", interfaceStruct.IpAddress, interfaceName);
+          this.gb_Interfaces.Text = $"{interfaceStruct.IpAddress} / {interfaceName}";
 
-          this.currentIpAddress = interfaceStruct.IpAddress;
-          this.currentMacAddress = interfaceStruct.MacAddress;
-          this.currentInterfaceId = interfaceStruct.Id;
+          this.CurrentLocalIp = interfaceStruct.IpAddress;
+          this.CurrentLocalMac = interfaceStruct.MacAddress;
+          this.CurrentInterfaceId = interfaceStruct.Id;
+
           this.currentInterfaceIndex = this.cb_Interfaces.SelectedIndex;
         }
       }
@@ -285,23 +284,21 @@
         return;
       }
 
-      string templateFileName = this.ofd_ImportSession.FileName;
+      var templateFileName = this.ofd_ImportSession.FileName;
 
       try
       {
         Template.Presentation.LoadTemplate loadTemplatePresentation = new Template.Presentation.LoadTemplate(this, templateFileName);
         loadTemplatePresentation.ShowDialog();
 
-        if (loadTemplatePresentation != null &&
-            loadTemplatePresentation.TemplateData != null &&
-            !string.IsNullOrEmpty(loadTemplatePresentation.TemplateData.TemplateConfig.Name))
+        if (string.IsNullOrEmpty(loadTemplatePresentation?.TemplateData?.TemplateConfig.Name) == false)
         {
           this.tb_TemplateName.Text = loadTemplatePresentation.TemplateData.TemplateConfig.Name;
         }
       }
       catch (Exception ex)
       {
-        string message = string.Format("An error occurred while loading template \"{0}\".\r\n\r\n{1}", Path.GetFileName(templateFileName), ex.Message);
+        string message = $"An error occurred while loading template \"{Path.GetFileName(templateFileName)}\".\r\n\r\n{ex.Message}";
         LogCons.Inst.Write(LogLevel.Error, message);
         MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
@@ -352,7 +349,7 @@
     /// <param name="e"></param>
     private void CreateToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      Template.Presentation.CreateTemplate createTemplateView = new Template.Presentation.CreateTemplate(this);
+      var createTemplateView = new Template.Presentation.CreateTemplate(this);
       createTemplateView.ShowDialog();
     }
 
@@ -379,7 +376,7 @@
     private void MinaryMain_Shown(object sender, EventArgs e)
     {
       // Verify whether system state is intact.
-      MinaryState minaryState = MinaryState.StateOk;
+      var minaryState = MinaryState.StateOk;
       try
       {
         Minary.Domain.Main.SystemStateCheck.EvaluateMinaryState(out minaryState);
@@ -388,21 +385,22 @@
       {
         if ((minaryState & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
         {
-          FormWinPcapMissing pcapMissing = new FormWinPcapMissing();
+          var pcapMissing = new FormWinPcapMissing();
           pcapMissing.ShowDialog();
         }
         else
         {
-          string message = string.Format("The following error occurred ({1}):\r\n\r\n{0}", ex.Message, minaryState);
+          var message = $"The following error occurred ({ex.Message}):\r\n\r\n{minaryState}";
           this.LogAndShowMessage(message, LogLevel.Error);
         }
+
         return;
       }
 
       // Import and load session/template file
-      if (this.CommandLineArguments != null && this.CommandLineArguments.Length > 0)
+      if (this.commandLineArguments?.Length > 0)
       {
-        this.LoadUserTemplate(this.CommandLineArguments[0]);
+        this.LoadUserTemplate(this.commandLineArguments[0]);
       }
       else
       {
@@ -419,7 +417,7 @@
     /// <param name="e"></param>
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
-      StartServiceParameters currentServiceParams = new StartServiceParameters()
+      var currentServiceParams = new StartServiceParameters()
         {
           SelectedIfcIndex = this.currentInterfaceIndex,
           SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
@@ -438,8 +436,8 @@
       if (e.Error != null)
       {
         this.StopAttack();
-        string message = string.Format($"The following error occurred while starting attack services: \r\n\r\n{e.Error.Message}");
-        LogCons.Inst.Write(LogLevel.Error, "Minary.BGW_OnStartAttackCompleted(): {0}", message);
+        var message = $"The following error occurred while starting attack services: \r\n\r\n{e.Error.Message}";
+        LogCons.Inst.Write(LogLevel.Error, $"Minary.BGW_OnStartAttackCompleted(): {message}");
         MessageDialog.Inst.ShowWarning("Attack services", message, this);
       }
       else if (e.Cancelled == true)
@@ -497,9 +495,9 @@
 
     private void StartAllPlugins()
     {
-      foreach (string key in this.pluginHandler.TabPagesCatalog.Keys)
+      foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
       {
-        LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllPlugins(): PluginName:{0}, IsPluginActive:{1}", key, this.pluginHandler.IsPluginActive(key));
+        LogCons.Inst.Write(LogLevel.Info, $"Minary.StartAllPlugins(): PluginName:{key}, IsPluginActive:{this.pluginHandler.IsPluginActive(key)}");
 
         try
         {
@@ -518,7 +516,7 @@
 
     private void StartAllServices(StartServiceParameters serviceParameters)
     {
-      foreach (string tmpKey in this.attackServiceHandler.AttackServices.Keys)
+      foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
       {
         try
         {

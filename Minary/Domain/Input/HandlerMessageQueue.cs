@@ -72,8 +72,8 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Fatal, "An error occurred while starting the input processor MessageQueue : {0}\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
-        string message = string.Format("An error occurred while starting the input processor MessageQueue : {0}\r\n\r\nStacktrace: {1}", ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Fatal, $"An error occurred while starting the input processor MessageQueue : {ex.Message}\r\nStacktrace: {ex.StackTrace}");
+        var message = $"An error occurred while starting the input processor MessageQueue : {ex.Message}\r\n\r\nStacktrace: {ex.StackTrace}";
         MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
       }
     }

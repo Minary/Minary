@@ -59,15 +59,15 @@
     {
       try
       {
-        string hostName = this.tb_HostName.Text;
-        string certificateFileName = Regex.Replace(hostName, @"[^\d\w_]", "_");
-        string certificateOutputPath = Path.Combine(Config.HttpReverseProxyCertrifcateDir, string.Format("{0}.pfx", certificateFileName));
+        var hostName = this.tb_HostName.Text;
+        var certificateFileName = Regex.Replace(hostName, @"[^\d\w_]", "_");
+        var certificateOutputPath = Path.Combine(Config.HttpReverseProxyCertrifcateDir, $"{certificateFileName}.pfx");
 
         NativeWindowsLib.Crypto.Crypto.CreateNewCertificate(certificateOutputPath, hostName, this.dtp_BeginDate.Value, this.dtp_ExpirationDate.Value);
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "CreateCertificate: {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, $"CreateCertificate: {ex.Message}");
         MessageDialog.Inst.ShowWarning(string.Empty, ex.Message, this);
       }
 

@@ -50,40 +50,9 @@ public static readonly string HttpReverseProxyBinaryPath = Path.Combine(HttpReve
 public static readonly string HttpReverseProxyName = "HttpReverseProxy";
 public static readonly string HttpReverseProxyCertrifcateDir = Path.Combine(HttpReverseProxyServiceDir, "Certificates");
 
-
-// Service: HttpReverseProxy/SslStrip
-public static readonly string SslStripDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\SslStrip");
-public static readonly string SslStripConfigFilePath = Path.Combine(SslStripDir, "plugin.config");
-
-// Service: HttpReverseProxy/DataSniffer
-public static readonly string DataSnifferDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\DataSniffer");
-public static readonly string DataSnifferConfigFilePath = Path.Combine(DataSnifferDir, "plugin.config");
-
-// Service: HttpReverseProxy/InjectFile
-public static readonly string InjectCodeDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\InjectCode");
-public static readonly string InjectCodeConfigFilePath = Path.Combine(InjectCodeDir, "plugin.config");
-
-// Service: HttpReverseProxy/InjectFile
-public static readonly string InjectFileDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\InjectFile");
-public static readonly string InjectFileConfigFilePath = Path.Combine(InjectFileDir, "plugin.config");
-
-// Service: HttpReverseProxy/InjectFile
-public static readonly string RequestRedirectDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\RequestRedirect");
-public static readonly string RequestRedirectDirConfigFilePath = Path.Combine(RequestRedirectDir, "plugin.config");
-
-// Service: HttpReverseProxy/HostMapping
-public static readonly string HostMappingDir = Path.Combine(HttpReverseProxyServiceDir, @"plugins\HostMapping");
-public static readonly string HostMappingConfigFilePath = Path.Combine(HostMappingDir, "plugin.config");
- 
-
-
 // Registry
 public static readonly string RegistrySoftwareName = "Minary";
-public static readonly string BasisKey = string.Format(@"Software\{0}", Config.RegistrySoftwareName);
-
-// Git
-public static readonly string GitUser = "Minary";
-public static readonly string GitEmail = "Minary@";
+public static readonly string BasisKey = $@"Software\{Config.RegistrySoftwareName}";
 
     #endregion
 

@@ -8,8 +8,8 @@
 
     #region MEMBERS
 
-    private string targetIP;
-    private string targetMAC;
+    private string targetIp;
+    private string targetMac;
     public event PropertyChangedEventHandler PropertyChanged;
 
     #endregion
@@ -17,10 +17,10 @@
 
     #region PUBLIC
 
-    public ScanSystem(string targetIP, string targetMAC)
+    public ScanSystem(string targetIp, string targetMac)
     {
-      this.targetIP = targetIP;
-      this.targetMAC = targetMAC;
+      this.targetIp = targetIp;
+      this.targetMac = targetMac;
     }
 
     #endregion
@@ -30,21 +30,21 @@
 
     public string TargetIP
     {
-      get { return targetIP; }
+      get { return this.targetIp; }
       set
       {
-        targetIP = value;
-        NotifyPropertyChanged("TargetIP");
+        this.targetIp = value;
+        this.NotifyPropertyChanged("TargetIP");
       }
     }
 
     public string TargetMAC
     {
-      get { return targetMAC; }
+      get { return this.targetMac; }
       set
       {
-        targetMAC = value;
-        NotifyPropertyChanged("TargetMAC");
+        this.targetMac = value;
+        this.NotifyPropertyChanged("TargetMAC");
       }
     }
 
@@ -59,9 +59,9 @@
     /// <param name="propertyName"></param>
     private void NotifyPropertyChanged(string propertyName)
     {
-      if (PropertyChanged != null)
+      if (this.PropertyChanged != null)
       {
-        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
       }
     }
 

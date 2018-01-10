@@ -36,7 +36,7 @@
       }
 
       byte[] broadcastAddress = new byte[ipAdressBytes.Length];
-      for (int i = 0; i < broadcastAddress.Length; i++)
+      for (var i = 0; i < broadcastAddress.Length; i++)
       {
         broadcastAddress[i] = (byte)(ipAdressBytes[i] | (subnetMaskBytes[i] ^ 255));
       }
@@ -61,8 +61,8 @@
         throw new ArgumentException("Lengths of IpAddress address and subnet mask do not match.");
       }
 
-      byte[] broadcastAddress = new byte[ipAdressBytes.Length];
-      for (int i = 0; i < broadcastAddress.Length; i++)
+      var broadcastAddress = new byte[ipAdressBytes.Length];
+      for (var i = 0; i < broadcastAddress.Length; i++)
       {
         broadcastAddress[i] = (byte)(ipAdressBytes[i] & subnetMaskBytes[i]);
       }
@@ -78,16 +78,17 @@
     /// <returns></returns>
     public static string GetMacByIp(string ipAddress)
     {
-      string retVal = string.Empty;
+      var retVal = string.Empty;
       IPAddress remoteIpAddress;
-      byte[] mac = new byte[6];
-      uint len = (uint)mac.Length;
+      var mac = new byte[6];
+      var len = (uint)mac.Length;
       byte[] addressBytes;
       uint dest;
 
-      if (string.IsNullOrEmpty(ipAddress) || ipAddress == "0.0.0.0")
+      if (string.IsNullOrEmpty(ipAddress) || 
+          ipAddress == "0.0.0.0")
       {
-        throw new Exception(string.Format("GetMacFromIp(): \"{0}\" is an invalid IpAddress address", ipAddress));
+        throw new Exception($"GetMacFromIp(): \"{ipAddress}\" is an invalid IpAddress address");
       }
 
       remoteIpAddress = IPAddress.Parse(ipAddress);
@@ -99,10 +100,10 @@
 
       if (SendARP(dest, 0, mac, ref len) != 0)
       {
-        throw new Exception(string.Format("GetMacFromIp(): The ARP request for {0} failed.", ipAddress));
+        throw new Exception($"GetMacFromIp(): The ARP request for {ipAddress} failed.");
       }
 
-      return string.Format("{0:x2}-{1:x2}-{2:x2}-{3:x2}-{4:x2}-{5:x2}", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+      return $"{mac[0]:x2}-{mac[1]:x2}-{mac[2]:x2}-{mac[3]:x2}-{mac[4]:x2}-{mac[5]:x2}";
     }
 
 
@@ -118,11 +119,11 @@
         throw new Exception("The port is invalid");
       }
 
-      bool isPortAvailable = true;
+      var isPortAvailable = true;
       IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
       IPEndPoint[] ipEndPoints = ipGlobalProperties.GetActiveTcpListeners();
 
-      foreach (IPEndPoint endPoint in ipEndPoints)
+      foreach (var endPoint in ipEndPoints)
       {
         if (endPoint.Port == portNo)
         {
@@ -142,7 +143,7 @@
     /// <returns></returns>
     public static string MacByteArrayToString(byte[] buf)
     {
-      return string.Format("{0:X2}:{1:X2}:{2:X2}:{3:X2}:{4:X2}:{5:X2}", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5]);
+      return $"{buf[0]:X2}:{buf[1]:X2}:{buf[2]:X2}:{buf[3]:X2}:{buf[4]:X2}:{buf[5]:X2}";
     }
 
 
@@ -153,7 +154,7 @@
     /// <returns></returns>
     public static string IpByteArrayToString(byte[] buf)
     {
-      return string.Format("{0}.{1}.{2}.{3}", buf[0], buf[1], buf[2], buf[3]);
+      return $"{buf[0]}.{buf[1]}.{buf[2]}.{buf[3]}";
     }
 
     #endregion
