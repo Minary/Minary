@@ -493,7 +493,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ReportPluginSetStatus(): {ex.ToString()}");
+        LogCons.Inst.Write(LogLevel.Error, $"ReportPluginSetStatus(): {ex.ToString()}");
       }
 
       if (tabPage == null)

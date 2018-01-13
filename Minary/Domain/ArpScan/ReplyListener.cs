@@ -34,9 +34,6 @@
 
     public void StartReceivingArpPackets()
     {
-      Packet packet = null;
-      PacketCommunicatorReceiveResult result;
-
       // Set "arp reply" filter
       using (BerkeleyPacketFilter filter = this.arpScanConfig.Communicator.CreateFilter("arp and arp[6:2] = 2"))
       {
