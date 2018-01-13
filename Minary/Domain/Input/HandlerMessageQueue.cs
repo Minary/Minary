@@ -16,7 +16,7 @@
     #region MEMBERS
 
     private const string _LOCAL_ENDPOINT = @".\Private$\MinaryMQ";
-    private static bool stopThreads = false;
+    private static bool stopThreads;
     private MinaryMain minaryMain;
     private MessageQueue minaryQueue;
     private MessageEnumerator minaryQueueEnumerator;

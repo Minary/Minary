@@ -92,8 +92,8 @@
     /// <param name="targetList"></param>
     /// <param name="minaryConfig"></param>
     /// <param name="isModal"></param>
-    public delegate void ShowArpScanGuiDelegate(ref BindingList<string> targetList, MinaryConfig minaryConfig, bool isModal = true);
-    public void ShowArpScanGui(ref BindingList<string> targetStringList, MinaryConfig minaryConfig, bool isModal = true)
+    public delegate void ShowArpScanGuiDelegate(BindingList<string> targetList, MinaryConfig minaryConfig, bool isModal = true);
+    public void ShowArpScanGui(BindingList<string> targetStringList, MinaryConfig minaryConfig, bool isModal = true)
     {
       if (this.InvokeRequired == true)
       {

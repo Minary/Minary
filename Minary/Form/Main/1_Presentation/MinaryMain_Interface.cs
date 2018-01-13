@@ -26,7 +26,7 @@
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
       MinaryConfig minaryConfig = this.minaryTaskFacade.GetCurrentMinaryConfig();
-      this.arpScanHandler.ShowArpScanGui(ref this.targetList, minaryConfig);
+      this.arpScanHandler.ShowArpScanGui(this.targetList, minaryConfig);
       this.PassNewTargetListToPlugins();
     }
 

@@ -48,7 +48,7 @@
 
       try
       {
-        this.arpScanHandler.ShowArpScanGui(ref this.minaryMain.targetList, minaryConfig, false);
+        this.arpScanHandler.ShowArpScanGui(this.minaryMain.targetList, minaryConfig, false);
         this.arpScanHandler.StartArpScan(this.OnScanDone);
       }
       catch (Exception ex)
