@@ -38,7 +38,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"Minary.MainForm_Start(EXCEPTION): {ex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"Minary.MainForm_Start(EXCEPTION.Delete): {ex.Message}");
       }
 
       try
@@ -52,7 +52,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"Minary.MainForm_Start(EXCEPTION): {ex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"Minary.MainForm_Start(EXCEPTION.Create): {ex.Message}");
       }
 
       // Tell explorer the file association has been changed
