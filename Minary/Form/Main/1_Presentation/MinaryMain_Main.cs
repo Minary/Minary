@@ -130,7 +130,6 @@
         {
           Updates.Presentation.FormCheckNewVersion newVersionCheck = new Updates.Presentation.FormCheckNewVersion();
           newVersionCheck.ShowDialog();
-          //Minary.Common.Updates.CheckForMinaryUpdates();
         }
       });
       updateThread.Start();
@@ -249,7 +248,8 @@
       var newTargetList = new List<Tuple<string, string, string>>();
       var reachableTargetSystems = this.arpScanHandler.TargetList.ToList();
 
-      if (reachableTargetSystems == null || reachableTargetSystems.Count <= 0)
+      if (reachableTargetSystems == null || 
+          reachableTargetSystems.Count <= 0)
       {
         return;
       }
@@ -264,18 +264,17 @@
         {
         }
       }
-
-      // newTargetList.Add("0.0.0.0");
+      
       foreach (var tmpKey in this.pluginHandler.TabPagesCatalog.Keys)
       {
         try
         {
-          LogCons.Inst.Write(LogLevel.Debug, "Minary: Passing new target list to plugin \"{0}\". Total no. targets={1}", tmpKey, newTargetList.Count());
+          LogCons.Inst.Write(LogLevel.Debug, $"Minary: Passing new target list to plugin \"{tmpKey}\". Total no. targets={newTargetList.Count()}");
           this.pluginHandler.TabPagesCatalog[tmpKey].PluginObject.SetTargets(newTargetList.ToList());
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, "Minary: {0}\r\n{1}", ex.Message, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Error, $"Minary: {ex.Message}\r\n{ex.StackTrace}");
         }
       }
     }

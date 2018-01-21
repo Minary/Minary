@@ -34,9 +34,10 @@
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCheckNewVersion));
       this.bt_Close = new System.Windows.Forms.Button();
       this.p_UpdateMsg = new System.Windows.Forms.Panel();
+      this.rtb_Footer = new System.Windows.Forms.RichTextBox();
       this.PB_MinaryLogo = new System.Windows.Forms.PictureBox();
       this.rtb_MinaryUpdate = new System.Windows.Forms.RichTextBox();
-      this.CB_AutoUpdate = new System.Windows.Forms.CheckBox();
+      this.cb_AutoUpdate = new System.Windows.Forms.CheckBox();
       this.p_UpdateMsg.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.PB_MinaryLogo)).BeginInit();
       this.SuspendLayout();
@@ -44,7 +45,7 @@
       // bt_Close
       // 
       this.bt_Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.bt_Close.Location = new System.Drawing.Point(798, 308);
+      this.bt_Close.Location = new System.Drawing.Point(798, 334);
       this.bt_Close.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.bt_Close.Name = "bt_Close";
       this.bt_Close.Size = new System.Drawing.Size(112, 35);
@@ -59,13 +60,29 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.p_UpdateMsg.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+      this.p_UpdateMsg.Controls.Add(this.rtb_Footer);
       this.p_UpdateMsg.Controls.Add(this.PB_MinaryLogo);
       this.p_UpdateMsg.Controls.Add(this.rtb_MinaryUpdate);
       this.p_UpdateMsg.Location = new System.Drawing.Point(12, 12);
       this.p_UpdateMsg.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.p_UpdateMsg.Name = "p_UpdateMsg";
-      this.p_UpdateMsg.Size = new System.Drawing.Size(923, 286);
+      this.p_UpdateMsg.Size = new System.Drawing.Size(923, 312);
       this.p_UpdateMsg.TabIndex = 0;
+      // 
+      // rtb_Footer
+      // 
+      this.rtb_Footer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.rtb_Footer.BorderStyle = System.Windows.Forms.BorderStyle.None;
+      this.rtb_Footer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rtb_Footer.Location = new System.Drawing.Point(14, 207);
+      this.rtb_Footer.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.rtb_Footer.Name = "rtb_Footer";
+      this.rtb_Footer.Size = new System.Drawing.Size(771, 100);
+      this.rtb_Footer.TabIndex = 0;
+      this.rtb_Footer.TabStop = false;
+      this.rtb_Footer.Text = "";
       // 
       // PB_MinaryLogo
       // 
@@ -87,30 +104,30 @@
       this.rtb_MinaryUpdate.Location = new System.Drawing.Point(14, 12);
       this.rtb_MinaryUpdate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.rtb_MinaryUpdate.Name = "rtb_MinaryUpdate";
-      this.rtb_MinaryUpdate.Size = new System.Drawing.Size(771, 251);
+      this.rtb_MinaryUpdate.Size = new System.Drawing.Size(771, 185);
       this.rtb_MinaryUpdate.TabIndex = 0;
       this.rtb_MinaryUpdate.TabStop = false;
       this.rtb_MinaryUpdate.Text = "";
       this.rtb_MinaryUpdate.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.RTB_MinaryUpdate_LinkClicked);
       // 
-      // CB_AutoUpdate
+      // cb_AutoUpdate
       // 
-      this.CB_AutoUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.CB_AutoUpdate.AutoSize = true;
-      this.CB_AutoUpdate.Location = new System.Drawing.Point(26, 314);
-      this.CB_AutoUpdate.Name = "CB_AutoUpdate";
-      this.CB_AutoUpdate.Size = new System.Drawing.Size(237, 24);
-      this.CB_AutoUpdate.TabIndex = 1;
-      this.CB_AutoUpdate.Text = "Check for updates at startup";
-      this.CB_AutoUpdate.UseVisualStyleBackColor = true;
-      this.CB_AutoUpdate.CheckedChanged += new System.EventHandler(this.CB_StateChange);
+      this.cb_AutoUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.cb_AutoUpdate.AutoSize = true;
+      this.cb_AutoUpdate.Location = new System.Drawing.Point(26, 340);
+      this.cb_AutoUpdate.Name = "cb_AutoUpdate";
+      this.cb_AutoUpdate.Size = new System.Drawing.Size(237, 24);
+      this.cb_AutoUpdate.TabIndex = 1;
+      this.cb_AutoUpdate.Text = "Check for updates at startup";
+      this.cb_AutoUpdate.UseVisualStyleBackColor = true;
+      this.cb_AutoUpdate.CheckedChanged += new System.EventHandler(this.CB_StateChange);
       // 
-      // FormNewVersion
+      // FormCheckNewVersion
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(946, 354);
-      this.Controls.Add(this.CB_AutoUpdate);
+      this.ClientSize = new System.Drawing.Size(946, 380);
+      this.Controls.Add(this.cb_AutoUpdate);
       this.Controls.Add(this.p_UpdateMsg);
       this.Controls.Add(this.bt_Close);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -118,8 +135,8 @@
       this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.MaximizeBox = false;
       this.MinimizeBox = false;
-      this.Name = "FormNewVersion";
-      this.Text = "New version available ...";
+      this.Name = "FormCheckNewVersion";
+      this.Text = "Minary updates";
       this.p_UpdateMsg.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.PB_MinaryLogo)).EndInit();
       this.ResumeLayout(false);
@@ -132,7 +149,8 @@
     private System.Windows.Forms.Button bt_Close;
     private System.Windows.Forms.Panel p_UpdateMsg;
     private System.Windows.Forms.RichTextBox rtb_MinaryUpdate;
-    private System.Windows.Forms.CheckBox CB_AutoUpdate;
+    private System.Windows.Forms.CheckBox cb_AutoUpdate;
     private System.Windows.Forms.PictureBox PB_MinaryLogo;
+    private System.Windows.Forms.RichTextBox rtb_Footer;
   }
 }

@@ -1,11 +1,12 @@
 ﻿namespace Minary.Form.Updates.Presentation
 {
   using Minary.DataTypes.Interface.Updates;
+  using Minary.Form.Updates.Config;
   using System;
   using System.Diagnostics;
   using System.Text;
   using System.Windows.Forms;
-  using Minary.Form.Updates.Config;
+
 
   public partial class FormCheckNewVersion : Form, IObserver
   {
@@ -26,23 +27,21 @@
       // Determine and set autoupdate status
       string autoupdateStateStr = Minary.Common.WinRegistry.GetValue("Updates", "Autoupdate");
       int autoupdateState = Convert.ToInt32(autoupdateStateStr);
-      this.CB_AutoUpdate.Checked = autoupdateState <= 0 ? false : true;
+      this.cb_AutoUpdate.Checked = autoupdateState <= 0 ? false : true;
 
       // Set updates loading message
-      StringBuilder newVersionMessageStr = new StringBuilder();
+      var newVersionMessageStr = new StringBuilder();
       newVersionMessageStr.Append($@"{{\rtf1\ansi Contacting the server to search for new Minary version ...\b \line ");
-      newVersionMessageStr.Append(@"}} \line \line ");
-      newVersionMessageStr.Append(@"\b Information \b0 about Minary or the latest attack templates are available at {{\field {{\*\fldinst HYPERLINK https://minary.io }} }} \line \line ");
-      newVersionMessageStr.Append(@"\b Contributions \b0 to the project all source code is available on Github at {{\field{{\*\fldinst HYPERLINK https://github.com/minary }} }} \line ");
       this.rtb_MinaryUpdate.Rtf = newVersionMessageStr.ToString();
+      this.rtb_Footer.Rtf = $@"{{\rtf1\ansi {this.GetFooter()} ...\b \line ";
 
       // Initialize task layer
       this.taskFacade = new Task.TaskFacade();
       this.taskFacade.AddObserver(this);
 
-      // Check for updates
-      this.taskFacade.SearchNewVersion();
-    }
+      // Start thread that searches for updates
+      this.taskFacade.StartSearchingForUpdates();
+    }    
 
     #endregion
 
@@ -51,21 +50,18 @@
 
     private void ShowMessageUpdatesAvailable(UpdateData updateData)
     {
-      this.Text = "New update available";
-
       // Set up "updates available" message
       StringBuilder newVersionMessageStr = new StringBuilder();
       newVersionMessageStr.Append($@"{{\rtf1\ansi There is a new Minary version \b {updateData.AvailableVersionStr} \b0 available.\line ");
       newVersionMessageStr.Append(@"Click on the link below to get to the download site. \line \line ");
       newVersionMessageStr.Append($@"\b Windows binary \b0  {{\field {{\*\fldinst HYPERLINK {updateData.WinBinaryDownloadUrl} }} }} \line ");
       newVersionMessageStr.Append($@"\b Source code \b0       {{\field {{\*\fldinst HYPERLINK {updateData.SourceDownloadUrl} }} }} \line \line \line ");
-
       newVersionMessageStr.Append(@"\b Changes \b0 \line ");
-      if (updateData != null && updateData.Messages != null)
+      if (updateData?.Messages != null == true)
       {
         foreach (string tmpUpdateMessage in updateData.Messages)
         {
-          string tmpBuffer = tmpUpdateMessage.TrimStart(new char[] { '*', ' ', '\t', '"', '\'' });
+          var tmpBuffer = tmpUpdateMessage.TrimStart(new char[] { '*', ' ', '\t', '"', '\'' });
           tmpBuffer = tmpBuffer.TrimEnd();
           if (string.IsNullOrEmpty(tmpBuffer))
           {
@@ -76,26 +72,35 @@
         }
       }
 
-      newVersionMessageStr.Append(@"}} \line \line ");
-      newVersionMessageStr.Append(@"\b Information \b0 about Minary or the latest attack templates are available at {{\field {{\*\fldinst HYPERLINK https://minary.io. }} }} \line \line ");
-      newVersionMessageStr.Append(@"\b Contributions \b0 to the project all source code is available on Github at {{\field{{\*\fldinst HYPERLINK https://github.com/minary. }} }} \line ");
+      //newVersionMessageStr.Append(@"\line \line ");
+      //newVersionMessageStr.Append(this.GetFooter());
+
       this.rtb_MinaryUpdate.Rtf = newVersionMessageStr.ToString();
     }
 
 
     private void ShowMessageNoUpdatesAvailable(UpdateData updateData)
     {
-      this.Text = "No update available";
       // Set up "updates available" message
-      StringBuilder noNewVersionMessageStr = new StringBuilder();
-      noNewVersionMessageStr.Append(@"{\rtf1\ansi You have installed the latest version of Minary. Nice!\line \line \line ");
-      noNewVersionMessageStr.Append(@"\b Information \b0 about Minary or the latest attack templates are available at {{\field {{\*\fldinst HYPERLINK https://minary.io. }} }} \line \line ");
-      noNewVersionMessageStr.Append(@"\b Source code \b0 of the project is available on Github at {{\field{{\*\fldinst HYPERLINK https://github.com/minary. }} }} Contributions in form of" +
-                                    @" bug reports, flaw reports or feature implementations are very appreciated.\line ");
-      noNewVersionMessageStr.Append(@"\line ");
-      noNewVersionMessageStr.Append("}");
+      var noNewVersionMessageStr = new StringBuilder();
+      noNewVersionMessageStr.Append(@"{\rtf1\ansi You have installed the latest version of Minary. Nice!");
+      //noNewVersionMessageStr.Append(this.GetFooter());
 
       this.rtb_MinaryUpdate.Rtf = noNewVersionMessageStr.ToString();
+    }
+
+
+    private string GetFooter()
+    {
+      var footer = new StringBuilder();
+      footer.Append(@"\b Information \b0 about Minary or the latest attack templates are available at {{\field {{\*\fldinst HYPERLINK https://minary.io. }} }} \line ");
+      footer.Append(@"\b Source code \b0 of the project is available on Github at {{\field{{\*\fldinst HYPERLINK https://github.com/minary. }} }} \line ");
+      footer.Append(@"\b Source installation \b0 is documented on Github at {{\field{{\*\fldinst HYPERLINK https://github.com/minary/Build. }} }} \line ");
+      footer.Append(@"\b Contributions \b0 in form of bug reports, flaw reports or feature implementations are very appreciated. ");
+//      footer.Append(@"\line ");
+      footer.Append("}}");
+
+      return footer.ToString();
     }
 
     #endregion
@@ -121,7 +126,7 @@
     /// <param name="e"></param>
     private void LL_DownloadURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-      System.Diagnostics.Process.Start(Minary.Config.ToolHomepage);
+      Process.Start(Minary.Config.ToolHomepage);
       base.Dispose();
     }
 
@@ -152,7 +157,7 @@
     /// <param name="e"></param>
     private void CB_StateChange(object sender, EventArgs e)
     {
-      if (this.CB_AutoUpdate.Checked == false)
+      if (this.cb_AutoUpdate.Checked == false)
       {
         Common.WinRegistry.CreateOrUpdateValue($@"Software\{Minary.Config.ApplicationName}\Updates", "Autoupdate", "0");
       }

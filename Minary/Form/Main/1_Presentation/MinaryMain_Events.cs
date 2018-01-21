@@ -3,6 +3,7 @@
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
+  using Minary.Form.Updates.Presentation;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Class;
@@ -112,9 +113,9 @@
       }
 
       // Remove all static ARP entries
-      ProcessStartInfo procStartInfo = new ProcessStartInfo("arp", "-d *");
+      var procStartInfo = new ProcessStartInfo("arp", "-d *");
       procStartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-      Process procClearArpCache = new Process();
+      var procClearArpCache = new Process();
       procClearArpCache.StartInfo = procStartInfo;
       procClearArpCache.Start();
       procClearArpCache.WaitForExit(3000);
@@ -144,9 +145,7 @@
         return;
       }
 
-      string pluginName = string.Empty;
-      pluginName = this.dgv_MainPlugins.Rows[e.RowIndex].Cells[0].Value.ToString();
-
+      var pluginName = this.dgv_MainPlugins.Rows[e.RowIndex].Cells[0].Value.ToString();
       if (this.usedPlugins[e.RowIndex].Active == "1")
       {
         this.pluginHandler.DeactivatePlugin(pluginName);
@@ -165,16 +164,19 @@
     /// <param name="e"></param>
     private void GetUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (NetworkInterface.GetAllNetworkInterfaces().Any(x => x.OperationalStatus == OperationalStatus.Up) == false)
+      // Show error message if no network is available
+      if (NetworkInterface.GetIsNetworkAvailable() == false)
       {
         string message = "Can't check for updates. Internet connection is down.";
         LogCons.Inst.Write(LogLevel.Warning, message);
-        MessageDialog.Inst.ShowInformation(string.Empty, message, this);
+        MessageDialog.Inst.ShowInformation("Update verification failed", message, this);
 
         return;
       }
 
-      Updates.Presentation.FormCheckNewVersion newVersionCheck = new Updates.Presentation.FormCheckNewVersion();
+      // Show update form and check for updates
+      var newVersionCheck = new FormCheckNewVersion();
+//newVersionCheck.StartSearchingForUpdates();
       newVersionCheck.ShowDialog();
     }
 

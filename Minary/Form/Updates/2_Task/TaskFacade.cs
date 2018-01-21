@@ -2,8 +2,10 @@
 {
   using Minary;
   using Minary.DataTypes.DTO;
+  using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface.Updates;
   using Minary.Form.Updates.Config;
+  using Minary.LogConsole.Main;
   using RestSharp;
   using System;
   using System.Linq;
@@ -24,12 +26,20 @@
 
     #region PUBLIC
 
-    public void SearchNewVersion()
+    public void StartSearchingForUpdates()
     {
       Thread updateAvailableThread = new Thread(delegate ()
       {
-        UpdateData updateMetaData = this.FetchUpdateInformationFromServer();
-        this.Notify(updateMetaData);
+        try
+        {
+          UpdateData updateMetaData = this.FetchUpdateInformationFromServer();
+          this.Notify(updateMetaData);
+        }
+        catch (Exception ex)
+        {
+          var errorMsg = $"The following error occurred: {ex.Message}";
+          LogCons.Inst.Write(LogLevel.Debug, errorMsg);
+        }
       });
 
       updateAvailableThread.Start();
@@ -54,7 +64,7 @@
       var release = response.Data;
 
       // Verify if version structure is correct
-      if (string.IsNullOrEmpty(release.TagName) ||
+      if (string.IsNullOrEmpty(release?.TagName) ||
           Regex.Match(release.TagName, @"v?\d+\.\d+\.\d+", RegexOptions.IgnoreCase).Success == false)
       {
         throw new Exception($"Version number has an invalid structure: {release.TagName}");
