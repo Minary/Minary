@@ -174,7 +174,7 @@
         return;
       }
 
-      // Show update form and check for updates
+      // Show update form  and check for updates
       var newVersionCheck = new FormCheckNewVersion();
 //newVersionCheck.StartSearchingForUpdates();
       newVersionCheck.ShowDialog();
