@@ -25,8 +25,6 @@
     // Proxy properties
     public TabPage TabPagePluginCatalog { get { return this.tp_MinaryPluginCatalog; } }
 
-    public TabControl TCPlugins { get { return this.tc_Plugins; } }
-
     #endregion
 
 

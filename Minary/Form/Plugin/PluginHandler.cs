@@ -57,7 +57,7 @@
     {
       var fileName = string.Empty;
       var tempPluginPath = string.Empty;
-      List<string> pluginList = null;
+      var pluginList = new List<string>();
 
       try
       {
@@ -65,8 +65,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "Minary LoadPlugins Exception: {0}", ex.Message);
-        pluginList = new List<string>();
+        LogCons.Inst.Write(LogLevel.Error, $"Minary LoadPlugins Exception: {ex.Message}");
         return;
       }
 
@@ -296,7 +295,7 @@
     {
       Type objType;
       Assembly assemblyObj;
-      string fileName = Path.GetFileNameWithoutExtension(currentPluginFile);
+      var fileName = Path.GetFileNameWithoutExtension(currentPluginFile);
 
       if ((assemblyObj = Assembly.LoadFrom(currentPluginFile)) == null)
       {
@@ -327,7 +326,8 @@
        * - the "plugin position" list (name + position)
        */
       object tmpPluginObj = Activator.CreateInstance(objType, pluginProperties);
-      if (!(tmpPluginObj is IPlugin) || !(tmpPluginObj is UserControl))
+      if ((tmpPluginObj is IPlugin) == false || 
+          (tmpPluginObj is UserControl) == false)
       {
         return;
       }
@@ -341,7 +341,7 @@
         // Initialize new tab page ...
         newPluginTabPage.Controls.Add(newPluginIPlugin.PluginControl);
         newPluginTabPage.BackColor = this.minaryMain.TabPagePluginCatalog.BackColor;
-        newPluginTabPage.ImageIndex = (int)MinaryLib.Plugin.Status.NotRunning;
+        newPluginTabPage.ImageIndex = (int)Status.NotRunning;
         newPluginTabPage.BorderStyle = BorderStyle.None;
 
         // Let the plugin user control adapt its size when parent control (the tab control) resizes.
@@ -362,11 +362,11 @@
       }
       catch (ArgumentException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"ArgumentException {fileName}: {ex.Message} {ex.StackTrace}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"ArgumentException {fileName}: {ex.Message} {ex.StackTrace}");
       }
       catch (NotSupportedException ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"NotSupportedException {fileName}: {ex.Message} {ex.StackTrace}", fileName, ex.Message, ex.StackTrace);
+        LogCons.Inst.Write(LogLevel.Error, $"NotSupportedException {fileName}: {ex.Message} {ex.StackTrace}");
       }
       catch (TargetInvocationException ex)
       {
@@ -527,7 +527,7 @@
       // After plugin called back the host application for registration
       // call plugin initialization method
       this.TabPagesCatalog[plugin.Config.PluginName].PluginObject.OnResetPlugin();
-      LogCons.Inst.Write(LogLevel.Info, "{0} : Plugin is calling back for registration", plugin.Config.PluginName);
+      LogCons.Inst.Write(LogLevel.Info, $"{plugin.Config.PluginName} : Plugin is calling back for registration");
     }
 
 
@@ -538,7 +538,7 @@
     /// <returns></returns>
     public TabPage FindTabPageInCatalog(string tabName)
     {
-      if (!string.IsNullOrEmpty(tabName) &&
+      if (string.IsNullOrEmpty(tabName) == false &&
           this.TabPagesCatalog?.ContainsKey(tabName) == true)
       {
         return this.TabPagesCatalog[tabName].PluginTabPage;
