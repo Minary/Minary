@@ -56,6 +56,8 @@
 
     #region PROPERTIES
 
+    public bool AttackStarted { get { return this.attackStarted; } }
+
     public string CurrentLocalIp { get; set; } = string.Empty;
 
     public string CurrentLocalMac { get; set; } = string.Empty;

@@ -435,6 +435,8 @@
 
     public string CurrentIP { get { return this.minaryMain.CurrentLocalIp; } }
 
+    public bool AttackStarted { get { return this.minaryMain.AttackStarted; } }
+
     public List<Tuple<string, string, string>> ReachableSystemsList
     {
       get
