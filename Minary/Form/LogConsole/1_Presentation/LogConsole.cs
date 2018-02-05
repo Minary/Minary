@@ -191,7 +191,7 @@
     }
 
 
-    private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
+    private void ClearLogToolStripMenuItem_Click(object sender, EventArgs e)
     {
       lock (this)
       {

@@ -1,7 +1,6 @@
 ﻿namespace Minary.DataTypes.Interface
 {
   using Minary.DataTypes.Enum;
-  using Minary.Form;
   using System;
 
 

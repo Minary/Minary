@@ -130,7 +130,7 @@
       this.clearLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
       this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(228, 30);
       this.clearLogToolStripMenuItem.Text = "Clear log";
-      this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.clearLogToolStripMenuItem_Click);
+      this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.ClearLogToolStripMenuItem_Click);
       // 
       // LogCons
       // 
