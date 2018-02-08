@@ -29,7 +29,7 @@
     /// </summary>
     /// <param name="serializableObject"></param>
     /// <param name="outputFile"></param>
-    public void SaveTemplate(RecordMinaryTemplate serializableObject, string outputFile)
+    public void SaveTemplate(MinaryTemplateData serializableObject, string outputFile)
     {
       BinaryFormatter myBinaryFormat = new BinaryFormatter();
       FileStream outputFileStream = new FileStream(outputFile, FileMode.Create);
@@ -44,7 +44,7 @@
 
       try
       {
-        RecordMinaryTemplate deserializedObjectData = this.LoadAttackTemplate(filePath);
+        MinaryTemplateData deserializedObjectData = this.LoadAttackTemplate(filePath);
         if (deserializedObjectData != null)
         {
           retVal = true;
@@ -63,13 +63,13 @@
     /// </summary>
     /// <param name="templateFile"></param>
     /// <returns></returns>
-    public RecordMinaryTemplate LoadAttackTemplate(string templateFile)
+    public MinaryTemplateData LoadAttackTemplate(string templateFile)
     {
-      RecordMinaryTemplate deserializedObject;
+      MinaryTemplateData deserializedObject;
       BinaryFormatter myBinaryFormat = new BinaryFormatter();
 
       Stream myStream = File.OpenRead(templateFile);
-      deserializedObject = (RecordMinaryTemplate)myBinaryFormat.Deserialize(myStream);
+      deserializedObject = (MinaryTemplateData)myBinaryFormat.Deserialize(myStream);
       myStream.Close();
 
       return deserializedObject;

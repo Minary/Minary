@@ -305,7 +305,7 @@
     <Compile Include="Form\Template\DataTypes\MinaryTemplate.cs" />
     <Compile Include="Form\Template\DataTypes\Template\AttackConfig.cs" />
     <Compile Include="Form\Template\DataTypes\Template\Plugin.cs" />
-    <Compile Include="Form\Template\DataTypes\Template\RecordSessionTemplate.cs" />
+    <Compile Include="Form\Template\DataTypes\Template\MinaryTemplateData.cs" />
     <Compile Include="Form\Template\DataTypes\Template\TemplateConfig.cs" />
     <Compile Include="Form\Updates\1_Presentation\FormCheckNewVersion.cs">
       <SubType>Form</SubType>
