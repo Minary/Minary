@@ -30,7 +30,7 @@
 
     #region PROPERTIES
 
-    public RecordMinaryTemplate TemplateData { get; private set; }
+    public MinaryTemplateData TemplateData { get; private set; }
 
     #endregion
 

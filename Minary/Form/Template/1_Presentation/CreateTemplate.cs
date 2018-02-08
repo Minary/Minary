@@ -57,7 +57,7 @@
     private void Bt_Save_Click(object sender, EventArgs e)
     {
       // Create and populate temlate object
-      RecordMinaryTemplate newTemplateData = new RecordMinaryTemplate();
+      var newTemplateData = new MinaryTemplateData();
       newTemplateData.TemplateConfig.Name = this.tb_TemplateName.Text;
       newTemplateData.TemplateConfig.Description = this.tb_TemplateDescription.Text;
       newTemplateData.TemplateConfig.Reference = this.tb_TemplateReferenceLink.Text;
@@ -126,7 +126,7 @@
     /// </summary>
     /// <param name="newTemplateData"></param>
     /// <returns></returns>
-    private bool TemplateParametersAreValid(RecordMinaryTemplate newTemplateData)
+    private bool TemplateParametersAreValid(MinaryTemplateData newTemplateData)
     {
       if (newTemplateData == null)
       {
@@ -183,7 +183,7 @@
     /// 
     /// </summary>
     /// <param name="newTemplateData"></param>
-    private void SaveTemplateToFile(RecordMinaryTemplate newTemplateData)
+    private void SaveTemplateToFile(MinaryTemplateData newTemplateData)
     {
       // Add .mry extension if missing
       var minaryFileExtension = $".{Minary.Config.MinaryFileExtension}";

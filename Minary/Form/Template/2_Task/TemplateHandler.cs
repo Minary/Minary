@@ -50,7 +50,7 @@
     /// </summary>
     /// <param name="templateObj"></param>
     /// <param name="outputFilePath"></param>
-    public void SaveAttackTemplate(RecordMinaryTemplate templateObj, string outputFilePath)
+    public void SaveAttackTemplate(MinaryTemplateData templateObj, string outputFilePath)
     {
       // Verify if objects were instantiated
       if (templateObj == null)

@@ -17,7 +17,7 @@
     private const int MaxSelectedTargetSystems = 10;
     private const int MaxSystemsToScan = 255;
     private MinaryMain minaryMain;
-    private RecordMinaryTemplate minaryTemplate;
+    private MinaryTemplateData minaryTemplate;
     private Minary.Form.ArpScan.Presentation.ArpScan arpScanHandler;
 
     #endregion
@@ -25,7 +25,7 @@
 
     #region PUBLIC
 
-    public Calls(MinaryMain minaryMain, RecordMinaryTemplate minaryTemplate)
+    public Calls(MinaryMain minaryMain, MinaryTemplateData minaryTemplate)
     {
       this.minaryMain = minaryMain;
       this.minaryTemplate = minaryTemplate;
