@@ -239,7 +239,6 @@
         return string.Empty;
       }
 
-//string retVal = Utils.TryExecute(this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex).ToString);
       string retVal = this.nicHandler.GetNetworkInterfaceIdByIndex(this.cb_Interfaces.SelectedIndex);
       return retVal;
     }
@@ -297,7 +296,7 @@
       this.SetNewAttackServiceState(serviceName, ServiceStatus.Error);
 
       // Report service failure
-      string message = "The attack service \"{serviceName}\" failed unexpectedly";
+      var message = $"The attack service \"{serviceName}\" failed unexpectedly";
       MessageDialog.Inst.ShowWarning("Attack service error", message, this);
     }
 
@@ -319,14 +318,14 @@
 
       if (this.attackServiceHandler.AttackServices.ContainsKey(serviceName) == false)
       {
-        LogCons.Inst.Write(LogLevel.Warning, "AttackServiceHandler.SetNewState(): Attack service \"{0}\" was never registered", serviceName);
+        LogCons.Inst.Write(LogLevel.Warning, $"AttackServiceHandler.SetNewState(): Attack service \"{serviceName}\" was never registered");
         return;
       }
 
       int tmpNewServiceStatus = (newStatus >= 0) ? (int)newStatus : (int)ServiceStatus.NotRunning;
 
       this.attackServiceMap[serviceName].Image = this.il_AttackServiceStat.Images[tmpNewServiceStatus];
-      LogCons.Inst.Write(LogLevel.Info, "AttackServiceHandler.SetNewState(): {0} has new state \"{1}\"", serviceName, newStatus.ToString());
+      LogCons.Inst.Write(LogLevel.Info, $"AttackServiceHandler.SetNewState(): {serviceName} has new state \"{newStatus.ToString()}\"");
     }
 
 
