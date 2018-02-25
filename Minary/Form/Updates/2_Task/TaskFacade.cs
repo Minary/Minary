@@ -69,14 +69,22 @@
 
       // Ignore all https certificat errors
       // Reason: Reasons
-      System.Net.ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate { return true; });
+
+      System.Net.ServicePointManager.ServerCertificateValidationCallback +=
+        (sender, certificate, chain, sslPolicyErrors) => true;
+
       // Fetch latest release data from Github
       var client = new RestClient(Config.LatestVersionOnGithub);
       var response = client.Execute<Release>(new RestRequest());
 
+      // Process errors
       if (response.ErrorException.Message.ToLower().Contains("ssl/tls"))
       {
         throw new Exception("Cannot crate a secure SSL/TLS connection to GitHub");
+      }
+      else
+      {
+        throw new Exception(response.ErrorException.Message);
       }
 
       var release = response.Data;
