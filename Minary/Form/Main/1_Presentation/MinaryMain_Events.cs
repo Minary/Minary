@@ -95,7 +95,7 @@
     /// <param name="e"></param>
     private void MinaryMain_FormClosing(object sender, FormClosingEventArgs e)
     {
-
+      this.ShutDownMinary();
     }
 
 
