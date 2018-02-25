@@ -5,6 +5,7 @@
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
+  using System.Diagnostics;
   using System.IO;
   using System.Linq;
   using System.Windows.Forms;
@@ -99,10 +100,7 @@
 
 
     #region PRIVATE
-
-    /// <summary>
-    ///
-    /// </summary>
+    
     private void DisableGuiElements()
     {
       this.bt_Attack.BackgroundImage = Properties.Resources.FA_Stop;
@@ -122,10 +120,7 @@
       this.tsmi_UnloadTemplate.Enabled = false;
     }
 
-
-    /// <summary>
-    ///
-    /// </summary>
+   
     private void EnableGuiElements()
     {
       this.bt_Attack.BackgroundImage = Properties.Resources.FA_Play;
@@ -208,6 +203,42 @@
     {
       LogCons.Inst.Write(level, message);
       MessageDialog.Inst.ShowWarning(string.Empty, message, this);
+    }
+
+
+    private void ShutDownMinary()
+    {
+      /*
+       * 1. Stop data input thread (named pipe)
+       * 2. Stop poisoning thread
+       * 3. Stop sniffing thread
+       * 4. Shut down all plugins.
+       *
+       */
+
+      // Set the Wait cursor.
+      this.Cursor = Cursors.WaitCursor;
+
+      if (this.bgw_OnStartAttack.IsBusy)
+      {
+        this.StopAttack();
+      }
+
+      // Remove all static ARP entries
+      var procStartInfo = new ProcessStartInfo("arp", "-d *");
+      procStartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+      var procClearArpCache = new Process();
+      procClearArpCache.StartInfo = procStartInfo;
+      procClearArpCache.Start();
+      procClearArpCache.WaitForExit(3000);
+      procClearArpCache.Close();
+
+      // Set the default cursor
+      this.Cursor = Cursors.Default;
+
+      // Terminate process
+      Environment.Exit(0);
+      base.Dispose();
     }
 
     #endregion

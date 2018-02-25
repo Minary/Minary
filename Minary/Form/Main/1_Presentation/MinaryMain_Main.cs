@@ -17,7 +17,7 @@
   using System.Collections.Generic;
   using System.ComponentModel;
   using System.Linq;
-  using System.Threading;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
   using TemplateTask = Template.Task;
 
@@ -120,12 +120,22 @@
     public void StartBackgroundThreads()
     {
       // Start data input thread.
-      this.inputProcessorHandler.StartInputProcessing();
+      try
+      {
+        this.inputProcessorHandler.StartInputProcessing();
+      }
+      catch (Exception ex)
+      {
+        var message = $"An error occurred while starting the input processor NamedPipe : {ex.Message}" +
+                      "\r\n\r\nAborting Minary now.";
+        MessageDialog.Inst.ShowError(string.Empty, message, this);
+        this.ShutDownMinary();
+      }
 
       // Check if new Minary version is available
-      Thread updateThread = new Thread(delegate ()
+      Task.Run(() =>
       {
-        string autoupdateStateStr = Minary.Common.WinRegistry.GetValue("Updates", "Autoupdate");
+        string autoupdateStateStr = WinRegistry.GetValue("Updates", "Autoupdate");
         int autoupdateState = Convert.ToInt32(autoupdateStateStr);
 
         if (autoupdateState > 0)
@@ -134,7 +144,6 @@
           newVersionCheck.ShowDialog();
         }
       });
-      updateThread.Start();
     }
 
 

@@ -59,9 +59,7 @@
     {
       var failedOpenPipes = 0;
       stopThreads = false;
-
-      try
-      {
+      
         // There are several concurrently running NamedPipes reading
         // input data. Start them all.
         for (var i = 0; i < Config.PipeInstances; i++)
@@ -77,9 +75,8 @@
           catch (Exception ex)
           {
             failedOpenPipes++;
-            LogCons.Inst.Write(LogLevel.Fatal, $"Can't start named pipe no {i} - Message: {ex.Message}\r\n\r\nStackTrace\r\n{ex.StackTrace}");
-
-            continue;
+            var errorMessage = $"Can't start named pipe no {i}.\r\n{ex.Message}";
+            throw new Exception(errorMessage);
           }
 
           this.inputWorkerThreads[i] = new Thread(new ParameterizedThreadStart(this.DataInputThread));
@@ -88,23 +85,12 @@
 
         if (failedOpenPipes > 0)
         {
-          var message = $"{failedOpenPipes} of {Config.PipeInstances} named pipes could not be started!";
-          MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
+          var message = $"{failedOpenPipes} of {Config.PipeInstances} named pipes could not be started";
+          throw new Exception(message);
         }
-
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Fatal, $"An error occurred while starting the input processor NamedPipe : {ex.StackTrace} \n{ex.ToString()}");
-        var message = $"An error occurred while starting the input processor NamedPip : {ex.ToString()} ";
-        MessageDialog.Inst.ShowError(string.Empty, message, this.minaryMain);
-      }
     }
 
 
-    /// <summary>
-    ///
-    /// </summary>
     public void StopInputProcessing()
     {
       NamedPipeClientStream namedPipeClient = null;
@@ -131,15 +117,6 @@
 
           namedPipeClient.Close();
           namedPipeClient = null;
-          /*
-             if (mInputWorkerThread != null)
-             {
-                 System.Threading.Thread.Sleep(500);
-               try { mInputWorkerThread[i].Abort(); } catch { }
-                 mInputWorkerThread.Join();
-               try { mInputWorkerThread[i].Interrupt();  } catch { }
-             }
-          */
         }
         catch (TimeoutException tex)
         {

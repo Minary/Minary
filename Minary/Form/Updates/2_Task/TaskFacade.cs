@@ -9,9 +9,9 @@
   using RestSharp;
   using System;
   using System.Linq;
+  using System.Net.Security;
   using System.Collections.Generic;
   using System.Text.RegularExpressions;
-  using System.Threading;
 
 
   public class TaskFacade : IObservable
@@ -69,8 +69,7 @@
 
       // Ignore all https certificat errors
       // Reason: Reasons
-      System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
-
+      System.Net.ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(delegate { return true; });
       // Fetch latest release data from Github
       var client = new RestClient(Config.LatestVersionOnGithub);
       var response = client.Execute<Release>(new RestRequest());

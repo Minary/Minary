@@ -10,7 +10,6 @@
   using MinaryLib.AttackService.Enum;
   using System;
   using System.ComponentModel;
-  using System.Diagnostics;
   using System.IO;
   using System.Linq;
   using System.Net.NetworkInformation;
@@ -96,35 +95,7 @@
     /// <param name="e"></param>
     private void MinaryMain_FormClosing(object sender, FormClosingEventArgs e)
     {
-      /*
-       * 1. Stop data input thread (named pipe)
-       * 2. Stop poisoning thread
-       * 3. Stop sniffing thread
-       * 4. Shut down all plugins.
-       *
-       */
 
-      // Set the Wait cursor.
-      this.Cursor = Cursors.WaitCursor;
-
-      if (this.bgw_OnStartAttack.IsBusy)
-      {
-        this.StopAttack();
-      }
-
-      // Remove all static ARP entries
-      var procStartInfo = new ProcessStartInfo("arp", "-d *");
-      procStartInfo.WindowStyle = Debugging.IsDebuggingOn ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
-      var procClearArpCache = new Process();
-      procClearArpCache.StartInfo = procStartInfo;
-      procClearArpCache.Start();
-      procClearArpCache.WaitForExit(3000);
-      procClearArpCache.Close();
-
-      // Set the default cursor.
-      this.Cursor = Cursors.Default;
-
-      System.Environment.Exit(0);
     }
 
 
@@ -188,8 +159,7 @@
     /// <param name="e"></param>
     private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      this.MinaryMain_FormClosing(null, null);
-      base.Dispose();
+      this.ShutDownMinary();
     }
 
 
