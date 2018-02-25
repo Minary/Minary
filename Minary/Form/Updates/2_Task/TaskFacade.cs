@@ -28,27 +28,36 @@
 
     public void StartSearchingForUpdates()
     {
-      Thread updateAvailableThread = new Thread(delegate ()
+      System.Threading.Tasks.Task.Run(() =>
       {
+        UpdateData updateMetaData = new UpdateData();
+
         try
         {
-          UpdateData updateMetaData = this.FetchUpdateInformationFromServer();
-          this.Notify(updateMetaData);
+          updateMetaData = this.FetchUpdateInformationFromServer();
         }
         catch (Exception ex)
         {
           var errorMsg = $"The following error occurred: {ex.Message}";
-          LogCons.Inst.Write(LogLevel.Debug, errorMsg);
-        }
-      });
+          LogCons.Inst.Write(LogLevel.Warning, errorMsg);
 
-      updateAvailableThread.Start();
+          updateMetaData.IsErrorOccurred = true;
+          updateMetaData.ErrorMessage = ex.Message;
+        }
+
+        this.Notify(updateMetaData);
+      });    
     }
 
     #endregion
 
 
     #region PRIVATE
+
+    private static bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+    {
+      return true;
+    }
 
     /// <summary>
     /// 
@@ -58,9 +67,19 @@
     {
       UpdateData updateData = new UpdateData();
 
+      // Ignore all https certificat errors
+      // Reason: Reasons
+      System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+
       // Fetch latest release data from Github
       var client = new RestClient(Config.LatestVersionOnGithub);
       var response = client.Execute<Release>(new RestRequest());
+
+      if (response.ErrorException.Message.ToLower().Contains("ssl/tls"))
+      {
+        throw new Exception("Cannot crate a secure SSL/TLS connection to GitHub");
+      }
+
       var release = response.Data;
 
       // Verify if version structure is correct
@@ -79,7 +98,6 @@
       // Compare current and latest version.
       long currentVersionInt = DetermineVersion(Config.MinaryVersion);
       long availableVersionInt = DetermineVersion(release.TagName);
-
       if (availableVersionInt.CompareTo(currentVersionInt) > 0)
       {
         updateData.IsUpdateAvailable = true;

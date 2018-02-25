@@ -10,7 +10,11 @@
 
     public bool IsUpdateAvailable { get; set; } = false;
 
+    public bool IsErrorOccurred { get; set; } = false;
+
     public string AvailableVersionStr { get; set; } = string.Empty;
+
+    public string ErrorMessage { get; set; } = string.Empty;
 
     public List<string> Messages { get; set; } = new List<string>();
 

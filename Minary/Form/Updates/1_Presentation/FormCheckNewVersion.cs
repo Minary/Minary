@@ -57,6 +57,7 @@
       newVersionMessageStr.Append($@"\b Windows binary \b0  {{\field {{\*\fldinst HYPERLINK {updateData.WinBinaryDownloadUrl} }} }} \line ");
       newVersionMessageStr.Append($@"\b Source code \b0       {{\field {{\*\fldinst HYPERLINK {updateData.SourceDownloadUrl} }} }} \line \line \line ");
       newVersionMessageStr.Append(@"\b Changes \b0 \line ");
+
       if (updateData?.Messages != null == true)
       {
         foreach (string tmpUpdateMessage in updateData.Messages)
@@ -72,9 +73,6 @@
         }
       }
 
-      //newVersionMessageStr.Append(@"\line \line ");
-      //newVersionMessageStr.Append(this.GetFooter());
-
       this.rtb_MinaryUpdate.Rtf = newVersionMessageStr.ToString();
     }
 
@@ -84,11 +82,19 @@
       // Set up "updates available" message
       var noNewVersionMessageStr = new StringBuilder();
       noNewVersionMessageStr.Append(@"{\rtf1\ansi You have installed the latest version of Minary. Nice!");
-      //noNewVersionMessageStr.Append(this.GetFooter());
 
       this.rtb_MinaryUpdate.Rtf = noNewVersionMessageStr.ToString();
     }
 
+
+    private void ShowErrorMessage(UpdateData updateData)
+    {
+      // Set up error message
+      var errorMsg = new StringBuilder();
+      errorMsg.Append($@"{{\rtf1\ansi The following error occurred: \line \line {updateData.ErrorMessage}");
+
+      this.rtb_MinaryUpdate.Rtf = errorMsg.ToString();
+    }
 
     private string GetFooter()
     {
@@ -187,7 +193,11 @@
         return;
       }
 
-      if (updateData.IsUpdateAvailable == true)
+      if (updateData.IsErrorOccurred == true)
+      {
+        this.ShowErrorMessage(updateData);
+      }
+      else if (updateData.IsUpdateAvailable == true)
       {
         this.ShowMessageUpdatesAvailable(updateData);
       }
