@@ -65,9 +65,7 @@
 
       var senderMac = string.Join("-", this.ByteToHexString(packet.Ethernet.Arp.SenderHardwareAddress.ToArray()));
       var senderIp = new System.Net.IPAddress(packet.Ethernet.Arp.SenderProtocolAddress.ToArray()).ToString();
-
-      LogCons.Inst.Write(LogLevel.Info, $"PacketHandler(): {senderMac}/{senderIp}");
-
+      
       SystemFound newRecord = new SystemFound(senderMac, senderIp);
       this.NotifyNewRecord(newRecord);
     }

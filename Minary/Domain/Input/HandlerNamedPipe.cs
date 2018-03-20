@@ -329,9 +329,10 @@
       {
         throw new Exception("Port format is invalid");
       }
-
+      
       // We got TCP data.
-      if (splitter[0] == "TCP")
+      if (splitter[0] == "TCP" ||
+          splitter[0] == "HTTPS")
       {
         foreach (var tmpKey in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
         {
@@ -377,6 +378,7 @@
       {
         foreach (var key in this.tabPageCatalog.Keys)
         {
+          //          port IST 09
           if (this.minaryMain.PluginHandler.IsPluginActive(key) &&
               this.tabPageCatalog[key].PluginObject.Config.Ports.ContainsKey(port))
           {
