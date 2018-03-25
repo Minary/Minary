@@ -312,7 +312,7 @@
 
       try
       {
-        // TCP||aa:bb:cc:dd:ee:ff||192.168.0.123||51984||74.125.79.136||80||GET ...
+        // HTTPREQ||aa:bb:cc:dd:ee:ff||192.168.0.123||51984||74.125.79.136||80||GET ...
         splitter = Regex.Split(newData, @"\|\|");
         if (splitter == null || splitter.Length < 7)
         {
@@ -331,7 +331,7 @@
       }
       
       // We got TCP data.
-      if (splitter[0] == "TCP" ||
+      if (splitter[0] == "HTTPREQ" ||
           splitter[0] == "HTTPS")
       {
         foreach (var tmpKey in this.minaryMain.PluginHandler.TabPagesCatalog.Keys)
