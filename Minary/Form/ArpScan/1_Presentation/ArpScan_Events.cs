@@ -425,7 +425,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION1): {ex.Message}\r\n{ex.StackTrace}");
+        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
         return;
       }
 
@@ -436,7 +436,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}\r\n{ex.StackTrace}");
+        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
         return;
       }
 

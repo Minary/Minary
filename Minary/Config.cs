@@ -29,7 +29,6 @@ public static string MinaryVersion { get { return System.Reflection.Assembly.Get
 
     public static readonly string MinaryDllDir = "dll";
     public static readonly string PatternDir = "patterns";
-    public static readonly string DataDir = "data";
 
     // Attack services
     public static readonly string AttackServicesPluginsDir = "attackservices";

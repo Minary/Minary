@@ -59,7 +59,7 @@
                               Config.PluginsDir,
                               Config.TemplatesDir,
                               Config.CustomTemplatesDir,
-                              Config.DataDir,
+//                              Config.DataDir,
                               Config.MinaryDllDir
                             };
 
