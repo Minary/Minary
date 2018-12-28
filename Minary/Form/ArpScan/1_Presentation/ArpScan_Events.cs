@@ -7,14 +7,12 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
-  using System.Collections.Generic;
   using System.ComponentModel;
   using System.Windows.Forms;
 
 
   public partial class ArpScan : IObserverArpRequest
   {
-
 
     #region MEMBERS
 
@@ -53,6 +51,30 @@
 
 
     #region EVENTS
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CB_SelectAll_CheckedChanged(object sender, EventArgs e)
+    {
+      if (this.cb_SelectAll.Checked == true)
+      {
+        for (int i = 0; i < this.TargetList.Count; i++)
+        {
+          this.TargetList[i].Attack = true;
+        }
+      }
+      else
+      {
+        for (int i = 0; i < this.TargetList.Count; i++)
+        {
+          this.TargetList[i].Attack = false;
+        }
+      }
+    }
+
 
     /// <summary>
     ///

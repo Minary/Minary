@@ -48,6 +48,7 @@
       this.pb_ArpScan = new System.Windows.Forms.ProgressBar();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
       this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
+      this.cb_SelectAll = new System.Windows.Forms.CheckBox();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_Targets)).BeginInit();
       this.gb_Range.SuspendLayout();
       this.cms_ManageTargets.SuspendLayout();
@@ -221,9 +222,9 @@
       // 
       // pb_ArpScan
       // 
-      this.pb_ArpScan.Location = new System.Drawing.Point(31, 457);
+      this.pb_ArpScan.Location = new System.Drawing.Point(142, 457);
       this.pb_ArpScan.Name = "pb_ArpScan";
-      this.pb_ArpScan.Size = new System.Drawing.Size(680, 23);
+      this.pb_ArpScan.Size = new System.Drawing.Size(569, 23);
       this.pb_ArpScan.TabIndex = 0;
       // 
       // bgw_ArpScanSender
@@ -239,11 +240,23 @@
       this.bgw_ArpScanListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanListener_DoWork);
       this.bgw_ArpScanListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanListener_RunWorkerCompleted);
       // 
+      // cb_SelectAll
+      // 
+      this.cb_SelectAll.AutoSize = true;
+      this.cb_SelectAll.Location = new System.Drawing.Point(13, 457);
+      this.cb_SelectAll.Name = "cb_SelectAll";
+      this.cb_SelectAll.Size = new System.Drawing.Size(99, 24);
+      this.cb_SelectAll.TabIndex = 9;
+      this.cb_SelectAll.Text = "Select all";
+      this.cb_SelectAll.UseVisualStyleBackColor = true;
+      this.cb_SelectAll.CheckedChanged += new System.EventHandler(this.CB_SelectAll_CheckedChanged);
+      // 
       // ArpScan
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1125, 506);
+      this.Controls.Add(this.cb_SelectAll);
       this.Controls.Add(this.pb_ArpScan);
       this.Controls.Add(this.bt_Scan);
       this.Controls.Add(this.gb_Range);
@@ -263,6 +276,7 @@
       this.gb_Range.PerformLayout();
       this.cms_ManageTargets.ResumeLayout(false);
       this.ResumeLayout(false);
+      this.PerformLayout();
 
     }
 
@@ -284,5 +298,6 @@
     private System.Windows.Forms.ProgressBar pb_ArpScan;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
+    private System.Windows.Forms.CheckBox cb_SelectAll;
   }
 }
