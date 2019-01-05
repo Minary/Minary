@@ -272,7 +272,6 @@
       }
 
       Minary.Common.Utils.TryExecute2(() => { File.Delete(filePath); });
-
       this.RefreshCertificateListing();
     }
 

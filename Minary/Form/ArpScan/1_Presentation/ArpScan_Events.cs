@@ -490,6 +490,7 @@
       else
       {
         LogCons.Inst.Write(LogLevel.Info, "ArpScan: ArpScan started");
+        this.cb_SelectAll.Checked = false;
 
         // Set Progress bar structure
         this.pb_ArpScan.Maximum = 100;
