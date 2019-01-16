@@ -67,7 +67,6 @@
       {
         this.bgw_OnStartAttack.RunWorkerAsync();
 
-
       // In any other case stop a running attack
       }
       else

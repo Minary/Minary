@@ -389,6 +389,12 @@
     /// <param name="e"></param>
     private void BGW_OnStartAttack(object sender, DoWorkEventArgs e)
     {
+      // First let all plugins prepare their environment before 
+      // the actual attack begins.
+      this.PrepareAttackAllPlugins();
+
+      // After the plugins were prepared start all
+      // attack services.
       var currentServiceParams = new StartServiceParameters()
         {
           SelectedIfcIndex = this.currentInterfaceIndex,
@@ -399,7 +405,7 @@
                           ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
         };
 
-      this.StartAllServices(currentServiceParams);
+      this.StartAllAttackServices(currentServiceParams);
     }
 
 
@@ -465,6 +471,27 @@
     }
 
 
+    private void PrepareAttackAllPlugins()
+    {
+      foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
+      {
+        LogCons.Inst.Write(LogLevel.Info, $"Minary.PrepareAllPlugins(): PluginName:{key}, IsPluginActive:{this.pluginHandler.IsPluginActive(key)}");
+
+        try
+        {
+          if (this.pluginHandler.IsPluginActive(key))
+          {
+            this.pluginHandler.TabPagesCatalog[key].PluginObject.OnPrepareAttack();
+          }
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, "Minary.PrepareAllPlugins(EXCEPTION): PluginName:{0}, Error:{1}\r\n{2}", key, ex.Message, ex.StackTrace);
+        }
+      }
+    }
+
+
     private void StartAllPlugins()
     {
       foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
@@ -486,7 +513,7 @@
     }
 
 
-    private void StartAllServices(StartServiceParameters serviceParameters)
+    private void StartAllAttackServices(StartServiceParameters serviceParameters)
     {
       foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
       {

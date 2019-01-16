@@ -191,6 +191,7 @@
 
     public bool IsDebuggingOn { get { return Minary.Common.Debugging.IsDebuggingOn; } }
 
+
     public void Register(IAttackService attackService)
     {
       LogCons.Inst.Write(LogLevel.Info, $"AttackServiceHandler.Register(): Service {attackService.ServiceName} registered");
