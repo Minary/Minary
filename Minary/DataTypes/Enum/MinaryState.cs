@@ -11,7 +11,8 @@
     WinPcapMissing = 0x2,
     NetworkMissing = 0x4,
     ApeBinaryMissing = 0x8,
-    SnifferMissing = 0x10,
-    HttpProxyMissing = 0x20,
+    DnsPoisoningBinaryMissing = 0x10,
+    SnifferMissing = 0x20,
+    HttpProxyMissing = 0x30,
   }
 }

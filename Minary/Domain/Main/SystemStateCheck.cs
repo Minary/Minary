@@ -72,6 +72,13 @@
         retVal |= MinaryState.ApeBinaryMissing;
       }
 
+      // Check SystemService: DnsPoisoning
+      if (File.Exists(Config.DnsPoisoningBinaryPath) == false)
+      {
+        retVal |= MinaryState.DnsPoisoningBinaryMissing;
+      }
+      
+
       // Check SystemService: Sniffer
       if (File.Exists(Config.SnifferBinaryPath) == false)
       {

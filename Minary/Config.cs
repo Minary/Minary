@@ -37,6 +37,11 @@ public static string MinaryVersion { get { return System.Reflection.Assembly.Get
 public static readonly string ApeServiceDir = Path.Combine(AttackServicesPluginsDir, "ArpPoisoning");
 public static readonly string ApeBinaryPath = Path.Combine(ApeServiceDir, "Ape.exe");
 public static readonly string ApeProcessName = "Ape";
+    
+// Service: DnsPoisoning
+public static readonly string DnsPoisoningServiceDir = Path.Combine(AttackServicesPluginsDir, "DnsPoisoning");
+public static readonly string DnsPoisoningBinaryPath = Path.Combine(DnsPoisoningServiceDir, "DnsPoisoning.exe");
+public static readonly string DnsPoisoningProcessName = "DnsPoisoning";
 
 // Service: Sniffer
 public static readonly string SnifferServiceDir = Path.Combine(AttackServicesPluginsDir, "Sniffer");

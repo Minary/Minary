@@ -22,6 +22,7 @@
       string[] processNameArray =
         {
                                     Config.ApeProcessName,
+                                    Config.DnsPoisoningProcessName,
                                     Config.SnifferProcessName,
                                     Config.HttpReverseProxyName,
                                     Assembly.GetExecutingAssembly().GetName().Name
@@ -69,7 +70,7 @@
       }
 
       // Handle processes that matched the search string
-      var message = $"An instance of {processName} instance is running. Do you want to stop that process?";
+      var message = $"An instance of {processName} is running. Do you want to stop that process?";
       if (MessageBox.Show(message, "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes)
       {
         return;
