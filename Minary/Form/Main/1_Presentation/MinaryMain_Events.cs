@@ -407,7 +407,7 @@
                           ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
         };
 
-      this.StartAllAttackServices(currentServiceParams);
+      this.StartAttackAllServices(currentServiceParams);
     }
 
 
@@ -417,7 +417,7 @@
       {
         this.StopAttack();
         var message = $"The following error occurred while starting attack services: \r\n\r\n{e.Error.Message}";
-        LogCons.Inst.Write(LogLevel.Error, $"Minary.BGW_OnStartAttackCompleted(): {message}");
+        LogCons.Inst.Write(LogLevel.Error, $"Minary.BGW_OnStartAttackCompleted(EXC): {message}");
         MessageDialog.Inst.ShowWarning("Attack services", message, this);
       }
       else if (e.Cancelled == true)
@@ -473,7 +473,9 @@
     }
 
 
-private Dictionary<string, object> pluginParams2AttackServices = new Dictionary<string, object>();
+private Dictionary<string, List<object>> pluginParams2AttackServices = new Dictionary<string, List<object>>();
+//private Dictionary<string, List<string>> pluginParams2AttackServices = new Dictionary<string, List<string>>();
+
 
     private void PrepareAttackAllPlugins()
     {
@@ -489,29 +491,9 @@ private Dictionary<string, object> pluginParams2AttackServices = new Dictionary<
 
         try
         {
-var tmpKey = key?.Trim()?.ToLower()?.Replace(" ", "");
-LogCons.Inst.Write(LogLevel.Info, $"Minary.PrepareAllPlugins(HONK:dnspoisoning:0): PluginName:{key}/{tmpKey}, IsPluginActive:{this.pluginHandler.IsPluginActive(key)}");
-  var pluginDataObj = (List<string>) this.pluginHandler.TabPagesCatalog[key].PluginObject.OnPrepareAttack();
-          
-          if (tmpKey == "dnspoisoning")
-          {
- //           pluginDataObj = new List<string>();
-//pluginDataObj.Add("spin.ch,A,88460,195.176.247.25");
-//pluginDataObj.Add("w3.spin.ch,A,88460,195.176.247.25");
-this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
-            //List<string> pluginData = pluginDataObj as List<string>;
-            string isNull = "no";
-            int counter = pluginDataObj?.Count ?? -1;
-            if (pluginDataObj == null) isNull = "true";
-            LogCons.Inst.Write(LogLevel.Info, $"Minary.PrepareAllPlugins(HONK:dnspoisoning:1): PluginName:{tmpKey}/isNull={isNull}, counter={counter}");
-            LogCons.Inst.Write(LogLevel.Info, $"Minary.PrepareAllPlugins(HONK:dnspoisoning:3): PluginName:{tmpKey}");           
-            var la = pluginParams2AttackServices["dnspoisoning"];
-            var isNull2 = la == null ? true : false;
-            LogCons.Inst.Write(LogLevel.Info, $"Minary.PrepareAllPlugins(HONK:dnspoisoning:4): PluginName:{tmpKey}, dnspoisoning==null:{isNull2}");
-          }
-          else
-            this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
-
+          var tmpKey = key?.Trim()?.ToLower()?.Replace(" ", "");
+          var pluginDataObj = (List<object>) this.pluginHandler.TabPagesCatalog[key].PluginObject.OnPrepareAttack();          
+          this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
         }
         catch (Exception ex)
         {
@@ -542,7 +524,7 @@ this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
     }
 
 
-    private void StartAllAttackServices(StartServiceParameters serviceParameters)
+    private void StartAttackAllServices(StartServiceParameters serviceParameters)
     {
       foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
       {
@@ -563,11 +545,11 @@ else
 {
   LogCons.Inst.Write(LogLevel.Info, $"Minary.StartAllServices(HONK): NO KEY/{tmpKey.ToLower()}/{totalKeys}/{pluginsString}");
 }
-
+  
           ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters, this.pluginParams2AttackServices);
           this.SetNewAttackServiceState(tmpKey, newServiceStatus);
         }
-        catch (Exception e)
+        catch (Exception)
         {
           this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
           throw;
