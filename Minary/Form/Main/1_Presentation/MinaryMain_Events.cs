@@ -530,22 +530,7 @@ private Dictionary<string, List<object>> pluginParams2AttackServices = new Dicti
       {
         try
         {
-          LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName);
-
-// pluginParams2AttackServices == new Dictionary<string, object>()
-  var totalKeys = this.pluginParams2AttackServices.Count;
-  var pluginsString = string.Join(",", this.pluginParams2AttackServices.Keys);
-if (this.pluginParams2AttackServices.ContainsKey(tmpKey.ToLower()))
-{ 
-  var la = this.pluginParams2AttackServices[tmpKey.ToLower()];
-  var isLaNull = la == null? "true":"false";
-  LogCons.Inst.Write(LogLevel.Info, $"Minary.StartAllServices(HONK): {tmpKey.ToLower()}/{isLaNull}/{totalKeys}/{pluginsString}");
-}
-else
-{
-  LogCons.Inst.Write(LogLevel.Info, $"Minary.StartAllServices(HONK): NO KEY/{tmpKey.ToLower()}/{totalKeys}/{pluginsString}");
-}
-  
+          LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName); 
           ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters, this.pluginParams2AttackServices);
           this.SetNewAttackServiceState(tmpKey, newServiceStatus);
         }
