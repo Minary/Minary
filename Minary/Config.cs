@@ -38,6 +38,11 @@ public static readonly string ApeServiceDir = Path.Combine(AttackServicesPlugins
 public static readonly string ApeBinaryPath = Path.Combine(ApeServiceDir, "Ape.exe");
 public static readonly string ApeProcessName = "Ape";
     
+// Service: RouterIPv4
+public static readonly string RouterIPv4ServiceDir = Path.Combine(AttackServicesPluginsDir, "RouterIPv4");
+public static readonly string RouterIPv4BinaryPath = Path.Combine(RouterIPv4ServiceDir, "RouterIPv4.exe");
+public static readonly string RouterIPv4ProcessName = "RouterIPv4";
+
 // Service: DnsPoisoning
 public static readonly string DnsPoisoningServiceDir = Path.Combine(AttackServicesPluginsDir, "DnsPoisoning");
 public static readonly string DnsPoisoningBinaryPath = Path.Combine(DnsPoisoningServiceDir, "DnsPoisoning.exe");

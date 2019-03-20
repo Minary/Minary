@@ -13,6 +13,7 @@
     ApeBinaryMissing = 0x8,
     DnsPoisoningBinaryMissing = 0x10,
     SnifferMissing = 0x20,
-    HttpProxyMissing = 0x30,
+    HttpProxyMissing = 0x40,
+    RouterIPv4BinaryMissing = 0x80,
   }
 }

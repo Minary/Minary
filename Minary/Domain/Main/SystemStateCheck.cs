@@ -72,6 +72,12 @@
         retVal |= MinaryState.ApeBinaryMissing;
       }
 
+      // Check SystemService: RouterIPv4
+      if (File.Exists(Config.RouterIPv4BinaryPath) == false)
+      {
+        retVal |= MinaryState.RouterIPv4BinaryMissing;
+      }
+
       // Check SystemService: DnsPoisoning
       if (File.Exists(Config.DnsPoisoningBinaryPath) == false)
       {

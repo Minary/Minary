@@ -22,6 +22,7 @@
       string[] processNameArray =
         {
                                     Config.ApeProcessName,
+                                    Config.RouterIPv4ProcessName,
                                     Config.DnsPoisoningProcessName,
                                     Config.SnifferProcessName,
                                     Config.HttpReverseProxyName,
