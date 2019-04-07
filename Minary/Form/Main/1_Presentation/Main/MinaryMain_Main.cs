@@ -1,4 +1,4 @@
-﻿namespace Minary.Form
+﻿namespace Minary.Form.Main
 {
   using Minary.Certificates.Presentation;
   using Minary.Common;
@@ -10,6 +10,7 @@
   using Minary.Domain.MacVendor;
   using Minary.Domain.Main;
   using Minary.Domain.Network;
+  using Minary.Form;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Enum;
@@ -35,8 +36,9 @@
     private int currentInterfaceIndex;
     private Browser miniBrowser;
     private bool attackStarted;
-    private Minary.Form.TaskFacade minaryTaskFacade;
+    private Minary.Form.Main.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
+    private Minary.Form.SimpleGUI.SimpleGuiUserControl simpleGui;
 
     // GUI handlers
     private ArpScan.Presentation.ArpScan arpScanHandler;
@@ -76,7 +78,7 @@
 
 
     // Handlers
-    public Minary.Form.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
+    public Minary.Form.Main.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
 
     public PluginHandler PluginHandler { get { return this.pluginHandler; } }
 
@@ -190,6 +192,11 @@
       // Instantiate (own + foreign) application layers
       this.minaryTaskFacade = new TaskFacade(this, this.dgv_MainPlugins);
       this.templateTaskLayer = new Template.Task.TemplateHandler(this);
+
+      // Create SimpleGUI
+      this.simpleGui = new Minary.Form.SimpleGUI.SimpleGuiUserControl();
+      this.simpleGui.Visible = true;
+      this.Controls.Add(simpleGui);
     }
 
 

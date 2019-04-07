@@ -266,14 +266,20 @@
     <Compile Include="DataTypes\Interface\LogConsole\IObserver.cs" />
     <Compile Include="Domain\MacVendor\MacVendorHandler.cs" />
     <Compile Include="DataTypes\Enum\LogLevel.cs" />
-    <Compile Include="Form\Main\1_Presentation\MinaryMain_Events.cs">
+    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Events.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\MinaryMain_General.cs">
+    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_General.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\MinaryMain_Interface.cs">
+    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Interface.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Main\1_Presentation\SimpleGUI\SimpleGuiUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\Main\1_Presentation\SimpleGUI\SimpleGuiUserControl.Designer.cs">
+      <DependentUpon>SimpleGuiUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Main\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
@@ -314,13 +320,13 @@
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Form\Main\1_Presentation\MinaryMain_Methods.cs">
+    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Methods.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\MinaryMain_Main.cs">
+    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\MinaryMain_Main.Designer.cs">
+    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Main.Designer.cs">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Network\NetworkFunctions.cs" />
@@ -359,9 +365,12 @@
       <DependentUpon>LogConsole.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\Main\1_Presentation\MinaryMain_Main.resx">
+    <EmbeddedResource Include="Form\Main\1_Presentation\Main\MinaryMain_Main.resx">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Main\1_Presentation\SimpleGUI\SimpleGuiUserControl.resx">
+      <DependentUpon>SimpleGuiUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Updates\1_Presentation\FormCheckNewVersion.resx">
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>

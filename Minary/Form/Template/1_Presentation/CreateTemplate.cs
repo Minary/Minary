@@ -1,6 +1,7 @@
 ﻿namespace Minary.Form.Template.Presentation
 {
   using Minary.DataTypes.Enum;
+  using Minary.Form.Main;
   using Minary.Form.Template.DataTypes.Template;
   using Minary.LogConsole.Main;
   using MinaryLib.DataTypes;

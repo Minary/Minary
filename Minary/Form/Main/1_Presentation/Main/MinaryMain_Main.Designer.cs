@@ -1,4 +1,4 @@
-﻿namespace Minary.Form
+﻿namespace Minary.Form.Main
 {
   using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
@@ -468,6 +468,7 @@
       // tsmi_Beep
       // 
       this.tsmi_Beep.Name = "tsmi_Beep";
+      this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
       this.tsmi_Beep.Size = new System.Drawing.Size(305, 30);
       this.tsmi_Beep.Text = "Beep (is off)";
       this.tsmi_Beep.Click += new System.EventHandler(this.BeepToolStripMenuItem_Click);

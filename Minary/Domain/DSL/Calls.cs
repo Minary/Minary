@@ -1,7 +1,7 @@
 ﻿namespace Minary.Domain.DSL
 {
   using Minary.DataTypes.Enum;
-  using Minary.Form;
+  using Minary.Form.Main;
   using Minary.Form.Template.DataTypes.Template;
   using Minary.LogConsole.Main;
   using MinaryLib.DataTypes;

@@ -1,6 +1,7 @@
 ﻿namespace Minary
 {
   using Minary.Form;
+  using Minary.Form.Main;
   using System;
   using System.IO;
   using System.Windows.Forms;

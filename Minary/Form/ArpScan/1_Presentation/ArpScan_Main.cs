@@ -5,6 +5,7 @@
   using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.Form.ArpScan.DataTypes;
+  using Minary.Form.Main;
   using Minary.LogConsole.Main;
   using PcapDotNet.Core;
   using System;

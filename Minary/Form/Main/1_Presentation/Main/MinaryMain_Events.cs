@@ -1,4 +1,4 @@
-﻿namespace Minary.Form
+﻿namespace Minary.Form.Main
 {
   using Minary.Common;
   using Minary.DataTypes.Enum;
@@ -356,6 +356,7 @@
         this.bt_Attack.Visible = false;
         this.bt_ScanLan.Visible = false;
         this.tc_Plugins.Visible = false;
+        this.simpleGui.Visible = true;
       }
       else
       {
@@ -366,6 +367,7 @@
         this.bt_Attack.Visible = true;
         this.bt_ScanLan.Visible = true;
         this.tc_Plugins.Visible = true;
+        this.simpleGui.Visible = false;
       }
     }
 

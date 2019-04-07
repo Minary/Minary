@@ -1,4 +1,4 @@
-﻿namespace Minary.Form
+﻿namespace Minary.Form.Main
 {
   using Minary.DataTypes.Struct;
   using System.Windows.Forms;
