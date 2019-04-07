@@ -14,7 +14,7 @@
   using System.IO;
   using System.Linq;
   using System.Net.NetworkInformation;
-  using System.Reflection;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
 
 
@@ -341,6 +341,34 @@
       this.inputProcessorHandler.IsBeepOn = !this.inputProcessorHandler.IsBeepOn;
     }
 
+    
+    private void SimpleGuiToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      this.tsmi_SimpleGUI.Text = string.Format("Simple GUI (is {0})", !Config.IsSimpleGuiOn == true ? "on" : "off");
+      Config.IsSimpleGuiOn = !Config.IsSimpleGuiOn;
+
+      if (Config.IsSimpleGuiOn == true)
+      {
+        this.gb_TargetRange.Visible = false;
+        this.gb_Interfaces.Visible = false;
+        this.flp_AttackServices.Visible = false;
+        this.ms_MainWindow.Visible = false;
+        this.bt_Attack.Visible = false;
+        this.bt_ScanLan.Visible = false;
+        this.tc_Plugins.Visible = false;
+      }
+      else
+      {
+        this.gb_TargetRange.Visible = true;
+        this.gb_Interfaces.Visible = true;
+        this.flp_AttackServices.Visible = true;
+        this.ms_MainWindow.Visible = true;
+        this.bt_Attack.Visible = true;
+        this.bt_ScanLan.Visible = true;
+        this.tc_Plugins.Visible = true;
+      }
+    }
+
 
     /// <summary>
     ///
@@ -540,6 +568,34 @@ private Dictionary<string, List<object>> pluginParams2AttackServices = new Dicti
           throw;
         }
       }
+    }
+
+    #endregion
+
+
+    #region PRIVATE
+
+    private async void FadeIn(Form o, int interval = 80)
+    {
+      //Object is not fully invisible. Fade it in
+      while (o.Opacity < 1.0)
+      {
+        await Task.Delay(interval);
+        o.Opacity += 0.05;
+      }
+      o.Opacity = 1; //make fully visible       
+    }
+
+
+    private async void FadeOut(Form o, int interval = 80)
+    {
+      //Object is fully visible. Fade it out
+      while (o.Opacity > 0.0)
+      {
+        await Task.Delay(interval);
+        o.Opacity -= 0.05;
+      }
+      o.Opacity = 0; //make fully invisible       
     }
 
     #endregion

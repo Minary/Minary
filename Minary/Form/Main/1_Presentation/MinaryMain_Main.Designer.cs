@@ -77,6 +77,7 @@
       this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Beep = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Debugging = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_SimpleGUI = new System.Windows.Forms.ToolStripMenuItem();
       this.templateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LoadTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_CreateTemplate = new System.Windows.Forms.ToolStripMenuItem();
@@ -458,7 +459,8 @@
       // 
       this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Beep,
-            this.tsmi_Debugging});
+            this.tsmi_Debugging,
+            this.tsmi_SimpleGUI});
       this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
       this.settingsToolStripMenuItem.Size = new System.Drawing.Size(88, 29);
       this.settingsToolStripMenuItem.Text = "Settings";
@@ -477,6 +479,14 @@
       this.tsmi_Debugging.Size = new System.Drawing.Size(305, 30);
       this.tsmi_Debugging.Text = "Debugging (is off)";
       this.tsmi_Debugging.Click += new System.EventHandler(this.DebugginOnToolStripMenuItem_Click);
+      // 
+      // tsmi_SimpleGUI
+      // 
+      this.tsmi_SimpleGUI.Name = "tsmi_SimpleGUI";
+      this.tsmi_SimpleGUI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+      this.tsmi_SimpleGUI.Size = new System.Drawing.Size(305, 30);
+      this.tsmi_SimpleGUI.Text = "Simple GUI (is off)";
+      this.tsmi_SimpleGUI.Click += new System.EventHandler(this.SimpleGuiToolStripMenuItem_Click);
       // 
       // templateToolStripMenuItem
       // 
@@ -661,5 +671,6 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_Beep;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Debugging;
     private System.Windows.Forms.FlowLayoutPanel flp_AttackServices;
+    private System.Windows.Forms.ToolStripMenuItem tsmi_SimpleGUI;
   }
 }

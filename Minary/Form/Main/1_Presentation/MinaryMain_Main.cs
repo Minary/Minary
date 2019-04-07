@@ -207,6 +207,9 @@
         this.SetAppTitle(string.Empty);
       }
 
+      // Set current SimpleGUI mode in MainForm
+      this.tsmi_Debugging.Text = string.Format("Debugging (is {0})", Config.IsSimpleGuiOn?"on":"off");
+
       // Populate network interface.
       this.LoadNicSettings();
 
