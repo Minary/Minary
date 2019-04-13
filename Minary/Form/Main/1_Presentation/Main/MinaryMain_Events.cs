@@ -491,13 +491,13 @@
     }
  
 
-    private void CertAuthorityToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_CertAuthority_Click(object sender, EventArgs e)
     {
       this.caCertificateHandler.ShowDialog();
     }
 
 
-    private void ServerCertToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_ServerCert_Click(object sender, EventArgs e)
     {
       this.caCertificateHandler.ShowDialog();
     }
