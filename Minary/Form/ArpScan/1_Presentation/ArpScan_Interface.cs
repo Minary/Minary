@@ -5,9 +5,11 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
+  using System.Text.RegularExpressions;
+  using System.Windows.Forms;
 
 
-  public partial class ArpScan : IObserverArpRequest, IObserverArpResponse
+  public partial class ArpScan : IObserverArpRequest, IObserverArpResponse, IObserverArpCurrentIp
   {
 
     #region PROPERTIES
@@ -70,6 +72,29 @@
       {
         LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
       }
+    }
+
+    #endregion
+
+
+    #region INTERFACE IObserverCurrentIp
+
+    public delegate void UpdateCurrentIpDelegate(string currentIp);
+    public void UpdateCurrentIp(string currentIp)
+    {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new UpdateCurrentIpDelegate(this.UpdateCurrentIp), new object[] { currentIp });
+        return;
+      }
+
+      if (string.IsNullOrEmpty(currentIp) ||
+          Regex.Match(currentIp, @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").Success == false)
+      {
+        return;
+      }
+
+      this.tssl_CurrentIpValue.Text = currentIp;
     }
 
     #endregion

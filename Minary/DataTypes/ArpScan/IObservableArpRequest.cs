@@ -3,8 +3,8 @@
 
   public interface IObservableArpRequest
   {
-    void AddObserver(IObserverArpRequest observer);
+    void AddObserverArpRequest(IObserverArpRequest observer);
 
-    void NotifyProgressBar(int progress);
+    void NotifyProgressBarArpRequest(int progress);
   }
 }

@@ -402,7 +402,8 @@
 
       try
       {
-        arpScanner.AddObserver(this);
+        arpScanner.AddObserverArpRequest(this);
+        arpScanner.AddObserverCurrentIp(this);
         arpScanner.StartScanning();
       }
       catch (Exception ex)

@@ -49,9 +49,13 @@
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
       this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
       this.cb_SelectAll = new System.Windows.Forms.CheckBox();
+      this.ss_ArpScan = new System.Windows.Forms.StatusStrip();
+      this.tssl_CurrentIpLabel = new System.Windows.Forms.ToolStripStatusLabel();
+      this.tssl_CurrentIpValue = new System.Windows.Forms.ToolStripStatusLabel();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_Targets)).BeginInit();
       this.gb_Range.SuspendLayout();
       this.cms_ManageTargets.SuspendLayout();
+      this.ss_ArpScan.SuspendLayout();
       this.SuspendLayout();
       // 
       // bt_Close
@@ -251,11 +255,37 @@
       this.cb_SelectAll.UseVisualStyleBackColor = true;
       this.cb_SelectAll.CheckedChanged += new System.EventHandler(this.CB_SelectAll_CheckedChanged);
       // 
+      // ss_ArpScan
+      // 
+      this.ss_ArpScan.ImageScalingSize = new System.Drawing.Size(24, 24);
+      this.ss_ArpScan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tssl_CurrentIpLabel,
+            this.tssl_CurrentIpValue});
+      this.ss_ArpScan.Location = new System.Drawing.Point(0, 504);
+      this.ss_ArpScan.Name = "ss_ArpScan";
+      this.ss_ArpScan.Size = new System.Drawing.Size(1125, 30);
+      this.ss_ArpScan.TabIndex = 10;
+      this.ss_ArpScan.Text = "statusStrip1";
+      // 
+      // tssl_CurrentIpLabel
+      // 
+      this.tssl_CurrentIpLabel.Name = "tssl_CurrentIpLabel";
+      this.tssl_CurrentIpLabel.Size = new System.Drawing.Size(94, 25);
+      this.tssl_CurrentIpLabel.Text = "Current IP:";
+      // 
+      // tssl_CurrentIpValue
+      // 
+      this.tssl_CurrentIpValue.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+      this.tssl_CurrentIpValue.Name = "tssl_CurrentIpValue";
+      this.tssl_CurrentIpValue.Size = new System.Drawing.Size(24, 25);
+      this.tssl_CurrentIpValue.Text = "...";
+      // 
       // ArpScan
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1125, 506);
+      this.ClientSize = new System.Drawing.Size(1125, 534);
+      this.Controls.Add(this.ss_ArpScan);
       this.Controls.Add(this.cb_SelectAll);
       this.Controls.Add(this.pb_ArpScan);
       this.Controls.Add(this.bt_Scan);
@@ -275,6 +305,8 @@
       this.gb_Range.ResumeLayout(false);
       this.gb_Range.PerformLayout();
       this.cms_ManageTargets.ResumeLayout(false);
+      this.ss_ArpScan.ResumeLayout(false);
+      this.ss_ArpScan.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -299,5 +331,8 @@
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
     private System.Windows.Forms.CheckBox cb_SelectAll;
+    private System.Windows.Forms.StatusStrip ss_ArpScan;
+    private System.Windows.Forms.ToolStripStatusLabel tssl_CurrentIpLabel;
+    private System.Windows.Forms.ToolStripStatusLabel tssl_CurrentIpValue;
   }
 }

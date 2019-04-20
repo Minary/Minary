@@ -170,8 +170,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\ArpScan\IObservableArpCurrentIp.cs" />
     <Compile Include="DataTypes\ArpScan\IObservableArpRequest.cs" />
     <Compile Include="DataTypes\ArpScan\IObservableArpResponse.cs" />
+    <Compile Include="DataTypes\ArpScan\IObserverArpCurrentIp.cs" />
     <Compile Include="DataTypes\ArpScan\IObserverArpRequest.cs" />
     <Compile Include="DataTypes\ArpScan\IObserverArpResponse.cs" />
     <Compile Include="DataTypes\ArpScan\SystemFound.cs" />

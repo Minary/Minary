@@ -14,7 +14,7 @@
   using System.Net;
 
 
-  public class ArpScanner : IObservableArpRequest
+  public class ArpScanner : IObservableArpRequest, IObservableArpCurrentIp
   {
 
     #region MEMBERS
@@ -27,7 +27,8 @@
     private ReadOnlyCollection<byte> localMacBytesCollection;
     private ReadOnlyCollection<byte> localIpBytesCollection;
 
-    private List<IObserverArpRequest> observers = new List<IObserverArpRequest>();
+    private List<IObserverArpRequest> observersArpRequest = new List<IObserverArpRequest>();
+    private List<IObserverArpCurrentIp> observersCurrentIp = new List<IObserverArpCurrentIp>();
 
     #endregion
 
@@ -64,14 +65,14 @@
       for (int counter = 0; counter < totalIps; counter++)
       {
         // If ARP scan was cancelled break out of the loop
-        if (this.observers.Any(elem => elem.IsCancellationPending == true))
+        if (this.observersArpRequest.Any(elem => elem.IsCancellationPending == true))
         {
           LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): Cancellation detected");
           break;
         }
 
         // If ARP scan has stopped break out of the loop
-        if (this.observers.Any(elem => elem.IsCancellationPending == true))
+        if (this.observersArpRequest.Any(elem => elem.IsCancellationPending == true))
         {
           LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): ARP scan process has stopped");
           break;
@@ -96,8 +97,15 @@
         int currentPercentage = this.CalculatePercentage(totalIps, counter);
         if (currentPercentage >= percentageCounter)
         {
-          this.NotifyProgressBar(currentPercentage);
+          this.NotifyProgressBarArpRequest(currentPercentage);
           percentageCounter += 10;
+        }
+
+        // Notify observer about current IP
+        if (tmpIpInt % 5 == 0)
+        {
+          var currIpStr = this.IpLongToString(tmpIpInt);
+          this.NotifyProgressCurrentIp(currIpStr);
         }
       }
     }
@@ -181,20 +189,54 @@
       return addressIntHostOrder;
     }
 
+
+    public string IpLongToString(long longIP)
+    {
+      string ip = string.Empty;
+      for (int i = 0; i< 4; i++)
+      {
+        int num = (int)(longIP / Math.Pow(256, (3 - i)));
+        longIP = longIP - (long) (num* Math.Pow(256, (3 - i)));
+
+        if (i == 0)
+          ip = num.ToString();
+        else
+          ip  = ip + "." + num.ToString();
+      }
+
+      return ip;
+    }
+
     #endregion
 
 
-    #region INTERFACE: IObservable
+    #region INTERFACE: IObservableArpRequest
 
-    public void AddObserver(IObserverArpRequest observer)
+    public void AddObserverArpRequest(IObserverArpRequest observer)
     {
-      this.observers.Add(observer);
+      this.observersArpRequest.Add(observer);
     }
 
 
-    public void NotifyProgressBar(int progress)
+    public void NotifyProgressBarArpRequest(int progress)
     {
-      this.observers.ForEach(elem => elem.UpdateProgressbar(progress));
+      this.observersArpRequest.ForEach(elem => elem.UpdateProgressbar(progress));
+    }
+
+    #endregion
+
+
+    #region INTERFACE: IObservableCurrentIP
+
+    public void AddObserverCurrentIp(IObserverArpCurrentIp observer)
+    {
+      this.observersCurrentIp.Add(observer);
+    }
+
+
+    public void NotifyProgressCurrentIp(string currentIp)
+    {
+      this.observersCurrentIp.ForEach(elem => elem.UpdateCurrentIp(currentIp));
     }
 
     #endregion
