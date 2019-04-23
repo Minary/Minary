@@ -6,7 +6,6 @@
   using Minary.LogConsole.Main;
   using System;
   using System.Text.RegularExpressions;
-  using System.Windows.Forms;
 
 
   public partial class ArpScan : IObserverArpRequest, IObserverArpResponse, IObserverArpCurrentIp

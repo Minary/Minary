@@ -1,7 +1,6 @@
 ﻿namespace Minary.Form.ArpScan.Presentation
 {
   using Minary.Common;
-  using Minary.DataTypes.ArpScan;
   using Minary.DataTypes.Enum;
   using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
@@ -11,7 +10,7 @@
   using System.Windows.Forms;
 
 
-  public partial class ArpScan : IObserverArpRequest
+  public partial class ArpScan 
   {
 
     #region MEMBERS

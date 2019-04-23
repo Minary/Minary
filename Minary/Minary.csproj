@@ -277,11 +277,11 @@
     <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Interface.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\SimpleGUI\SimpleGuiUserControl.cs">
+    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Main.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\SimpleGUI\SimpleGuiUserControl.Designer.cs">
-      <DependentUpon>SimpleGuiUserControl.cs</DependentUpon>
+    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Main.Designer.cs">
+      <DependentUpon>SimpleGuiUserControl_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Main\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
@@ -296,6 +296,13 @@
     <Compile Include="Form\Plugin\TabPageHandler.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Events.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Interfaces.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Form\SimpleGUI\2_Task\SimpleGuiTask.cs" />
     <Compile Include="Form\Template\1_Presentation\CreateTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -371,8 +378,8 @@
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\Main\1_Presentation\SimpleGUI\SimpleGuiUserControl.resx">
-      <DependentUpon>SimpleGuiUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Main.resx">
+      <DependentUpon>SimpleGuiUserControl_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Updates\1_Presentation\FormCheckNewVersion.resx">
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>

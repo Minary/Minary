@@ -11,6 +11,7 @@
   using Minary.Domain.Main;
   using Minary.Domain.Network;
   using Minary.Form;
+  using Minary.Form.SimpleGUI.Presentation;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Enum;
@@ -38,7 +39,7 @@
     private bool attackStarted;
     private Minary.Form.Main.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
-    private Minary.Form.SimpleGUI.SimpleGuiUserControl simpleGui;
+    private SimpleGuiUserControl simpleGui;
 
     // GUI handlers
     private ArpScan.Presentation.ArpScan arpScanHandler;
@@ -194,9 +195,11 @@
       this.templateTaskLayer = new Template.Task.TemplateHandler(this);
 
       // Create SimpleGUI
-      this.simpleGui = new Minary.Form.SimpleGUI.SimpleGuiUserControl();
-      this.simpleGui.Visible = true;
+      this.simpleGui = new SimpleGuiUserControl(this);
+      this.simpleGui.Parent = this;
+      this.simpleGui.Visible = false;
       this.Controls.Add(simpleGui);
+      this.simpleGui.Dock = DockStyle.Fill;
     }
 
 

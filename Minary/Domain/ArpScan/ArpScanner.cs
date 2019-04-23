@@ -19,6 +19,7 @@
 
     #region MEMBERS
 
+// private static ArpScanner inst;
     private ArpScanConfig config;
 
     private byte[] localMacBytes = new byte[6];
@@ -29,6 +30,13 @@
 
     private List<IObserverArpRequest> observersArpRequest = new List<IObserverArpRequest>();
     private List<IObserverArpCurrentIp> observersCurrentIp = new List<IObserverArpCurrentIp>();
+
+    #endregion
+
+
+    #region PROPERTIES
+
+ //   private static ArpScanner Inst { get { return inst ?? (inst = new ArpScanner()); } set { } }
 
     #endregion
 

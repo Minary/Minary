@@ -1,14 +1,11 @@
 ﻿namespace Minary.Domain.ArpScan
 {
   using Minary.DataTypes.ArpScan;
-  using Minary.DataTypes.Enum;
   using Minary.Form.ArpScan.DataTypes;
-  using Minary.LogConsole.Main;
   using PcapDotNet.Core;
   using PcapDotNet.Packets;
   using PcapDotNet.Packets.Arp;
   using PcapDotNet.Packets.Ethernet;
-  using System;
   using System.Collections.Generic;
   using System.Linq;
 

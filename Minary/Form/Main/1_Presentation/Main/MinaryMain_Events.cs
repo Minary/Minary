@@ -8,6 +8,7 @@
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Class;
   using MinaryLib.AttackService.Enum;
+
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
@@ -349,25 +350,13 @@
 
       if (Config.IsSimpleGuiOn == true)
       {
-        this.gb_TargetRange.Visible = false;
-        this.gb_Interfaces.Visible = false;
-        this.flp_AttackServices.Visible = false;
-        this.ms_MainWindow.Visible = false;
-        this.bt_Attack.Visible = false;
-        this.bt_ScanLan.Visible = false;
-        this.tc_Plugins.Visible = false;
-        this.simpleGui.Visible = true;
+        this.SimpleGuiEnable();
+        this.SimpleGuiStartScanning();
       }
       else
       {
-        this.gb_TargetRange.Visible = true;
-        this.gb_Interfaces.Visible = true;
-        this.flp_AttackServices.Visible = true;
-        this.ms_MainWindow.Visible = true;
-        this.bt_Attack.Visible = true;
-        this.bt_ScanLan.Visible = true;
-        this.tc_Plugins.Visible = true;
-        this.simpleGui.Visible = false;
+        this.SimpleGuiDisable();
+        this.SimpleGuiStopScanning();
       }
     }
 
@@ -598,6 +587,45 @@ private Dictionary<string, List<object>> pluginParams2AttackServices = new Dicti
         o.Opacity -= 0.05;
       }
       o.Opacity = 0; //make fully invisible       
+    }
+
+
+    private void SimpleGuiDisable()
+    {
+      this.gb_TargetRange.Visible = true;
+      this.gb_Interfaces.Visible = true;
+      this.flp_AttackServices.Visible = true;
+      this.ms_MainWindow.Visible = true;
+      this.bt_Attack.Visible = true;
+      this.bt_ScanLan.Visible = true;
+      this.tc_Plugins.Visible = true;
+      this.simpleGui.Visible = false;
+    }
+
+
+    private void SimpleGuiEnable()
+    {
+      this.gb_TargetRange.Visible = false;
+      this.gb_Interfaces.Visible = false;
+      this.flp_AttackServices.Visible = false;
+      this.ms_MainWindow.Visible = false;
+      this.bt_Attack.Visible = false;
+      this.bt_ScanLan.Visible = false;
+      this.tc_Plugins.Visible = false;
+      this.simpleGui.Visible = true;
+    }
+
+
+    private void SimpleGuiStartScanning()
+    {
+      //var arpScanConf = this.GetArpScanConfig();
+      //Minary.Domain.ArpScan.ArpScanner.Inst.
+
+    }
+
+
+    private void SimpleGuiStopScanning()
+    {
     }
 
     #endregion
