@@ -117,6 +117,8 @@
       this.tsmi_LoadTemplate.Enabled = false;
       this.tsmi_CreateTemplate.Enabled = false;
       this.tsmi_UnloadTemplate.Enabled = false;
+      this.tsmi_SimpleGUI.Enabled = false;
+      this.tsmi_TlsSslCertificates.Enabled = false;
     }
 
    
@@ -137,6 +139,8 @@
       this.tsmi_LoadTemplate.Enabled = true;
       this.tsmi_CreateTemplate.Enabled = true;
       this.tsmi_UnloadTemplate.Enabled = true;
+      this.tsmi_SimpleGUI.Enabled = true;
+      this.tsmi_TlsSslCertificates.Enabled = true;
     }
 
 
