@@ -12,6 +12,30 @@
   public partial class SimpleGuiUserControl
   {
 
+    private void DGV_SimpleGui_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+
+    }
+
+
+    private void SimpleGuiUserControl_VisibleChanged(object sender, System.EventArgs e)
+    {
+      if (this.Visible == true &&
+          this.Disposing == false)
+      {
+        this.StartArpScanListener();
+        this.StartArpScanSender();
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: SimpleGUI started");
+      }
+      else
+      {
+        this.bgw_ArpScanSender.CancelAsync();
+        this.bgw_ArpScanListener.CancelAsync();
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: SimpleGUI stopped");
+      }
+    }
+
+
     #region EVENTS: BGW_ArpScanSender
 
     private void BGW_ArpScanSender_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -36,6 +60,7 @@
       ArpScanConfig arpScanConfig = null;
       ArpScanner arpScanner = null;
 
+      // Configure ARP scan object
       try
       {
         arpScanConfig = this.GetArpScanConfig();
@@ -44,33 +69,41 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanSender(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
-      }      
+      }
+
+      // In an endless loop scan all MAC addresses within the 
+      // subnet until the BGW is cancelled.
+      int roundCounter = 0;
+      int sleepSecondsOnError = 5;
+      while (true)
+      {
+        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} started");
+        if (this.bgw_ArpScanSender.CancellationPending == true)
+        {
+          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan cancelled");
+          break;
+        }
+
+        try
+        {
+          arpScanner.AddObserverArpRequest(this);
+          arpScanner.StartScanning();
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanSender(EXCEPTION2.0): {ex.Message}\r\n{ex.StackTrace}");
+          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanSender(EXCEPTION2.1): Sleeping for {sleepSecondsOnError} seconds");
+          System.Threading.Thread.Sleep(sleepSecondsOnError * 1000);
+        }
+
+        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} finished");
+        roundCounter++;
+        System.Threading.Thread.Sleep(3000);
+      }
+
+      LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan stopped after {roundCounter} rounds");
     }
-
-
-    private void DGV_SimpleGui_CellContentClick(object sender, DataGridViewCellEventArgs e)
-    {
-
-    }
-
     
-    private void SimpleGuiUserControl_VisibleChanged(object sender, System.EventArgs e)
-    {
-      if (this.Visible == true && 
-          this.Disposing == false)
-      {
-        this.StartArpScanListener();
-        this.StartArpScanSender();
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: SimpleGUI started");
-      }
-      else
-      {
-        this.bgw_ArpScanSender.CancelAsync();
-        this.bgw_ArpScanListener.CancelAsync();
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: SimpleGUI stopped");
-      }
-    }
-
     #endregion
 
 
@@ -131,14 +164,14 @@
     public void StartArpScanListener(Action onScanDoneCallback = null)
     {
       // Initiate ARP scan cancellation
-      if (this.bgw_ArpScanListener.IsBusy == false)
+      if (this.bgw_ArpScanListener.IsBusy == true)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanListener started");
-        this.bgw_ArpScanListener.RunWorkerAsync();
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanListener is already running");
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanListener can not be started");
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanListener started");
+        this.bgw_ArpScanListener.RunWorkerAsync();
       }
     }
 
