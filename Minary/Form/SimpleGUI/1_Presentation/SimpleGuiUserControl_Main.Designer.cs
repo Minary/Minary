@@ -38,6 +38,7 @@
       // 
       this.dgv_SimpleGui.AllowUserToAddRows = false;
       this.dgv_SimpleGui.AllowUserToDeleteRows = false;
+      this.dgv_SimpleGui.AllowUserToResizeColumns = false;
       this.dgv_SimpleGui.AllowUserToResizeRows = false;
       this.dgv_SimpleGui.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dgv_SimpleGui.Location = new System.Drawing.Point(13, 17);
@@ -45,6 +46,7 @@
       this.dgv_SimpleGui.Name = "dgv_SimpleGui";
       this.dgv_SimpleGui.RowHeadersVisible = false;
       this.dgv_SimpleGui.RowTemplate.Height = 28;
+      this.dgv_SimpleGui.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.dgv_SimpleGui.Size = new System.Drawing.Size(1040, 764);
       this.dgv_SimpleGui.TabIndex = 0;
       this.dgv_SimpleGui.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_SimpleGui_CellContentClick);

@@ -177,6 +177,7 @@
     <Compile Include="DataTypes\ArpScan\IObserverArpRequest.cs" />
     <Compile Include="DataTypes\ArpScan\IObserverArpResponse.cs" />
     <Compile Include="DataTypes\ArpScan\SystemFound.cs" />
+    <Compile Include="DataTypes\ArpScan\SystemFoundSimple.cs" />
     <Compile Include="DataTypes\DTO\Release.cs" />
     <Compile Include="DataTypes\Enum\LastConnectionState.cs" />
     <Compile Include="DataTypes\Interface\IInputProcessor.cs" />

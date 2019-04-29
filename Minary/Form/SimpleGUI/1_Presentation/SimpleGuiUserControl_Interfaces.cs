@@ -2,8 +2,10 @@
 {
   using Minary.DataTypes.ArpScan;
   using Minary.DataTypes.Enum;
+  using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
+  using System.Linq;
 
 
   public partial class SimpleGuiUserControl: IObserverArpResponse, IObserverArpRequest
@@ -48,21 +50,20 @@
         return;
       }
 
-      //if (this.targetStringList.Contains(systemData.IpAddress) == true)
-      //{
-      //  LogCons.Inst.Write(LogLevel.Debug, $"ArpScan.UpdateTextBox(): {systemData.MacAddress}/{systemData.IpAddress} already exists");
-      //  return;
-      //}
+      if (this.targetStringList.Where(elem => elem.IpAddress == systemData.IpAddress).ToList().Count > 0)
+      {
+        LogCons.Inst.Write(LogLevel.Debug, $"ArpScan.UpdateTextBox(): {systemData.MacAddress}/{systemData.IpAddress} already exists");
+        return;
+      }
 
       try
       {
         // Determine vendor
-      //  string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
+        string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
         if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
             systemData.IpAddress != this.arpScanConfig.LocalIp)
         {
-      //    this.targetStringList.Add(systemData.IpAddress);
-      //    this.TargetList.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
+          this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
           LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
         }
       }

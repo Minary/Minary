@@ -1,11 +1,10 @@
 ﻿namespace Minary.Form.SimpleGUI.Presentation
 {
-  using Minary.DataTypes.Enum;
-  using Minary.Domain.ArpScan;
-  using Minary.LogConsole.Main;
+  using Minary.Domain.MacVendor;
+  using Minary.DataTypes.ArpScan;
   using Minary.Form.Main;
   using PcapDotNet.Core;
-  using System;
+  using System.ComponentModel;
   using System.Windows.Forms;
 
 
@@ -16,6 +15,8 @@
 
     private MinaryMain minaryObj;
     private PacketCommunicator communicator;
+    private BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
+    private MacVendorHandler macVendorHandler = new MacVendorHandler();
 
     #endregion
 
@@ -38,32 +39,35 @@
       columnIpAddress.ReadOnly = true;
       columnIpAddress.Width = 200;
       this.dgv_SimpleGui.Columns.Add(columnIpAddress);
-      
-      var columnOs = new DataGridViewImageColumn();
-      columnOs.DataPropertyName = "OperatingSystem";
-      columnOs.Name = "OperatingSystem";
-      columnOs.HeaderText = "OS";
-      columnOs.Visible = true;
-      columnOs.ReadOnly = true;
-      columnOs.Width = 200;
-      this.dgv_SimpleGui.Columns.Add(columnOs);
 
-      var columnBlockNetwork = new DataGridViewCheckBoxColumn();
-      columnBlockNetwork.DataPropertyName = "Block";
-      columnBlockNetwork.Name = "Block";
-      columnBlockNetwork.HeaderText = "Block";
+      var columnMacAddress = new DataGridViewImageColumn();
+      columnMacAddress.DataPropertyName = "MacAddress";
+      columnMacAddress.Name = "MacAddress";
+      columnMacAddress.HeaderText = "MacAddress";
+      columnMacAddress.Visible = false;
+      columnMacAddress.ReadOnly = true;
+      columnMacAddress.Width = 200;
+      this.dgv_SimpleGui.Columns.Add(columnMacAddress);
+
+      var columnBlockNetwork = new DataGridViewButtonColumn();
+      columnBlockNetwork.DataPropertyName = "TakeOver";
+      columnBlockNetwork.Name = "TakeOver";
+      columnBlockNetwork.HeaderText = "Take over";
       columnBlockNetwork.Visible = true;
-      columnBlockNetwork.Width = 200;
+      columnBlockNetwork.Width = 100;
       this.dgv_SimpleGui.Columns.Add(columnBlockNetwork);
 
-      var columnBlockRedir = new DataGridViewTextBoxColumn();
-      columnBlockRedir.DataPropertyName = "Redirect";
-      columnBlockRedir.Name = "Redirect";
-      columnBlockRedir.HeaderText = "Umleiten";
-      columnBlockRedir.Visible = true;
-      columnBlockRedir.Width = 200;
-      columnBlockRedir.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-      this.dgv_SimpleGui.Columns.Add(columnBlockRedir);      
+      var columnLastSeen = new DataGridViewTextBoxColumn();
+      columnLastSeen.DataPropertyName = "LastSeen";
+      columnLastSeen.Name = "LastSeen";
+      columnLastSeen.HeaderText = "Last seen";
+      columnLastSeen.Visible = true;
+      columnLastSeen.Width = 100;
+      columnLastSeen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+      this.dgv_SimpleGui.Columns.Add(columnLastSeen);
+
+      // Initialize DGV data source list
+      this.dgv_SimpleGui.DataSource = this.targetStringList;
     }
 
     #endregion
