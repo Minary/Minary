@@ -3,11 +3,11 @@
   using Minary.DataTypes.ArpScan;
   using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
+  using System;
 
 
   public partial class SimpleGuiUserControl: IObserverArpResponse, IObserverArpRequest
   {
-
 
     #region INTERFACE: IObserverArpRequest
 
@@ -54,22 +54,22 @@
       //  return;
       //}
 
-      //try
-      //{
-      //  // Determine vendor
+      try
+      {
+        // Determine vendor
       //  string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
-      //  if (systemData.IpAddress != this.gatewayIp &&
-      //      systemData.IpAddress != this.localIp)
-      //  {
+        if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
+            systemData.IpAddress != this.arpScanConfig.LocalIp)
+        {
       //    this.targetStringList.Add(systemData.IpAddress);
       //    this.TargetList.Add(new TargetRecord(systemData.IpAddress, systemData.MacAddress, vendor));
-      //    LogCons.Inst.Write(LogLevel.Info, $"UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
-      //  }
-      //}
-      //catch (Exception ex)
-      //{
-      //  LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
-      //}
+          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
+        }
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
+      }
     }
 
     #endregion

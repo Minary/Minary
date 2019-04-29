@@ -1,7 +1,6 @@
 ﻿namespace Minary.DataTypes.ArpScan
 {
-
-
+  
   public interface IObserverArpResponse
   {
     bool IsCancellationPending { get; set; }

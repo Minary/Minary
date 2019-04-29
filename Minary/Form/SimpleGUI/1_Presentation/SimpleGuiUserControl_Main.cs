@@ -1,8 +1,11 @@
 ﻿namespace Minary.Form.SimpleGUI.Presentation
 {
+  using Minary.DataTypes.Enum;
   using Minary.Domain.ArpScan;
+  using Minary.LogConsole.Main;
   using Minary.Form.Main;
   using PcapDotNet.Core;
+  using System;
   using System.Windows.Forms;
 
 
@@ -60,14 +63,7 @@
       columnBlockRedir.Visible = true;
       columnBlockRedir.Width = 200;
       columnBlockRedir.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-      this.dgv_SimpleGui.Columns.Add(columnBlockRedir);
-      
-      // Initialize observer
-      Minary.Form.SimpleGUI.Task.SimpleGuiTask.Inst.AddObserver(this);
-
-      // ...
-      this.communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryObj.CurrentInterfaceId, 1);
-      
+      this.dgv_SimpleGui.Columns.Add(columnBlockRedir);      
     }
 
     #endregion

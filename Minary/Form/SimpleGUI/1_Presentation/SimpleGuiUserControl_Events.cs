@@ -12,6 +12,17 @@
   public partial class SimpleGuiUserControl
   {
 
+    #region MEMBERS
+    
+    private ArpScanConfig arpScanConfig = null;
+    private ArpScanner arpScanner = null;
+    public ReplyListener replyListener = null;
+
+    #endregion
+
+
+    #region EVENTS
+
     private void DGV_SimpleGui_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
 
@@ -23,15 +34,50 @@
       if (this.Visible == true &&
           this.Disposing == false)
       {
+        // Configure ARP scan object
+        //this.arpScanner.Config = this.GetArpScanConfig();
+        // Instanciate ARP scanner object
+        try
+        {
+          this.arpScanConfig = this.GetArpScanConfig();
+          this.arpScanner = new ArpScanner(this.arpScanConfig);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
+        }
+
+
+        try
+        {
+          this.replyListener = new ReplyListener(this.arpScanConfig);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
+          return;
+        }
+
+        try
+        {
+          this.replyListener.AddObserver(this);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
+          return;
+        }
+
         this.StartArpScanListener();
         this.StartArpScanSender();
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: SimpleGUI started");
+
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI started");
       }
       else
       {
         this.bgw_ArpScanSender.CancelAsync();
         this.bgw_ArpScanListener.CancelAsync();
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: SimpleGUI stopped");
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI stopped");
       }
     }
 
@@ -57,24 +103,11 @@
 
     private void BGW_ArpScanSender_DoWork(object sender, DoWorkEventArgs e)
     {
-      ArpScanConfig arpScanConfig = null;
-      ArpScanner arpScanner = null;
-
-      // Configure ARP scan object
-      try
-      {
-        arpScanConfig = this.GetArpScanConfig();
-        arpScanner = new ArpScanner(arpScanConfig);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanSender(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
-      }
-
       // In an endless loop scan all MAC addresses within the 
       // subnet until the BGW is cancelled.
       int roundCounter = 0;
       int sleepSecondsOnError = 5;
+
       while (true)
       {
         LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} started");
@@ -86,8 +119,7 @@
 
         try
         {
-          arpScanner.AddObserverArpRequest(this);
-          arpScanner.StartScanning();
+          this.arpScanner.StartScanning();
         }
         catch (Exception ex)
         {
@@ -123,29 +155,26 @@
       {
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Completed successfully");
       }
+
+      //try
+      //{
+      //  this.replyListener.StartReceivingArpPackets();
+      //}
+      //catch (Exception ex)
+      //{
+      //  LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
+      //  return;
+      //}
     }
 
 
     private void BGW_ArpScanListener_DoWork(object sender, DoWorkEventArgs e)
     {
-      ArpScanConfig arpScanConfig = null;
-      ReplyListener replyListener = null;
+      LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Background worker started");
 
       try
       {
-        arpScanConfig = this.GetArpScanConfig();
-        replyListener = new ReplyListener(arpScanConfig);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
-        return;
-      }
-
-      try
-      {
-        replyListener.AddObserver(this);
-        replyListener.StartReceivingArpPackets();
+        this.replyListener.StartReceivingArpPackets();
       }
       catch (Exception ex)
       {
@@ -153,15 +182,17 @@
         return;
       }
 
-      LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Background worker is started");
+      LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Background worker stopped");
     }
 
+    #endregion
+    
     #endregion
 
 
     #region PRIVATE
 
-    public void StartArpScanListener(Action onScanDoneCallback = null)
+    private void StartArpScanListener(Action onScanDoneCallback = null)
     {
       // Initiate ARP scan cancellation
       if (this.bgw_ArpScanListener.IsBusy == true)
@@ -176,7 +207,7 @@
     }
 
 
-    public void StartArpScanSender(Action onScanDoneCallback = null)
+    private void StartArpScanSender(Action onScanDoneCallback = null)
     {
       // Initiate ARP scan cancellation
       if (this.bgw_ArpScanSender.IsBusy == false)
@@ -194,6 +225,8 @@
     private ArpScanConfig GetArpScanConfig()
     {
       DataTypes.Struct.MinaryConfig minaryConfig = this.minaryObj.MinaryTaskFacade.GetCurrentMinaryConfig();
+      this.communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryObj.CurrentInterfaceId, 1);
+
       // ArpScanner
       ArpScanConfig arpScanConfig = new ArpScanConfig()
       {

@@ -302,7 +302,6 @@
     <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Interfaces.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\SimpleGUI\2_Task\SimpleGuiTask.cs" />
     <Compile Include="Form\Template\1_Presentation\CreateTemplate.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -35,8 +35,9 @@
 
 
     #region PROPERTIES
-
- //   private static ArpScanner Inst { get { return inst ?? (inst = new ArpScanner()); } set { } }
+    
+    public ArpScanConfig Config { get; set; }
+    //   private static ArpScanner Inst { get { return inst ?? (inst = new ArpScanner()); } set { } }
 
     #endregion
 
@@ -72,13 +73,6 @@
 
       for (int counter = 0; counter < totalIps; counter++)
       {
-        // If ARP scan was cancelled break out of the loop
-        if (this.observersArpRequest.Any(elem => elem.IsCancellationPending == true))
-        {
-          LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): Cancellation detected");
-          break;
-        }
-
         // If ARP scan has stopped break out of the loop
         if (this.observersArpRequest.Any(elem => elem.IsCancellationPending == true))
         {
