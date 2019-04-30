@@ -50,26 +50,31 @@
         return;
       }
 
-      if (this.targetStringList.Where(elem => elem.IpAddress == systemData.IpAddress).ToList().Count > 0)
+      // Add new record line if system does not exist
+      if (this.targetStringList.Where(elem => elem.IpAddress == systemData.IpAddress).ToList().Count <= 0)
       {
-        LogCons.Inst.Write(LogLevel.Debug, $"ArpScan.UpdateTextBox(): {systemData.MacAddress}/{systemData.IpAddress} already exists");
-        return;
-      }
-
-      try
-      {
-        // Determine vendor
-        string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
-        if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
-            systemData.IpAddress != this.arpScanConfig.LocalIp)
+        try
         {
-          this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
-          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
+          // Determine vendor
+          string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
+          if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
+              systemData.IpAddress != this.arpScanConfig.LocalIp)
+          {
+            this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
+            LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
+          }
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
         }
       }
-      catch (Exception ex)
+
+      // Update "last seen" timestamp
+      var rec = this.targetStringList.Where(elem => elem.MacAddress == systemData.MacAddress).FirstOrDefault();
+      if (rec != null)
       {
-        LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
+        rec.LastSeen = DateTime.Now;
       }
     }
 
