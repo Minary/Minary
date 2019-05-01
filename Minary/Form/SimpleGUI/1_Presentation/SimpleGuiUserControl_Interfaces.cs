@@ -2,7 +2,6 @@
 {
   using Minary.DataTypes.ArpScan;
   using Minary.DataTypes.Enum;
-  using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
   using System.Linq;
@@ -68,6 +67,10 @@
         {
           LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
         }
+      }
+      else
+      {
+        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Redetected target system {systemData.MacAddress}/{systemData.IpAddress}");
       }
 
       // Update "last seen" timestamp

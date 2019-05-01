@@ -49,21 +49,23 @@
       columnMacAddress.Width = 200;
       this.dgv_SimpleGui.Columns.Add(columnMacAddress);
 
-      var columnBlockNetwork = new DataGridViewButtonColumn();
-      columnBlockNetwork.DataPropertyName = "TakeOver";
-      columnBlockNetwork.Name = "TakeOver";
-      columnBlockNetwork.HeaderText = "Take over";
-      columnBlockNetwork.Visible = true;
-      columnBlockNetwork.Width = 100;
-      this.dgv_SimpleGui.Columns.Add(columnBlockNetwork);
+      var columnAttack = new DataGridViewCheckBoxColumn();
+      columnAttack.DataPropertyName = "Attack";
+      columnAttack.Name = "Attack";
+      columnAttack.HeaderText = "Attack";
+      columnAttack.Visible = true;
+      columnAttack.Width = 100;
+      this.dgv_SimpleGui.Columns.Add(columnAttack);
 
       var columnLastSeen = new DataGridViewTextBoxColumn();
       columnLastSeen.DataPropertyName = "LastSeen";
       columnLastSeen.Name = "LastSeen";
       columnLastSeen.HeaderText = "Last seen";
       columnLastSeen.Visible = true;
+      columnLastSeen.ReadOnly = true;
       columnLastSeen.Width = 100;
       columnLastSeen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+      columnLastSeen.DefaultCellStyle.Format = "yyyy.MM.dd HH:mm:ss";
       this.dgv_SimpleGui.Columns.Add(columnLastSeen);
 
       // Initialize DGV data source list

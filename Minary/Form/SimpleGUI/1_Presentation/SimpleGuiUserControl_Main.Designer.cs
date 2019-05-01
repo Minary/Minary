@@ -52,7 +52,7 @@
       this.dgv_SimpleGui.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.dgv_SimpleGui.Size = new System.Drawing.Size(1343, 803);
       this.dgv_SimpleGui.TabIndex = 0;
-      this.dgv_SimpleGui.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_SimpleGui_CellContentClick);
+      this.dgv_SimpleGui.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSimpleGui_CellContentClick);
       // 
       // bgw_ArpScanSender
       // 

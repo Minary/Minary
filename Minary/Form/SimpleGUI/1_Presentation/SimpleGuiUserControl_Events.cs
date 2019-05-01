@@ -23,9 +23,21 @@
 
     #region EVENTS
 
-    private void DGV_SimpleGui_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void DgvSimpleGui_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
+      if (e.ColumnIndex != this.dgv_SimpleGui.Columns["Attack"].Index)
+      {
+        return;
+      }
+      
+      var targetIp = this.dgv_SimpleGui.Rows[e.RowIndex].Cells["IpAddress"].Value;
+      var targetMac = this.dgv_SimpleGui.Rows[e.RowIndex].Cells["MacAddress"].Value;
 
+      this.dgv_SimpleGui.EndEdit();
+      var startAttack = (bool)this.dgv_SimpleGui.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+      var action = startAttack == true ? "Starting" : "Stopping";
+
+      LogCons.Inst.Write(LogLevel.Info, $"{action} attack on {targetIp}");      
     }
 
 
@@ -155,16 +167,6 @@
       {
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Completed successfully");
       }
-
-      //try
-      //{
-      //  this.replyListener.StartReceivingArpPackets();
-      //}
-      //catch (Exception ex)
-      //{
-      //  LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
-      //  return;
-      //}
     }
 
 
