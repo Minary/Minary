@@ -67,6 +67,8 @@
 
     public string CurrentInterfaceId { get; set; } = string.Empty;
 
+    public int CurrentInterfaceIndex { get { return this.currentInterfaceIndex; } set { } }
+
     public BindingList<PluginTableRecord> UsedPlugins { get { return this.usedPlugins; } }
 
 

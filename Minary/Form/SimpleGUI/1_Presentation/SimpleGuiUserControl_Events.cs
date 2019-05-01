@@ -4,8 +4,10 @@
   using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
+  using MinaryLib.AttackService.Class;
   using System;
   using System.ComponentModel;
+  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -41,7 +43,7 @@
     }
 
 
-    private void SimpleGuiUserControl_VisibleChanged(object sender, System.EventArgs e)
+    private void SimpleGuiUserControl_VisibleChanged(object sender, EventArgs e)
     {
       if (this.Visible == true &&
           this.Disposing == false)
@@ -58,7 +60,6 @@
         {
           LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
         }
-
 
         try
         {
@@ -82,14 +83,33 @@
 
         this.StartArpScanListener();
         this.StartArpScanSender();
+        
+        // Start attack services
+        // First let all plugins prepare their environment before 
+        // the actual attack begins.
+        this.minaryObj.PrepareAttackAllPlugins();
 
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI started");
+        // After the plugins were prepared start all
+        // attack services.
+        var currentServiceParams = new StartServiceParameters()
+        {
+          SelectedIfcIndex = this.minaryObj.CurrentInterfaceIndex,
+          SelectedIfcId = this.minaryObj.NetworkHandler.GetNetworkInterfaceIdByIndex(this.minaryObj.CurrentInterfaceIndex),
+          TargetList = (from target in this.minaryObj.ArpScanHandler.TargetList
+                        where target.Attack == true
+                        select new { target.MacAddress, target.IpAddress }).
+                            ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
+        };
+
+        this.minaryObj.StartAttackAllServices(currentServiceParams);
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices started");
       }
       else
       {
         this.bgw_ArpScanSender.CancelAsync();
         this.bgw_ArpScanListener.CancelAsync();
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI stopped");
+        this.minaryObj?.MinaryAttackServiceHandler?.StopAllServices();
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices  stopped");
       }
     }
 

@@ -22,6 +22,13 @@
   public partial class MinaryMain : IMinaryState
   {
 
+    #region MEMBERS
+
+    private Dictionary<string, List<object>> pluginParams2AttackServices = new Dictionary<string, List<object>>();
+
+    #endregion
+
+
     #region EVENTS
 
     private void BT_ScanLan_Click(object sender, EventArgs e)
@@ -492,11 +499,7 @@
     }
 
 
-private Dictionary<string, List<object>> pluginParams2AttackServices = new Dictionary<string, List<object>>();
-//private Dictionary<string, List<string>> pluginParams2AttackServices = new Dictionary<string, List<string>>();
-
-
-    private void PrepareAttackAllPlugins()
+    public void PrepareAttackAllPlugins()
     {
       // Clear all the plugins parameter dict.
       this.pluginParams2AttackServices.Clear();
@@ -543,7 +546,7 @@ private Dictionary<string, List<object>> pluginParams2AttackServices = new Dicti
     }
 
 
-    private void StartAttackAllServices(StartServiceParameters serviceParameters)
+    public void StartAttackAllServices(StartServiceParameters serviceParameters)
     {
       foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
       {
@@ -594,7 +597,6 @@ private Dictionary<string, List<object>> pluginParams2AttackServices = new Dicti
     {
       this.gb_TargetRange.Visible = true;
       this.gb_Interfaces.Visible = true;
-      this.flp_AttackServices.Visible = true;
       this.ms_MainWindow.Visible = true;
       this.bt_Attack.Visible = true;
       this.bt_ScanLan.Visible = true;
@@ -607,7 +609,6 @@ private Dictionary<string, List<object>> pluginParams2AttackServices = new Dicti
     {
       this.gb_TargetRange.Visible = false;
       this.gb_Interfaces.Visible = false;
-      this.flp_AttackServices.Visible = false;
       this.ms_MainWindow.Visible = false;
       this.bt_Attack.Visible = false;
       this.bt_ScanLan.Visible = false;
