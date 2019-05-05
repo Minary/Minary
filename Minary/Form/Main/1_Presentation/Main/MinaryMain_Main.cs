@@ -210,17 +210,17 @@
       // Set current Debugging mode in GUI
       if (Debugging.IsDebuggingOn)
       {
-        this.tsmi_Debugging.Text = "Debugging (is on)";
+        this.tsmi_Debugging.Text = "Debugging (on)";
         this.SetAppTitle("Debugging");
       }
       else
       {
-        this.tsmi_Debugging.Text = "Debugging (is off)";
+        this.tsmi_Debugging.Text = "Debugging (off)";
         this.SetAppTitle(string.Empty);
       }
 
       // Set current SimpleGUI mode in MainForm
-      this.tsmi_Debugging.Text = string.Format("Debugging (is {0})", Config.IsSimpleGuiOn?"on":"off");
+      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Config.IsSimpleGuiOn?"on":"off");
 
       // Populate network interface.
       this.LoadNicSettings();

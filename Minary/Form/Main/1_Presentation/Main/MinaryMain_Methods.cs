@@ -66,14 +66,19 @@
       else if (this.attackStarted == false)
       {
         this.bgw_OnStartAttack.RunWorkerAsync();
+        // Set TSMI Attack Status note
+        this.tsmi_Attack.Text = "Attack (started)";
 
-      // In any other case stop a running attack
+        // In any other case stop a running attack
       }
       else
       {
         this.Cursor = Cursors.WaitCursor;
         this.StopAttack();
         this.Cursor = Cursors.Default;
+
+        // Set TSMI Attack Status note
+        this.tsmi_Attack.Text = "Attack (stopped)";
       }
     }
 

@@ -181,7 +181,7 @@
     private void DebugginOnToolStripMenuItem_Click(object sender, EventArgs e)
     {
       Debugging.IsDebuggingOn = !Debugging.IsDebuggingOn;
-      this.tsmi_Debugging.Text = string.Format("Debugging (is {0})", Debugging.IsDebuggingOn == true ? "on" : "off");
+      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Debugging.IsDebuggingOn == true ? "on" : "off");
       this.SetAppTitle(Debugging.IsDebuggingOn == true ? "Debugging" : string.Empty);
     }
 
@@ -345,14 +345,14 @@
 
     private void BeepToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      this.tsmi_Beep.Text = string.Format("Beep (is {0})", !this.inputProcessorHandler.IsBeepOn == true ? "on" : "off");
+      this.tsmi_Beep.Text = string.Format("Beep ({0})", !this.inputProcessorHandler.IsBeepOn == true ? "on" : "off");
       this.inputProcessorHandler.IsBeepOn = !this.inputProcessorHandler.IsBeepOn;
     }
 
     
     private void SimpleGuiToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      this.tsmi_SimpleGUI.Text = string.Format("Simple GUI (is {0})", !Config.IsSimpleGuiOn == true ? "on" : "off");
+      this.tsmi_SimpleGUI.Text = string.Format("Simple GUI ({0})", !Config.IsSimpleGuiOn == true ? "on" : "off");
       Config.IsSimpleGuiOn = !Config.IsSimpleGuiOn;
 
       if (Config.IsSimpleGuiOn == true)
@@ -463,6 +463,7 @@
         this.attackStarted = true;
       }
 
+      // Reset GUI controls/elements
       this.Cursor = Cursors.Default;
     }
 
