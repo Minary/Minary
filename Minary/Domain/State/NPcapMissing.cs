@@ -6,7 +6,7 @@
   using System;
 
 
-  public class WinPcapMissing : IMinaryState
+  public class NPcapMissing : IMinaryState
   {
 
     #region MEMBERS
@@ -15,12 +15,13 @@
 
     #endregion
 
+
     #region PUBLIC
 
-    public WinPcapMissing(MinaryMain minaryObj)
+    public NPcapMissing(MinaryMain minaryObj)
     {
       this.minaryObj = minaryObj;
-      this.CurrentState = MinaryState.WinPcapMissing;
+      this.CurrentState = MinaryState.NPcapMissing;
       this.Bt_Attack_Click += this.Bt_Attack_Click_Event;
       this.Bt_ScanLan_Click += this.Bt_ScanLan_Click_Event;
     }
@@ -39,13 +40,13 @@
 
     public void Bt_Attack_Click_Event(object sender, EventArgs e)
     {
-      throw new Exception("Can't start Minary because WinPcap is not installed.");
+      throw new Exception("Can't start Minary because NPcap is not installed.");
     }
 
 
     public void Bt_ScanLan_Click_Event(object sender, EventArgs e)
     {
-      throw new Exception("Can't scan network because WinPcap is not installed.");
+      throw new Exception("Can't scan network because NPcap is not installed.");
     }
 
 

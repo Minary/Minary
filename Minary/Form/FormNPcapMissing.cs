@@ -4,29 +4,29 @@
   using System.Windows.Forms;
 
 
-  public partial class FormWinPcapMissing : Form
+  public partial class FormNPcapMissing : Form
   {
 
     #region MEMBERS
 
-    private string winPcapUrl;
-    private string winPcapUrlAndPath;
+    private string nPcapUrl;
+    private string nPcapUrlAndPath;
 
     #endregion
 
 
     #region PUBLIC
 
-    public FormWinPcapMissing()
+    public FormNPcapMissing()
     {
       this.InitializeComponent();
 
-      this.winPcapUrl = "https://www.winpcap.org";
-      this.winPcapUrlAndPath = $"{this.winPcapUrl}/install/default.htm";
-      this.LL_WinPcapURL.Text = this.winPcapUrl;
-      this.RTB_Message.Text = "Minary cannot be started because WinPcap is not " +
+      this.nPcapUrl = "https://nmap.org/npcap/";
+      this.nPcapUrlAndPath = $"https://nmap.org/npcap/#download";
+      this.LL_NPcapURL.Text = this.nPcapUrl;
+      this.RTB_Message.Text = "Minary cannot be started because NPcap is not " +
                               "installed on your system. Follow  the link bellow " +
-                              "to get the latest WinPcap version.";
+                              "to get the latest NPcap version.";
     }
 
     #endregion
@@ -34,9 +34,9 @@
 
     #region PRIVATE
 
-    private void LL_WinPcapURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void LL_NPcapURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-      System.Diagnostics.Process.Start(this.winPcapUrlAndPath);
+      System.Diagnostics.Process.Start(this.nPcapUrlAndPath);
     }
 
 

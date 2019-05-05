@@ -84,7 +84,7 @@ public static readonly string BasisKey = $@"Software\{Config.RegistrySoftwareNam
 
     public static string CommonLanguateRuntime { get; set; }
 
-    public static string WinPcap { get; set; }
+    public static string NPcap { get; set; }
 
     #endregion
 

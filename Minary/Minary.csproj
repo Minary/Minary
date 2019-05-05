@@ -252,7 +252,7 @@
     <Compile Include="Common\Associations\RegistryUtilities.cs" />
     <Compile Include="Common\MinaryProcess.cs" />
     <Compile Include="Common\Utils.cs" />
-    <Compile Include="Common\WinPcap.cs" />
+    <Compile Include="Common\NPcap.cs" />
     <Compile Include="DataTypes\MinaryExtension.cs" />
     <Compile Include="Domain\Input\HandlerNamedPipe.cs" />
     <Compile Include="Domain\DSL\Calls.cs" />
@@ -340,11 +340,11 @@
     </Compile>
     <Compile Include="Common\Network\NetworkFunctions.cs" />
     <Compile Include="Form\Plugin\Config\PluginTableRecord.cs" />
-    <Compile Include="Form\FormWinPcapMissing.cs">
+    <Compile Include="Form\FormNPcapMissing.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\FormWinPcapMissing.Designer.cs">
-      <DependentUpon>FormWinPcapMissing.cs</DependentUpon>
+    <Compile Include="Form\FormNPcapMissing.Designer.cs">
+      <DependentUpon>FormNPcapMissing.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\Updates\2_Task\TaskFacade.cs" />
     <Compile Include="Form\Updates\Config\UpdateData.cs" />
@@ -353,7 +353,7 @@
     <Compile Include="Domain\State\NetworkMissing.cs" />
     <Compile Include="Domain\State\NotAdmin.cs" />
     <Compile Include="Domain\State\StateOk.cs" />
-    <Compile Include="Domain\State\WinPcapMissing.cs" />
+    <Compile Include="Domain\State\NPcapMissing.cs" />
     <EmbeddedResource Include="Form\ArpScan\1_Presentation\ArpScan_Main.resx">
       <DependentUpon>ArpScan_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -367,8 +367,8 @@
     <EmbeddedResource Include="Form\Certificates\1_Presentation\ManageServerCertificates.resx">
       <DependentUpon>ManageServerCertificates.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\FormWinPcapMissing.resx">
-      <DependentUpon>FormWinPcapMissing.cs</DependentUpon>
+    <EmbeddedResource Include="Form\FormNPcapMissing.resx">
+      <DependentUpon>FormNPcapMissing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\LogConsole\1_Presentation\LogConsole.resx">
       <DependentUpon>LogConsole.cs</DependentUpon>
@@ -420,9 +420,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\npcap_logo2.png" />
     <None Include="Resources\Minary_Logo_Small.png" />
     <None Include="Resources\Minary_Logo_Big.png" />
-    <None Include="Resources\winpcap_logo.png" />
+    <None Include="Resources\npcap_logo.png" />
     <None Include="Resources\FA_play.png" />
     <None Include="Resources\FA_Stop.png" />
     <None Include="Resources\FA_Scan.png" />

@@ -24,9 +24,9 @@
       {
         return new NetworkMissing(minaryObj);
       }
-      else if ((state & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
+      else if ((state & MinaryState.NPcapMissing) == MinaryState.NPcapMissing)
       {
-        return new WinPcapMissing(minaryObj);
+        return new NPcapMissing(minaryObj);
       }
       else if ((state & MinaryState.NotAdmin) == MinaryState.NotAdmin)
       {
@@ -54,9 +54,9 @@
       MinaryState retVal = MinaryState.StateOk;
 
       // Check WinPcap
-      if (string.IsNullOrEmpty(Utils.TryExecute(WinPcap.GetWinPcapVersion)) == true)
+      if (string.IsNullOrEmpty(Utils.TryExecute(NPcap.GetNPcapVersion)) == true)
       {
-        retVal |= MinaryState.WinPcapMissing;
+        retVal |= MinaryState.NPcapMissing;
       }
 
       // Check interfaces
@@ -110,7 +110,7 @@
         throw new Exception("Can't start Minary because of missing admin privileges.");
       }
 
-      if ((minaryState & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
+      if ((minaryState & MinaryState.NPcapMissing) == MinaryState.NPcapMissing)
       {
         throw new Exception("Can't start Minary because WinPcap is not installed.");
       }

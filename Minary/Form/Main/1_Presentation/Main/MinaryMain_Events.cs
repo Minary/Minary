@@ -383,9 +383,9 @@
       }
       catch (Exception ex)
       {
-        if ((minaryState & MinaryState.WinPcapMissing) == MinaryState.WinPcapMissing)
+        if ((minaryState & MinaryState.NPcapMissing) == MinaryState.NPcapMissing)
         {
-          var pcapMissing = new FormWinPcapMissing();
+          var pcapMissing = new FormNPcapMissing();
           pcapMissing.ShowDialog();
         }
         else
