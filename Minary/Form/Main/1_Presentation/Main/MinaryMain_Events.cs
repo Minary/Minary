@@ -241,6 +241,17 @@
 
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_Attack_Click(object sender, EventArgs e)
+    {
+      this.StartAttacksOnBackground();
+    }
+
+
+    /// <summary>
     ///
     /// </summary>
     /// <param name="sender"></param>

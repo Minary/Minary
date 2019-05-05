@@ -92,6 +92,7 @@
       this.ofd_ImportSession = new System.Windows.Forms.OpenFileDialog();
       this.il_AttackServiceStat = new System.Windows.Forms.ImageList(this.components);
       this.flp_AttackServices = new System.Windows.Forms.FlowLayoutPanel();
+      this.tsmi_Attack = new System.Windows.Forms.ToolStripMenuItem();
       this.gb_Interfaces.SuspendLayout();
       this.gb_TargetRange.SuspendLayout();
       this.tc_Plugins.SuspendLayout();
@@ -445,14 +446,14 @@
       // tsmi_Exit
       // 
       this.tsmi_Exit.Name = "tsmi_Exit";
-      this.tsmi_Exit.Size = new System.Drawing.Size(210, 30);
+      this.tsmi_Exit.Size = new System.Drawing.Size(197, 30);
       this.tsmi_Exit.Text = "Exit";
       this.tsmi_Exit.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
       // 
       // tsmi_ResetMinary
       // 
       this.tsmi_ResetMinary.Name = "tsmi_ResetMinary";
-      this.tsmi_ResetMinary.Size = new System.Drawing.Size(210, 30);
+      this.tsmi_ResetMinary.Size = new System.Drawing.Size(197, 30);
       this.tsmi_ResetMinary.Text = "Reset Minary";
       this.tsmi_ResetMinary.Click += new System.EventHandler(this.TSMI_ResetAllPlugins_Click);
       // 
@@ -461,7 +462,8 @@
       this.tsmi_Settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Beep,
             this.tsmi_Debugging,
-            this.tsmi_SimpleGUI});
+            this.tsmi_SimpleGUI,
+            this.tsmi_Attack});
       this.tsmi_Settings.Name = "tsmi_Settings";
       this.tsmi_Settings.Size = new System.Drawing.Size(88, 29);
       this.tsmi_Settings.Text = "Settings";
@@ -471,7 +473,7 @@
       this.tsmi_Beep.Name = "tsmi_Beep";
       this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
       this.tsmi_Beep.Size = new System.Drawing.Size(305, 30);
-      this.tsmi_Beep.Text = "Beep (is off)";
+      this.tsmi_Beep.Text = "Beep (off)";
       this.tsmi_Beep.Click += new System.EventHandler(this.BeepToolStripMenuItem_Click);
       // 
       // tsmi_Debugging
@@ -479,7 +481,7 @@
       this.tsmi_Debugging.Name = "tsmi_Debugging";
       this.tsmi_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
       this.tsmi_Debugging.Size = new System.Drawing.Size(305, 30);
-      this.tsmi_Debugging.Text = "Debugging (is off)";
+      this.tsmi_Debugging.Text = "Debugging (off)";
       this.tsmi_Debugging.Click += new System.EventHandler(this.DebugginOnToolStripMenuItem_Click);
       // 
       // tsmi_SimpleGUI
@@ -487,7 +489,7 @@
       this.tsmi_SimpleGUI.Name = "tsmi_SimpleGUI";
       this.tsmi_SimpleGUI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
       this.tsmi_SimpleGUI.Size = new System.Drawing.Size(305, 30);
-      this.tsmi_SimpleGUI.Text = "Simple GUI (is off)";
+      this.tsmi_SimpleGUI.Text = "Simple GUI (off)";
       this.tsmi_SimpleGUI.Click += new System.EventHandler(this.SimpleGuiToolStripMenuItem_Click);
       // 
       // tsmi_Template
@@ -602,6 +604,14 @@
       this.flp_AttackServices.Size = new System.Drawing.Size(1576, 28);
       this.flp_AttackServices.TabIndex = 0;
       // 
+      // tsmi_Attack
+      // 
+      this.tsmi_Attack.Name = "tsmi_Attack";
+      this.tsmi_Attack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+      this.tsmi_Attack.Size = new System.Drawing.Size(305, 30);
+      this.tsmi_Attack.Text = "Attack  (stopped)";
+      this.tsmi_Attack.Click += new System.EventHandler(this.TSMI_Attack_Click);
+      // 
       // MinaryMain
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -683,5 +693,6 @@
     private System.Windows.Forms.FlowLayoutPanel flp_AttackServices;
     private System.Windows.Forms.ToolStripMenuItem tsmi_SimpleGUI;
     private System.Windows.Forms.ToolStripMenuItem tsmi_TlsSslCertificates;
+    private System.Windows.Forms.ToolStripMenuItem tsmi_Attack;
   }
 }
