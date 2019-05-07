@@ -53,7 +53,7 @@
     {
       MinaryState retVal = MinaryState.StateOk;
 
-      // Check WinPcap
+      // Check NPcap
       if (string.IsNullOrEmpty(Utils.TryExecute(NPcap.GetNPcapVersion)) == true)
       {
         retVal |= MinaryState.NPcapMissing;
@@ -112,7 +112,7 @@
 
       if ((minaryState & MinaryState.NPcapMissing) == MinaryState.NPcapMissing)
       {
-        throw new Exception("Can't start Minary because WinPcap is not installed.");
+        throw new Exception("Can't start Minary because NPcap is not installed.");
       }
 
       if ((minaryState & MinaryState.ApeBinaryMissing) == MinaryState.ApeBinaryMissing)

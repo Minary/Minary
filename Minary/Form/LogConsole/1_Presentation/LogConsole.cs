@@ -62,7 +62,7 @@
       this.Write(LogLevel.Info, $"Num. processors : {Config.NumProcessors}");
       this.Write(LogLevel.Info, $".Net version : {Config.DotNetVersion}");
       this.Write(LogLevel.Info, $"CLR version : {Config.CommonLanguateRuntime}");
-      this.Write(LogLevel.Info, $"WinPcap version : {Config.NPcap}");
+      this.Write(LogLevel.Info, $"NPcap version : {Config.NPcap}");
     }
 
 

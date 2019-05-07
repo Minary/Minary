@@ -40,11 +40,10 @@
       this.GB_NPcap.SuspendLayout();
       this.SuspendLayout();
       // 
-      // PB_WinPcap
+      // PB_NPcap
       // 
-      this.PB_NPcap.Image = global::Minary.Properties.Resources.NPcap_Logo;
       this.PB_NPcap.Location = new System.Drawing.Point(17, 14);
-      this.PB_NPcap.Name = "PB_WinPcap";
+      this.PB_NPcap.Name = "PB_NPcap";
       this.PB_NPcap.Size = new System.Drawing.Size(449, 118);
       this.PB_NPcap.TabIndex = 0;
       this.PB_NPcap.TabStop = false;
@@ -60,16 +59,16 @@
       this.RTB_Message.TabIndex = 0;
       this.RTB_Message.Text = "";
       // 
-      // LL_WinPcapURL
+      // LL_NPcapURL
       // 
       this.LL_NPcapURL.AutoSize = true;
       this.LL_NPcapURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.LL_NPcapURL.Location = new System.Drawing.Point(13, 235);
-      this.LL_NPcapURL.Name = "LL_WinPcapURL";
-      this.LL_NPcapURL.Size = new System.Drawing.Size(146, 20);
+      this.LL_NPcapURL.Name = "LL_NPcapURL";
+      this.LL_NPcapURL.Size = new System.Drawing.Size(126, 20);
       this.LL_NPcapURL.TabIndex = 1;
       this.LL_NPcapURL.TabStop = true;
-      this.LL_NPcapURL.Text = "LINK TO WINPCAP";
+      this.LL_NPcapURL.Text = "LINK TO NPCAP";
       this.LL_NPcapURL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LL_NPcapURL_LinkClicked);
       // 
       // P_MainPanel
@@ -86,13 +85,13 @@
       this.P_MainPanel.Size = new System.Drawing.Size(501, 294);
       this.P_MainPanel.TabIndex = 0;
       // 
-      // GB_WinPcap
+      // GB_NPcap
       // 
       this.GB_NPcap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.GB_NPcap.Controls.Add(this.P_MainPanel);
       this.GB_NPcap.Location = new System.Drawing.Point(12, 3);
-      this.GB_NPcap.Name = "GB_WinPcap";
+      this.GB_NPcap.Name = "GB_NPcap";
       this.GB_NPcap.Size = new System.Drawing.Size(515, 318);
       this.GB_NPcap.TabIndex = 0;
       this.GB_NPcap.TabStop = false;
@@ -107,7 +106,7 @@
       this.BT_Close.UseVisualStyleBackColor = true;
       this.BT_Close.Click += new System.EventHandler(this.BT_Close_Click);
       // 
-      // FormWinPcapMissing
+      // FormNPcapMissing
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -118,8 +117,8 @@
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MaximizeBox = false;
       this.MinimizeBox = false;
-      this.Name = "FormWinPcapMissing";
-      this.Text = "WinPcap is missing";
+      this.Name = "FormNPcapMissing";
+      this.Text = "NPcap is missing";
       ((System.ComponentModel.ISupportInitialize)(this.PB_NPcap)).EndInit();
       this.P_MainPanel.ResumeLayout(false);
       this.P_MainPanel.PerformLayout();
