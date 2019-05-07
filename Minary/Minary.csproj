@@ -423,7 +423,6 @@
     <None Include="Resources\npcap_logo2.png" />
     <None Include="Resources\Minary_Logo_Small.png" />
     <None Include="Resources\Minary_Logo_Big.png" />
-    <None Include="Resources\npcap_logo.png" />
     <None Include="Resources\FA_play.png" />
     <None Include="Resources\FA_Stop.png" />
     <None Include="Resources\FA_Scan.png" />
