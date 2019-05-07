@@ -79,6 +79,13 @@
       this.TemplateData = this.infrastructure.LoadAttackTemplate(templateFile);
       this.callObj = new Calls(this.minaryMain, this.TemplateData);
 
+
+      // Here the actual automatization work begins!
+      // 1. Hide all tabs
+      // 2. Load Plugins
+      // 3. ARP scan
+      // 4. Attack
+
       // Activate relevant plugins. Deactivate non-relevant plugins
       this.HideAllTabPages();
       this.LoadPlugins();
@@ -240,31 +247,21 @@
 
     #region EVENTS
 
+    private void LoadTemplate_Shown(object sender, EventArgs e)
+    {
+      if (this.bgw_LoadTemplate.IsBusy == false)
+      {
+        this.rtfData.Clear();
+        this.bt_Close.Enabled = false;
+        this.Cursor = Cursors.WaitCursor;
+        this.bgw_LoadTemplate.RunWorkerAsync();
+      }
+    }
+
+
     private void BT_Close_Click(object sender, EventArgs e)
     {
       this.Close();
-    }
-
-
-    private void BGW_LoadTemplateDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-    {
-      try
-      {
-        this.LoadAttackTemplate(this.templateFileName);
-      }
-      catch (Exception ex)
-      {
-        var fileName = Path.GetFileName(this.templateFileName);
-        var message = $"An error occurred while loading template file \"{fileName}\": {ex.Message}";
-        this.AddMessage(message, "Exception");
-      }
-    }
-
-
-    private void BGW_LoadTemplateRunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-    {
-      this.Cursor = Cursors.Default;
-      this.bt_Close.Enabled = true;
     }
 
 
@@ -290,16 +287,30 @@
     }
 
 
-    private void LoadTemplate_Shown(object sender, EventArgs e)
+    #region BGW : Load Template
+
+    private void BGW_LoadTemplateDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
-      if (this.bgw_LoadTemplate.IsBusy == false)
+      try
       {
-        this.rtfData.Clear();
-        this.bt_Close.Enabled = false;
-        this.Cursor = Cursors.WaitCursor;
-        this.bgw_LoadTemplate.RunWorkerAsync();
+        this.LoadAttackTemplate(this.templateFileName);
+      }
+      catch (Exception ex)
+      {
+        var fileName = Path.GetFileName(this.templateFileName);
+        var message = $"An error occurred while loading template file \"{fileName}\": {ex.Message}";
+        this.AddMessage(message, "Exception");
       }
     }
+
+
+    private void BGW_LoadTemplateRunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+    {
+      this.Cursor = Cursors.Default;
+      this.bt_Close.Enabled = true;
+    }
+
+    #endregion
 
     #endregion
 
