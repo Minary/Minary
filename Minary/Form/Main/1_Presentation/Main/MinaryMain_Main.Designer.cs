@@ -78,6 +78,7 @@
       this.tsmi_Beep = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Debugging = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_SimpleGUI = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_Attack = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Template = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LoadTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_CreateTemplate = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,7 +93,7 @@
       this.ofd_ImportSession = new System.Windows.Forms.OpenFileDialog();
       this.il_AttackServiceStat = new System.Windows.Forms.ImageList(this.components);
       this.flp_AttackServices = new System.Windows.Forms.FlowLayoutPanel();
-      this.tsmi_Attack = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_ArpScan = new System.Windows.Forms.ToolStripMenuItem();
       this.gb_Interfaces.SuspendLayout();
       this.gb_TargetRange.SuspendLayout();
       this.tc_Plugins.SuspendLayout();
@@ -472,7 +473,7 @@
       // 
       this.tsmi_Beep.Name = "tsmi_Beep";
       this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-      this.tsmi_Beep.Size = new System.Drawing.Size(305, 30);
+      this.tsmi_Beep.Size = new System.Drawing.Size(295, 30);
       this.tsmi_Beep.Text = "Beep (off)";
       this.tsmi_Beep.Click += new System.EventHandler(this.BeepToolStripMenuItem_Click);
       // 
@@ -480,7 +481,7 @@
       // 
       this.tsmi_Debugging.Name = "tsmi_Debugging";
       this.tsmi_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-      this.tsmi_Debugging.Size = new System.Drawing.Size(305, 30);
+      this.tsmi_Debugging.Size = new System.Drawing.Size(295, 30);
       this.tsmi_Debugging.Text = "Debugging (off)";
       this.tsmi_Debugging.Click += new System.EventHandler(this.DebugginOnToolStripMenuItem_Click);
       // 
@@ -488,9 +489,17 @@
       // 
       this.tsmi_SimpleGUI.Name = "tsmi_SimpleGUI";
       this.tsmi_SimpleGUI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-      this.tsmi_SimpleGUI.Size = new System.Drawing.Size(305, 30);
+      this.tsmi_SimpleGUI.Size = new System.Drawing.Size(295, 30);
       this.tsmi_SimpleGUI.Text = "Simple GUI (off)";
       this.tsmi_SimpleGUI.Click += new System.EventHandler(this.SimpleGuiToolStripMenuItem_Click);
+      // 
+      // tsmi_Attack
+      // 
+      this.tsmi_Attack.Name = "tsmi_Attack";
+      this.tsmi_Attack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+      this.tsmi_Attack.Size = new System.Drawing.Size(295, 30);
+      this.tsmi_Attack.Text = "Attack  (stopped)";
+      this.tsmi_Attack.Click += new System.EventHandler(this.TSMI_Attack_Click);
       // 
       // tsmi_Template
       // 
@@ -531,7 +540,8 @@
       this.tsmi_Tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Minibrowser,
             this.tsmi_DetectInterfaces,
-            this.tsmi_TlsSslCertificates});
+            this.tsmi_TlsSslCertificates,
+            this.tsmi_ArpScan});
       this.tsmi_Tools.Name = "tsmi_Tools";
       this.tsmi_Tools.Size = new System.Drawing.Size(65, 29);
       this.tsmi_Tools.Text = "Tools";
@@ -604,13 +614,13 @@
       this.flp_AttackServices.Size = new System.Drawing.Size(1576, 28);
       this.flp_AttackServices.TabIndex = 0;
       // 
-      // tsmi_Attack
+      // tsmi_ArpScan
       // 
-      this.tsmi_Attack.Name = "tsmi_Attack";
-      this.tsmi_Attack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-      this.tsmi_Attack.Size = new System.Drawing.Size(305, 30);
-      this.tsmi_Attack.Text = "Attack  (stopped)";
-      this.tsmi_Attack.Click += new System.EventHandler(this.TSMI_Attack_Click);
+      this.tsmi_ArpScan.Name = "tsmi_ArpScan";
+      this.tsmi_ArpScan.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+      this.tsmi_ArpScan.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_ArpScan.Text = "ARP scan";
+      this.tsmi_ArpScan.Click += new System.EventHandler(this.TSMI_ArpScan_Click);
       // 
       // MinaryMain
       // 
@@ -694,5 +704,6 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_SimpleGUI;
     private System.Windows.Forms.ToolStripMenuItem tsmi_TlsSslCertificates;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Attack;
+    private System.Windows.Forms.ToolStripMenuItem tsmi_ArpScan;
   }
 }

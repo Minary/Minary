@@ -252,6 +252,24 @@
 
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_ArpScan_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        this.Bt_ScanLan_Click(sender, e);
+      }
+      catch (Exception ex)
+      {
+        MessageDialog.Inst.ShowWarning("Exception occurred", ex.Message, this);
+      }
+    }
+
+
+    /// <summary>
     ///
     /// </summary>
     /// <param name="sender"></param>
