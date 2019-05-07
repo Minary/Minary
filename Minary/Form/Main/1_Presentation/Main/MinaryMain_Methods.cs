@@ -3,11 +3,15 @@
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
+  using MinaryLib.AttackService.Class;
+  using MinaryLib.AttackService.Enum;
   using System;
+  using System.Collections.Generic;
   using System.ComponentModel;
   using System.Diagnostics;
   using System.IO;
   using System.Linq;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
 
 
@@ -100,11 +104,60 @@
       this.tb_Vendor.Text = string.Empty;
     }
 
+    
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    public void StopAttack()
+    {
+      // Enable GUI elements
+      Utils.TryExecute2(this.EnableGuiElements);
+
+      // Stop all plugins
+      Utils.TryExecute2(this.pluginHandler.StopAllPlugins);
+
+      // Stop all services
+      Utils.TryExecute2(this.attackServiceHandler.StopAllServices);
+
+      this.attackStarted = false;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void PrepareAttackAllPlugins()
+    {
+      // Clear all the plugins parameter dict.
+      this.pluginParams2AttackServices.Clear();
+
+      foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
+      {
+        if (this.pluginHandler.IsPluginActive(key) == false)
+        {
+          continue;
+        }
+
+        try
+        {
+          var tmpKey = key?.Trim()?.ToLower()?.Replace(" ", "");
+          var pluginDataObj = (List<object>)this.pluginHandler.TabPagesCatalog[key].PluginObject.OnPrepareAttack();
+          this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, "Minary.PrepareAllPlugins(EXCEPTION): PluginName:{0}, Error:{1}\r\n{2}", key, ex.Message, ex.StackTrace);
+        }
+      }
+    }
+
     #endregion
 
 
     #region PRIVATE
-    
+
     private void DisableGuiElements()
     {
       this.bt_Attack.BackgroundImage = Properties.Resources.FA_Stop;
@@ -247,6 +300,107 @@
       // Terminate process
       Environment.Exit(0);
       base.Dispose();
+    }
+
+
+    private void StartAllPlugins()
+    {
+      foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
+      {
+        LogCons.Inst.Write(LogLevel.Info, $"Minary.StartAllPlugins(): PluginName:{key}, IsPluginActive:{this.pluginHandler.IsPluginActive(key)}");
+
+        try
+        {
+          if (this.pluginHandler.IsPluginActive(key))
+          {
+            this.pluginHandler.TabPagesCatalog[key].PluginObject.OnStartAttack();
+          }
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, "Minary.StartAllPlugins(EXCEPTION): PluginName:{0}, Error:{1}\r\n{2}", key, ex.Message, ex.StackTrace);
+        }
+      }
+    }
+
+
+    public void StartAttackAllServices(StartServiceParameters serviceParameters)
+    {
+      foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
+      {
+        try
+        {
+          LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName);
+          ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters, this.pluginParams2AttackServices);
+          this.SetNewAttackServiceState(tmpKey, newServiceStatus);
+        }
+        catch (Exception)
+        {
+          this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
+          throw;
+        }
+      }
+    }
+
+
+    private async void FadeIn(Form o, int interval = 80)
+    {
+      //Object is not fully invisible. Fade it in
+      while (o.Opacity < 1.0)
+      {
+        await Task.Delay(interval);
+        o.Opacity += 0.05;
+      }
+      o.Opacity = 1; //make fully visible       
+    }
+
+
+    private async void FadeOut(Form o, int interval = 80)
+    {
+      //Object is fully visible. Fade it out
+      while (o.Opacity > 0.0)
+      {
+        await Task.Delay(interval);
+        o.Opacity -= 0.05;
+      }
+      o.Opacity = 0; //make fully invisible       
+    }
+
+
+    private void SimpleGuiDisable()
+    {
+      this.gb_TargetRange.Visible = true;
+      this.gb_Interfaces.Visible = true;
+      this.ms_MainWindow.Visible = true;
+      this.bt_Attack.Visible = true;
+      this.bt_ScanLan.Visible = true;
+      this.tc_Plugins.Visible = true;
+      this.simpleGui.Visible = false;
+    }
+
+
+    private void SimpleGuiEnable()
+    {
+      this.gb_TargetRange.Visible = false;
+      this.gb_Interfaces.Visible = false;
+      this.ms_MainWindow.Visible = false;
+      this.bt_Attack.Visible = false;
+      this.bt_ScanLan.Visible = false;
+      this.tc_Plugins.Visible = false;
+      this.simpleGui.Visible = true;
+    }
+
+
+    private void SimpleGuiStartScanning()
+    {
+      //var arpScanConf = this.GetArpScanConfig();
+      //Minary.Domain.ArpScan.ArpScanner.Inst.
+
+    }
+
+
+    private void SimpleGuiStopScanning()
+    {
     }
 
     #endregion

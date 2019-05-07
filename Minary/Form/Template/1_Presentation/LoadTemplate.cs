@@ -189,7 +189,7 @@
     }
 
 
-    public delegate void AddMessageDelegate(string message, string header);
+    private delegate void AddMessageDelegate(string message, string header);
     private void AddMessage(string message, string header)
     {
       if (this.rtb_Logs.InvokeRequired)
@@ -240,13 +240,13 @@
 
     #region EVENTS
 
-    private void Bt_Close_Click(object sender, EventArgs e)
+    private void BT_Close_Click(object sender, EventArgs e)
     {
       this.Close();
     }
 
 
-    private void BgwLoadTemplateDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+    private void BGW_LoadTemplateDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
     {
       try
       {
@@ -261,7 +261,7 @@
     }
 
 
-    private void BgwLoadTemplateRunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+    private void BGW_LoadTemplateRunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
     {
       this.Cursor = Cursors.Default;
       this.bt_Close.Enabled = true;

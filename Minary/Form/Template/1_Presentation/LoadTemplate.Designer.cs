@@ -47,7 +47,7 @@
       this.bt_Close.TabIndex = 1;
       this.bt_Close.Text = "Close";
       this.bt_Close.UseVisualStyleBackColor = true;
-      this.bt_Close.Click += new System.EventHandler(this.Bt_Close_Click);
+      this.bt_Close.Click += new System.EventHandler(this.BT_Close_Click);
       // 
       // gb_TemplateLoadingProgress
       // 
@@ -80,8 +80,8 @@
       // 
       // bgw_LoadTemplate
       // 
-      this.bgw_LoadTemplate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BgwLoadTemplateDoWork);
-      this.bgw_LoadTemplate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BgwLoadTemplateRunWorkerCompleted);
+      this.bgw_LoadTemplate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_LoadTemplateDoWork);
+      this.bgw_LoadTemplate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_LoadTemplateRunWorkerCompleted);
       // 
       // LoadTemplate
       // 

@@ -449,7 +449,7 @@
       this.tsmi_Exit.Name = "tsmi_Exit";
       this.tsmi_Exit.Size = new System.Drawing.Size(197, 30);
       this.tsmi_Exit.Text = "Exit";
-      this.tsmi_Exit.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+      this.tsmi_Exit.Click += new System.EventHandler(this.TSMI_ExitTool_Click);
       // 
       // tsmi_ResetMinary
       // 
@@ -475,7 +475,7 @@
       this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
       this.tsmi_Beep.Size = new System.Drawing.Size(295, 30);
       this.tsmi_Beep.Text = "Beep (off)";
-      this.tsmi_Beep.Click += new System.EventHandler(this.BeepToolStripMenuItem_Click);
+      this.tsmi_Beep.Click += new System.EventHandler(this.TSMI_BeepToolStrip_Click);
       // 
       // tsmi_Debugging
       // 
@@ -483,7 +483,7 @@
       this.tsmi_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
       this.tsmi_Debugging.Size = new System.Drawing.Size(295, 30);
       this.tsmi_Debugging.Text = "Debugging (off)";
-      this.tsmi_Debugging.Click += new System.EventHandler(this.DebugginOnToolStripMenuItem_Click);
+      this.tsmi_Debugging.Click += new System.EventHandler(this.TSMI_DebugginOn_Click);
       // 
       // tsmi_SimpleGUI
       // 
@@ -491,7 +491,7 @@
       this.tsmi_SimpleGUI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
       this.tsmi_SimpleGUI.Size = new System.Drawing.Size(295, 30);
       this.tsmi_SimpleGUI.Text = "Simple GUI (off)";
-      this.tsmi_SimpleGUI.Click += new System.EventHandler(this.SimpleGuiToolStripMenuItem_Click);
+      this.tsmi_SimpleGUI.Click += new System.EventHandler(this.TSMI_SimpleGui_Click);
       // 
       // tsmi_Attack
       // 
@@ -517,7 +517,7 @@
       this.tsmi_LoadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
       this.tsmi_LoadTemplate.Size = new System.Drawing.Size(227, 30);
       this.tsmi_LoadTemplate.Text = "Load ...";
-      this.tsmi_LoadTemplate.Click += new System.EventHandler(this.LoadTemplateToolStripMenuItem_Click);
+      this.tsmi_LoadTemplate.Click += new System.EventHandler(this.TSMI_LoadTemplate_Click);
       // 
       // tsmi_CreateTemplate
       // 
@@ -525,7 +525,7 @@
       this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
       this.tsmi_CreateTemplate.Size = new System.Drawing.Size(227, 30);
       this.tsmi_CreateTemplate.Text = "Create ...";
-      this.tsmi_CreateTemplate.Click += new System.EventHandler(this.CreateToolStripMenuItem_Click);
+      this.tsmi_CreateTemplate.Click += new System.EventHandler(this.TSMI_CreateTool_Click);
       // 
       // tsmi_UnloadTemplate
       // 
@@ -533,7 +533,7 @@
       this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
       this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(227, 30);
       this.tsmi_UnloadTemplate.Text = "Unload ";
-      this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.UnloadTemplateToolStripMenuItem_Click);
+      this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.TSMI_UnloadTemplate_Click);
       // 
       // tsmi_Tools
       // 
@@ -559,7 +559,7 @@
       this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
       this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(296, 30);
       this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
-      this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.SearchNetworkInterfacesToolStripMenuItem_Click);
+      this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.TSMI_SearchNetworkInterfaces_Click);
       // 
       // tsmi_TlsSslCertificates
       // 
@@ -582,7 +582,7 @@
       this.tsmi_GetUpdates.Name = "tsmi_GetUpdates";
       this.tsmi_GetUpdates.Size = new System.Drawing.Size(268, 30);
       this.tsmi_GetUpdates.Text = "Check for updates ...";
-      this.tsmi_GetUpdates.Click += new System.EventHandler(this.GetUpdatesToolStripMenuItem_Click);
+      this.tsmi_GetUpdates.Click += new System.EventHandler(this.TSMI_GetUpdatesTool_Click);
       // 
       // tsmi_LogConsole
       // 
@@ -590,7 +590,7 @@
       this.tsmi_LogConsole.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
       this.tsmi_LogConsole.Size = new System.Drawing.Size(268, 30);
       this.tsmi_LogConsole.Text = "Log console ...";
-      this.tsmi_LogConsole.Click += new System.EventHandler(this.LogConsoleToolStripMenuItem_Click);
+      this.tsmi_LogConsole.Click += new System.EventHandler(this.TSMI_LogConsoleTool_Click);
       // 
       // ofd_ImportSession
       // 

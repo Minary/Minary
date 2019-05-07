@@ -7,7 +7,6 @@
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Class;
-  using MinaryLib.AttackService.Enum;
 
   using System;
   using System.Collections.Generic;
@@ -30,6 +29,8 @@
 
 
     #region EVENTS
+    
+    #region BUTTONS
 
     private void BT_ScanLan_Click(object sender, EventArgs e)
     {
@@ -56,47 +57,10 @@
       }
     }
 
+    #endregion
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void CB_Interfaces_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      try
-      {
-        var interfaceStruct = this.nicHandler.IfcByIndex(this.cb_Interfaces.SelectedIndex);
-        if (interfaceStruct.Name?.Length > 0)
-        {
-          var interfaceName = interfaceStruct.Name.Length > 40 ? interfaceStruct.Name.Substring(0, 40) + " ..." : interfaceStruct.Name;
-          var vendor = this.macVendorHandler.GetVendorByMac(interfaceStruct.GatewayMac);
 
-          if (vendor?.Length > 50)
-          {
-            vendor = $"{vendor.Substring(0, 50)} ...";
-          }
-
-          this.tb_GatewayIp.Text = interfaceStruct.DefaultGw;
-          this.tb_GatewayMac.Text = interfaceStruct.GatewayMac;
-          this.tb_Vendor.Text = vendor;
-          this.tb_NetworkStartIp.Text = interfaceStruct.NetworkAddr;
-          this.tb_NetworkStopIp.Text = interfaceStruct.BroadcastAddr;
-          this.gb_Interfaces.Text = $"{interfaceStruct.IpAddress} / {interfaceName}";
-
-          this.CurrentLocalIp = interfaceStruct.IpAddress;
-          this.CurrentLocalMac = interfaceStruct.MacAddress;
-          this.CurrentInterfaceId = interfaceStruct.Id;
-
-          this.currentInterfaceIndex = this.cb_Interfaces.SelectedIndex;
-        }
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
-      }
-    }
-
+    #region FORM EVENTS
 
     /// <summary>
     ///
@@ -110,30 +74,173 @@
 
 
     /// <summary>
-    /// Activate/Deactivate plugin
+    ///
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void DGV_MainPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void Minibrowser_FormClosed(object sender, FormClosedEventArgs e)
     {
-      if (e.ColumnIndex != this.dgv_MainPlugins.Columns["Active"].Index)
+      this.miniBrowser = null;
+    }
+
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void MinaryMain_Shown(object sender, EventArgs e)
+    {
+      // Verify whether system state is intact.
+      var minaryState = MinaryState.StateOk;
+      try
       {
+        Minary.Domain.Main.SystemStateCheck.EvaluateMinaryState(out minaryState);
+      }
+      catch (Exception ex)
+      {
+        if ((minaryState & MinaryState.NPcapMissing) == MinaryState.NPcapMissing)
+        {
+          var pcapMissing = new FormNPcapMissing();
+          pcapMissing.ShowDialog();
+        }
+        else
+        {
+          var message = $"The following error occurred ({ex.Message}):\r\n\r\n{minaryState}";
+          this.LogAndShowMessage(message, LogLevel.Error);
+        }
+
         return;
       }
 
-      if (e.RowIndex < 0)
+      // Import and load session/template file
+      if (this.commandLineArguments?.Length > 0)
       {
-        return;
-      }
-
-      var pluginName = this.dgv_MainPlugins.Rows[e.RowIndex].Cells[0].Value.ToString();
-      if (this.usedPlugins[e.RowIndex].Active == "1")
-      {
-        this.pluginHandler.DeactivatePlugin(pluginName);
+        this.LoadUserTemplate(this.commandLineArguments[0]);
       }
       else
       {
-        this.pluginHandler.ActivatePlugin(pluginName);
+        // Hide all plugins what have the status "off"
+        this.pluginHandler.RestoreLastPluginLoadState();
+      }
+    }
+
+    #endregion
+
+
+    #region TSMI
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_SearchNetworkInterfaces_Click(object sender, EventArgs e)
+    {
+      // If no interface was found reset current interface selection
+      this.SetMinaryState();
+
+      // When NIC settings cannot be loaded (due to disconnected NIC adapter)
+      // clear network settings in the GUI
+      if (this.LoadNicSettings() == false)
+      {
+        this.ClearCurrentNetworkState();
+      }
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_CreateTool_Click(object sender, EventArgs e)
+    {
+      var createTemplateView = new Template.Presentation.CreateTemplate(this);
+      createTemplateView.ShowDialog();
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_UnloadTemplate_Click(object sender, EventArgs e)
+    {
+      this.tb_TemplateName.Text = string.Empty;
+      this.templateTaskLayer.UnloadTemplatePatternsFromPlugins();
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_BeepToolStrip_Click(object sender, EventArgs e)
+    {
+      this.tsmi_Beep.Text = string.Format("Beep ({0})", !this.inputProcessorHandler.IsBeepOn == true ? "on" : "off");
+      this.inputProcessorHandler.IsBeepOn = !this.inputProcessorHandler.IsBeepOn;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_SimpleGui_Click(object sender, EventArgs e)
+    {
+      this.tsmi_SimpleGUI.Text = string.Format("Simple GUI ({0})", !Config.IsSimpleGuiOn == true ? "on" : "off");
+      Config.IsSimpleGuiOn = !Config.IsSimpleGuiOn;
+
+      if (Config.IsSimpleGuiOn == true)
+      {
+        this.SimpleGuiEnable();
+        this.SimpleGuiStartScanning();
+      }
+      else
+      {
+        this.SimpleGuiDisable();
+        this.SimpleGuiStopScanning();
+      }
+    }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_LoadTemplate_Click(object sender, EventArgs e)
+    {
+      this.ofd_ImportSession.Filter = string.Format("Minary files (*.{0})|*.{0}", Minary.Config.MinaryFileExtension);
+      this.ofd_ImportSession.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), Config.TemplatesDir);
+
+      if (this.ofd_ImportSession.ShowDialog() != DialogResult.OK)
+      {
+        return;
+      }
+
+      var templateFileName = this.ofd_ImportSession.FileName;
+
+      try
+      {
+        Template.Presentation.LoadTemplate loadTemplatePresentation = new Template.Presentation.LoadTemplate(this, templateFileName);
+        loadTemplatePresentation.ShowDialog();
+
+        if (string.IsNullOrEmpty(loadTemplatePresentation?.TemplateData?.TemplateConfig.Name) == false)
+        {
+          this.tb_TemplateName.Text = loadTemplatePresentation.TemplateData.TemplateConfig.Name;
+        }
+      }
+      catch (Exception ex)
+      {
+        string message = $"An error occurred while loading template \"{Path.GetFileName(templateFileName)}\".\r\n\r\n{ex.Message}";
+        LogCons.Inst.Write(LogLevel.Error, message);
+        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
       }
     }
 
@@ -143,7 +250,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void GetUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_GetUpdatesTool_Click(object sender, EventArgs e)
     {
       // Show error message if no network is available
       if (NetworkInterface.GetIsNetworkAvailable() == false)
@@ -157,7 +264,7 @@
 
       // Show update form  and check for updates
       var newVersionCheck = new FormCheckNewVersion();
-//newVersionCheck.StartSearchingForUpdates();
+      //newVersionCheck.StartSearchingForUpdates();
       newVersionCheck.ShowDialog();
     }
 
@@ -167,18 +274,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      this.ShutDownMinary();
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void DebugginOnToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_DebugginOn_Click(object sender, EventArgs e)
     {
       Debugging.IsDebuggingOn = !Debugging.IsDebuggingOn;
       this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Debugging.IsDebuggingOn == true ? "on" : "off");
@@ -191,7 +287,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void LogConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_LogConsoleTool_Click(object sender, EventArgs e)
     {
       LogCons.Inst.ShowLogConsole();
     }
@@ -202,9 +298,9 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Minibrowser_FormClosed(object sender, FormClosedEventArgs e)
+    private void TSMI_ExitTool_Click(object sender, EventArgs e)
     {
-      this.miniBrowser = null;
+      this.ShutDownMinary();
     }
 
 
@@ -270,6 +366,32 @@
 
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_CertAuthority_Click(object sender, EventArgs e)
+    {
+      this.caCertificateHandler.ShowDialog();
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void TSMI_ServerCert_Click(object sender, EventArgs e)
+    {
+      this.caCertificateHandler.ShowDialog();
+    }
+
+    #endregion
+
+
+    #region DGV 
+
+    /// <summary>
     ///
     /// </summary>
     /// <param name="sender"></param>
@@ -279,165 +401,38 @@
       LogCons.Inst.Write(LogLevel.Error, "Error occurred ({0}): {1}", sender.ToString(), e.ToString());
     }
 
-
     /// <summary>
-    ///
+    /// Activate/Deactivate plugin
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void LoadTemplateToolStripMenuItem_Click(object sender, EventArgs e)
+    private void DGV_MainPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
-      this.ofd_ImportSession.Filter = string.Format("Minary files (*.{0})|*.{0}", Minary.Config.MinaryFileExtension);
-      this.ofd_ImportSession.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), Config.TemplatesDir);
-
-      if (this.ofd_ImportSession.ShowDialog() != DialogResult.OK)
+      if (e.ColumnIndex != this.dgv_MainPlugins.Columns["Active"].Index)
       {
         return;
       }
 
-      var templateFileName = this.ofd_ImportSession.FileName;
-
-      try
+      if (e.RowIndex < 0)
       {
-        Template.Presentation.LoadTemplate loadTemplatePresentation = new Template.Presentation.LoadTemplate(this, templateFileName);
-        loadTemplatePresentation.ShowDialog();
-
-        if (string.IsNullOrEmpty(loadTemplatePresentation?.TemplateData?.TemplateConfig.Name) == false)
-        {
-          this.tb_TemplateName.Text = loadTemplatePresentation.TemplateData.TemplateConfig.Name;
-        }
-      }
-      catch (Exception ex)
-      {
-        string message = $"An error occurred while loading template \"{Path.GetFileName(templateFileName)}\".\r\n\r\n{ex.Message}";
-        LogCons.Inst.Write(LogLevel.Error, message);
-        MessageDialog.Inst.ShowWarning(string.Empty, message, this);
-      }
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="msg"></param>
-    /// <param name="keyData"></param>
-    /// <returns></returns>
-    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-    {
-      if (keyData == (Keys.Control | Keys.D))
-      {
-        this.DebugginOnToolStripMenuItem_Click(null, null);
-        return true;
-      }
-
-      return base.ProcessCmdKey(ref msg, keyData);
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void SearchNetworkInterfacesToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      // If no interface was found reset current interface selection
-      this.SetMinaryState();
-
-      // When NIC settings cannot be loaded (due to disconnected NIC adapter)
-      // clear network settings in the GUI
-      if (this.LoadNicSettings() == false)
-      {
-        this.ClearCurrentNetworkState();
-      }
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void CreateToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      var createTemplateView = new Template.Presentation.CreateTemplate(this);
-      createTemplateView.ShowDialog();
-    }
-
-
-    private void UnloadTemplateToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      this.tb_TemplateName.Text = string.Empty;
-      this.templateTaskLayer.UnloadTemplatePatternsFromPlugins();
-    }
-
-
-    private void BeepToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      this.tsmi_Beep.Text = string.Format("Beep ({0})", !this.inputProcessorHandler.IsBeepOn == true ? "on" : "off");
-      this.inputProcessorHandler.IsBeepOn = !this.inputProcessorHandler.IsBeepOn;
-    }
-
-    
-    private void SimpleGuiToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      this.tsmi_SimpleGUI.Text = string.Format("Simple GUI ({0})", !Config.IsSimpleGuiOn == true ? "on" : "off");
-      Config.IsSimpleGuiOn = !Config.IsSimpleGuiOn;
-
-      if (Config.IsSimpleGuiOn == true)
-      {
-        this.SimpleGuiEnable();
-        this.SimpleGuiStartScanning();
-      }
-      else
-      {
-        this.SimpleGuiDisable();
-        this.SimpleGuiStopScanning();
-      }
-    }
-
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void MinaryMain_Shown(object sender, EventArgs e)
-    {
-      // Verify whether system state is intact.
-      var minaryState = MinaryState.StateOk;
-      try
-      {
-        Minary.Domain.Main.SystemStateCheck.EvaluateMinaryState(out minaryState);
-      }
-      catch (Exception ex)
-      {
-        if ((minaryState & MinaryState.NPcapMissing) == MinaryState.NPcapMissing)
-        {
-          var pcapMissing = new FormNPcapMissing();
-          pcapMissing.ShowDialog();
-        }
-        else
-        {
-          var message = $"The following error occurred ({ex.Message}):\r\n\r\n{minaryState}";
-          this.LogAndShowMessage(message, LogLevel.Error);
-        }
-
         return;
       }
 
-      // Import and load session/template file
-      if (this.commandLineArguments?.Length > 0)
+      var pluginName = this.dgv_MainPlugins.Rows[e.RowIndex].Cells[0].Value.ToString();
+      if (this.usedPlugins[e.RowIndex].Active == "1")
       {
-        this.LoadUserTemplate(this.commandLineArguments[0]);
+        this.pluginHandler.DeactivatePlugin(pluginName);
       }
       else
       {
-        // Hide all plugins what have the status "off"
-        this.pluginHandler.RestoreLastPluginLoadState();
+        this.pluginHandler.ActivatePlugin(pluginName);
       }
     }
 
+    #endregion
+
+
+    #region BGW
 
     /// <summary>
     ///
@@ -453,19 +448,24 @@
       // After the plugins were prepared start all
       // attack services.
       var currentServiceParams = new StartServiceParameters()
-        {
-          SelectedIfcIndex = this.currentInterfaceIndex,
-          SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
-          TargetList = (from target in this.arpScanHandler.TargetList
-                        where target.Attack == true
-                        select new { target.MacAddress, target.IpAddress }).
+      {
+        SelectedIfcIndex = this.currentInterfaceIndex,
+        SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
+        TargetList = (from target in this.arpScanHandler.TargetList
+                      where target.Attack == true
+                      select new { target.MacAddress, target.IpAddress }).
                           ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
-        };
+      };
 
       this.StartAttackAllServices(currentServiceParams);
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void BGW_OnStartAttackCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
       if (e.Error != null)
@@ -496,167 +496,65 @@
       this.Cursor = Cursors.Default;
     }
 
+    #endregion
+
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public void StopAttack()
+    private void CB_Interfaces_SelectedIndexChanged(object sender, EventArgs e)
     {
-      // Enable GUI elements
-      Utils.TryExecute2(this.EnableGuiElements);
-
-      // Stop all plugins
-      Utils.TryExecute2(this.pluginHandler.StopAllPlugins);
-
-      // Stop all services
-      Utils.TryExecute2(this.attackServiceHandler.StopAllServices);
-
-      this.attackStarted = false;
-    }
- 
-
-    private void TSMI_CertAuthority_Click(object sender, EventArgs e)
-    {
-      this.caCertificateHandler.ShowDialog();
-    }
-
-
-    private void TSMI_ServerCert_Click(object sender, EventArgs e)
-    {
-      this.caCertificateHandler.ShowDialog();
-    }
-
-
-    public void PrepareAttackAllPlugins()
-    {
-      // Clear all the plugins parameter dict.
-      this.pluginParams2AttackServices.Clear();
-
-      foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
+      try
       {
-        if (this.pluginHandler.IsPluginActive(key) == false)
+        var interfaceStruct = this.nicHandler.IfcByIndex(this.cb_Interfaces.SelectedIndex);
+        if (interfaceStruct.Name?.Length > 0)
         {
-          continue;
-        }
+          var interfaceName = interfaceStruct.Name.Length > 40 ? interfaceStruct.Name.Substring(0, 40) + " ..." : interfaceStruct.Name;
+          var vendor = this.macVendorHandler.GetVendorByMac(interfaceStruct.GatewayMac);
 
-        try
-        {
-          var tmpKey = key?.Trim()?.ToLower()?.Replace(" ", "");
-          var pluginDataObj = (List<object>) this.pluginHandler.TabPagesCatalog[key].PluginObject.OnPrepareAttack();          
-          this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(LogLevel.Error, "Minary.PrepareAllPlugins(EXCEPTION): PluginName:{0}, Error:{1}\r\n{2}", key, ex.Message, ex.StackTrace);
-        }
-      }
-    }
-
-
-    private void StartAllPlugins()
-    {
-      foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
-      {
-        LogCons.Inst.Write(LogLevel.Info, $"Minary.StartAllPlugins(): PluginName:{key}, IsPluginActive:{this.pluginHandler.IsPluginActive(key)}");
-
-        try
-        {
-          if (this.pluginHandler.IsPluginActive(key))
+          if (vendor?.Length > 50)
           {
-            this.pluginHandler.TabPagesCatalog[key].PluginObject.OnStartAttack();
+            vendor = $"{vendor.Substring(0, 50)} ...";
           }
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(LogLevel.Error, "Minary.StartAllPlugins(EXCEPTION): PluginName:{0}, Error:{1}\r\n{2}", key, ex.Message, ex.StackTrace);
+
+          this.tb_GatewayIp.Text = interfaceStruct.DefaultGw;
+          this.tb_GatewayMac.Text = interfaceStruct.GatewayMac;
+          this.tb_Vendor.Text = vendor;
+          this.tb_NetworkStartIp.Text = interfaceStruct.NetworkAddr;
+          this.tb_NetworkStopIp.Text = interfaceStruct.BroadcastAddr;
+          this.gb_Interfaces.Text = $"{interfaceStruct.IpAddress} / {interfaceName}";
+
+          this.CurrentLocalIp = interfaceStruct.IpAddress;
+          this.CurrentLocalMac = interfaceStruct.MacAddress;
+          this.CurrentInterfaceId = interfaceStruct.Id;
+
+          this.currentInterfaceIndex = this.cb_Interfaces.SelectedIndex;
         }
       }
-    }
-
-
-    public void StartAttackAllServices(StartServiceParameters serviceParameters)
-    {
-      foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
+      catch (Exception ex)
       {
-        try
-        {
-          LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName); 
-          ServiceStatus newServiceStatus = this.attackServiceHandler.AttackServices[tmpKey].StartService(serviceParameters, this.pluginParams2AttackServices);
-          this.SetNewAttackServiceState(tmpKey, newServiceStatus);
-        }
-        catch (Exception)
-        {
-          this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
-          throw;
-        }
+        LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
       }
     }
 
-    #endregion
 
-
-    #region PRIVATE
-
-    private async void FadeIn(Form o, int interval = 80)
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <param name="keyData"></param>
+    /// <returns></returns>
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
-      //Object is not fully invisible. Fade it in
-      while (o.Opacity < 1.0)
+      if (keyData == (Keys.Control | Keys.D))
       {
-        await Task.Delay(interval);
-        o.Opacity += 0.05;
+        this.TSMI_DebugginOn_Click(null, null);
+        return true;
       }
-      o.Opacity = 1; //make fully visible       
-    }
 
-
-    private async void FadeOut(Form o, int interval = 80)
-    {
-      //Object is fully visible. Fade it out
-      while (o.Opacity > 0.0)
-      {
-        await Task.Delay(interval);
-        o.Opacity -= 0.05;
-      }
-      o.Opacity = 0; //make fully invisible       
-    }
-
-
-    private void SimpleGuiDisable()
-    {
-      this.gb_TargetRange.Visible = true;
-      this.gb_Interfaces.Visible = true;
-      this.ms_MainWindow.Visible = true;
-      this.bt_Attack.Visible = true;
-      this.bt_ScanLan.Visible = true;
-      this.tc_Plugins.Visible = true;
-      this.simpleGui.Visible = false;
-    }
-
-
-    private void SimpleGuiEnable()
-    {
-      this.gb_TargetRange.Visible = false;
-      this.gb_Interfaces.Visible = false;
-      this.ms_MainWindow.Visible = false;
-      this.bt_Attack.Visible = false;
-      this.bt_ScanLan.Visible = false;
-      this.tc_Plugins.Visible = false;
-      this.simpleGui.Visible = true;
-    }
-
-
-    private void SimpleGuiStartScanning()
-    {
-      //var arpScanConf = this.GetArpScanConfig();
-      //Minary.Domain.ArpScan.ArpScanner.Inst.
-
-    }
-
-
-    private void SimpleGuiStopScanning()
-    {
+      return base.ProcessCmdKey(ref msg, keyData);
     }
 
     #endregion
