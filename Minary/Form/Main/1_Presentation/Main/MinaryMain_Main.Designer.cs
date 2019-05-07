@@ -408,7 +408,7 @@
       this.dgv_MainPlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.dgv_MainPlugins.Size = new System.Drawing.Size(1470, 518);
       this.dgv_MainPlugins.TabIndex = 0;
-      this.dgv_MainPlugins.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dgv_MainPlugins_CellContentClick);
+      this.dgv_MainPlugins.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_MainPlugins_CellContentClick);
       this.dgv_MainPlugins.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DGV_MainPlugins_DataError);
       // 
       // il_PluginStat

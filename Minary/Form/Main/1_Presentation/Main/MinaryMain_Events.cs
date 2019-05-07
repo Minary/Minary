@@ -114,7 +114,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Dgv_MainPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void DGV_MainPlugins_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
       if (e.ColumnIndex != this.dgv_MainPlugins.Columns["Active"].Index)
       {
