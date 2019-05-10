@@ -153,7 +153,7 @@ namespace Minary.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap NPcap_Logo {
+        internal static System.Drawing.Bitmap npcap_logo {
             get {
                 object obj = ResourceManager.GetObject("npcap_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
