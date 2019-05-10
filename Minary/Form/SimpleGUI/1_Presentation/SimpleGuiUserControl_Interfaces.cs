@@ -4,10 +4,11 @@
   using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;
   using System;
+  using System.Collections.Generic;
   using System.Linq;
 
 
-  public partial class SimpleGuiUserControl: IObserverArpResponse, IObserverArpRequest
+  public partial class SimpleGuiUserControl : IObserverArpResponse, IObserverArpRequest
   {
 
     #region INTERFACE: IObserverArpRequest
@@ -28,7 +29,7 @@
 
 
     #region INTERFACE: IObserverArpResponse
-    
+
     #region PROPERTIES
 
     public bool IsCancellationPending { get { return this.bgw_ArpScanSender.CancellationPending; } set { this.bgw_ArpScanSender.CancelAsync(); } }
@@ -79,6 +80,18 @@
       {
         rec.LastSeen = DateTime.Now;
       }
+    }
+
+    #endregion
+
+
+    #region PROTECTED
+
+    public void RemoveOutdatedRecords()
+    {
+      // Remove targets not seen longer than 3 minutes (180sec)
+      List<SystemFoundSimple> removeRecords = this.targetStringList.ToList().Where(elem => DateTime.Now.Subtract(elem.LastSeen).TotalSeconds > 180).ToList();
+      removeRecords.ForEach(elem => this.targetStringList.Remove(elem));
     }
 
     #endregion
