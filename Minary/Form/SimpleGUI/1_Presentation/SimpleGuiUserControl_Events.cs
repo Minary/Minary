@@ -16,7 +16,7 @@
 
     #region MEMBERS
     
-    private ArpScanConfig arpScanConfig = null;
+    protected ArpScanConfig arpScanConfig = null;
     private ArpScanner arpScanner = null;
     public ReplyListener replyListener = null;
 

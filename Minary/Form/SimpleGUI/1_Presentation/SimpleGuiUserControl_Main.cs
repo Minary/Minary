@@ -15,7 +15,7 @@
 
     private MinaryMain minaryObj;
     private PacketCommunicator communicator;
-    private BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
+    protected BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
 
     #endregion
