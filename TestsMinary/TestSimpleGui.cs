@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Minary.DataTypes.ArpScan;
-using Minary.Form.ArpScan.DataTypes;
-using Minary.Form.SimpleGUI.Presentation;
 using System;
 using TestsMinary.DataTypes;
 

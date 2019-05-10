@@ -31,6 +31,7 @@
       this.dgv_SimpleGui = new System.Windows.Forms.DataGridView();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
       this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
+      this.bgw_RemoveInactiveSystems = new System.ComponentModel.BackgroundWorker();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_SimpleGui)).BeginInit();
       this.SuspendLayout();
       // 
@@ -67,6 +68,12 @@
       this.bgw_ArpScanListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanListener_DoWork);
       this.bgw_ArpScanListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanListener_RunWorkerCompleted);
       // 
+      // bgw_RemoveInactiveSystems
+      // 
+      this.bgw_RemoveInactiveSystems.WorkerSupportsCancellation = true;
+      this.bgw_RemoveInactiveSystems.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_RemoveInactiveSystems_DoWork);
+      this.bgw_RemoveInactiveSystems.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_RemoveInactiveSystems_RunWorkerCompleted);
+      // 
       // SimpleGuiUserControl
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -85,5 +92,6 @@
     private System.Windows.Forms.DataGridView dgv_SimpleGui;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
+    private System.ComponentModel.BackgroundWorker bgw_RemoveInactiveSystems;
   }
 }

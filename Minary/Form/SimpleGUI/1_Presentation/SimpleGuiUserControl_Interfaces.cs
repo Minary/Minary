@@ -50,35 +50,38 @@
         return;
       }
 
-      // Add new record line if system does not exist
-      if (this.targetStringList.Where(elem => elem.IpAddress == systemData.IpAddress).ToList().Count <= 0)
+      lock (this.targetStringList)
       {
-        try
+        // Add new record line if system does not exist
+        if (this.targetStringList.Where(elem => elem.IpAddress == systemData.IpAddress).ToList().Count <= 0)
         {
-          // Determine vendor
-          string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
-          if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
-              systemData.IpAddress != this.arpScanConfig.LocalIp)
+          try
           {
-            this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
-            LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
+            // Determine vendor
+            string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
+            if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
+                systemData.IpAddress != this.arpScanConfig.LocalIp)
+            {
+              this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
+              LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
+            }
+          }
+          catch (Exception ex)
+          {
+            LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
           }
         }
-        catch (Exception ex)
+        else
         {
-          LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
+          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Redetected target system {systemData.MacAddress}/{systemData.IpAddress}");
         }
-      }
-      else
-      {
-        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Redetected target system {systemData.MacAddress}/{systemData.IpAddress}");
-      }
 
-      // Update "last seen" timestamp
-      var rec = this.targetStringList.Where(elem => elem.MacAddress == systemData.MacAddress).FirstOrDefault();
-      if (rec != null)
-      {
-        rec.LastSeen = DateTime.Now;
+        // Update "last seen" timestamp
+        var rec = this.targetStringList.Where(elem => elem.MacAddress == systemData.MacAddress).FirstOrDefault();
+        if (rec != null)
+        {
+          rec.LastSeen = DateTime.Now;
+        }
       }
     }
 
@@ -90,8 +93,11 @@
     public void RemoveOutdatedRecords()
     {
       // Remove targets not seen longer than 3 minutes (180sec)
-      List<SystemFoundSimple> removeRecords = this.targetStringList.ToList().Where(elem => DateTime.Now.Subtract(elem.LastSeen).TotalSeconds > 180).ToList();
-      removeRecords.ForEach(elem => this.targetStringList.Remove(elem));
+      lock (this.targetStringList)
+      {
+        List<SystemFoundSimple> removeRecords = this.targetStringList.ToList().Where(elem => DateTime.Now.Subtract(elem.LastSeen).TotalSeconds > 180).ToList();
+        removeRecords.ForEach(elem => this.targetStringList.Remove(elem));
+      }
     }
 
     #endregion

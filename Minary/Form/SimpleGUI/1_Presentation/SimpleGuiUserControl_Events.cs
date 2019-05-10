@@ -83,6 +83,7 @@
 
         this.StartArpScanListener();
         this.StartArpScanSender();
+        this.StartRemoveInactiveSystems();
         
         // Start attack services
         // First let all plugins prepare their environment before 
@@ -108,6 +109,7 @@
       {
         this.bgw_ArpScanSender.CancelAsync();
         this.bgw_ArpScanListener.CancelAsync();
+        this.bgw_RemoveInactiveSystems.CancelAsync();
         this.minaryObj?.MinaryAttackServiceHandler?.StopAllServices();
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices  stopped");
       }
@@ -208,7 +210,48 @@
     }
 
     #endregion
-    
+
+
+    #region EVENTS: BGW_RemoveInactiveSystems
+
+    private void BGW_RemoveInactiveSystems_DoWork(object sender, DoWorkEventArgs e)
+    {
+      int roundCounter = 0;
+
+      while (true)
+      {
+        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_RemoveInactiveSystems_DoWork(): Remove loop round {roundCounter} started");
+        if (this.bgw_RemoveInactiveSystems.CancellationPending == true)
+        {
+          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_RemoveInactiveSystems_DoWork(): Remove loop cancelled");
+          break;
+        }
+
+        this.RemoveOutdatedRecords();
+        System.Threading.Thread.Sleep(5000);
+        roundCounter++;
+      }
+    }
+
+
+    private void BGW_RemoveInactiveSystems_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    {
+      if (e.Error != null)
+      {
+        LogCons.Inst.Write(LogLevel.Error, "SimpleGuiUserControl/BGW_RemoveInactiveSystems(): Completed with error");
+      }
+      else if (e.Cancelled == true)
+      {
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_RemoveInactiveSystems(): Completed by cancellation");
+      }
+      else
+      {
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_RemoveInactiveSystems(): Completed successfully");
+      }
+    }
+
+    #endregion
+
     #endregion
 
 
@@ -240,6 +283,21 @@
       else
       {
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanSender can not be started");
+      }
+    }
+        
+
+    private void StartRemoveInactiveSystems(Action onScanDoneCallback = null)
+    {
+      // Initiate ARP scan cancellation
+      if (this.bgw_RemoveInactiveSystems.IsBusy == false)
+      {
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: StartRemoveInactiveSystems started");
+        this.bgw_RemoveInactiveSystems.RunWorkerAsync();
+      }
+      else
+      {
+        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: StartRemoveInactiveSystems can not be started");
       }
     }
 
