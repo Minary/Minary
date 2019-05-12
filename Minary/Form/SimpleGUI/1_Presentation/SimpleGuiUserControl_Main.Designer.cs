@@ -28,11 +28,15 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       this.dgv_SimpleGui = new System.Windows.Forms.DataGridView();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
       this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
       this.bgw_RemoveInactiveSystems = new System.ComponentModel.BackgroundWorker();
+      this.cms_TargetActions = new System.Windows.Forms.ContextMenuStrip(this.components);
+      this.openInMiniBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_SimpleGui)).BeginInit();
+      this.cms_TargetActions.SuspendLayout();
       this.SuspendLayout();
       // 
       // dgv_SimpleGui
@@ -55,6 +59,9 @@
       this.dgv_SimpleGui.Size = new System.Drawing.Size(1343, 761);
       this.dgv_SimpleGui.TabIndex = 0;
       this.dgv_SimpleGui.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSimpleGui_CellContentClick);
+      this.dgv_SimpleGui.DoubleClick += new System.EventHandler(this.DGV_SimpleGui_DoubleClick);
+      this.dgv_SimpleGui.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DGV_SimpleGui_MouseDown);
+      this.dgv_SimpleGui.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DGV_SimpleGui_MouseUp);
       // 
       // bgw_ArpScanSender
       // 
@@ -74,6 +81,21 @@
       this.bgw_RemoveInactiveSystems.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_RemoveInactiveSystems_DoWork);
       this.bgw_RemoveInactiveSystems.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_RemoveInactiveSystems_RunWorkerCompleted);
       // 
+      // cms_TargetActions
+      // 
+      this.cms_TargetActions.ImageScalingSize = new System.Drawing.Size(24, 24);
+      this.cms_TargetActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openInMiniBrowserToolStripMenuItem});
+      this.cms_TargetActions.Name = "cms_TargetActions";
+      this.cms_TargetActions.Size = new System.Drawing.Size(256, 67);
+      // 
+      // openInMiniBrowserToolStripMenuItem
+      // 
+      this.openInMiniBrowserToolStripMenuItem.Name = "openInMiniBrowserToolStripMenuItem";
+      this.openInMiniBrowserToolStripMenuItem.Size = new System.Drawing.Size(255, 30);
+      this.openInMiniBrowserToolStripMenuItem.Text = "Open in Mini browser";
+      this.openInMiniBrowserToolStripMenuItem.Click += new System.EventHandler(this.TSMI_OpenInMiniBrowser_Click);
+      // 
       // SimpleGuiUserControl
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -83,6 +105,7 @@
       this.Size = new System.Drawing.Size(1366, 830);
       this.VisibleChanged += new System.EventHandler(this.SimpleGuiUserControl_VisibleChanged);
       ((System.ComponentModel.ISupportInitialize)(this.dgv_SimpleGui)).EndInit();
+      this.cms_TargetActions.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }
@@ -93,5 +116,7 @@
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
     private System.ComponentModel.BackgroundWorker bgw_RemoveInactiveSystems;
+    private System.Windows.Forms.ContextMenuStrip cms_TargetActions;
+    private System.Windows.Forms.ToolStripMenuItem openInMiniBrowserToolStripMenuItem;
   }
 }

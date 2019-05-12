@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.SimpleGUI.Presentation
 {
+  using Minary.MiniBrowser;
   using Minary.DataTypes.Enum;
   using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
@@ -114,6 +115,83 @@
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices  stopped");
       }
     }
+    
+
+    private void DGV_SimpleGui_DoubleClick(object sender, System.EventArgs e)
+    {
+    }
+
+
+    private void DGV_SimpleGui_MouseDown(object sender, MouseEventArgs e)
+    {
+      try
+      {
+        DataGridView.HitTestInfo hti = this.dgv_SimpleGui.HitTest(e.X, e.Y);
+
+        if (hti.RowIndex >= 0)
+        {
+          this.dgv_SimpleGui.ClearSelection();
+          this.dgv_SimpleGui.Rows[hti.RowIndex].Selected = true;
+          this.dgv_SimpleGui.CurrentCell = this.dgv_SimpleGui.Rows[hti.RowIndex].Cells[0];
+        }
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGUI: {ex.Message}");
+        this.dgv_SimpleGui.ClearSelection();
+      }
+    }
+
+
+    private void DGV_SimpleGui_MouseUp(object sender, MouseEventArgs e)
+    {
+      if (e.Button != MouseButtons.Right)
+      {
+        return;
+      }
+
+      try
+      {
+        DataGridView.HitTestInfo hti = this.dgv_SimpleGui.HitTest(e.X, e.Y);
+        if (hti.RowIndex >= 0)
+        {
+          this.cms_TargetActions.Show(this.dgv_SimpleGui, e.Location);
+        }
+      }
+      catch
+      {
+      }
+    }
+
+
+    #region CMS Actions
+
+    private void TSMI_OpenInMiniBrowser_Click(object sender, EventArgs e)
+    {
+      var hostName = string.Empty;
+      var url = string.Empty;
+
+      try
+      {
+        var currentIndex = this.dgv_SimpleGui.CurrentCell.RowIndex;
+        hostName = this.dgv_SimpleGui.Rows[currentIndex].Cells["IpAddress"].Value.ToString();
+        url = $"http://{hostName}/";
+      }
+      catch (ArgumentOutOfRangeException aoorex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/TSMI_OpenInMiniBrowser_Click(AOOREX): {aoorex.Message}");
+        return;
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/TSMI_OpenInMiniBrowser_Click(EX): {ex.Message}");
+      }
+
+      Browser miniBrowser = new Browser(url, string.Empty, string.Empty, string.Empty);
+      miniBrowser.Show();
+    }
+
+    #endregion
 
 
     #region EVENTS: BGW_ArpScanSender
@@ -227,7 +305,9 @@
           break;
         }
 
-        this.RemoveOutdatedRecords();
+        //this.RemoveOutdatedRecords();
+        // Do not remove them but make them not selectable again
+
         System.Threading.Thread.Sleep(5000);
         roundCounter++;
       }
@@ -251,6 +331,9 @@
     }
 
     #endregion
+
+
+
 
     #endregion
 
