@@ -7,6 +7,7 @@
   using Minary.LogConsole.Main;
   using MinaryLib.AttackService.Class;
   using System;
+  using System.Collections.Generic;
   using System.ComponentModel;
   using System.Linq;
   using System.Windows.Forms;
@@ -23,6 +24,60 @@
 
     #endregion
 
+    
+    private void GetSimpleGuiTargetList()
+    {
+    }
+
+
+    public void WriteTargetSystems2AttackServices()
+    {
+      // Prepare dictionary with target systems MAC/IP to feed the  
+      // AttackService config file write method
+      Dictionary<string, string> currentTargetSystems = new Dictionary<string, string>();
+      lock (this.targetStringList)
+      {
+        for (int i = 0; i < this.dgv_SimpleGui.Rows.Count; i++)
+        {
+          DataGridViewRow row = this.dgv_SimpleGui.Rows[i];
+          var ipAddress = row.Cells["IpAddress"].Value.ToString();
+          var macAddress = row.Cells["MacAddress"].Value.ToString();
+
+          try
+          {
+            var attack = (bool)(row.Cells?["Attack"]?.Value ?? false);
+
+            if (attack == true)
+            {
+              currentTargetSystems.Add(macAddress, ipAddress);
+            }
+          }
+          catch (Exception ex)
+          {
+            MessageBox.Show($"IP:{ipAddress}\r\nMAC:{macAddress}\r\nException: {ex.Message}\r\n{ex.StackTrace}");
+          }
+        }
+      }
+
+      // Pass MAC/IP dictionary to the registered AttackServices
+      // where the the .targethosts file is rewritten.
+      foreach (var tmpKey in this.minaryObj.MinaryAttackServiceHandler.AttackServices.Keys)
+      {
+        try
+        {
+          var fullName = this.minaryObj.MinaryAttackServiceHandler.AttackServices[tmpKey].ServiceName;
+          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl.WriteTargetSystems2AttackServices(): Writing .targethosts tmpKey:{tmpKey}, fullName:{fullName}");
+          this.minaryObj.MinaryAttackServiceHandler.AttackServices[tmpKey].WriteTargetSystemsConfigFile(currentTargetSystems);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl.WriteTargetSystems2AttackServices(EXC): {0} => {1}", tmpKey, ex.Message);
+          //this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
+          //throw;
+        }
+      }
+    }
+
 
     #region EVENTS
 
@@ -32,92 +87,91 @@
       {
         return;
       }
-      
-      var targetIp = this.dgv_SimpleGui.Rows[e.RowIndex].Cells["IpAddress"].Value;
-      var targetMac = this.dgv_SimpleGui.Rows[e.RowIndex].Cells["MacAddress"].Value;
 
+      // Handle logging
+      var targetIp = this.dgv_SimpleGui.Rows[e.RowIndex].Cells["IpAddress"].Value;
       this.dgv_SimpleGui.EndEdit();
       var startAttack = (bool)this.dgv_SimpleGui.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
       var action = startAttack == true ? "Starting" : "Stopping";
 
-      LogCons.Inst.Write(LogLevel.Info, $"{action} attack on {targetIp}");      
+      LogCons.Inst.Write(LogLevel.Info, $"{action} attack on {targetIp}");
+
+      // Write .targethosts file for all AttackServices
+      this.WriteTargetSystems2AttackServices();
     }
 
 
     private void SimpleGuiUserControl_VisibleChanged(object sender, EventArgs e)
     {
-      if (this.Visible == true &&
-          this.Disposing == false)
-      {
-        // Configure ARP scan object
-        //this.arpScanner.Config = this.GetArpScanConfig();
-        // Instanciate ARP scanner object
-        try
-        {
-          this.arpScanConfig = this.GetArpScanConfig();
-          this.arpScanner = new ArpScanner(this.arpScanConfig);
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
-        }
-
-        try
-        {
-          this.replyListener = new ReplyListener(this.arpScanConfig);
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
-          return;
-        }
-
-        try
-        {
-          this.replyListener.AddObserver(this);
-        }
-        catch (Exception ex)
-        {
-          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
-          return;
-        }
-
-        this.StartArpScanListener();
-        this.StartArpScanSender();
-        this.StartRemoveInactiveSystems();
-        
-        // Start attack services
-        // First let all plugins prepare their environment before 
-        // the actual attack begins.
-        this.minaryObj.PrepareAttackAllPlugins();
-
-        // After the plugins were prepared start all
-        // attack services.
-        var currentServiceParams = new StartServiceParameters()
-        {
-          SelectedIfcIndex = this.minaryObj.CurrentInterfaceIndex,
-          SelectedIfcId = this.minaryObj.NetworkHandler.GetNetworkInterfaceIdByIndex(this.minaryObj.CurrentInterfaceIndex),
-          TargetList = (from target in this.minaryObj.ArpScanHandler.TargetList
-                        where target.Attack == true
-                        select new { target.MacAddress, target.IpAddress }).
-                            ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
-        };
-
-        this.minaryObj.StartAttackAllServices(currentServiceParams);
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices started");
-      }
-      else
+      if (this.Visible == false ||
+          this.Disposing == true)
       {
         this.bgw_ArpScanSender.CancelAsync();
         this.bgw_ArpScanListener.CancelAsync();
         this.bgw_RemoveInactiveSystems.CancelAsync();
         this.minaryObj?.MinaryAttackServiceHandler?.StopAllServices();
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices  stopped");
+
+        return;
       }
+
+      // Configure ARP scan object
+      //this.arpScanner.Config = this.GetArpScanConfig();
+      // Instanciate ARP scanner object
+      try
+      {
+        this.arpScanConfig = this.GetArpScanConfig();
+        this.arpScanner = new ArpScanner(this.arpScanConfig);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
+      }
+
+      try
+      {
+        this.replyListener = new ReplyListener(this.arpScanConfig);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
+        return;
+      }
+
+      try
+      {
+        this.replyListener.AddObserver(this);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
+        return;
+      }
+
+      this.StartArpScanListener();
+      this.StartArpScanSender();
+      this.StartRemoveInactiveSystems();
+
+      // Make all plugins prepare their environment before the actual attack begins.
+      this.minaryObj.PrepareAttackAllPlugins();
+
+      // After the plugins were prepared start all attack services.
+      try
+      {
+        var currentServiceParams = this.GetCurrentServiceParamsConfig();
+        this.minaryObj.StartAttackAllServices(currentServiceParams);
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION3): {ex.Message}");
+        return;
+      }
+
+      LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices started");
     }
     
 
-    private void DGV_SimpleGui_DoubleClick(object sender, System.EventArgs e)
+    private void DGV_SimpleGui_DoubleClick(object sender, EventArgs e)
     {
     }
 
@@ -331,10 +385,7 @@
     }
 
     #endregion
-
-
-
-
+        
     #endregion
 
 
@@ -382,6 +433,22 @@
       {
         LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: StartRemoveInactiveSystems can not be started");
       }
+    }
+
+
+    private StartServiceParameters GetCurrentServiceParamsConfig()
+    {
+      var currentServiceParams = new StartServiceParameters()
+      {
+        SelectedIfcIndex = this.minaryObj.CurrentInterfaceIndex,
+        SelectedIfcId = this.minaryObj.NetworkHandler.GetNetworkInterfaceIdByIndex(this.minaryObj.CurrentInterfaceIndex),
+        TargetList = (from target in this.minaryObj.ArpScanHandler.TargetList
+                      where target.Attack == true
+                      select new { target.MacAddress, target.IpAddress }).
+                          ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
+      };
+
+      return currentServiceParams;
     }
 
 

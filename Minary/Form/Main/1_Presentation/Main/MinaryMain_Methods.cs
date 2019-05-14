@@ -403,6 +403,22 @@
     {
     }
 
+
+    private StartServiceParameters GetCurrentServiceParameters()
+    {
+      var currentServiceParams = new StartServiceParameters()
+      {
+        SelectedIfcIndex = this.currentInterfaceIndex,
+        SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
+        TargetList = (from target in this.arpScanHandler.TargetList
+                      where target.Attack == true
+                      select new { target.MacAddress, target.IpAddress }).
+                    ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
+      };
+
+      return currentServiceParams;
+    }
+
     #endregion
 
   }

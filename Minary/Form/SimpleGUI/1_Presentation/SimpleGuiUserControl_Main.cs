@@ -2,11 +2,8 @@
 {
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
-  using Minary.DataTypes.Enum;
   using Minary.Form.Main;
-  using Minary.LogConsole.Main;
   using PcapDotNet.Core;
-  using System;
   using System.ComponentModel;
   using System.Windows.Forms;
 

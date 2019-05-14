@@ -6,15 +6,12 @@
   using Minary.Form.Updates.Presentation;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
-  using MinaryLib.AttackService.Class;
 
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
   using System.IO;
-  using System.Linq;
   using System.Net.NetworkInformation;
-  using System.Threading.Tasks;
   using System.Windows.Forms;
 
 
@@ -447,16 +444,7 @@
 
       // After the plugins were prepared start all
       // attack services.
-      var currentServiceParams = new StartServiceParameters()
-      {
-        SelectedIfcIndex = this.currentInterfaceIndex,
-        SelectedIfcId = this.nicHandler.GetNetworkInterfaceIdByIndex(this.currentInterfaceIndex),
-        TargetList = (from target in this.arpScanHandler.TargetList
-                      where target.Attack == true
-                      select new { target.MacAddress, target.IpAddress }).
-                          ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
-      };
-
+      var currentServiceParams = this.GetCurrentServiceParameters();
       this.StartAttackAllServices(currentServiceParams);
     }
 
