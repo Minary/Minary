@@ -1,4 +1,4 @@
-﻿namespace Minary.Form.SimpleGUI.Presentation
+﻿namespace Minary.Form.GuiSimple.Presentation
 {
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
@@ -8,7 +8,7 @@
   using System.Windows.Forms;
 
 
-  public partial class SimpleGuiUserControl : UserControl
+  public partial class GuiSimpleUserControl : UserControl
   {
 
     #region MEMBERS
@@ -23,7 +23,7 @@
 
     #region PUBLIC
 
-    public SimpleGuiUserControl(MinaryMain minaryObj)
+    public GuiSimpleUserControl(MinaryMain minaryObj)
     {
       InitializeComponent();
 
@@ -38,7 +38,7 @@
       columnIpAddress.Visible = true;
       columnIpAddress.ReadOnly = true;
       columnIpAddress.Width = 200;
-      this.dgv_SimpleGui.Columns.Add(columnIpAddress);
+      this.dgv_GuiSimple.Columns.Add(columnIpAddress);
 
       var columnMacAddress = new DataGridViewImageColumn();
       columnMacAddress.DataPropertyName = "MacAddress";
@@ -47,7 +47,7 @@
       columnMacAddress.Visible = false;
       columnMacAddress.ReadOnly = true;
       columnMacAddress.Width = 200;
-      this.dgv_SimpleGui.Columns.Add(columnMacAddress);
+      this.dgv_GuiSimple.Columns.Add(columnMacAddress);
 
       var columnAttack = new DataGridViewCheckBoxColumn();
       columnAttack.DataPropertyName = "Attack";
@@ -55,7 +55,7 @@
       columnAttack.HeaderText = "Attack";
       columnAttack.Visible = true;
       columnAttack.Width = 100;
-      this.dgv_SimpleGui.Columns.Add(columnAttack);
+      this.dgv_GuiSimple.Columns.Add(columnAttack);
 
       var columnLastSeen = new DataGridViewTextBoxColumn();
       columnLastSeen.DataPropertyName = "LastSeen";
@@ -66,10 +66,10 @@
       columnLastSeen.Width = 100;
       columnLastSeen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
       columnLastSeen.DefaultCellStyle.Format = "yyyy.MM.dd HH:mm:ss";
-      this.dgv_SimpleGui.Columns.Add(columnLastSeen);
+      this.dgv_GuiSimple.Columns.Add(columnLastSeen);
 
       // Initialize DGV data source list
-      this.dgv_SimpleGui.DataSource = this.targetStringList;
+      this.dgv_GuiSimple.DataSource = this.targetStringList;
     }
 
     #endregion

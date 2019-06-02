@@ -1,4 +1,4 @@
-﻿namespace Minary.Form.SimpleGUI.Presentation
+﻿namespace Minary.Form.GuiSimple.Presentation
 {
   using Minary.DataTypes.ArpScan;
   using Minary.DataTypes.Enum;
@@ -8,7 +8,7 @@
   using System.Linq;
 
 
-  public partial class SimpleGuiUserControl : IObserverArpResponse, IObserverArpRequest
+  public partial class GuiSimpleUserControl : IObserverArpResponse, IObserverArpRequest
   {
 
     #region INTERFACE: IObserverArpRequest
@@ -63,7 +63,7 @@
                 systemData.IpAddress != this.arpScanConfig.LocalIp)
             {
               this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
-              LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
+              LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");
             }
           }
           catch (Exception ex)
@@ -73,7 +73,7 @@
         }
         else
         {
-          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/UpdateNewRecord(): Redetected target system {systemData.MacAddress}/{systemData.IpAddress}");
+          LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/UpdateNewRecord(): Redetected target system {systemData.MacAddress}/{systemData.IpAddress}");
         }
 
         // Update "last seen" timestamp

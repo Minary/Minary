@@ -52,10 +52,10 @@
     <Compile Include="DataTypes\MockMinaryMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DataTypes\MockSimpleGui.cs">
+    <Compile Include="DataTypes\MockGuiSimple.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TestSimpleGui.cs" />
+    <Compile Include="TestGuiSimple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

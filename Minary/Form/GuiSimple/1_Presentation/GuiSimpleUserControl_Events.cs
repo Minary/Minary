@@ -1,4 +1,4 @@
-﻿namespace Minary.Form.SimpleGUI.Presentation
+﻿namespace Minary.Form.GuiSimple.Presentation
 {
   using Minary.MiniBrowser;
   using Minary.DataTypes.Enum;
@@ -13,7 +13,7 @@
   using System.Windows.Forms;
 
 
-  public partial class SimpleGuiUserControl
+  public partial class GuiSimpleUserControl
   {
 
     #region MEMBERS
@@ -25,7 +25,7 @@
     #endregion
 
     
-    private void GetSimpleGuiTargetList()
+    private void GetGuiSimpleTargetList()
     {
     }
 
@@ -37,9 +37,9 @@
       Dictionary<string, string> currentTargetSystems = new Dictionary<string, string>();
       lock (this.targetStringList)
       {
-        for (int i = 0; i < this.dgv_SimpleGui.Rows.Count; i++)
+        for (int i = 0; i < this.dgv_GuiSimple.Rows.Count; i++)
         {
-          DataGridViewRow row = this.dgv_SimpleGui.Rows[i];
+          DataGridViewRow row = this.dgv_GuiSimple.Rows[i];
           var ipAddress = row.Cells["IpAddress"].Value.ToString();
           var macAddress = row.Cells["MacAddress"].Value.ToString();
 
@@ -66,12 +66,12 @@
         try
         {
           var fullName = this.minaryObj.MinaryAttackServiceHandler.AttackServices[tmpKey].ServiceName;
-          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl.WriteTargetSystems2AttackServices(): Writing .targethosts tmpKey:{tmpKey}, fullName:{fullName}");
+          LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl.WriteTargetSystems2AttackServices(): Writing .targethosts tmpKey:{tmpKey}, fullName:{fullName}");
           this.minaryObj.MinaryAttackServiceHandler.AttackServices[tmpKey].WriteTargetSystemsConfigFile(currentTargetSystems);
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl.WriteTargetSystems2AttackServices(EXC): {0} => {1}", tmpKey, ex.Message);
+          LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl.WriteTargetSystems2AttackServices(EXC): {0} => {1}", tmpKey, ex.Message);
           //this.SetNewAttackServiceState(tmpKey, ServiceStatus.Error);
           //throw;
         }
@@ -81,17 +81,17 @@
 
     #region EVENTS
 
-    private void DgvSimpleGui_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void DgvGuiSimple_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
-      if (e.ColumnIndex != this.dgv_SimpleGui.Columns["Attack"].Index)
+      if (e.ColumnIndex != this.dgv_GuiSimple.Columns["Attack"].Index)
       {
         return;
       }
 
       // Handle logging
-      var targetIp = this.dgv_SimpleGui.Rows[e.RowIndex].Cells["IpAddress"].Value;
-      this.dgv_SimpleGui.EndEdit();
-      var startAttack = (bool)this.dgv_SimpleGui.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+      var targetIp = this.dgv_GuiSimple.Rows[e.RowIndex].Cells["IpAddress"].Value;
+      this.dgv_GuiSimple.EndEdit();
+      var startAttack = (bool)this.dgv_GuiSimple.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
       var action = startAttack == true ? "Starting" : "Stopping";
 
       LogCons.Inst.Write(LogLevel.Info, $"{action} attack on {targetIp}");
@@ -101,7 +101,7 @@
     }
 
 
-    private void SimpleGuiUserControl_VisibleChanged(object sender, EventArgs e)
+    private void GuiSimpleUserControl_VisibleChanged(object sender, EventArgs e)
     {
       if (this.Visible == false ||
           this.Disposing == true)
@@ -110,7 +110,7 @@
         this.bgw_ArpScanListener.CancelAsync();
         this.bgw_RemoveInactiveSystems.CancelAsync();
         this.minaryObj?.MinaryAttackServiceHandler?.StopAllServices();
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices  stopped");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/GuiSimpleUserControl_VisibleChanged: GuiSimple/ARPScan/AttackServices  stopped");
 
         return;
       }
@@ -125,7 +125,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/GuiSimpleUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
       }
 
       try
@@ -134,7 +134,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
         return;
       }
 
@@ -144,7 +144,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
         return;
       }
 
@@ -163,41 +163,41 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanListener(EXCEPTION3): {ex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanListener(EXCEPTION3): {ex.Message}");
         return;
       }
 
-      LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/SimpleGuiUserControl_VisibleChanged: SimpleGUI/ARPScan/AttackServices started");
+      LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/GuiSimpleUserControl_VisibleChanged: GuiSimple/ARPScan/AttackServices started");
     }
     
 
-    private void DGV_SimpleGui_DoubleClick(object sender, EventArgs e)
+    private void DGV_GuiSimple_DoubleClick(object sender, EventArgs e)
     {
     }
 
 
-    private void DGV_SimpleGui_MouseDown(object sender, MouseEventArgs e)
+    private void DGV_GuiSimple_MouseDown(object sender, MouseEventArgs e)
     {
       try
       {
-        DataGridView.HitTestInfo hti = this.dgv_SimpleGui.HitTest(e.X, e.Y);
+        DataGridView.HitTestInfo hti = this.dgv_GuiSimple.HitTest(e.X, e.Y);
 
         if (hti.RowIndex >= 0)
         {
-          this.dgv_SimpleGui.ClearSelection();
-          this.dgv_SimpleGui.Rows[hti.RowIndex].Selected = true;
-          this.dgv_SimpleGui.CurrentCell = this.dgv_SimpleGui.Rows[hti.RowIndex].Cells[0];
+          this.dgv_GuiSimple.ClearSelection();
+          this.dgv_GuiSimple.Rows[hti.RowIndex].Selected = true;
+          this.dgv_GuiSimple.CurrentCell = this.dgv_GuiSimple.Rows[hti.RowIndex].Cells[0];
         }
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGUI: {ex.Message}");
-        this.dgv_SimpleGui.ClearSelection();
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimple: {ex.Message}");
+        this.dgv_GuiSimple.ClearSelection();
       }
     }
 
 
-    private void DGV_SimpleGui_MouseUp(object sender, MouseEventArgs e)
+    private void DGV_GuiSimple_MouseUp(object sender, MouseEventArgs e)
     {
       if (e.Button != MouseButtons.Right)
       {
@@ -206,10 +206,10 @@
 
       try
       {
-        DataGridView.HitTestInfo hti = this.dgv_SimpleGui.HitTest(e.X, e.Y);
+        DataGridView.HitTestInfo hti = this.dgv_GuiSimple.HitTest(e.X, e.Y);
         if (hti.RowIndex >= 0)
         {
-          this.cms_TargetActions.Show(this.dgv_SimpleGui, e.Location);
+          this.cms_TargetActions.Show(this.dgv_GuiSimple, e.Location);
         }
       }
       catch
@@ -227,18 +227,18 @@
 
       try
       {
-        var currentIndex = this.dgv_SimpleGui.CurrentCell.RowIndex;
-        hostName = this.dgv_SimpleGui.Rows[currentIndex].Cells["IpAddress"].Value.ToString();
+        var currentIndex = this.dgv_GuiSimple.CurrentCell.RowIndex;
+        hostName = this.dgv_GuiSimple.Rows[currentIndex].Cells["IpAddress"].Value.ToString();
         url = $"http://{hostName}/";
       }
       catch (ArgumentOutOfRangeException aoorex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/TSMI_OpenInMiniBrowser_Click(AOOREX): {aoorex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/TSMI_OpenInMiniBrowser_Click(AOOREX): {aoorex.Message}");
         return;
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/TSMI_OpenInMiniBrowser_Click(EX): {ex.Message}");
+        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/TSMI_OpenInMiniBrowser_Click(EX): {ex.Message}");
       }
 
       Browser miniBrowser = new Browser(url, string.Empty, string.Empty, string.Empty);
@@ -254,15 +254,15 @@
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write(LogLevel.Error, "SimpleGuiUserControl/BGW_ArpScanSender(): Completed with error");
+        LogCons.Inst.Write(LogLevel.Error, "GuiSimpleUserControl/BGW_ArpScanSender(): Completed with error");
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanSender(): Completed by cancellation");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanSender(): Completed by cancellation");
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): Completed successfully");
+        LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_ArpScanSender(): Completed successfully");
       }
     }
 
@@ -276,10 +276,10 @@
 
       while (true)
       {
-        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} started");
+        LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} started");
         if (this.bgw_ArpScanSender.CancellationPending == true)
         {
-          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan cancelled");
+          LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_ArpScanSender(): ARP scan cancelled");
           break;
         }
 
@@ -289,17 +289,17 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanSender(EXCEPTION2.0): {ex.Message}\r\n{ex.StackTrace}");
-          LogCons.Inst.Write(LogLevel.Error, $"SimpleGuiUserControl/BGW_ArpScanSender(EXCEPTION2.1): Sleeping for {sleepSecondsOnError} seconds");
+          LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanSender(EXCEPTION2.0): {ex.Message}\r\n{ex.StackTrace}");
+          LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanSender(EXCEPTION2.1): Sleeping for {sleepSecondsOnError} seconds");
           System.Threading.Thread.Sleep(sleepSecondsOnError * 1000);
         }
 
-        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} finished");
+        LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_ArpScanSender(): ARP scan round {roundCounter} finished");
         roundCounter++;
         System.Threading.Thread.Sleep(3000);
       }
 
-      LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_ArpScanSender(): ARP scan stopped after {roundCounter} rounds");
+      LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_ArpScanSender(): ARP scan stopped after {roundCounter} rounds");
     }
     
     #endregion
@@ -311,22 +311,22 @@
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write(LogLevel.Error, "SimpleGuiUserControl/BGW_ArpScanListener(): Completed with error");
+        LogCons.Inst.Write(LogLevel.Error, "GuiSimpleUserControl/BGW_ArpScanListener(): Completed with error");
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Completed by cancellation");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Completed by cancellation");
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Completed successfully");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Completed successfully");
       }
     }
 
 
     private void BGW_ArpScanListener_DoWork(object sender, DoWorkEventArgs e)
     {
-      LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Background worker started");
+      LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Background worker started");
 
       try
       {
@@ -338,7 +338,7 @@
         return;
       }
 
-      LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_ArpScanListener(): Background worker stopped");
+      LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Background worker stopped");
     }
 
     #endregion
@@ -352,10 +352,10 @@
 
       while (true)
       {
-        LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_RemoveInactiveSystems_DoWork(): Remove loop round {roundCounter} started");
+        LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_RemoveInactiveSystems_DoWork(): Remove loop round {roundCounter} started");
         if (this.bgw_RemoveInactiveSystems.CancellationPending == true)
         {
-          LogCons.Inst.Write(LogLevel.Info, $"SimpleGuiUserControl/BGW_RemoveInactiveSystems_DoWork(): Remove loop cancelled");
+          LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/BGW_RemoveInactiveSystems_DoWork(): Remove loop cancelled");
           break;
         }
 
@@ -372,15 +372,15 @@
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write(LogLevel.Error, "SimpleGuiUserControl/BGW_RemoveInactiveSystems(): Completed with error");
+        LogCons.Inst.Write(LogLevel.Error, "GuiSimpleUserControl/BGW_RemoveInactiveSystems(): Completed with error");
       }
       else if (e.Cancelled == true)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_RemoveInactiveSystems(): Completed by cancellation");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_RemoveInactiveSystems(): Completed by cancellation");
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/BGW_RemoveInactiveSystems(): Completed successfully");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_RemoveInactiveSystems(): Completed successfully");
       }
     }
 
@@ -396,11 +396,11 @@
       // Initiate ARP scan cancellation
       if (this.bgw_ArpScanListener.IsBusy == true)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanListener is already running");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: ArpScanListener is already running");
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanListener started");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: ArpScanListener started");
         this.bgw_ArpScanListener.RunWorkerAsync();
       }
     }
@@ -411,12 +411,12 @@
       // Initiate ARP scan cancellation
       if (this.bgw_ArpScanSender.IsBusy == false)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanSender started");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: ArpScanSender started");
         this.bgw_ArpScanSender.RunWorkerAsync();
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: ArpScanSender can not be started");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: ArpScanSender can not be started");
       }
     }
         
@@ -426,12 +426,12 @@
       // Initiate ARP scan cancellation
       if (this.bgw_RemoveInactiveSystems.IsBusy == false)
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: StartRemoveInactiveSystems started");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: StartRemoveInactiveSystems started");
         this.bgw_RemoveInactiveSystems.RunWorkerAsync();
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "SimpleGuiUserControl/ArpScan: StartRemoveInactiveSystems can not be started");
+        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: StartRemoveInactiveSystems can not be started");
       }
     }
 

@@ -188,20 +188,20 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void TSMI_SimpleGui_Click(object sender, EventArgs e)
+    private void TSMI_GuiSimple_Click(object sender, EventArgs e)
     {
-      this.tsmi_SimpleGUI.Text = string.Format("Simple GUI ({0})", !Config.IsSimpleGuiOn == true ? "on" : "off");
-      Config.IsSimpleGuiOn = !Config.IsSimpleGuiOn;
+      this.tsmi_GuiSimple.Text = string.Format("Simple GUI ({0})", !Config.IsGuiSimpleOn == true ? "on" : "off");
+      Config.IsGuiSimpleOn = !Config.IsGuiSimpleOn;
 
-      if (Config.IsSimpleGuiOn == true)
+      if (Config.IsGuiSimpleOn == true)
       {
-        this.SimpleGuiEnable();
-        this.SimpleGuiStartScanning();
+        this.GuiSimpleEnable();
+        this.GuiSimpleStartScanning();
       }
       else
       {
-        this.SimpleGuiDisable();
-        this.SimpleGuiStopScanning();
+        this.GuiSimpleDisable();
+        this.GuiSimpleStopScanning();
       }
     }
 

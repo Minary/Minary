@@ -1,16 +1,16 @@
 ﻿using Minary.DataTypes.ArpScan;
 using Minary.Form.ArpScan.DataTypes;
-using Minary.Form.SimpleGUI.Presentation;
+using Minary.Form.GuiSimple.Presentation;
 using System.ComponentModel;
 
 
 namespace TestsMinary.DataTypes
 {
 
-  // SimpleGui mock class
-  public class MockSimpleGui : SimpleGuiUserControl
+  // GuiSimple mock class
+  public class MockGuiSimple : GuiSimpleUserControl
   {
-    public MockSimpleGui(Minary.Form.Main.MinaryMain minaryMain) : base(minaryMain)
+    public MockGuiSimple(Minary.Form.Main.MinaryMain minaryMain) : base(minaryMain)
     {
       base.arpScanConfig = new ArpScanConfig()
       {

@@ -1,6 +1,6 @@
-﻿namespace Minary.Form.SimpleGUI.Presentation
+﻿namespace Minary.Form.GuiSimple.Presentation
 {
-  public partial class SimpleGuiUserControl
+  public partial class GuiSimpleUserControl
   {
     /// <summary> 
     /// Required designer variable.
@@ -29,39 +29,39 @@
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
-      this.dgv_SimpleGui = new System.Windows.Forms.DataGridView();
+      this.dgv_GuiSimple = new System.Windows.Forms.DataGridView();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
       this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
       this.bgw_RemoveInactiveSystems = new System.ComponentModel.BackgroundWorker();
       this.cms_TargetActions = new System.Windows.Forms.ContextMenuStrip(this.components);
       this.openInMiniBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      ((System.ComponentModel.ISupportInitialize)(this.dgv_SimpleGui)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.dgv_GuiSimple)).BeginInit();
       this.cms_TargetActions.SuspendLayout();
       this.SuspendLayout();
       // 
-      // dgv_SimpleGui
+      // dgv_GuiSimple
       // 
-      this.dgv_SimpleGui.AllowUserToAddRows = false;
-      this.dgv_SimpleGui.AllowUserToDeleteRows = false;
-      this.dgv_SimpleGui.AllowUserToResizeColumns = false;
-      this.dgv_SimpleGui.AllowUserToResizeRows = false;
-      this.dgv_SimpleGui.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+      this.dgv_GuiSimple.AllowUserToAddRows = false;
+      this.dgv_GuiSimple.AllowUserToDeleteRows = false;
+      this.dgv_GuiSimple.AllowUserToResizeColumns = false;
+      this.dgv_GuiSimple.AllowUserToResizeRows = false;
+      this.dgv_GuiSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.dgv_SimpleGui.BorderStyle = System.Windows.Forms.BorderStyle.None;
-      this.dgv_SimpleGui.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.dgv_SimpleGui.Location = new System.Drawing.Point(13, 17);
-      this.dgv_SimpleGui.Margin = new System.Windows.Forms.Padding(10);
-      this.dgv_SimpleGui.Name = "dgv_SimpleGui";
-      this.dgv_SimpleGui.RowHeadersVisible = false;
-      this.dgv_SimpleGui.RowTemplate.Height = 28;
-      this.dgv_SimpleGui.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.dgv_SimpleGui.Size = new System.Drawing.Size(1343, 761);
-      this.dgv_SimpleGui.TabIndex = 0;
-      this.dgv_SimpleGui.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvSimpleGui_CellContentClick);
-      this.dgv_SimpleGui.DoubleClick += new System.EventHandler(this.DGV_SimpleGui_DoubleClick);
-      this.dgv_SimpleGui.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DGV_SimpleGui_MouseDown);
-      this.dgv_SimpleGui.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DGV_SimpleGui_MouseUp);
+      this.dgv_GuiSimple.BorderStyle = System.Windows.Forms.BorderStyle.None;
+      this.dgv_GuiSimple.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.dgv_GuiSimple.Location = new System.Drawing.Point(13, 17);
+      this.dgv_GuiSimple.Margin = new System.Windows.Forms.Padding(10);
+      this.dgv_GuiSimple.Name = "dgv_GuiSimple";
+      this.dgv_GuiSimple.RowHeadersVisible = false;
+      this.dgv_GuiSimple.RowTemplate.Height = 28;
+      this.dgv_GuiSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+      this.dgv_GuiSimple.Size = new System.Drawing.Size(1343, 761);
+      this.dgv_GuiSimple.TabIndex = 0;
+      this.dgv_GuiSimple.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvGuiSimple_CellContentClick);
+      this.dgv_GuiSimple.DoubleClick += new System.EventHandler(this.DGV_GuiSimple_DoubleClick);
+      this.dgv_GuiSimple.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DGV_GuiSimple_MouseDown);
+      this.dgv_GuiSimple.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DGV_GuiSimple_MouseUp);
       // 
       // bgw_ArpScanSender
       // 
@@ -96,15 +96,15 @@
       this.openInMiniBrowserToolStripMenuItem.Text = "Open in Mini browser";
       this.openInMiniBrowserToolStripMenuItem.Click += new System.EventHandler(this.TSMI_OpenInMiniBrowser_Click);
       // 
-      // SimpleGuiUserControl
+      // GuiSimpleUserControl
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.Controls.Add(this.dgv_SimpleGui);
-      this.Name = "SimpleGuiUserControl";
+      this.Controls.Add(this.dgv_GuiSimple);
+      this.Name = "GuiSimpleUserControl";
       this.Size = new System.Drawing.Size(1366, 830);
-      this.VisibleChanged += new System.EventHandler(this.SimpleGuiUserControl_VisibleChanged);
-      ((System.ComponentModel.ISupportInitialize)(this.dgv_SimpleGui)).EndInit();
+      this.VisibleChanged += new System.EventHandler(this.GuiSimpleUserControl_VisibleChanged);
+      ((System.ComponentModel.ISupportInitialize)(this.dgv_GuiSimple)).EndInit();
       this.cms_TargetActions.ResumeLayout(false);
       this.ResumeLayout(false);
 
@@ -112,7 +112,7 @@
 
     #endregion
 
-    private System.Windows.Forms.DataGridView dgv_SimpleGui;
+    private System.Windows.Forms.DataGridView dgv_GuiSimple;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
     private System.ComponentModel.BackgroundWorker bgw_RemoveInactiveSystems;

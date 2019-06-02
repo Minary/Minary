@@ -77,7 +77,7 @@
       this.tsmi_Settings = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Beep = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Debugging = new System.Windows.Forms.ToolStripMenuItem();
-      this.tsmi_SimpleGUI = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_GuiSimple = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Attack = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Template = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LoadTemplate = new System.Windows.Forms.ToolStripMenuItem();
@@ -463,7 +463,7 @@
       this.tsmi_Settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Beep,
             this.tsmi_Debugging,
-            this.tsmi_SimpleGUI,
+            this.tsmi_GuiSimple,
             this.tsmi_Attack});
       this.tsmi_Settings.Name = "tsmi_Settings";
       this.tsmi_Settings.Size = new System.Drawing.Size(88, 29);
@@ -485,13 +485,13 @@
       this.tsmi_Debugging.Text = "Debugging (off)";
       this.tsmi_Debugging.Click += new System.EventHandler(this.TSMI_DebugginOn_Click);
       // 
-      // tsmi_SimpleGUI
+      // tsmi_GuiSimple
       // 
-      this.tsmi_SimpleGUI.Name = "tsmi_SimpleGUI";
-      this.tsmi_SimpleGUI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-      this.tsmi_SimpleGUI.Size = new System.Drawing.Size(295, 30);
-      this.tsmi_SimpleGUI.Text = "Simple GUI (off)";
-      this.tsmi_SimpleGUI.Click += new System.EventHandler(this.TSMI_SimpleGui_Click);
+      this.tsmi_GuiSimple.Name = "tsmi_GuiSimple";
+      this.tsmi_GuiSimple.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+      this.tsmi_GuiSimple.Size = new System.Drawing.Size(295, 30);
+      this.tsmi_GuiSimple.Text = "Simple GUI (off)";
+      this.tsmi_GuiSimple.Click += new System.EventHandler(this.TSMI_GuiSimple_Click);
       // 
       // tsmi_Attack
       // 
@@ -701,7 +701,7 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_Beep;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Debugging;
     private System.Windows.Forms.FlowLayoutPanel flp_AttackServices;
-    private System.Windows.Forms.ToolStripMenuItem tsmi_SimpleGUI;
+    private System.Windows.Forms.ToolStripMenuItem tsmi_GuiSimple;
     private System.Windows.Forms.ToolStripMenuItem tsmi_TlsSslCertificates;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Attack;
     private System.Windows.Forms.ToolStripMenuItem tsmi_ArpScan;

@@ -175,7 +175,7 @@
       this.tsmi_LoadTemplate.Enabled = false;
       this.tsmi_CreateTemplate.Enabled = false;
       this.tsmi_UnloadTemplate.Enabled = false;
-      this.tsmi_SimpleGUI.Enabled = false;
+      this.tsmi_GuiSimple.Enabled = false;
       this.tsmi_TlsSslCertificates.Enabled = false;
     }
 
@@ -197,7 +197,7 @@
       this.tsmi_LoadTemplate.Enabled = true;
       this.tsmi_CreateTemplate.Enabled = true;
       this.tsmi_UnloadTemplate.Enabled = true;
-      this.tsmi_SimpleGUI.Enabled = true;
+      this.tsmi_GuiSimple.Enabled = true;
       this.tsmi_TlsSslCertificates.Enabled = true;
     }
 
@@ -367,7 +367,7 @@
     }
 
 
-    private void SimpleGuiDisable()
+    private void GuiSimpleDisable()
     {
       this.gb_TargetRange.Visible = true;
       this.gb_Interfaces.Visible = true;
@@ -375,11 +375,11 @@
       this.bt_Attack.Visible = true;
       this.bt_ScanLan.Visible = true;
       this.tc_Plugins.Visible = true;
-      this.simpleGui.Visible = false;
+      this.guiSimple.Visible = false;
     }
 
 
-    private void SimpleGuiEnable()
+    private void GuiSimpleEnable()
     {
       this.gb_TargetRange.Visible = false;
       this.gb_Interfaces.Visible = false;
@@ -387,11 +387,11 @@
       this.bt_Attack.Visible = false;
       this.bt_ScanLan.Visible = false;
       this.tc_Plugins.Visible = false;
-      this.simpleGui.Visible = true;
+      this.guiSimple.Visible = true;
     }
 
 
-    private void SimpleGuiStartScanning()
+    private void GuiSimpleStartScanning()
     {
       //var arpScanConf = this.GetArpScanConfig();
       //Minary.Domain.ArpScan.ArpScanner.Inst.
@@ -399,7 +399,7 @@
     }
 
 
-    private void SimpleGuiStopScanning()
+    private void GuiSimpleStopScanning()
     {
     }
 

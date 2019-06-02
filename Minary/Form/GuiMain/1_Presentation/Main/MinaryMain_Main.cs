@@ -11,7 +11,7 @@
   using Minary.Domain.Main;
   using Minary.Domain.Network;
   using Minary.Form;
-  using Minary.Form.SimpleGUI.Presentation;
+  using Minary.Form.GuiSimple.Presentation;
   using Minary.LogConsole.Main;
   using Minary.MiniBrowser;
   using MinaryLib.AttackService.Enum;
@@ -39,7 +39,7 @@
     private bool attackStarted;
     private Minary.Form.Main.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
-    private SimpleGuiUserControl simpleGui;
+    private GuiSimpleUserControl guiSimple;
 
     // GUI handlers
     private ArpScan.Presentation.ArpScan arpScanHandler;
@@ -196,12 +196,12 @@
       this.minaryTaskFacade = new TaskFacade(this, this.dgv_MainPlugins);
       this.templateTaskLayer = new Template.Task.TemplateHandler(this);
 
-      // Create SimpleGUI
-      this.simpleGui = new SimpleGuiUserControl(this);
-      this.simpleGui.Parent = this;
-      this.simpleGui.Visible = false;
-      this.Controls.Add(simpleGui);
-      this.simpleGui.Dock = DockStyle.Fill;
+      // Create GuiSimple
+      this.guiSimple = new GuiSimpleUserControl(this);
+      this.guiSimple.Parent = this;
+      this.guiSimple.Visible = false;
+      this.Controls.Add(guiSimple);
+      this.guiSimple.Dock = DockStyle.Fill;
     }
 
 
@@ -219,8 +219,8 @@
         this.SetAppTitle(string.Empty);
       }
 
-      // Set current SimpleGUI mode in MainForm
-      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Config.IsSimpleGuiOn?"on":"off");
+      // Set current GuiSimple mode in MainForm
+      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Config.IsGuiSimpleOn?"on":"off");
 
       // Populate network interface.
       this.LoadNicSettings();

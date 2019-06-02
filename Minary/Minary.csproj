@@ -269,22 +269,22 @@
     <Compile Include="DataTypes\Interface\LogConsole\IObserver.cs" />
     <Compile Include="Domain\MacVendor\MacVendorHandler.cs" />
     <Compile Include="DataTypes\Enum\LogLevel.cs" />
-    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Events.cs">
+    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Events.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_General.cs">
+    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_General.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Interface.cs">
+    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Interface.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Main.cs">
+    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Main.Designer.cs">
-      <DependentUpon>SimpleGuiUserControl_Main.cs</DependentUpon>
+    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.Designer.cs">
+      <DependentUpon>GuiSimpleUserControl_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\Main\2_Task\TaskFacade.cs">
+    <Compile Include="Form\GuiMain\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Form\MessageDialogs.cs" />
@@ -297,10 +297,10 @@
     <Compile Include="Form\Plugin\TabPageHandler.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Events.cs">
+    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Events.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Interfaces.cs">
+    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Interfaces.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\Template\1_Presentation\CreateTemplate.cs">
@@ -329,13 +329,13 @@
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Methods.cs">
+    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Methods.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Main.cs">
+    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\Main\1_Presentation\Main\MinaryMain_Main.Designer.cs">
+    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Main.Designer.cs">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Network\NetworkFunctions.cs" />
@@ -374,12 +374,12 @@
       <DependentUpon>LogConsole.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\Main\1_Presentation\Main\MinaryMain_Main.resx">
+    <EmbeddedResource Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Main.resx">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\SimpleGUI\1_Presentation\SimpleGuiUserControl_Main.resx">
-      <DependentUpon>SimpleGuiUserControl_Main.cs</DependentUpon>
+    <EmbeddedResource Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.resx">
+      <DependentUpon>GuiSimpleUserControl_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Updates\1_Presentation\FormCheckNewVersion.resx">
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
@@ -399,7 +399,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config" />
-    <None Include="Form\Main\1_Presentation\app.config" />
+    <None Include="Form\GuiMain\1_Presentation\app.config" />
     <None Include="packages.config" />
     <None Include="Minary.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
