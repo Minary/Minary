@@ -152,7 +152,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void TSMI_CreateTool_Click(object sender, EventArgs e)
+    private void TSMI_CreateTemplate_Click(object sender, EventArgs e)
     {
       var createTemplateView = new Template.Presentation.CreateTemplate(this);
       createTemplateView.ShowDialog();

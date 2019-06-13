@@ -15,6 +15,8 @@
 
     public int StartAttack { get; set; } = 1;
 
+    public int IsAdvancedScan { get; set; } = 1;
+
     #endregion
 
 

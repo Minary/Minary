@@ -79,17 +79,35 @@
       this.TemplateData = this.infrastructure.LoadAttackTemplate(templateFile);
       this.callObj = new Calls(this.minaryMain, this.TemplateData);
 
+      // Open simple attack GUI
+      if (this.TemplateData.AttackConfig.IsAdvancedScan == 0)
+      {
+        this.LoadPlugins();
+        this.OpenSimpleGui();
+        this.AddMessage("Simple GUI opened", "Simple GUI");
+        this.AddMessage("Loading template done.", "Template");
+        this.AddMessage("Closing this view in 5 seconds ...", "Template");
+        this.CloseFormInXSeconds(5);
+        return;
+      }
 
-      // Here the actual automatization work begins!
+
+      // Open advanced GUI
       // 1. Hide all tabs
       // 2. Load Plugins
       // 3. ARP scan
       // 4. Attack
-
-      // Activate relevant plugins. Deactivate non-relevant plugins
+      
       this.HideAllTabPages();
       this.LoadPlugins();
       this.ExecuteArpScan();
+    }
+
+
+    private void OpenSimpleGui()
+    {
+      this.minaryMain.GuiSimpleEnable();
+      this.minaryMain.GuiSimpleStartScanning();
     }
 
 

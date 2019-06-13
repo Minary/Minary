@@ -525,7 +525,7 @@
       this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
       this.tsmi_CreateTemplate.Size = new System.Drawing.Size(227, 30);
       this.tsmi_CreateTemplate.Text = "Create ...";
-      this.tsmi_CreateTemplate.Click += new System.EventHandler(this.TSMI_CreateTool_Click);
+      this.tsmi_CreateTemplate.Click += new System.EventHandler(this.TSMI_CreateTemplate_Click);
       // 
       // tsmi_UnloadTemplate
       // 

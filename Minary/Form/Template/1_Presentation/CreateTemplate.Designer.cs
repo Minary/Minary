@@ -56,6 +56,8 @@
       this.l_MaxNoTargetSystems = new System.Windows.Forms.Label();
       this.cb_StartAttackingTargets = new System.Windows.Forms.CheckBox();
       this.cb_ArpScan = new System.Windows.Forms.CheckBox();
+      this.rb_GuiAdvanced = new System.Windows.Forms.RadioButton();
+      this.rb_GuiSimple = new System.Windows.Forms.RadioButton();
       this.gb_CreateTemplate.SuspendLayout();
       this.cms_Hops.SuspendLayout();
       this.tc_CreateTemplate.SuspendLayout();
@@ -76,50 +78,57 @@
       this.gb_CreateTemplate.Controls.Add(this.tb_TemplateName);
       this.gb_CreateTemplate.Controls.Add(this.l_TemplateDescription);
       this.gb_CreateTemplate.Controls.Add(this.l_TemplateName);
-      this.gb_CreateTemplate.Location = new System.Drawing.Point(17, 20);
+      this.gb_CreateTemplate.Location = new System.Drawing.Point(26, 31);
+      this.gb_CreateTemplate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.gb_CreateTemplate.Name = "gb_CreateTemplate";
-      this.gb_CreateTemplate.Size = new System.Drawing.Size(621, 258);
+      this.gb_CreateTemplate.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.gb_CreateTemplate.Size = new System.Drawing.Size(932, 397);
       this.gb_CreateTemplate.TabIndex = 1;
       this.gb_CreateTemplate.TabStop = false;
       // 
       // tb_Version
       // 
-      this.tb_Version.Location = new System.Drawing.Point(147, 140);
+      this.tb_Version.Location = new System.Drawing.Point(220, 215);
+      this.tb_Version.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_Version.Name = "tb_Version";
-      this.tb_Version.Size = new System.Drawing.Size(450, 20);
+      this.tb_Version.Size = new System.Drawing.Size(673, 26);
       this.tb_Version.TabIndex = 3;
       // 
       // l_Version
       // 
       this.l_Version.AutoSize = true;
       this.l_Version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_Version.Location = new System.Drawing.Point(24, 143);
+      this.l_Version.Location = new System.Drawing.Point(36, 220);
+      this.l_Version.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_Version.Name = "l_Version";
-      this.l_Version.Size = new System.Drawing.Size(49, 13);
+      this.l_Version.Size = new System.Drawing.Size(73, 20);
       this.l_Version.TabIndex = 0;
       this.l_Version.Text = "Version";
       // 
       // tb_AuthorName
       // 
-      this.tb_AuthorName.Location = new System.Drawing.Point(145, 202);
+      this.tb_AuthorName.Location = new System.Drawing.Point(218, 311);
+      this.tb_AuthorName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_AuthorName.Name = "tb_AuthorName";
-      this.tb_AuthorName.Size = new System.Drawing.Size(452, 20);
+      this.tb_AuthorName.Size = new System.Drawing.Size(676, 26);
       this.tb_AuthorName.TabIndex = 5;
       // 
       // tb_TemplateReferenceLink
       // 
-      this.tb_TemplateReferenceLink.Location = new System.Drawing.Point(145, 170);
+      this.tb_TemplateReferenceLink.Location = new System.Drawing.Point(218, 262);
+      this.tb_TemplateReferenceLink.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_TemplateReferenceLink.Name = "tb_TemplateReferenceLink";
-      this.tb_TemplateReferenceLink.Size = new System.Drawing.Size(452, 20);
+      this.tb_TemplateReferenceLink.Size = new System.Drawing.Size(676, 26);
       this.tb_TemplateReferenceLink.TabIndex = 4;
       // 
       // l_TemplateReferenceLink
       // 
       this.l_TemplateReferenceLink.AutoSize = true;
       this.l_TemplateReferenceLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_TemplateReferenceLink.Location = new System.Drawing.Point(22, 173);
+      this.l_TemplateReferenceLink.Location = new System.Drawing.Point(33, 266);
+      this.l_TemplateReferenceLink.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_TemplateReferenceLink.Name = "l_TemplateReferenceLink";
-      this.l_TemplateReferenceLink.Size = new System.Drawing.Size(90, 13);
+      this.l_TemplateReferenceLink.Size = new System.Drawing.Size(130, 20);
       this.l_TemplateReferenceLink.TabIndex = 0;
       this.l_TemplateReferenceLink.Text = "Reference link";
       // 
@@ -127,34 +136,38 @@
       // 
       this.l_AuthorName.AutoSize = true;
       this.l_AuthorName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_AuthorName.Location = new System.Drawing.Point(22, 205);
+      this.l_AuthorName.Location = new System.Drawing.Point(33, 315);
+      this.l_AuthorName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_AuthorName.Name = "l_AuthorName";
-      this.l_AuthorName.Size = new System.Drawing.Size(78, 13);
+      this.l_AuthorName.Size = new System.Drawing.Size(115, 20);
       this.l_AuthorName.TabIndex = 0;
       this.l_AuthorName.Text = "Author name";
       // 
       // tb_TemplateDescription
       // 
-      this.tb_TemplateDescription.Location = new System.Drawing.Point(145, 61);
+      this.tb_TemplateDescription.Location = new System.Drawing.Point(218, 94);
+      this.tb_TemplateDescription.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_TemplateDescription.Multiline = true;
       this.tb_TemplateDescription.Name = "tb_TemplateDescription";
-      this.tb_TemplateDescription.Size = new System.Drawing.Size(452, 65);
+      this.tb_TemplateDescription.Size = new System.Drawing.Size(676, 98);
       this.tb_TemplateDescription.TabIndex = 2;
       // 
       // tb_TemplateName
       // 
-      this.tb_TemplateName.Location = new System.Drawing.Point(145, 28);
+      this.tb_TemplateName.Location = new System.Drawing.Point(218, 43);
+      this.tb_TemplateName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tb_TemplateName.Name = "tb_TemplateName";
-      this.tb_TemplateName.Size = new System.Drawing.Size(452, 20);
+      this.tb_TemplateName.Size = new System.Drawing.Size(676, 26);
       this.tb_TemplateName.TabIndex = 1;
       // 
       // l_TemplateDescription
       // 
       this.l_TemplateDescription.AutoSize = true;
       this.l_TemplateDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_TemplateDescription.Location = new System.Drawing.Point(22, 64);
+      this.l_TemplateDescription.Location = new System.Drawing.Point(33, 98);
+      this.l_TemplateDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_TemplateDescription.Name = "l_TemplateDescription";
-      this.l_TemplateDescription.Size = new System.Drawing.Size(71, 13);
+      this.l_TemplateDescription.Size = new System.Drawing.Size(106, 20);
       this.l_TemplateDescription.TabIndex = 0;
       this.l_TemplateDescription.Text = "Description";
       // 
@@ -162,18 +175,20 @@
       // 
       this.l_TemplateName.AutoSize = true;
       this.l_TemplateName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_TemplateName.Location = new System.Drawing.Point(22, 35);
+      this.l_TemplateName.Location = new System.Drawing.Point(33, 54);
+      this.l_TemplateName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_TemplateName.Name = "l_TemplateName";
-      this.l_TemplateName.Size = new System.Drawing.Size(39, 13);
+      this.l_TemplateName.Size = new System.Drawing.Size(57, 20);
       this.l_TemplateName.TabIndex = 0;
       this.l_TemplateName.Text = "Name";
       // 
       // bt_Cancel
       // 
       this.bt_Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_Cancel.Location = new System.Drawing.Point(498, 361);
+      this.bt_Cancel.Location = new System.Drawing.Point(747, 555);
+      this.bt_Cancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.bt_Cancel.Name = "bt_Cancel";
-      this.bt_Cancel.Size = new System.Drawing.Size(75, 22);
+      this.bt_Cancel.Size = new System.Drawing.Size(112, 34);
       this.bt_Cancel.TabIndex = 21;
       this.bt_Cancel.Text = "Cancel";
       this.bt_Cancel.UseVisualStyleBackColor = true;
@@ -182,9 +197,10 @@
       // bt_Save
       // 
       this.bt_Save.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_Save.Location = new System.Drawing.Point(592, 361);
+      this.bt_Save.Location = new System.Drawing.Point(888, 555);
+      this.bt_Save.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.bt_Save.Name = "bt_Save";
-      this.bt_Save.Size = new System.Drawing.Size(75, 22);
+      this.bt_Save.Size = new System.Drawing.Size(112, 34);
       this.bt_Save.TabIndex = 22;
       this.bt_Save.Text = "Save";
       this.bt_Save.UseVisualStyleBackColor = true;
@@ -192,30 +208,32 @@
       // 
       // cms_Hops
       // 
+      this.cms_Hops.ImageScalingSize = new System.Drawing.Size(24, 24);
       this.cms_Hops.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteEntryToolStripMenuItem,
             this.clearListToolStripMenuItem});
       this.cms_Hops.Name = "cms_Hops";
-      this.cms_Hops.Size = new System.Drawing.Size(68, 48);
+      this.cms_Hops.Size = new System.Drawing.Size(73, 48);
       // 
       // deleteEntryToolStripMenuItem
       // 
       this.deleteEntryToolStripMenuItem.Name = "deleteEntryToolStripMenuItem";
-      this.deleteEntryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+      this.deleteEntryToolStripMenuItem.Size = new System.Drawing.Size(72, 22);
       // 
       // clearListToolStripMenuItem
       // 
       this.clearListToolStripMenuItem.Name = "clearListToolStripMenuItem";
-      this.clearListToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+      this.clearListToolStripMenuItem.Size = new System.Drawing.Size(72, 22);
       // 
       // tc_CreateTemplate
       // 
       this.tc_CreateTemplate.Controls.Add(this.tp_description);
       this.tc_CreateTemplate.Controls.Add(this.tp_AttackConfig);
-      this.tc_CreateTemplate.Location = new System.Drawing.Point(12, 23);
+      this.tc_CreateTemplate.Location = new System.Drawing.Point(18, 35);
+      this.tc_CreateTemplate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tc_CreateTemplate.Name = "tc_CreateTemplate";
       this.tc_CreateTemplate.SelectedIndex = 0;
-      this.tc_CreateTemplate.Size = new System.Drawing.Size(685, 330);
+      this.tc_CreateTemplate.Size = new System.Drawing.Size(1028, 508);
       this.tc_CreateTemplate.TabIndex = 0;
       this.tc_CreateTemplate.TabStop = false;
       // 
@@ -223,10 +241,11 @@
       // 
       this.tp_description.BackColor = System.Drawing.Color.WhiteSmoke;
       this.tp_description.Controls.Add(this.gb_CreateTemplate);
-      this.tp_description.Location = new System.Drawing.Point(4, 22);
+      this.tp_description.Location = new System.Drawing.Point(4, 29);
+      this.tp_description.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tp_description.Name = "tp_description";
-      this.tp_description.Padding = new System.Windows.Forms.Padding(3);
-      this.tp_description.Size = new System.Drawing.Size(677, 304);
+      this.tp_description.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tp_description.Size = new System.Drawing.Size(1020, 475);
       this.tp_description.TabIndex = 0;
       this.tp_description.Text = "Description";
       // 
@@ -234,33 +253,38 @@
       // 
       this.tp_AttackConfig.BackColor = System.Drawing.Color.WhiteSmoke;
       this.tp_AttackConfig.Controls.Add(this.gb_AttackConfig);
-      this.tp_AttackConfig.Location = new System.Drawing.Point(4, 22);
+      this.tp_AttackConfig.Location = new System.Drawing.Point(4, 29);
+      this.tp_AttackConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tp_AttackConfig.Name = "tp_AttackConfig";
-      this.tp_AttackConfig.Padding = new System.Windows.Forms.Padding(3);
-      this.tp_AttackConfig.Size = new System.Drawing.Size(677, 304);
+      this.tp_AttackConfig.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tp_AttackConfig.Size = new System.Drawing.Size(1020, 475);
       this.tp_AttackConfig.TabIndex = 2;
       this.tp_AttackConfig.Text = "Attack config";
       // 
       // gb_AttackConfig
       // 
+      this.gb_AttackConfig.Controls.Add(this.rb_GuiSimple);
+      this.gb_AttackConfig.Controls.Add(this.rb_GuiAdvanced);
       this.gb_AttackConfig.Controls.Add(this.tb_MaxNoTargetSystems);
       this.gb_AttackConfig.Controls.Add(this.l_MaxNoTargetSystems);
       this.gb_AttackConfig.Controls.Add(this.cb_StartAttackingTargets);
       this.gb_AttackConfig.Controls.Add(this.cb_ArpScan);
-      this.gb_AttackConfig.Location = new System.Drawing.Point(17, 24);
+      this.gb_AttackConfig.Location = new System.Drawing.Point(26, 37);
+      this.gb_AttackConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.gb_AttackConfig.Name = "gb_AttackConfig";
-      this.gb_AttackConfig.Size = new System.Drawing.Size(621, 258);
+      this.gb_AttackConfig.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.gb_AttackConfig.Size = new System.Drawing.Size(932, 397);
       this.gb_AttackConfig.TabIndex = 0;
       this.gb_AttackConfig.TabStop = false;
       // 
       // tb_MaxNoTargetSystems
       // 
-      this.tb_MaxNoTargetSystems.Location = new System.Drawing.Point(224, 102);
-      this.tb_MaxNoTargetSystems.Margin = new System.Windows.Forms.Padding(3, 3, 13, 3);
+      this.tb_MaxNoTargetSystems.Location = new System.Drawing.Point(336, 157);
+      this.tb_MaxNoTargetSystems.Margin = new System.Windows.Forms.Padding(4, 5, 20, 5);
       this.tb_MaxNoTargetSystems.MaxLength = 3;
       this.tb_MaxNoTargetSystems.Name = "tb_MaxNoTargetSystems";
-      this.tb_MaxNoTargetSystems.Size = new System.Drawing.Size(23, 20);
-      this.tb_MaxNoTargetSystems.TabIndex = 3;
+      this.tb_MaxNoTargetSystems.Size = new System.Drawing.Size(32, 26);
+      this.tb_MaxNoTargetSystems.TabIndex = 5;
       this.tb_MaxNoTargetSystems.Text = "5";
       this.tb_MaxNoTargetSystems.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
       // 
@@ -268,9 +292,10 @@
       // 
       this.l_MaxNoTargetSystems.AutoSize = true;
       this.l_MaxNoTargetSystems.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_MaxNoTargetSystems.Location = new System.Drawing.Point(20, 105);
+      this.l_MaxNoTargetSystems.Location = new System.Drawing.Point(30, 157);
+      this.l_MaxNoTargetSystems.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_MaxNoTargetSystems.Name = "l_MaxNoTargetSystems";
-      this.l_MaxNoTargetSystems.Size = new System.Drawing.Size(188, 13);
+      this.l_MaxNoTargetSystems.Size = new System.Drawing.Size(287, 20);
       this.l_MaxNoTargetSystems.TabIndex = 0;
       this.l_MaxNoTargetSystems.Text = "Maximum number target systems";
       // 
@@ -281,10 +306,11 @@
       this.cb_StartAttackingTargets.Checked = true;
       this.cb_StartAttackingTargets.CheckState = System.Windows.Forms.CheckState.Checked;
       this.cb_StartAttackingTargets.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.cb_StartAttackingTargets.Location = new System.Drawing.Point(23, 65);
+      this.cb_StartAttackingTargets.Location = new System.Drawing.Point(32, 122);
+      this.cb_StartAttackingTargets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.cb_StartAttackingTargets.Name = "cb_StartAttackingTargets";
-      this.cb_StartAttackingTargets.Size = new System.Drawing.Size(224, 17);
-      this.cb_StartAttackingTargets.TabIndex = 2;
+      this.cb_StartAttackingTargets.Size = new System.Drawing.Size(326, 24);
+      this.cb_StartAttackingTargets.TabIndex = 4;
       this.cb_StartAttackingTargets.Text = "Start attacking target network       ";
       this.cb_StartAttackingTargets.UseVisualStyleBackColor = true;
       // 
@@ -295,22 +321,50 @@
       this.cb_ArpScan.Checked = true;
       this.cb_ArpScan.CheckState = System.Windows.Forms.CheckState.Checked;
       this.cb_ArpScan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.cb_ArpScan.Location = new System.Drawing.Point(23, 29);
+      this.cb_ArpScan.Location = new System.Drawing.Point(32, 88);
+      this.cb_ArpScan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.cb_ArpScan.Name = "cb_ArpScan";
-      this.cb_ArpScan.Size = new System.Drawing.Size(224, 17);
-      this.cb_ArpScan.TabIndex = 1;
+      this.cb_ArpScan.Size = new System.Drawing.Size(328, 24);
+      this.cb_ArpScan.TabIndex = 3;
       this.cb_ArpScan.Text = "ARP scan target network              ";
       this.cb_ArpScan.UseVisualStyleBackColor = true;
       // 
+      // rb_GuiAdvanced
+      // 
+      this.rb_GuiAdvanced.AutoSize = true;
+      this.rb_GuiAdvanced.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.rb_GuiAdvanced.Checked = true;
+      this.rb_GuiAdvanced.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rb_GuiAdvanced.Location = new System.Drawing.Point(34, 39);
+      this.rb_GuiAdvanced.Name = "rb_GuiAdvanced";
+      this.rb_GuiAdvanced.Size = new System.Drawing.Size(151, 24);
+      this.rb_GuiAdvanced.TabIndex = 1;
+      this.rb_GuiAdvanced.Text = "Advanced GUI";
+      this.rb_GuiAdvanced.UseVisualStyleBackColor = true;
+      this.rb_GuiAdvanced.CheckedChanged += new System.EventHandler(this.RB_GuiAdvanced_CheckedChanged);
+      // 
+      // rb_GuiSimple
+      // 
+      this.rb_GuiSimple.AutoSize = true;
+      this.rb_GuiSimple.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.rb_GuiSimple.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rb_GuiSimple.Location = new System.Drawing.Point(232, 39);
+      this.rb_GuiSimple.Name = "rb_GuiSimple";
+      this.rb_GuiSimple.Size = new System.Drawing.Size(126, 24);
+      this.rb_GuiSimple.TabIndex = 6;
+      this.rb_GuiSimple.Text = "Simple GUI";
+      this.rb_GuiSimple.UseVisualStyleBackColor = true;
+      // 
       // CreateTemplate
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+      this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(707, 395);
+      this.ClientSize = new System.Drawing.Size(1060, 608);
       this.Controls.Add(this.tc_CreateTemplate);
       this.Controls.Add(this.bt_Save);
       this.Controls.Add(this.bt_Cancel);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+      this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.Name = "CreateTemplate";
       this.Text = "Create attack template";
       this.gb_CreateTemplate.ResumeLayout(false);
@@ -352,5 +406,7 @@
     private System.Windows.Forms.CheckBox cb_ArpScan;
     private System.Windows.Forms.Label l_MaxNoTargetSystems;
     private System.Windows.Forms.TextBox tb_MaxNoTargetSystems;
+    private System.Windows.Forms.RadioButton rb_GuiSimple;
+    private System.Windows.Forms.RadioButton rb_GuiAdvanced;
   }
 }

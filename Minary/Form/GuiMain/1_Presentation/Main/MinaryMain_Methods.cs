@@ -153,6 +153,39 @@
       }
     }
 
+
+    private delegate void GuiSimpleEnableDelegate();
+    public void GuiSimpleEnable()
+    {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new GuiSimpleEnableDelegate(this.GuiSimpleEnable), new object[] { });
+        return;
+      }
+
+      this.gb_TargetRange.Visible = false;
+      this.gb_Interfaces.Visible = false;
+      this.ms_MainWindow.Visible = false;
+      this.bt_Attack.Visible = false;
+      this.bt_ScanLan.Visible = false;
+      this.tc_Plugins.Visible = false;
+      this.guiSimple.Visible = true;
+    }
+
+
+    private delegate void GuiSimpleStartScanningDelegate();
+    public void GuiSimpleStartScanning()
+    {
+      //var arpScanConf = this.GetArpScanConfig();
+      //Minary.Domain.ArpScan.ArpScanner.Inst.
+
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new GuiSimpleStartScanningDelegate(this.GuiSimpleStartScanning), new object[] { });
+        return;
+      }
+    }
+
     #endregion
 
 
@@ -376,26 +409,6 @@
       this.bt_ScanLan.Visible = true;
       this.tc_Plugins.Visible = true;
       this.guiSimple.Visible = false;
-    }
-
-
-    private void GuiSimpleEnable()
-    {
-      this.gb_TargetRange.Visible = false;
-      this.gb_Interfaces.Visible = false;
-      this.ms_MainWindow.Visible = false;
-      this.bt_Attack.Visible = false;
-      this.bt_ScanLan.Visible = false;
-      this.tc_Plugins.Visible = false;
-      this.guiSimple.Visible = true;
-    }
-
-
-    private void GuiSimpleStartScanning()
-    {
-      //var arpScanConf = this.GetArpScanConfig();
-      //Minary.Domain.ArpScan.ArpScanner.Inst.
-
     }
 
 

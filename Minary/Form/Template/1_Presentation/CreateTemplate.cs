@@ -71,6 +71,7 @@
       newTemplateData.AttackConfig.NumberSelectedTargetSystems = tmpNumberSelectedTargetSystems;
       newTemplateData.AttackConfig.ScanNetwork = this.cb_ArpScan.Checked ? 1 : 0;
       newTemplateData.AttackConfig.StartAttack = this.cb_StartAttackingTargets.Checked ? 1 : 0;
+      newTemplateData.AttackConfig.IsAdvancedScan = this.rb_GuiAdvanced.Checked ? 1 : 0;
 
       try
       {
@@ -180,6 +181,17 @@
     }
 
 
+    private void TrimTemplateData(MinaryTemplateData templateData)
+    {
+      if (templateData.AttackConfig.IsAdvancedScan == 0)
+      {
+        templateData.AttackConfig.NumberSelectedTargetSystems = 0;
+        templateData.AttackConfig.ScanNetwork = 0;
+        templateData.AttackConfig.StartAttack = 0;
+      }
+    }
+
+
     /// <summary>
     /// 
     /// </summary>
@@ -193,12 +205,35 @@
         this.sfd_TemplateFile.FileName += minaryFileExtension;
       }
 
+      // Optimize data (Simple/Advanced GUI)
+      this.TrimTemplateData(newTemplateData);
+
       // Serialize and save template
       this.taskLayerCreateTemplate.SaveAttackTemplate(newTemplateData, this.sfd_TemplateFile.FileName);
       var message = $"Template \"{newTemplateData.TemplateConfig.Name}\" was saved successfully.";
       MessageDialog.Inst.ShowInformation(string.Empty, message, this);
 
       base.Dispose(true);
+    }
+
+
+    private void RB_GuiAdvanced_CheckedChanged(object sender, EventArgs e)
+    {
+      var isSimpleChecked = this.rb_GuiSimple.Checked ? "yes" : "no";
+      var isAdvancedChecked = this.rb_GuiAdvanced.Checked ? "yes" : "no";
+
+      if (this.rb_GuiSimple.Checked == true)
+      {
+        this.cb_ArpScan.Enabled = false;
+        this.cb_StartAttackingTargets.Enabled = false;
+        this.tb_MaxNoTargetSystems.Enabled = false;
+      }
+      else
+      {
+        this.cb_ArpScan.Enabled = true;
+        this.cb_StartAttackingTargets.Enabled = true;
+        this.tb_MaxNoTargetSystems.Enabled = true;
+      }
     }
 
     #endregion
