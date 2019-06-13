@@ -31,7 +31,7 @@
       this.minaryTemplate = minaryTemplate;
       this.arpScanHandler = minaryMain.ArpScanHandler;
     }
-
+    
 
     public delegate void ScanNetworkDelegate(Action onArpScanDone);
     public void ScanNetwork(Action onArpScanDone)

@@ -63,7 +63,8 @@
         throw new Exception("Something is wrong with the template configuration");
       }
 
-      if (templateObj == null || templateObj.Plugins == null)
+      if (templateObj == null || 
+          templateObj.Plugins == null)
       {
         throw new Exception("Something is wrong with the plugin data");
       }

@@ -68,9 +68,10 @@
       MinaryTemplateData deserializedObject;
       BinaryFormatter myBinaryFormat = new BinaryFormatter();
 
-      Stream myStream = File.OpenRead(templateFile);
-      deserializedObject = (MinaryTemplateData)myBinaryFormat.Deserialize(myStream);
-      myStream.Close();
+      using (Stream myStream = File.OpenRead(templateFile))
+      {
+        deserializedObject = (MinaryTemplateData)myBinaryFormat.Deserialize(myStream);
+      }
 
       return deserializedObject;
     }
