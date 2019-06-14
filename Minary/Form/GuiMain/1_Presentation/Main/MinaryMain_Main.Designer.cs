@@ -87,13 +87,13 @@
       this.tsmi_Minibrowser = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_DetectInterfaces = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_TlsSslCertificates = new System.Windows.Forms.ToolStripMenuItem();
+      this.tsmi_ArpScan = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Help = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_GetUpdates = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LogConsole = new System.Windows.Forms.ToolStripMenuItem();
       this.ofd_ImportSession = new System.Windows.Forms.OpenFileDialog();
       this.il_AttackServiceStat = new System.Windows.Forms.ImageList(this.components);
       this.flp_AttackServices = new System.Windows.Forms.FlowLayoutPanel();
-      this.tsmi_ArpScan = new System.Windows.Forms.ToolStripMenuItem();
       this.gb_Interfaces.SuspendLayout();
       this.gb_TargetRange.SuspendLayout();
       this.tc_Plugins.SuspendLayout();
@@ -447,14 +447,14 @@
       // tsmi_Exit
       // 
       this.tsmi_Exit.Name = "tsmi_Exit";
-      this.tsmi_Exit.Size = new System.Drawing.Size(197, 30);
+      this.tsmi_Exit.Size = new System.Drawing.Size(210, 30);
       this.tsmi_Exit.Text = "Exit";
       this.tsmi_Exit.Click += new System.EventHandler(this.TSMI_ExitTool_Click);
       // 
       // tsmi_ResetMinary
       // 
       this.tsmi_ResetMinary.Name = "tsmi_ResetMinary";
-      this.tsmi_ResetMinary.Size = new System.Drawing.Size(197, 30);
+      this.tsmi_ResetMinary.Size = new System.Drawing.Size(210, 30);
       this.tsmi_ResetMinary.Text = "Reset Minary";
       this.tsmi_ResetMinary.Click += new System.EventHandler(this.TSMI_ResetAllPlugins_Click);
       // 
@@ -514,24 +514,27 @@
       // tsmi_LoadTemplate
       // 
       this.tsmi_LoadTemplate.Name = "tsmi_LoadTemplate";
-      this.tsmi_LoadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-      this.tsmi_LoadTemplate.Size = new System.Drawing.Size(227, 30);
+      this.tsmi_LoadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.O)));
+      this.tsmi_LoadTemplate.Size = new System.Drawing.Size(273, 30);
       this.tsmi_LoadTemplate.Text = "Load ...";
       this.tsmi_LoadTemplate.Click += new System.EventHandler(this.TSMI_LoadTemplate_Click);
       // 
       // tsmi_CreateTemplate
       // 
       this.tsmi_CreateTemplate.Name = "tsmi_CreateTemplate";
-      this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-      this.tsmi_CreateTemplate.Size = new System.Drawing.Size(227, 30);
+      this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+      this.tsmi_CreateTemplate.Size = new System.Drawing.Size(273, 30);
       this.tsmi_CreateTemplate.Text = "Create ...";
       this.tsmi_CreateTemplate.Click += new System.EventHandler(this.TSMI_CreateTemplate_Click);
       // 
       // tsmi_UnloadTemplate
       // 
       this.tsmi_UnloadTemplate.Name = "tsmi_UnloadTemplate";
-      this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
-      this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(227, 30);
+      this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.U)));
+      this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(273, 30);
       this.tsmi_UnloadTemplate.Text = "Unload ";
       this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.TSMI_UnloadTemplate_Click);
       // 
@@ -550,23 +553,32 @@
       // 
       this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
       this.tsmi_Minibrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-      this.tsmi_Minibrowser.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_Minibrowser.Size = new System.Drawing.Size(360, 30);
       this.tsmi_Minibrowser.Text = "Minibrowser ...";
       this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
       // 
       // tsmi_DetectInterfaces
       // 
       this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
-      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_DetectInterfaces.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(360, 30);
       this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
       this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.TSMI_SearchNetworkInterfaces_Click);
       // 
       // tsmi_TlsSslCertificates
       // 
       this.tsmi_TlsSslCertificates.Name = "tsmi_TlsSslCertificates";
-      this.tsmi_TlsSslCertificates.Size = new System.Drawing.Size(296, 30);
+      this.tsmi_TlsSslCertificates.Size = new System.Drawing.Size(360, 30);
       this.tsmi_TlsSslCertificates.Text = "TLS/SSL certificates";
       this.tsmi_TlsSslCertificates.Click += new System.EventHandler(this.TSMI_ServerCert_Click);
+      // 
+      // tsmi_ArpScan
+      // 
+      this.tsmi_ArpScan.Name = "tsmi_ArpScan";
+      this.tsmi_ArpScan.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+      this.tsmi_ArpScan.Size = new System.Drawing.Size(360, 30);
+      this.tsmi_ArpScan.Text = "ARP scan";
+      this.tsmi_ArpScan.Click += new System.EventHandler(this.TSMI_ArpScan_Click);
       // 
       // tsmi_Help
       // 
@@ -613,14 +625,6 @@
       this.flp_AttackServices.Name = "flp_AttackServices";
       this.flp_AttackServices.Size = new System.Drawing.Size(1576, 28);
       this.flp_AttackServices.TabIndex = 0;
-      // 
-      // tsmi_ArpScan
-      // 
-      this.tsmi_ArpScan.Name = "tsmi_ArpScan";
-      this.tsmi_ArpScan.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-      this.tsmi_ArpScan.Size = new System.Drawing.Size(296, 30);
-      this.tsmi_ArpScan.Text = "ARP scan";
-      this.tsmi_ArpScan.Click += new System.EventHandler(this.TSMI_ArpScan_Click);
       // 
       // MinaryMain
       // 
