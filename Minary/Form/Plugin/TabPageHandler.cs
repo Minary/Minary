@@ -1,4 +1,4 @@
-﻿namespace Minary.Form.Main
+﻿namespace Minary.Form.GuiAdvanced
 {
   using Minary.DataTypes.Enum;
   using Minary.LogConsole.Main;

@@ -1,7 +1,7 @@
 ﻿namespace Minary.Domain.Network
 {
   using Minary.Form;
-  using Minary.Form.Main;
+  using Minary.Form.GuiAdvanced;
   using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;

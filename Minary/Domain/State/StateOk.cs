@@ -3,7 +3,7 @@
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Interface;
   using Minary.Form;
-  using Minary.Form.Main;
+  using Minary.Form.GuiAdvanced;
   using System;
 
 

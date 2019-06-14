@@ -2,7 +2,7 @@
 {
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
-  using Minary.Form.Main;
+  using Minary.Form.GuiAdvanced;
   using PcapDotNet.Core;
   using System.ComponentModel;
   using System.Windows.Forms;

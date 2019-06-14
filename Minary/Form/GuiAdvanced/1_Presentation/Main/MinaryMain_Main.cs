@@ -1,4 +1,4 @@
-﻿namespace Minary.Form.Main
+﻿namespace Minary.Form.GuiAdvanced
 {
   using Minary.Certificates.Presentation;
   using Minary.Common;
@@ -37,7 +37,7 @@
     private int currentInterfaceIndex;
     private Browser miniBrowser;
     private bool attackStarted;
-    private Minary.Form.Main.TaskFacade minaryTaskFacade;
+    private Minary.Form.GuiAdvanced.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
     private GuiSimpleUserControl guiSimple;
 
@@ -81,7 +81,7 @@
 
 
     // Handlers
-    public Minary.Form.Main.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
+    public Minary.Form.GuiAdvanced.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
 
     public PluginHandler PluginHandler { get { return this.pluginHandler; } }
 

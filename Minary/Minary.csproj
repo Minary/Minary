@@ -269,13 +269,13 @@
     <Compile Include="DataTypes\Interface\LogConsole\IObserver.cs" />
     <Compile Include="Domain\MacVendor\MacVendorHandler.cs" />
     <Compile Include="DataTypes\Enum\LogLevel.cs" />
-    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Events.cs">
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Events.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_General.cs">
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_General.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Interface.cs">
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Interface.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.cs">
@@ -284,7 +284,7 @@
     <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.Designer.cs">
       <DependentUpon>GuiSimpleUserControl_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\GuiMain\2_Task\TaskFacade.cs">
+    <Compile Include="Form\GuiAdvanced\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Form\MessageDialogs.cs" />
@@ -329,13 +329,13 @@
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Methods.cs">
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Methods.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Main.cs">
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Main.Designer.cs">
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.Designer.cs">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Network\NetworkFunctions.cs" />
@@ -374,7 +374,7 @@
       <DependentUpon>LogConsole.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\GuiMain\1_Presentation\Main\MinaryMain_Main.resx">
+    <EmbeddedResource Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.resx">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -399,7 +399,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config" />
-    <None Include="Form\GuiMain\1_Presentation\app.config" />
+    <None Include="Form\GuiAdvanced\1_Presentation\app.config" />
     <None Include="packages.config" />
     <None Include="Minary.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

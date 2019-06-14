@@ -10,7 +10,7 @@ namespace TestsMinary.DataTypes
   // GuiSimple mock class
   public class MockGuiSimple : GuiSimpleUserControl
   {
-    public MockGuiSimple(Minary.Form.Main.MinaryMain minaryMain) : base(minaryMain)
+    public MockGuiSimple(Minary.Form.GuiAdvanced.MinaryMain minaryMain) : base(minaryMain)
     {
       base.arpScanConfig = new ArpScanConfig()
       {

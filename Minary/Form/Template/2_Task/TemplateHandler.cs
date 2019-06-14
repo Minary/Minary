@@ -13,14 +13,14 @@
     #region MEMBERS
     
     private Infrastructure.TemplateHandler infrastructure = new Infrastructure.TemplateHandler();
-    private Minary.Form.Main.MinaryMain minaryMain;
+    private Minary.Form.GuiAdvanced.MinaryMain minaryMain;
 
     #endregion
     
 
     #region PUBLIC
 
-    public TemplateHandler(Minary.Form.Main.MinaryMain minaryMain)
+    public TemplateHandler(Minary.Form.GuiAdvanced.MinaryMain minaryMain)
     {
       this.minaryMain = minaryMain;
     }

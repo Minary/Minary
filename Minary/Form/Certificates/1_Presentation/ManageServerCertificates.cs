@@ -1,7 +1,7 @@
 ﻿namespace Minary.Certificates.Presentation
 {
   using Minary.Certificates.DataTypes;
-  using Minary.Form.Main;
+  using Minary.Form.GuiAdvanced;
   using System;
   using System.ComponentModel;
   using System.IO;
