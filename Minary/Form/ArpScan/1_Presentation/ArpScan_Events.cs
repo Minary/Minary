@@ -56,6 +56,17 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
+    private void TSMI_StartStop_Click(object sender, EventArgs e)
+    {
+      this.StartArpScan();
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void CB_SelectAll_CheckedChanged(object sender, EventArgs e)
     {
       if (this.cb_SelectAll.Checked == true)
