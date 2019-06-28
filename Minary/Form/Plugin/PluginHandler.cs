@@ -506,13 +506,19 @@
       var tmpNewPluginStatus = (int)newPluginStatus;
       int oldPluginStatus = tabPage.ImageIndex;
 
-      tmpNewPluginStatus = (newPluginStatus >= 0) ? (int)newPluginStatus : (int)MinaryLib.Plugin.Status.NotRunning;
-      tabPage.ImageIndex = tmpNewPluginStatus;
-
-      if (oldPluginStatus == tmpNewPluginStatus)
+      // Use method invoker because of cross thread access 
+      // by startallplugins.
+      tabPage.Invoke((MethodInvoker)delegate
       {
-        return;
-      }
+        tmpNewPluginStatus = (newPluginStatus >= 0) ? (int)newPluginStatus : (int)MinaryLib.Plugin.Status.NotRunning;
+        tabPage.ImageIndex = tmpNewPluginStatus;
+
+        if (oldPluginStatus == tmpNewPluginStatus)
+        {
+          return;
+        }
+      });
+
 
       LogCons.Inst.Write(LogLevel.Info, $"{plugin.Config.PluginName} : CurrentState:{oldPluginStatus}, NewState:{tmpNewPluginStatus}");
     }
