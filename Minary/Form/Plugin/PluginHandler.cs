@@ -502,6 +502,10 @@
       {
         return;
       }
+      else if (tabPage.IsHandleCreated == false)
+      {
+        return;
+      }
 
       var tmpNewPluginStatus = (int)newPluginStatus;
       int oldPluginStatus = tabPage.ImageIndex;
