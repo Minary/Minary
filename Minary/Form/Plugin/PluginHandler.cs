@@ -134,7 +134,7 @@
         }
         catch (Exception ex)
         {
-          LogCons.Inst.Write(LogLevel.Error, $"PluginHandler.ResetAllPlugins(): Exception: {ex.Message}\r\n{ex.StackTrace}");
+          LogCons.Inst.Write(LogLevel.Error, $"PluginHandler.OnStopAttack(EXC): Exception occurred while stopping plugin \"{key}\": {ex.Message}\r\n{ex.StackTrace}");
         }
       }
     }
