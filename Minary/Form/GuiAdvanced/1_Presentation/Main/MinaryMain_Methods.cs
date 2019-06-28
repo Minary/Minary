@@ -135,6 +135,8 @@
 
       foreach (var key in this.pluginHandler.TabPagesCatalog.Keys)
       {
+        LogCons.Inst.Write(LogLevel.Info, $"Minary.PrepareAttackAllPlugins(): PluginName:{key}");
+
         if (this.pluginHandler.IsPluginActive(key) == false)
         {
           continue;
@@ -145,6 +147,7 @@
           var tmpKey = key?.Trim()?.ToLower()?.Replace(" ", "");
           var pluginDataObj = (List<object>)this.pluginHandler.TabPagesCatalog[key].PluginObject.OnPrepareAttack();
           this.pluginParams2AttackServices.Add(tmpKey, pluginDataObj);
+          LogCons.Inst.Write(LogLevel.Error, "Minary.PrepareAllPlugins(): PluginName:{0}, pluginParams2AttackServices.Count():{1}", key, pluginDataObj?.Count() ?? 0);
         }
         catch (Exception ex)
         {
