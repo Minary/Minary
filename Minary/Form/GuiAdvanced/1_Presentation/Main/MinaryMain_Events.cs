@@ -274,8 +274,7 @@
     private void TSMI_DebugginOn_Click(object sender, EventArgs e)
     {
       Debugging.IsDebuggingOn = !Debugging.IsDebuggingOn;
-      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Debugging.IsDebuggingOn == true ? "on" : "off");
-      this.SetAppTitle(Debugging.IsDebuggingOn == true ? "Debugging" : string.Empty);
+      this.SetDebuggingStatus(Debugging.IsDebuggingOn);
     }
 
 

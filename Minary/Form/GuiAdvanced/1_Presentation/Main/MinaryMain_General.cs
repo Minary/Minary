@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.GuiAdvanced
 {
+  using Minary.Common;
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
   using Minary.Form.ArpScan.DataTypes;
@@ -83,6 +84,18 @@
       {
         this.Text = $"{Config.ApplicationName}  {Config.MinaryVersion:0.0}";
       }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="isOn"></param>
+    public void SetDebuggingStatus(bool isOn)
+    {
+      Debugging.IsDebuggingOn = isOn;
+      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Debugging.IsDebuggingOn == true ? "on" : "off");
+      this.SetAppTitle(Debugging.IsDebuggingOn == true ? "Debugging" : string.Empty);
     }
 
 

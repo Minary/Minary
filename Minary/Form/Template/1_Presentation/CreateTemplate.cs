@@ -72,6 +72,7 @@
       newTemplateData.AttackConfig.ScanNetwork = this.cb_ArpScan.Checked ? 1 : 0;
       newTemplateData.AttackConfig.StartAttack = this.cb_StartAttackingTargets.Checked ? 1 : 0;
       newTemplateData.AttackConfig.IsAdvancedScan = this.rb_GuiAdvanced.Checked ? 1 : 0;
+      newTemplateData.AttackConfig.IsDebuggingOn = this.rb_DebuggingOn.Checked ? 1 : 0;
 
       try
       {
@@ -181,6 +182,10 @@
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="templateData"></param>
     private void TrimTemplateData(MinaryTemplateData templateData)
     {
       if (templateData.AttackConfig.IsAdvancedScan == 0)
@@ -217,11 +222,13 @@
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void RB_GuiAdvanced_CheckedChanged(object sender, EventArgs e)
     {
-      var isSimpleChecked = this.rb_GuiSimple.Checked ? "yes" : "no";
-      var isAdvancedChecked = this.rb_GuiAdvanced.Checked ? "yes" : "no";
-
       if (this.rb_GuiSimple.Checked == true)
       {
         this.cb_ArpScan.Enabled = false;
@@ -234,6 +241,17 @@
         this.cb_StartAttackingTargets.Enabled = true;
         this.tb_MaxNoTargetSystems.Enabled = true;
       }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void RB_Debug_CheckedChanged(object sender, EventArgs e)
+    {
+      // ...
     }
 
     #endregion

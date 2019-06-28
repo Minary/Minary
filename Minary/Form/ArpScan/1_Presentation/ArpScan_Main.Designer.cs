@@ -52,14 +52,14 @@
       this.ss_ArpScan = new System.Windows.Forms.StatusStrip();
       this.tssl_CurrentIpLabel = new System.Windows.Forms.ToolStripStatusLabel();
       this.tssl_CurrentIpValue = new System.Windows.Forms.ToolStripStatusLabel();
-      this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+      this.ms_ArpScan = new System.Windows.Forms.MenuStrip();
       this.TSMI_ArpScan = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_StartStop = new System.Windows.Forms.ToolStripMenuItem();
       ((System.ComponentModel.ISupportInitialize)(this.dgv_Targets)).BeginInit();
       this.gb_Range.SuspendLayout();
       this.cms_ManageTargets.SuspendLayout();
       this.ss_ArpScan.SuspendLayout();
-      this.menuStrip1.SuspendLayout();
+      this.ms_ArpScan.SuspendLayout();
       this.SuspendLayout();
       // 
       // bt_Close
@@ -284,17 +284,17 @@
       this.tssl_CurrentIpValue.Size = new System.Drawing.Size(24, 25);
       this.tssl_CurrentIpValue.Text = "...";
       // 
-      // menuStrip1
+      // ms_ArpScan
       // 
-      this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-      this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+      this.ms_ArpScan.ImageScalingSize = new System.Drawing.Size(24, 24);
+      this.ms_ArpScan.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSMI_ArpScan});
-      this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-      this.menuStrip1.Name = "menuStrip1";
-      this.menuStrip1.Size = new System.Drawing.Size(1125, 33);
-      this.menuStrip1.TabIndex = 11;
-      this.menuStrip1.Text = "menuStrip1";
-      this.menuStrip1.Visible = false;
+      this.ms_ArpScan.Location = new System.Drawing.Point(0, 0);
+      this.ms_ArpScan.Name = "ms_ArpScan";
+      this.ms_ArpScan.Size = new System.Drawing.Size(1125, 33);
+      this.ms_ArpScan.TabIndex = 11;
+      this.ms_ArpScan.Text = "menuStrip1";
+      this.ms_ArpScan.Visible = false;
       // 
       // TSMI_ArpScan
       // 
@@ -318,7 +318,7 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1125, 534);
       this.Controls.Add(this.ss_ArpScan);
-      this.Controls.Add(this.menuStrip1);
+      this.Controls.Add(this.ms_ArpScan);
       this.Controls.Add(this.cb_SelectAll);
       this.Controls.Add(this.pb_ArpScan);
       this.Controls.Add(this.bt_Scan);
@@ -327,7 +327,7 @@
       this.Controls.Add(this.bt_Close);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.MainMenuStrip = this.menuStrip1;
+      this.MainMenuStrip = this.ms_ArpScan;
       this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.MaximizeBox = false;
       this.MinimizeBox = false;
@@ -341,8 +341,8 @@
       this.cms_ManageTargets.ResumeLayout(false);
       this.ss_ArpScan.ResumeLayout(false);
       this.ss_ArpScan.PerformLayout();
-      this.menuStrip1.ResumeLayout(false);
-      this.menuStrip1.PerformLayout();
+      this.ms_ArpScan.ResumeLayout(false);
+      this.ms_ArpScan.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -370,7 +370,7 @@
     private System.Windows.Forms.StatusStrip ss_ArpScan;
     private System.Windows.Forms.ToolStripStatusLabel tssl_CurrentIpLabel;
     private System.Windows.Forms.ToolStripStatusLabel tssl_CurrentIpValue;
-    private System.Windows.Forms.MenuStrip menuStrip1;
+    private System.Windows.Forms.MenuStrip ms_ArpScan;
     private System.Windows.Forms.ToolStripMenuItem TSMI_ArpScan;
     private System.Windows.Forms.ToolStripMenuItem tsmi_StartStop;
   }

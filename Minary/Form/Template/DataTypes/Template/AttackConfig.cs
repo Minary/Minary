@@ -17,6 +17,8 @@
 
     public int IsAdvancedScan { get; set; } = 1;
 
+    public int IsDebuggingOn { get; set; } = 0;
+
     #endregion
 
 

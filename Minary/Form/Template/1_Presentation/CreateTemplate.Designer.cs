@@ -51,19 +51,25 @@
       this.tc_CreateTemplate = new System.Windows.Forms.TabControl();
       this.tp_description = new System.Windows.Forms.TabPage();
       this.tp_AttackConfig = new System.Windows.Forms.TabPage();
-      this.gb_AttackConfig = new System.Windows.Forms.GroupBox();
+      this.rb_DebuggingOn = new System.Windows.Forms.RadioButton();
+      this.rb_DebuggingOff = new System.Windows.Forms.RadioButton();
+      this.rb_GuiSimple = new System.Windows.Forms.RadioButton();
+      this.rb_GuiAdvanced = new System.Windows.Forms.RadioButton();
       this.tb_MaxNoTargetSystems = new System.Windows.Forms.TextBox();
       this.l_MaxNoTargetSystems = new System.Windows.Forms.Label();
       this.cb_StartAttackingTargets = new System.Windows.Forms.CheckBox();
       this.cb_ArpScan = new System.Windows.Forms.CheckBox();
-      this.rb_GuiAdvanced = new System.Windows.Forms.RadioButton();
-      this.rb_GuiSimple = new System.Windows.Forms.RadioButton();
+      this.gb_Debugging = new System.Windows.Forms.GroupBox();
+      this.gb_GuiType = new System.Windows.Forms.GroupBox();
+      this.gb_General = new System.Windows.Forms.GroupBox();
       this.gb_CreateTemplate.SuspendLayout();
       this.cms_Hops.SuspendLayout();
       this.tc_CreateTemplate.SuspendLayout();
       this.tp_description.SuspendLayout();
       this.tp_AttackConfig.SuspendLayout();
-      this.gb_AttackConfig.SuspendLayout();
+      this.gb_Debugging.SuspendLayout();
+      this.gb_GuiType.SuspendLayout();
+      this.gb_General.SuspendLayout();
       this.SuspendLayout();
       // 
       // gb_CreateTemplate
@@ -252,7 +258,9 @@
       // tp_AttackConfig
       // 
       this.tp_AttackConfig.BackColor = System.Drawing.Color.WhiteSmoke;
-      this.tp_AttackConfig.Controls.Add(this.gb_AttackConfig);
+      this.tp_AttackConfig.Controls.Add(this.gb_Debugging);
+      this.tp_AttackConfig.Controls.Add(this.gb_GuiType);
+      this.tp_AttackConfig.Controls.Add(this.gb_General);
       this.tp_AttackConfig.Location = new System.Drawing.Point(4, 29);
       this.tp_AttackConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tp_AttackConfig.Name = "tp_AttackConfig";
@@ -261,25 +269,65 @@
       this.tp_AttackConfig.TabIndex = 2;
       this.tp_AttackConfig.Text = "Attack config";
       // 
-      // gb_AttackConfig
+      // rb_DebuggingOn
       // 
-      this.gb_AttackConfig.Controls.Add(this.rb_GuiSimple);
-      this.gb_AttackConfig.Controls.Add(this.rb_GuiAdvanced);
-      this.gb_AttackConfig.Controls.Add(this.tb_MaxNoTargetSystems);
-      this.gb_AttackConfig.Controls.Add(this.l_MaxNoTargetSystems);
-      this.gb_AttackConfig.Controls.Add(this.cb_StartAttackingTargets);
-      this.gb_AttackConfig.Controls.Add(this.cb_ArpScan);
-      this.gb_AttackConfig.Location = new System.Drawing.Point(26, 37);
-      this.gb_AttackConfig.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.gb_AttackConfig.Name = "gb_AttackConfig";
-      this.gb_AttackConfig.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.gb_AttackConfig.Size = new System.Drawing.Size(932, 397);
-      this.gb_AttackConfig.TabIndex = 0;
-      this.gb_AttackConfig.TabStop = false;
+      this.rb_DebuggingOn.AutoSize = true;
+      this.rb_DebuggingOn.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.rb_DebuggingOn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rb_DebuggingOn.Location = new System.Drawing.Point(140, 35);
+      this.rb_DebuggingOn.Name = "rb_DebuggingOn";
+      this.rb_DebuggingOn.Size = new System.Drawing.Size(57, 24);
+      this.rb_DebuggingOn.TabIndex = 8;
+      this.rb_DebuggingOn.Text = "On";
+      this.rb_DebuggingOn.UseVisualStyleBackColor = true;
+      this.rb_DebuggingOn.CheckedChanged += new System.EventHandler(this.RB_Debug_CheckedChanged);
+      // 
+      // rb_DebuggingOff
+      // 
+      this.rb_DebuggingOff.AutoSize = true;
+      this.rb_DebuggingOff.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.rb_DebuggingOff.Checked = true;
+      this.rb_DebuggingOff.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rb_DebuggingOff.Location = new System.Drawing.Point(46, 35);
+      this.rb_DebuggingOff.Name = "rb_DebuggingOff";
+      this.rb_DebuggingOff.Size = new System.Drawing.Size(59, 24);
+      this.rb_DebuggingOff.TabIndex = 7;
+      this.rb_DebuggingOff.TabStop = true;
+      this.rb_DebuggingOff.Text = "Off";
+      this.rb_DebuggingOff.UseVisualStyleBackColor = true;
+      this.rb_DebuggingOff.CheckedChanged += new System.EventHandler(this.RB_Debug_CheckedChanged);
+      // 
+      // rb_GuiSimple
+      // 
+      this.rb_GuiSimple.AutoSize = true;
+      this.rb_GuiSimple.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.rb_GuiSimple.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rb_GuiSimple.Location = new System.Drawing.Point(200, 46);
+      this.rb_GuiSimple.Name = "rb_GuiSimple";
+      this.rb_GuiSimple.Size = new System.Drawing.Size(88, 24);
+      this.rb_GuiSimple.TabIndex = 6;
+      this.rb_GuiSimple.Text = "Simple";
+      this.rb_GuiSimple.UseVisualStyleBackColor = true;
+      this.rb_GuiSimple.CheckedChanged += new System.EventHandler(this.RB_GuiAdvanced_CheckedChanged);
+      // 
+      // rb_GuiAdvanced
+      // 
+      this.rb_GuiAdvanced.AutoSize = true;
+      this.rb_GuiAdvanced.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.rb_GuiAdvanced.Checked = true;
+      this.rb_GuiAdvanced.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rb_GuiAdvanced.Location = new System.Drawing.Point(32, 46);
+      this.rb_GuiAdvanced.Name = "rb_GuiAdvanced";
+      this.rb_GuiAdvanced.Size = new System.Drawing.Size(113, 24);
+      this.rb_GuiAdvanced.TabIndex = 1;
+      this.rb_GuiAdvanced.TabStop = true;
+      this.rb_GuiAdvanced.Text = "Advanced";
+      this.rb_GuiAdvanced.UseVisualStyleBackColor = true;
+      this.rb_GuiAdvanced.CheckedChanged += new System.EventHandler(this.RB_GuiAdvanced_CheckedChanged);
       // 
       // tb_MaxNoTargetSystems
       // 
-      this.tb_MaxNoTargetSystems.Location = new System.Drawing.Point(336, 157);
+      this.tb_MaxNoTargetSystems.Location = new System.Drawing.Point(333, 116);
       this.tb_MaxNoTargetSystems.Margin = new System.Windows.Forms.Padding(4, 5, 20, 5);
       this.tb_MaxNoTargetSystems.MaxLength = 3;
       this.tb_MaxNoTargetSystems.Name = "tb_MaxNoTargetSystems";
@@ -292,7 +340,7 @@
       // 
       this.l_MaxNoTargetSystems.AutoSize = true;
       this.l_MaxNoTargetSystems.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_MaxNoTargetSystems.Location = new System.Drawing.Point(30, 157);
+      this.l_MaxNoTargetSystems.Location = new System.Drawing.Point(27, 116);
       this.l_MaxNoTargetSystems.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.l_MaxNoTargetSystems.Name = "l_MaxNoTargetSystems";
       this.l_MaxNoTargetSystems.Size = new System.Drawing.Size(287, 20);
@@ -306,7 +354,7 @@
       this.cb_StartAttackingTargets.Checked = true;
       this.cb_StartAttackingTargets.CheckState = System.Windows.Forms.CheckState.Checked;
       this.cb_StartAttackingTargets.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.cb_StartAttackingTargets.Location = new System.Drawing.Point(32, 122);
+      this.cb_StartAttackingTargets.Location = new System.Drawing.Point(29, 81);
       this.cb_StartAttackingTargets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.cb_StartAttackingTargets.Name = "cb_StartAttackingTargets";
       this.cb_StartAttackingTargets.Size = new System.Drawing.Size(326, 24);
@@ -321,7 +369,7 @@
       this.cb_ArpScan.Checked = true;
       this.cb_ArpScan.CheckState = System.Windows.Forms.CheckState.Checked;
       this.cb_ArpScan.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.cb_ArpScan.Location = new System.Drawing.Point(32, 88);
+      this.cb_ArpScan.Location = new System.Drawing.Point(29, 47);
       this.cb_ArpScan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.cb_ArpScan.Name = "cb_ArpScan";
       this.cb_ArpScan.Size = new System.Drawing.Size(328, 24);
@@ -329,31 +377,40 @@
       this.cb_ArpScan.Text = "ARP scan target network              ";
       this.cb_ArpScan.UseVisualStyleBackColor = true;
       // 
-      // rb_GuiAdvanced
+      // gb_Debugging
       // 
-      this.rb_GuiAdvanced.AutoSize = true;
-      this.rb_GuiAdvanced.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-      this.rb_GuiAdvanced.Checked = true;
-      this.rb_GuiAdvanced.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.rb_GuiAdvanced.Location = new System.Drawing.Point(34, 39);
-      this.rb_GuiAdvanced.Name = "rb_GuiAdvanced";
-      this.rb_GuiAdvanced.Size = new System.Drawing.Size(151, 24);
-      this.rb_GuiAdvanced.TabIndex = 1;
-      this.rb_GuiAdvanced.Text = "Advanced GUI";
-      this.rb_GuiAdvanced.UseVisualStyleBackColor = true;
-      this.rb_GuiAdvanced.CheckedChanged += new System.EventHandler(this.RB_GuiAdvanced_CheckedChanged);
+      this.gb_Debugging.Controls.Add(this.rb_DebuggingOn);
+      this.gb_Debugging.Controls.Add(this.rb_DebuggingOff);
+      this.gb_Debugging.Location = new System.Drawing.Point(20, 345);
+      this.gb_Debugging.Name = "gb_Debugging";
+      this.gb_Debugging.Size = new System.Drawing.Size(388, 84);
+      this.gb_Debugging.TabIndex = 9;
+      this.gb_Debugging.TabStop = false;
+      this.gb_Debugging.Text = "Debugging";
       // 
-      // rb_GuiSimple
+      // gb_GuiType
       // 
-      this.rb_GuiSimple.AutoSize = true;
-      this.rb_GuiSimple.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-      this.rb_GuiSimple.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.rb_GuiSimple.Location = new System.Drawing.Point(232, 39);
-      this.rb_GuiSimple.Name = "rb_GuiSimple";
-      this.rb_GuiSimple.Size = new System.Drawing.Size(126, 24);
-      this.rb_GuiSimple.TabIndex = 6;
-      this.rb_GuiSimple.Text = "Simple GUI";
-      this.rb_GuiSimple.UseVisualStyleBackColor = true;
+      this.gb_GuiType.Controls.Add(this.rb_GuiSimple);
+      this.gb_GuiType.Controls.Add(this.rb_GuiAdvanced);
+      this.gb_GuiType.Location = new System.Drawing.Point(20, 20);
+      this.gb_GuiType.Name = "gb_GuiType";
+      this.gb_GuiType.Size = new System.Drawing.Size(388, 104);
+      this.gb_GuiType.TabIndex = 10;
+      this.gb_GuiType.TabStop = false;
+      this.gb_GuiType.Text = "GUI type";
+      // 
+      // gb_General
+      // 
+      this.gb_General.Controls.Add(this.cb_ArpScan);
+      this.gb_General.Controls.Add(this.cb_StartAttackingTargets);
+      this.gb_General.Controls.Add(this.l_MaxNoTargetSystems);
+      this.gb_General.Controls.Add(this.tb_MaxNoTargetSystems);
+      this.gb_General.Location = new System.Drawing.Point(20, 149);
+      this.gb_General.Name = "gb_General";
+      this.gb_General.Size = new System.Drawing.Size(388, 163);
+      this.gb_General.TabIndex = 11;
+      this.gb_General.TabStop = false;
+      this.gb_General.Text = "General";
       // 
       // CreateTemplate
       // 
@@ -373,8 +430,12 @@
       this.tc_CreateTemplate.ResumeLayout(false);
       this.tp_description.ResumeLayout(false);
       this.tp_AttackConfig.ResumeLayout(false);
-      this.gb_AttackConfig.ResumeLayout(false);
-      this.gb_AttackConfig.PerformLayout();
+      this.gb_Debugging.ResumeLayout(false);
+      this.gb_Debugging.PerformLayout();
+      this.gb_GuiType.ResumeLayout(false);
+      this.gb_GuiType.PerformLayout();
+      this.gb_General.ResumeLayout(false);
+      this.gb_General.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -401,12 +462,16 @@
     private System.Windows.Forms.TabControl tc_CreateTemplate;
     private System.Windows.Forms.TabPage tp_description;
     private System.Windows.Forms.TabPage tp_AttackConfig;
-    private System.Windows.Forms.GroupBox gb_AttackConfig;
     private System.Windows.Forms.CheckBox cb_StartAttackingTargets;
     private System.Windows.Forms.CheckBox cb_ArpScan;
     private System.Windows.Forms.Label l_MaxNoTargetSystems;
     private System.Windows.Forms.TextBox tb_MaxNoTargetSystems;
     private System.Windows.Forms.RadioButton rb_GuiSimple;
     private System.Windows.Forms.RadioButton rb_GuiAdvanced;
+    private System.Windows.Forms.RadioButton rb_DebuggingOn;
+    private System.Windows.Forms.RadioButton rb_DebuggingOff;
+    private System.Windows.Forms.GroupBox gb_Debugging;
+    private System.Windows.Forms.GroupBox gb_GuiType;
+    private System.Windows.Forms.GroupBox gb_General;
   }
 }

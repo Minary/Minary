@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.Template.Presentation
 {
+  using Minary.Common;
   using Minary.Domain.DSL;
   using Minary.Form;
   using Minary.Form.GuiAdvanced;
@@ -79,6 +80,10 @@
       this.TemplateData = this.infrastructure.LoadAttackTemplate(templateFile);
       this.callObj = new Calls(this.minaryMain, this.TemplateData);
 
+      // Set debugging status
+      bool isDebuggingOn = this.TemplateData.AttackConfig.IsDebuggingOn == 1 ? true : false;
+      this.minaryMain.SetDebuggingStatus(isDebuggingOn);
+
       // Open simple attack GUI
       if (this.TemplateData.AttackConfig.IsAdvancedScan == 0)
       {
@@ -108,6 +113,11 @@
     {
       this.minaryMain.GuiSimpleEnable();
       this.minaryMain.GuiSimpleStartScanning();
+    }
+
+
+    private void SetDebuggingStatus()
+    {
     }
 
 
