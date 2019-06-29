@@ -39,6 +39,9 @@
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void LoadAttackServicePlugins()
     {
       var fileName = string.Empty;
@@ -89,6 +92,9 @@
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void StopAllServices()
     {
       foreach (var tmpKey in this.AttackServices.Keys)
@@ -111,6 +117,9 @@
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void ShutDown()
     {
       foreach (var tmpKey in this.AttackServices.Keys)
