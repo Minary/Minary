@@ -309,17 +309,15 @@
        * 1. Stop data input thread (named pipe)
        * 2. Stop poisoning thread
        * 3. Stop sniffing thread
-       * 4. Shut down all plugins.
-       *
+       * 4. Stop all attack services
+       * 5. Shut down all plugins.
        */
 
       // Set the Wait cursor.
       this.Cursor = Cursors.WaitCursor;
 
-      if (this.bgw_OnStartAttack.IsBusy)
-      {
-        this.StopAttack();
-      }
+
+      this.StopAttack();
 
       // Remove all static ARP entries
       var procStartInfo = new ProcessStartInfo("arp", "-d *");
