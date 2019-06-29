@@ -316,7 +316,6 @@
       // Set the Wait cursor.
       this.Cursor = Cursors.WaitCursor;
 
-
       this.StopAttack();
 
       // Remove all static ARP entries

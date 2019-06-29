@@ -442,10 +442,7 @@
       {
         SelectedIfcIndex = this.minaryObj.CurrentInterfaceIndex,
         SelectedIfcId = this.minaryObj.NetworkHandler.GetNetworkInterfaceIdByIndex(this.minaryObj.CurrentInterfaceIndex),
-        TargetList = (from target in this.minaryObj.ArpScanHandler.TargetList
-                      where target.Attack == true
-                      select new { target.MacAddress, target.IpAddress }).
-                          ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
+        TargetList = new Dictionary<string, string>()
       };
 
       return currentServiceParams;
