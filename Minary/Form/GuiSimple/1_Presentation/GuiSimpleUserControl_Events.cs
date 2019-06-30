@@ -9,7 +9,6 @@
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
-  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -114,6 +113,8 @@
 
         return;
       }
+
+      this.targetStringList.Clear();
 
       // Configure ARP scan object
       //this.arpScanner.Config = this.GetArpScanConfig();
