@@ -93,6 +93,7 @@
           IPAddress tmpIp = this.UintToIP(tmpIpInt);
           Packet arpPacket = this.BuildArpWhoHasPacket(tmpIp, localIp);
           System.Threading.Thread.Sleep(13);
+LogCons.Inst.Write(LogLevel.Info, $"StartScanning(): ... " + tmpIp.ToString());
           this.config.Communicator.SendPacket(arpPacket);
         }
         catch (Exception ex)

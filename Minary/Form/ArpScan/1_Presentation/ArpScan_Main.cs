@@ -117,14 +117,13 @@
 
         var devices = LibPcapLiveDeviceList.Instance;
         var theDevice = devices.Where(elem => elem.Name.Contains(this.interfaceId)).First();
-        theDevice.Open(SharpPcap.DeviceMode.Promiscuous, 0);
 
         this.targetStringList = targetStringList;
 
         this.tb_Subnet1.Text = this.startIp;
         this.tb_Subnet2.Text = this.stopIp;
 
-        this.tb_Netrange1.Text = this.startIp;
+         this.tb_Netrange1.Text = this.startIp;
         this.tb_Netrange2.Text = this.stopIp;
 
         this.rb_Subnet.Checked = true;
