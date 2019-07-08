@@ -258,6 +258,9 @@
     <Compile Include="Domain\DSL\Calls.cs" />
     <Compile Include="Domain\DSL\Config.cs" />
     <Compile Include="Domain\DSL\CurrentSystemSettings.cs" />
+    <Compile Include="Form\GuiAdvanced\1_Presentation\Task\MinaryMain_Tasks.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\LogConsole\1_Presentation\LogConsole.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,9 +332,6 @@
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Methods.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.cs">
       <SubType>Form</SubType>
     </Compile>

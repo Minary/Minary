@@ -9,7 +9,6 @@
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
-  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -114,6 +113,8 @@
 
         return;
       }
+
+      this.targetStringList.Clear();
 
       // Configure ARP scan object
       //this.arpScanner.Config = this.GetArpScanConfig();
@@ -442,10 +443,7 @@
       {
         SelectedIfcIndex = this.minaryObj.CurrentInterfaceIndex,
         SelectedIfcId = this.minaryObj.NetworkHandler.GetNetworkInterfaceIdByIndex(this.minaryObj.CurrentInterfaceIndex),
-        TargetList = (from target in this.minaryObj.ArpScanHandler.TargetList
-                      where target.Attack == true
-                      select new { target.MacAddress, target.IpAddress }).
-                          ToDictionary(elem => elem.MacAddress, elem => elem.IpAddress)
+        TargetList = new Dictionary<string, string>()
       };
 
       return currentServiceParams;

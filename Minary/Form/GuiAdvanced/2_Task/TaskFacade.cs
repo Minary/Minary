@@ -116,6 +116,11 @@
       return retVal;
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public MinaryConfig GetCurrentMinaryConfig()
     {
       MinaryConfig config = new MinaryConfig()
