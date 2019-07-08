@@ -4,14 +4,14 @@
   using Minary.DataTypes.Enum;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
-  using PcapDotNet.Packets;
-  using PcapDotNet.Packets.Arp;
-  using PcapDotNet.Packets.Ethernet;
+  using SharpPcap;
+  using PacketDotNet;
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Linq;
   using System.Net;
+  using System.Net.NetworkInformation;
 
 
   public class ArpScanner : IObservableArpRequest, IObservableArpCurrentIp
@@ -19,7 +19,10 @@
 
     #region MEMBERS
 
-// private static ArpScanner inst;
+    // private static ArpScanner inst;
+    private PhysicalAddress localPhysicalAddress;
+    private IPAddress localIp;
+    private readonly PhysicalAddress broadcastMAC = PhysicalAddress.Parse("FFFFFFFFFFFF");
     private ArpScanConfig config;
 
     private byte[] localMacBytes = new byte[6];
@@ -51,10 +54,12 @@
 
       // Byte arrays
       this.localMacBytes = arpScanConfig.LocalMac.Split(separators).Select(s => Convert.ToByte(s, 16)).ToArray();
-      this.localIpBytes = IPAddress.Parse(arpScanConfig.LocalIp).GetAddressBytes();
+      this.localIp = IPAddress.Parse(arpScanConfig.LocalIp);
+      this.localIpBytes = localIp.GetAddressBytes();
+      this.localPhysicalAddress = PhysicalAddress.Parse(arpScanConfig.LocalMac);
 
       // Byte collections
-      this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
+            this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
       this.localIpBytesCollection = new ReadOnlyCollection<byte>(this.localIpBytes);
     }
 
@@ -85,7 +90,8 @@
 
         try
         {
-          Packet arpPacket = this.BuildArpWhoHasPacket(tmpIpInt);
+          IPAddress tmpIp = this.UintToIP(tmpIpInt);
+          Packet arpPacket = this.BuildArpWhoHasPacket(tmpIp, localIp);
           System.Threading.Thread.Sleep(13);
           this.config.Communicator.SendPacket(arpPacket);
         }
@@ -137,32 +143,43 @@
     }
 
 
-    private Packet BuildArpWhoHasPacket(uint remoteIpInt)
+    private EthernetPacket  BuildArpWhoHasPacket(IPAddress destinationIP, IPAddress senderIP)
     {
-      // Build ethernet layer
-      var ethernetPacket = new EthernetLayer();
-      ethernetPacket.EtherType = EthernetType.Arp;
-      ethernetPacket.Source = new MacAddress(this.config.LocalMac);
-      ethernetPacket.Destination = new MacAddress("ff:ff:ff:ff:ff:ff");
+        var ethernetPacket = new EthernetPacket(localPhysicalAddress, broadcastMAC, EthernetType.Arp);
+        var arpPacket = new ArpPacket(PacketDotNet.ArpOperation.Request, broadcastMAC, destinationIP, localPhysicalAddress, senderIP);
 
-      // Build ARP layer
-      var arpPacket = new ArpLayer();
-      arpPacket.ProtocolType = EthernetType.IpV4;
-      arpPacket.Operation = ArpOperation.Request;
+        ethernetPacket.PayloadPacket = arpPacket;
 
-      arpPacket.SenderHardwareAddress = this.localMacBytesCollection;
-      arpPacket.SenderProtocolAddress = this.localIpBytesCollection;
-      arpPacket.TargetHardwareAddress = new ReadOnlyCollection<byte>(new byte[6] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
-
-      byte[] ipAddresBytes = this.IpIntegerToByteArray(remoteIpInt);
-      arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(ipAddresBytes);
-
-      var packet = new PacketBuilder(ethernetPacket, arpPacket);
-      return packet.Build(DateTime.Now);
+        return ethernetPacket;
     }
 
 
-    private byte[] IpIntegerToByteArray(uint addressInt)
+        //private Packet BuildArpWhoHasPacket(uint remoteIpInt)
+        //{
+        //  // Build ethernet layer
+        //  var ethernetPacket = new EthernetLayer();
+        //  ethernetPacket.EtherType = EthernetType.Arp;
+        //  ethernetPacket.Source = new MacAddress(this.config.LocalMac);
+        //  ethernetPacket.Destination = new MacAddress("ff:ff:ff:ff:ff:ff");
+
+        //  // Build ARP layer
+        //  var arpPacket = new ArpLayer();
+        //  arpPacket.ProtocolType = EthernetType.IpV4;
+        //  arpPacket.Operation = ArpOperation.Request;
+
+        //  arpPacket.SenderHardwareAddress = this.localMacBytesCollection;
+        //  arpPacket.SenderProtocolAddress = this.localIpBytesCollection;
+        //  arpPacket.TargetHardwareAddress = new ReadOnlyCollection<byte>(new byte[6] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
+
+        //  byte[] ipAddresBytes = this.IpIntegerToByteArray(remoteIpInt);
+        //  arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(ipAddresBytes);
+
+        //  var packet = new PacketBuilder(ethernetPacket, arpPacket);
+        //  return packet.Build(DateTime.Now);
+        //}
+
+
+        private byte[] IpIntegerToByteArray(uint addressInt)
     {
       byte[] intBytes = BitConverter.GetBytes(addressInt);
       if (BitConverter.IsLittleEndian)
@@ -209,12 +226,23 @@
       return ip;
     }
 
+
+    public IPAddress UintToIP(uint ip)
+    {
+        //fix endianess from network
+        if (BitConverter.IsLittleEndian)
+        {
+            ip = ((ip << 24) & 0xFF000000) + ((ip << 8) & 0x00FF0000) + ((ip >> 8) & 0x0000FF00) + ((ip >> 24) & 0x000000FF);
+        }
+
+        return new IPAddress(ip);
+    }
     #endregion
 
 
-    #region INTERFACE: IObservableArpRequest
+        #region INTERFACE: IObservableArpRequest
 
-    public void AddObserverArpRequest(IObserverArpRequest observer)
+        public void AddObserverArpRequest(IObserverArpRequest observer)
     {
       this.observersArpRequest.Add(observer);
     }

@@ -2,10 +2,7 @@
 {
   using Minary.DataTypes.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
-  using PcapDotNet.Core;
-  using PcapDotNet.Packets;
-  using PcapDotNet.Packets.Arp;
-  using PcapDotNet.Packets.Ethernet;
+  using SharpPcap;
   using System.Collections.Generic;
   using System.Linq;
 
@@ -31,13 +28,8 @@
 
     public void StartReceivingArpPackets()
     {
-      // Set "arp reply" filter
-      using (BerkeleyPacketFilter filter = this.arpScanConfig.Communicator.CreateFilter("arp and arp[6:2] = 2"))
-      {
-        this.arpScanConfig.Communicator.SetFilter(filter);
-      }
-
-      this.arpScanConfig.Communicator.ReceivePackets(0, this.PacketHandler);
+       //this.arpScanConfig.Communicator.ReceivePackets(0, this.PacketHandler);
+       this.arpScanConfig.Communicator.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
     }
 
     #endregion
@@ -45,23 +37,32 @@
 
     #region PRIVATE
 
-    private void PacketHandler(Packet packet)
+    private void device_OnPacketArrival(object sender, CaptureEventArgs e)
+//    private void PacketHandler(Packet packet)
     {
+      var packet = PacketDotNet.Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
       if (packet == null ||
-          packet.Length <= 0 ||
-          packet.IsValid == false)
+          packet is PacketDotNet.EthernetPacket == false)
       {
         return;
       }
 
-      if (packet.Ethernet.EtherType != EthernetType.Arp ||
-          packet.Ethernet.Arp.Operation != ArpOperation.Reply)
+      var ether = ((PacketDotNet.EthernetPacket)packet);
+      if (ether.Type != PacketDotNet.EthernetType.Arp)
       {
         return;
       }
 
-      var senderMac = string.Join("-", this.ByteToHexString(packet.Ethernet.Arp.SenderHardwareAddress.ToArray()));
-      var senderIp = new System.Net.IPAddress(packet.Ethernet.Arp.SenderProtocolAddress.ToArray()).ToString();
+      var arpPacket = packet.Extract<PacketDotNet.ArpPacket>(); // (typeof(PacketDotNet.ArpPacket));
+      if (arpPacket == null ||
+          arpPacket.Operation != PacketDotNet.ArpOperation.Response)
+      {
+          return;
+      }
+
+      
+      var senderMac = string.Join("-", this.ByteToHexString(arpPacket.SenderHardwareAddress.GetAddressBytes()));
+      var senderIp = new System.Net.IPAddress(arpPacket.SenderProtocolAddress.GetAddressBytes()).ToString();
       
       SystemFound newRecord = new SystemFound(senderMac, senderIp);
       this.NotifyNewRecord(newRecord);
