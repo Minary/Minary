@@ -4,9 +4,9 @@
   using Minary.DataTypes.Enum;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
-  using PcapDotNet.Packets;
-  using PcapDotNet.Packets.Arp;
-  using PcapDotNet.Packets.Ethernet;
+//  using SharpPcap.Packets;
+//  using SharpPcap;
+  using SharpPcap.WinPcap; //Packets.Ethernet;
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
