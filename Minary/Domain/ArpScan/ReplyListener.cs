@@ -28,8 +28,8 @@
 
     public void StartReceivingArpPackets()
     {
-       //this.arpScanConfig.Communicator.ReceivePackets(0, this.PacketHandler);
-       this.arpScanConfig.Communicator.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+      this.arpScanConfig.Communicator.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+      this.arpScanConfig.Communicator.StartCapture(); //.ReceivePackets(0, this.PacketHandler);
     }
 
     #endregion

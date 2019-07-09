@@ -545,9 +545,12 @@
         NetworkStartIp = startIp,
         NetworkStopIp = stopIp,
         MaxNumberSystemsToScan = -1,
-        ObserverClass = this,
-        Communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryMain.CurrentInterfaceId, 1)
-        };
+        ObserverClass = this
+      };
+
+            
+      arpScanConfig.Communicator.Filter = "arp";
+      arpScanConfig.Communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryMain.CurrentInterfaceId, 1);
  //       arpScanConfig.Communicator.Filter = "arp and arp[6:2] = 2";
 
       return arpScanConfig;

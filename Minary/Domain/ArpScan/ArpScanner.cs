@@ -56,10 +56,11 @@
       this.localMacBytes = arpScanConfig.LocalMac.Split(separators).Select(s => Convert.ToByte(s, 16)).ToArray();
       this.localIp = IPAddress.Parse(arpScanConfig.LocalIp);
       this.localIpBytes = localIp.GetAddressBytes();
-      this.localPhysicalAddress = PhysicalAddress.Parse(arpScanConfig.LocalMac);
+      var localMacDashes = arpScanConfig.LocalMac.Replace(':', '-').ToUpper();
+      this.localPhysicalAddress = PhysicalAddress.Parse(localMacDashes); // arpScanConfig.LocalMac);
 
       // Byte collections
-            this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
+      this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
       this.localIpBytesCollection = new ReadOnlyCollection<byte>(this.localIpBytes);
     }
 
