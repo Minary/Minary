@@ -1,7 +1,7 @@
 ﻿namespace Minary.Form.ArpScan.DataTypes
 {
   using Minary.DataTypes.ArpScan;
-  using PcapDotNet.Core;
+  using SharpPcap;
 
 
   public class ArpScanConfig
@@ -25,7 +25,7 @@
 
     public IObserverArpRequest ObserverClass { get; set; }
 
-    public PacketCommunicator Communicator { get; set; }
+    public ICaptureDevice Communicator { get; set; }
 
     #endregion
 

@@ -385,6 +385,8 @@
       }
 
       this.SetArpScanGuiOnStopped();
+      // CLOSE THE INTERFACE !!!
+
 
       // Call caller callback function after scan has completed.
       if (this.onScanDoneCallback != null)
@@ -403,6 +405,7 @@
       {
         arpScanConfig = this.GetArpScanConfig();
         arpScanner = new ArpScanner(arpScanConfig);
+        arpScanConfig.Communicator.Open(SharpPcap.DeviceMode.Promiscuous, 0);
       }
       catch (Exception ex)
       {
@@ -542,9 +545,13 @@
         NetworkStartIp = startIp,
         NetworkStopIp = stopIp,
         MaxNumberSystemsToScan = -1,
-        ObserverClass = this,
-        Communicator = this.communicator
+        ObserverClass = this
       };
+
+            
+      arpScanConfig.Communicator.Filter = "arp";
+      arpScanConfig.Communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryMain.CurrentInterfaceId, 1);
+ //       arpScanConfig.Communicator.Filter = "arp and arp[6:2] = 2";
 
       return arpScanConfig;
     }

@@ -1,20 +1,23 @@
 ﻿namespace Minary.Domain.ArpScan
-{
-  using PcapDotNet.Core;
+{    
+  using SharpPcap;
+  using SharpPcap.LibPcap;
   using System.Collections.ObjectModel;
   using System.Linq;
+  using System.Net.NetworkInformation;
 
 
-  public class PcapHandler
+    public class PcapHandler
   {
 
     #region MEMBERS
 
     private static PcapHandler instance;
-    private ReadOnlyCollection<LivePacketDevice> allinterfaces;
+    //private ReadOnlyCollection<LibPcapLiveDevice> allinterfaces;
+    private CaptureDeviceList allinterfaces;
 
     #endregion
-
+       
 
     #region PROPERTIES
 
@@ -25,12 +28,12 @@
 
     #region PUBLIC
 
-    public PacketCommunicator OpenPcapDevice(string deviceId, int timeout)
+    public ICaptureDevice OpenPcapDevice(string deviceId, int timeout)
     {
-      LivePacketDevice selectedDevice = this.allinterfaces.Where(elem => elem.Name.Contains(deviceId)).First();
-      PacketCommunicator communicator = selectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, timeout);
+      var selectedDevice = this.allinterfaces.Where(elem => elem.Name.Contains(deviceId)).First();
+      selectedDevice.Open(DeviceMode.Promiscuous);
 
-      return communicator;
+      return selectedDevice;
     }
 
     #endregion
@@ -40,7 +43,7 @@
 
     private PcapHandler()
     {
-      this.allinterfaces = LivePacketDevice.AllLocalMachine;
+            this.allinterfaces = CaptureDeviceList.Instance; // LivePacketDevice.AllLocalMachine;
     }
 
     #endregion
