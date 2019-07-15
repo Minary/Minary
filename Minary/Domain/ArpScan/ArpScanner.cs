@@ -1,247 +1,277 @@
 ﻿namespace Minary.Domain.ArpScan
 {
-  using Minary.DataTypes.ArpScan;
-  using Minary.DataTypes.Enum;
-  using Minary.Form.ArpScan.DataTypes;
-  using Minary.LogConsole.Main;
-//  using SharpPcap.Packets;
-//  using SharpPcap;
-  using SharpPcap.WinPcap; //Packets.Ethernet;
-  using System;
-  using System.Collections.Generic;
-  using System.Collections.ObjectModel;
-  using System.Linq;
-  using System.Net;
+    using Minary.DataTypes.ArpScan;
+    using Minary.DataTypes.Enum;
+    using Minary.Form.ArpScan.DataTypes;
+    using Minary.LogConsole.Main;
+    using SharpPcap;
+    using PacketDotNet;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Net;
+    using System.Net.NetworkInformation;
 
 
-  public class ArpScanner : IObservableArpRequest, IObservableArpCurrentIp
-  {
-
-    #region MEMBERS
-
-// private static ArpScanner inst;
-    private ArpScanConfig config;
-
-    private byte[] localMacBytes = new byte[6];
-    private byte[] localIpBytes = new byte[4];
-
-    private ReadOnlyCollection<byte> localMacBytesCollection;
-    private ReadOnlyCollection<byte> localIpBytesCollection;
-
-    private List<IObserverArpRequest> observersArpRequest = new List<IObserverArpRequest>();
-    private List<IObserverArpCurrentIp> observersCurrentIp = new List<IObserverArpCurrentIp>();
-
-    #endregion
-
-
-    #region PROPERTIES
-    
-    public ArpScanConfig Config { get; set; }
-    //   private static ArpScanner Inst { get { return inst ?? (inst = new ArpScanner()); } set { } }
-
-    #endregion
-
-
-    #region PUBLIC
-
-    public ArpScanner(ArpScanConfig arpScanConfig)
+    public class ArpScanner : IObservableArpRequest, IObservableArpCurrentIp
     {
-      char[] separators = { '-', ':', ' ', '.' };
-      this.config = arpScanConfig;
 
-      // Byte arrays
-      this.localMacBytes = arpScanConfig.LocalMac.Split(separators).Select(s => Convert.ToByte(s, 16)).ToArray();
-      this.localIpBytes = IPAddress.Parse(arpScanConfig.LocalIp).GetAddressBytes();
+        #region MEMBERS
 
-      // Byte collections
-      this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
-      this.localIpBytesCollection = new ReadOnlyCollection<byte>(this.localIpBytes);
-    }
+        // private static ArpScanner inst;
+        private PhysicalAddress localPhysicalAddress;
+        private IPAddress localIp;
+        private readonly PhysicalAddress broadcastMAC = PhysicalAddress.Parse("FFFFFFFFFFFF");
+        private ArpScanConfig config;
+
+        private byte[] localMacBytes = new byte[6];
+        private byte[] localIpBytes = new byte[4];
+
+        private ReadOnlyCollection<byte> localMacBytesCollection;
+        private ReadOnlyCollection<byte> localIpBytesCollection;
+
+        private List<IObserverArpRequest> observersArpRequest = new List<IObserverArpRequest>();
+        private List<IObserverArpCurrentIp> observersCurrentIp = new List<IObserverArpCurrentIp>();
+
+        #endregion
 
 
-    public void StartScanning()
-    {
-      int percentageCounter = 10;
-      uint startIpInt = this.IpStringToInteger(this.config.NetworkStartIp);
-      uint stopIpInt = this.IpStringToInteger(this.config.NetworkStopIp);
-      uint totalIps = stopIpInt - startIpInt;
+        #region PROPERTIES
 
-      if (this.VerifyAddressRange(startIpInt, stopIpInt) == false)
-      {
-        throw new Exception("Something is wrong with the start/stop addresses");
-      }
+        public ArpScanConfig Config { get; set; }
+        //   private static ArpScanner Inst { get { return inst ?? (inst = new ArpScanner()); } set { } }
 
-      for (int counter = 0; counter < totalIps; counter++)
-      {
-        // If ARP scan has stopped break out of the loop
-        if (this.observersArpRequest.Any(elem => elem.IsCancellationPending == true))
+        #endregion
+
+
+        #region PUBLIC
+
+        public ArpScanner(ArpScanConfig arpScanConfig)
         {
-          LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): ARP scan process has stopped");
-          break;
+            char[] separators = { '-', ':', ' ', '.' };
+            this.config = arpScanConfig;
+
+            // Byte arrays
+            this.localMacBytes = arpScanConfig.LocalMac.Split(separators).Select(s => Convert.ToByte(s, 16)).ToArray();
+            this.localIp = IPAddress.Parse(arpScanConfig.LocalIp);
+            this.localIpBytes = localIp.GetAddressBytes();
+            var localMacDashes = arpScanConfig.LocalMac.Replace(':', '-').ToUpper();
+            this.localPhysicalAddress = PhysicalAddress.Parse(localMacDashes); // arpScanConfig.LocalMac);
+
+            // Byte collections
+            this.localMacBytesCollection = new ReadOnlyCollection<byte>(this.localMacBytes);
+            this.localIpBytesCollection = new ReadOnlyCollection<byte>(this.localIpBytes);
         }
 
-        // Build and send ARP WhoHas packet
-        uint tmpIpInt = (uint)(startIpInt + counter);
 
-        try
+        public void StartScanning()
         {
-          Packet arpPacket = this.BuildArpWhoHasPacket(tmpIpInt);
-          System.Threading.Thread.Sleep(13);
-          this.config.Communicator.SendPacket(arpPacket);
+            int percentageCounter = 10;
+            uint startIpInt = this.IpStringToInteger(this.config.NetworkStartIp);
+            uint stopIpInt = this.IpStringToInteger(this.config.NetworkStopIp);
+            uint totalIps = stopIpInt - startIpInt;
+
+            if (this.VerifyAddressRange(startIpInt, stopIpInt) == false)
+            {
+                throw new Exception("Something is wrong with the start/stop addresses");
+            }
+
+            for (int counter = 0; counter < totalIps; counter++)
+            {
+                // If ARP scan has stopped break out of the loop
+                if (this.observersArpRequest.Any(elem => elem.IsCancellationPending == true))
+                {
+                    LogCons.Inst.Write(LogLevel.Info, $"ArpScanner.StartScanning(): ARP scan process has stopped");
+                    break;
+                }
+
+                // Build and send ARP WhoHas packet
+                uint tmpIpInt = (uint)(startIpInt + counter);
+
+                try
+                {
+                    IPAddress tmpIp = this.UintToIP(tmpIpInt);
+                    EthernetPacket arpPacket = this.BuildArpWhoHasPacket(tmpIp, localIp);
+                    System.Threading.Thread.Sleep(13);
+                    LogCons.Inst.Write(LogLevel.Info, $"StartScanning(): ... " + tmpIp.ToString());
+                    this.config.Communicator.SendPacket(arpPacket);
+                }
+                catch (Exception ex)
+                {
+                    LogCons.Inst.Write(LogLevel.Error, $"ArpScanner.StartScanning(): Exception occurred: {ex.Message}");
+                    System.Threading.Thread.Sleep(5);
+                }
+
+                // Notify observers about the progress
+                int currentPercentage = this.CalculatePercentage(totalIps, counter);
+                if (currentPercentage >= percentageCounter)
+                {
+                    this.NotifyProgressBarArpRequest(currentPercentage);
+                    percentageCounter += 10;
+                }
+
+                // Notify observer about current IP
+                if (tmpIpInt % 5 == 0)
+                {
+                    var currIpStr = this.IpLongToString(tmpIpInt);
+                    this.NotifyProgressCurrentIp(currIpStr);
+                }
+            }
         }
-        catch (Exception ex)
+
+        #endregion
+
+
+        #region PRIVATE
+
+        private int CalculatePercentage(long totalIps, int counter)
         {
-          LogCons.Inst.Write(LogLevel.Error, $"ArpScanner.StartScanning(): Exception occurred: {ex.Message}");
-          System.Threading.Thread.Sleep(5);
+            var percentage = (double)100 / totalIps * counter;
+            var roundedPercentage = (int)Math.Round(percentage, MidpointRounding.AwayFromZero);
+
+            return roundedPercentage;
         }
 
-        // Notify observers about the progress
-        int currentPercentage = this.CalculatePercentage(totalIps, counter);
-        if (currentPercentage >= percentageCounter)
+
+        private bool VerifyAddressRange(long startIp, long endIp)
         {
-          this.NotifyProgressBarArpRequest(currentPercentage);
-          percentageCounter += 10;
+            if (startIp > endIp)
+            {
+                throw new Exception("The start IP address is greater than the end address");
+            }
+
+            return true;
         }
 
-        // Notify observer about current IP
-        if (tmpIpInt % 5 == 0)
+
+        private PcapDotNet.Packets.Packet BuildArpWhoHasPacket(IPAddress destinationIP, IPAddress senderIP)
         {
-          var currIpStr = this.IpLongToString(tmpIpInt);
-          this.NotifyProgressCurrentIp(currIpStr);
+            PcapDotNet.Packets.Packet thePacket = new PcapDotNet.Packets.Packet();
+            var ethernetPacket = new EthernetPacket(localPhysicalAddress, broadcastMAC, PacketDotNet.EthernetPacketType.Arp);
+            var arpPacket = new ARPPacket(PacketDotNet.ARPOperation.Request, broadcastMAC, destinationIP, localPhysicalAddress, senderIP);
+            ethernetPacket.PayloadPacket = arpPacket;
+
+            return thePacket;
         }
-      }
+
+
+        //private Packet BuildArpWhoHasPacket(uint remoteIpInt)
+        //{
+        //  // Build ethernet layer
+        //  var ethernetPacket = new EthernetLayer();
+        //  ethernetPacket.EtherType = EthernetType.Arp;
+        //  ethernetPacket.Source = new MacAddress(this.config.LocalMac);
+        //  ethernetPacket.Destination = new MacAddress("ff:ff:ff:ff:ff:ff");
+
+        //  // Build ARP layer
+        //  var arpPacket = new ArpLayer();
+        //  arpPacket.ProtocolType = EthernetType.IpV4;
+        //  arpPacket.Operation = ArpOperation.Request;
+
+        //  arpPacket.SenderHardwareAddress = this.localMacBytesCollection;
+        //  arpPacket.SenderProtocolAddress = this.localIpBytesCollection;
+        //  arpPacket.TargetHardwareAddress = new ReadOnlyCollection<byte>(new byte[6] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
+
+        //  byte[] ipAddresBytes = this.IpIntegerToByteArray(remoteIpInt);
+        //  arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(ipAddresBytes);
+
+        //  var packet = new PacketBuilder(ethernetPacket, arpPacket);
+        //  return packet.Build(DateTime.Now);
+        //}
+
+
+        private byte[] IpIntegerToByteArray(uint addressInt)
+        {
+            byte[] intBytes = BitConverter.GetBytes(addressInt);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(intBytes);
+            }
+
+            return intBytes;
+        }
+
+
+        private uint IpStringToInteger(string address)
+        {
+            var intAddressHostOrder = (uint)System.Net.IPAddress.NetworkToHostOrder(BitConverter.ToInt32(System.Net.IPAddress.Parse(address).GetAddressBytes(), 0));
+
+            return intAddressHostOrder;
+        }
+
+
+        private long IpStringToLong(string address)
+        {
+            byte[] addressBytes = IPAddress.Parse(address).GetAddressBytes();
+            long addressIntNetworkOrder = BitConverter.ToInt32(addressBytes, 0);
+            long addressIntHostOrder = IPAddress.NetworkToHostOrder(addressIntNetworkOrder);
+
+            return addressIntHostOrder;
+        }
+
+
+        public string IpLongToString(long longIP)
+        {
+            string ip = string.Empty;
+            for (int i = 0; i < 4; i++)
+            {
+                int num = (int)(longIP / Math.Pow(256, (3 - i)));
+                longIP = longIP - (long)(num * Math.Pow(256, (3 - i)));
+
+                if (i == 0)
+                    ip = num.ToString();
+                else
+                    ip = ip + "." + num.ToString();
+            }
+
+            return ip;
+        }
+
+
+        public IPAddress UintToIP(uint ip)
+        {
+            //fix endianess from network
+            if (BitConverter.IsLittleEndian)
+            {
+                ip = ((ip << 24) & 0xFF000000) + ((ip << 8) & 0x00FF0000) + ((ip >> 8) & 0x0000FF00) + ((ip >> 24) & 0x000000FF);
+            }
+
+            return new IPAddress(ip);
+        }
+        #endregion
+
+
+        #region INTERFACE: IObservableArpRequest
+
+        public void AddObserverArpRequest(IObserverArpRequest observer)
+        {
+            this.observersArpRequest.Add(observer);
+        }
+
+
+        public void NotifyProgressBarArpRequest(int progress)
+        {
+            this.observersArpRequest.ForEach(elem => elem.UpdateProgressbar(progress));
+        }
+
+        #endregion
+
+
+        #region INTERFACE: IObservableCurrentIP
+
+        public void AddObserverCurrentIp(IObserverArpCurrentIp observer)
+        {
+            this.observersCurrentIp.Add(observer);
+        }
+
+
+        public void NotifyProgressCurrentIp(string currentIp)
+        {
+            this.observersCurrentIp.ForEach(elem => elem.UpdateCurrentIp(currentIp));
+        }
+
+        #endregion
+
     }
-
-    #endregion
-
-
-    #region PRIVATE
-
-    private int CalculatePercentage(long totalIps, int counter)
-    {
-      var percentage = (double)100 / totalIps * counter;
-      var roundedPercentage = (int)Math.Round(percentage, MidpointRounding.AwayFromZero);
-
-      return roundedPercentage;
-    }
-
-
-    private bool VerifyAddressRange(long startIp, long endIp)
-    {
-      if (startIp > endIp)
-      {
-        throw new Exception("The start IP address is greater than the end address");
-      }
-
-      return true;
-    }
-
-
-    private Packet BuildArpWhoHasPacket(uint remoteIpInt)
-    {
-      // Build ethernet layer
-      var ethernetPacket = new EthernetLayer();
-      ethernetPacket.EtherType = EthernetType.Arp;
-      ethernetPacket.Source = new MacAddress(this.config.LocalMac);
-      ethernetPacket.Destination = new MacAddress("ff:ff:ff:ff:ff:ff");
-
-      // Build ARP layer
-      var arpPacket = new ArpLayer();
-      arpPacket.ProtocolType = EthernetType.IpV4;
-      arpPacket.Operation = ArpOperation.Request;
-
-      arpPacket.SenderHardwareAddress = this.localMacBytesCollection;
-      arpPacket.SenderProtocolAddress = this.localIpBytesCollection;
-      arpPacket.TargetHardwareAddress = new ReadOnlyCollection<byte>(new byte[6] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
-
-      byte[] ipAddresBytes = this.IpIntegerToByteArray(remoteIpInt);
-      arpPacket.TargetProtocolAddress = new ReadOnlyCollection<byte>(ipAddresBytes);
-
-      var packet = new PacketBuilder(ethernetPacket, arpPacket);
-      return packet.Build(DateTime.Now);
-    }
-
-
-    private byte[] IpIntegerToByteArray(uint addressInt)
-    {
-      byte[] intBytes = BitConverter.GetBytes(addressInt);
-      if (BitConverter.IsLittleEndian)
-      {
-        Array.Reverse(intBytes);
-      }
-
-      return intBytes;
-    }
-
-
-    private uint IpStringToInteger(string address)
-    {
-      var intAddressHostOrder = (uint)System.Net.IPAddress.NetworkToHostOrder(BitConverter.ToInt32(System.Net.IPAddress.Parse(address).GetAddressBytes(), 0));
-
-      return intAddressHostOrder;
-    }
-
-
-    private long IpStringToLong(string address)
-    {
-      byte[] addressBytes = IPAddress.Parse(address).GetAddressBytes();
-      long addressIntNetworkOrder = BitConverter.ToInt32(addressBytes, 0);
-      long addressIntHostOrder = IPAddress.NetworkToHostOrder(addressIntNetworkOrder);
-
-      return addressIntHostOrder;
-    }
-
-
-    public string IpLongToString(long longIP)
-    {
-      string ip = string.Empty;
-      for (int i = 0; i< 4; i++)
-      {
-        int num = (int)(longIP / Math.Pow(256, (3 - i)));
-        longIP = longIP - (long) (num* Math.Pow(256, (3 - i)));
-
-        if (i == 0)
-          ip = num.ToString();
-        else
-          ip  = ip + "." + num.ToString();
-      }
-
-      return ip;
-    }
-
-    #endregion
-
-
-    #region INTERFACE: IObservableArpRequest
-
-    public void AddObserverArpRequest(IObserverArpRequest observer)
-    {
-      this.observersArpRequest.Add(observer);
-    }
-
-
-    public void NotifyProgressBarArpRequest(int progress)
-    {
-      this.observersArpRequest.ForEach(elem => elem.UpdateProgressbar(progress));
-    }
-
-    #endregion
-
-
-    #region INTERFACE: IObservableCurrentIP
-
-    public void AddObserverCurrentIp(IObserverArpCurrentIp observer)
-    {
-      this.observersCurrentIp.Add(observer);
-    }
-
-
-    public void NotifyProgressCurrentIp(string currentIp)
-    {
-      this.observersCurrentIp.ForEach(elem => elem.UpdateCurrentIp(currentIp));
-    }
-
-    #endregion
-
-  }
 }
