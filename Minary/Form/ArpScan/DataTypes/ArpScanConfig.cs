@@ -27,6 +27,8 @@
 
     public PacketCommunicator Communicator { get; set; }
 
+    public LivePacketDevice device;
+
     #endregion
 
   }

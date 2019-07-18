@@ -92,10 +92,10 @@
                 try
                 {
                     IPAddress tmpIp = this.UintToIP(tmpIpInt);
-                    EthernetPacket arpPacket = this.BuildArpWhoHasPacket(tmpIp, localIp);
+                    Packet arpRequest = this.BuildArpWhoHasPacket(tmpIpInt);
                     System.Threading.Thread.Sleep(13);
                     LogCons.Inst.Write(LogLevel.Info, $"StartScanning(): ... " + tmpIp.ToString());
-                    this.config.Communicator.SendPacket(arpPacket);
+                    this.config.Communicator.SendPacket(arpRequest);
                 }
                 catch (Exception ex)
                 {
@@ -145,14 +145,24 @@
         }
 
 
-        private PcapDotNet.Packets.Packet BuildArpWhoHasPacket(IPAddress destinationIP, IPAddress senderIP)
-        {
-            PcapDotNet.Packets.Packet thePacket = new PcapDotNet.Packets.Packet();
-            var ethernetPacket = new EthernetPacket(localPhysicalAddress, broadcastMAC, PacketDotNet.EthernetPacketType.Arp);
-            var arpPacket = new ARPPacket(PacketDotNet.ARPOperation.Request, broadcastMAC, destinationIP, localPhysicalAddress, senderIP);
-            ethernetPacket.PayloadPacket = arpPacket;
+        private PhysicalAddress MACBroadcast = PhysicalAddress.Parse("FF-FF-FF-FF-FF-FF");
+        private PhysicalAddress MACUnknown = PhysicalAddress.Parse("00-00-00-00-00-00");
 
-            return thePacket;
+        private Packet BuildArpWhoHasPacket(uint remoteIpInt)
+        {
+            var localMACAddr = PhysicalAddress.Parse(config.LocalMac);
+            var localIPAddr = IPAddress.Parse(config.LocalIp);
+            IPAddress targetIP = this.UInt32ToIPAddress(remoteIpInt);
+            var etherPacket = new EthernetPacket(localMACAddr, MACBroadcast, EthernetPacketType.Arp);
+            var arpPacket = new ARPPacket(ARPOperation.Request, MACUnknown, targetIP, localMACAddr, localIPAddr);
+            etherPacket.PayloadPacket = arpPacket;
+
+            //PcapDotNet.Packets.Packet thePacket = new PcapDotNet.Packets.Ethernet();
+            //var ethernetPacket = new EthernetPacket(localPhysicalAddress, broadcastMAC, PacketDotNet.EthernetPacketType.Arp);
+            //var arpPacket = new ARPPacket(PacketDotNet.ARPOperation.Request, broadcastMAC, destinationIP, localPhysicalAddress, senderIP);
+            //ethernetPacket.PayloadPacket = arpPacket;
+
+            return etherPacket;
         }
 
 
@@ -239,6 +249,18 @@
 
             return new IPAddress(ip);
         }
+
+
+        public IPAddress UInt32ToIPAddress(UInt32 address)
+        {
+            return new IPAddress(new byte[] {
+                (byte) ((address>>24) & 0xFF),
+                (byte) ((address>>16) & 0xFF),
+                (byte) ((address>>8) & 0xFF),
+                (byte) (address & 0xFF)
+            });
+        }
+
         #endregion
 
 
