@@ -128,6 +128,7 @@
     <Reference Include="NativeWindowsLib">
       <HintPath>LIBRARIES\NativeWindowsLib.dll</HintPath>
     </Reference>
+<<<<<<< HEAD
     <Reference Include="PacketDotNet, Version=0.18.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PacketDotNet.0.18.0\lib\netstandard2.0\PacketDotNet.dll</HintPath>
     </Reference>
@@ -142,6 +143,10 @@
     </Reference>
     <Reference Include="PcapDotNet.Packets, Version=0.10.0.20603, Culture=neutral, PublicKeyToken=4b6f3e583145a652, processorArchitecture=MSIL">
       <HintPath>..\packages\PcapDotNet.0.10.2\lib\net40\PcapDotNet.Packets.dll</HintPath>
+=======
+    <Reference Include="PacketDotNet, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PacketDotNet.1.0.1\lib\net45\PacketDotNet.dll</HintPath>
+>>>>>>> f45494aa8fee796f609c79faac57eef7ca065fad
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -158,6 +163,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>

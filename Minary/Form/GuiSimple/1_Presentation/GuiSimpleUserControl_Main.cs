@@ -3,7 +3,7 @@
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
   using Minary.Form.GuiAdvanced;
-  using PcapDotNet.Core;
+  using SharpPcap;
   using System.ComponentModel;
   using System.Windows.Forms;
 
@@ -14,7 +14,7 @@
     #region MEMBERS
 
     private MinaryMain minaryObj;
-    private PacketCommunicator communicator;
+    private ICaptureDevice communicator;
     protected BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
 

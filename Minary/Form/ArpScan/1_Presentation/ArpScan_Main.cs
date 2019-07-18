@@ -2,14 +2,14 @@
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
-  using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Form.GuiAdvanced;
   using Minary.LogConsole.Main;
-  using PcapDotNet.Core;
+  using SharpPcap.LibPcap;
   using System;
   using System.ComponentModel;
+  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -26,7 +26,7 @@
     private string localIp;
     private string localMac;
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
-    private PacketCommunicator communicator;
+    private MinaryMain minaryMain;
 
     #endregion
 
@@ -84,6 +84,9 @@
 
       // Set the owner to keep this form in the foreground/topmost
       this.Owner = owner;
+
+      // Keep Minary's main object 
+      this.minaryMain = owner;
     }
 
 
@@ -111,14 +114,16 @@
         this.gatewayIp = minaryConfig.GatewayIp;
         this.localIp = minaryConfig.LocalIp;
         this.localMac = minaryConfig.LocalMac;
-        this.communicator = PcapHandler.Inst.OpenPcapDevice(this.interfaceId, 1);
+
+        var devices = LibPcapLiveDeviceList.Instance;
+        var theDevice = devices.Where(elem => elem.Name.Contains(this.interfaceId)).First();
 
         this.targetStringList = targetStringList;
 
         this.tb_Subnet1.Text = this.startIp;
         this.tb_Subnet2.Text = this.stopIp;
 
-        this.tb_Netrange1.Text = this.startIp;
+         this.tb_Netrange1.Text = this.startIp;
         this.tb_Netrange2.Text = this.stopIp;
 
         this.rb_Subnet.Checked = true;
@@ -126,7 +131,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(EXC1): {0}", ex.Message);
       }
 
       // Start ARP packet listener BGW
@@ -148,7 +153,7 @@
       }
       catch (Exception ex)
       {
-        LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(): {0}", ex.Message);
+        LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(EXC2): {0}", ex.Message);
       }
     }
 
