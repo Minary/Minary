@@ -153,8 +153,10 @@
             var localMACAddr = PhysicalAddress.Parse(config.LocalMac);
             var localIPAddr = IPAddress.Parse(config.LocalIp);
             IPAddress targetIP = this.UInt32ToIPAddress(remoteIpInt);
-            var etherPacket = new EthernetPacket(localMACAddr, MACBroadcast, EthernetPacketType.Arp);
-            var arpPacket = new ARPPacket(ARPOperation.Request, MACUnknown, targetIP, localMACAddr, localIPAddr);
+            //var etherPacket = new EthernetPacket(localMACAddr, MACBroadcast, EthernetPacketType.Arp);
+            //var arpPacket = new ARPPacket(ARPOperation.Request, MACUnknown, targetIP, localMACAddr, localIPAddr);
+            var etherPacket = new EthernetPacket(localMACAddr, MACBroadcast, PacketDotNet.EthernetType.Arp);
+            var arpPacket = new PacketDotNet.ArpPacket(ArpOperation.Request, MACUnknown, targetIP, localMACAddr, localIPAddr);
             etherPacket.PayloadPacket = arpPacket;
 
             //PcapDotNet.Packets.Packet thePacket = new PcapDotNet.Packets.Ethernet();

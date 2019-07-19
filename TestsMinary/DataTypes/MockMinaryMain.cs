@@ -9,7 +9,7 @@ namespace TestsMinary.DataTypes
 {
 
   // MinaryMain mock class
-  public class MockMinaryMain : Minary.Form.Main.MinaryMain
+  public class MockMinaryMain : Minary.Form.GuiAdvanced.MinaryMain
   {
     public MockMinaryMain(string[] args) : base(args)
     {

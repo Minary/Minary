@@ -27,8 +27,8 @@
 
     public ICaptureDevice Communicator { get; set; }
 
-    public LivePacketDevice device;
-
+//    public PacketDotNet.LivePacketDevice device;
+    
     #endregion
 
   }
