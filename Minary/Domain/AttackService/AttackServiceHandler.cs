@@ -99,6 +99,12 @@
     {
       foreach (var tmpKey in this.AttackServices.Keys)
       {
+        // Only stop AttackServices that were started in OnStartAll2Attack mode
+        if (this.AttackServices[tmpKey].StartMode != ServiceStartMode.OnStartAll2Attack)
+        {
+          continue;
+        }
+
         try
         {
           // Stop attack services that have the current state RUNNING.

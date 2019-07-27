@@ -361,6 +361,11 @@
     {
       foreach (var tmpKey in this.attackServiceHandler.AttackServices.Keys)
       {
+        if (this.attackServiceHandler.AttackServices[tmpKey].StartMode != ServiceStartMode.OnStartAll2Attack)
+        {
+          continue;
+        }
+
         try
         {
           LogCons.Inst.Write(LogLevel.Info, "Minary.StartAllServices(): Starting {0}/{1}", tmpKey, this.attackServiceHandler.AttackServices[tmpKey].ServiceName);
