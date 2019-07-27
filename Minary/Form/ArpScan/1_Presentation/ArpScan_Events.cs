@@ -7,19 +7,23 @@
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
+  using System.Linq;
   using System.Windows.Forms;
 
 
-  public partial class ArpScan 
+  public partial class ArpScan
   {
 
     #region MEMBERS
 
+    private ArpScanConfig arpScanConfig = null;
+    private ArpScanner arpScanner = null;
+    private ReplyListener replyListener = null;
     private Action onScanDoneCallback;
 
     #endregion
 
-    
+
     #region PUBLIC
 
     public delegate void HideArpScanWindowDelegate();
@@ -91,7 +95,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+    private void DGV_CellClick(object sender, DataGridViewCellEventArgs e)
     {
       // Ignore clicks that are not on button cells.
       if (e.RowIndex < 0)
@@ -111,7 +115,7 @@
 
       for (var i = 0; i < this.TargetList.Count; i++)
       {
-        if (this.TargetList[i].MacAddress == macAddress && 
+        if (this.TargetList[i].MacAddress == macAddress &&
             this.TargetList[i].IpAddress == ipAddress)
         {
           this.TargetList[i].Attack = this.TargetList[i].Attack ? false : true;
@@ -126,7 +130,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Dgv_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+    private void DGV_CurrentCellDirtyStateChanged(object sender, EventArgs e)
     {
       if (this.dgv_Targets.IsCurrentCellDirty)
       {
@@ -140,7 +144,7 @@
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="e"></param>
-    private void Dgv_CellValueChanged(object obj, DataGridViewCellEventArgs e)
+    private void DGV_CellValueChanged(object obj, DataGridViewCellEventArgs e)
     {
       // compare to checkBox column index
       if (e.ColumnIndex != 0)
@@ -220,7 +224,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Tb_Netrange2_KeyUp(object sender, KeyEventArgs e)
+    private void TB_Netrange2_KeyUp(object sender, KeyEventArgs e)
     {
       if (e.KeyCode != Keys.Enter)
       {
@@ -278,7 +282,7 @@
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Dgv_Targets_MouseUp(object sender, MouseEventArgs e)
+    private void DGV_Targets_MouseUp(object sender, MouseEventArgs e)
     {
       if (e.Button != MouseButtons.Right)
       {
@@ -306,7 +310,7 @@
     /// <param name="e"></param>
     private void UnselectAllToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (this.TargetList == null || 
+      if (this.TargetList == null ||
           this.TargetList.Count <= 0)
       {
         return;
@@ -334,14 +338,14 @@
 
       return base.ProcessDialogKey(keyData);
     }
-    
+
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Dgv_Targets_MouseDown(object sender, MouseEventArgs e)
+    private void DGV_Targets_MouseDown(object sender, MouseEventArgs e)
     {
       try
       {
@@ -385,8 +389,6 @@
       }
 
       this.SetArpScanGuiOnStopped();
-      // CLOSE THE INTERFACE !!!
-
 
       // Call caller callback function after scan has completed.
       if (this.onScanDoneCallback != null)
@@ -398,14 +400,10 @@
 
     private void BGW_ArpScanSender_DoWork(object sender, DoWorkEventArgs e)
     {
-      ArpScanConfig arpScanConfig = null;
-      ArpScanner arpScanner = null;
-
       try
       {
-        arpScanConfig = this.GetArpScanConfig();
-        arpScanner = new ArpScanner(arpScanConfig);
-        arpScanConfig.Communicator.Open(SharpPcap.DeviceMode.Promiscuous, 0);
+        this.arpScanner = new ArpScanner(arpScanConfig);
+        this.replyListener = new ReplyListener(this.arpScanConfig);
       }
       catch (Exception ex)
       {
@@ -415,9 +413,12 @@
 
       try
       {
-        arpScanner.AddObserverArpRequest(this);
-        arpScanner.AddObserverCurrentIp(this);
-        arpScanner.StartScanning();
+        this.arpScanner.AddObserverArpRequest(this);
+        this.arpScanner.AddObserverCurrentIp(this);
+
+        this.replyListener.AddObserver(this);
+
+        this.arpScanner.StartScanning();
       }
       catch (Exception ex)
       {
@@ -444,41 +445,10 @@
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Completed successfully");
+        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Started ARP Scan Listener successfully");
       }
     }
-
-
-    private void BGW_ArpScanListener_DoWork(object sender, DoWorkEventArgs e)
-    {
-      ArpScanConfig arpScanConfig = null;
-      ReplyListener replyListener = null;
-
-      try
-      {
-        arpScanConfig = this.GetArpScanConfig();
-        replyListener = new ReplyListener(arpScanConfig);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
-        return;
-      }
-
-      try
-      {
-        replyListener.AddObserver(this);
-        replyListener.StartReceivingArpPackets();
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
-        return;
-      }
-
-      LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Background worker is started");
-    }
-
+    
     #endregion
 
 
@@ -512,6 +482,9 @@
         this.pb_ArpScan.Value = 0;
         this.pb_ArpScan.Step = 10;
 
+        // Determine ARP scan configuration
+        this.arpScanConfig = this.GetArpScanConfig();
+
         // Initiate start
         this.TargetList.Clear();
         this.SetArpScanGuiOnStarted();
@@ -536,7 +509,8 @@
         stopIp = this.tb_Subnet2.Text;
       }
 
-      ArpScanConfig arpScanConfig = new ArpScanConfig()
+      // Populate ArpScanConfig object with values
+      var arpScanConfig = new ArpScanConfig()
       {
         InterfaceId = this.interfaceId,
         GatewayIp = this.gatewayIp,
@@ -547,11 +521,6 @@
         MaxNumberSystemsToScan = -1,
         ObserverClass = this
       };
-
-            
-      arpScanConfig.Communicator.Filter = "arp";
-      arpScanConfig.Communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryMain.CurrentInterfaceId, 1);
- //       arpScanConfig.Communicator.Filter = "arp and arp[6:2] = 2";
 
       return arpScanConfig;
     }

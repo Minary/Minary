@@ -9,6 +9,7 @@
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
+  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -23,7 +24,7 @@
 
     #endregion
 
-    
+
     private void GetGuiSimpleTargetList()
     {
     }
@@ -329,15 +330,6 @@
     {
       LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Background worker started");
 
-      try
-      {
-        this.replyListener.StartReceivingArpPackets();
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
-        return;
-      }
 
       LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Background worker stopped");
     }
@@ -453,10 +445,9 @@
     private ArpScanConfig GetArpScanConfig()
     {
       DataTypes.Struct.MinaryConfig minaryConfig = this.minaryObj.MinaryTaskFacade.GetCurrentMinaryConfig();
-      this.communicator = PcapHandler.Inst.OpenPcapDevice(this.minaryObj.CurrentInterfaceId, 1);
 
-      // ArpScanner
-      ArpScanConfig arpScanConfig = new ArpScanConfig()
+      // Populate ArpScanConfig object with values
+      var arpScanConfig = new ArpScanConfig()
       {
         InterfaceId = minaryConfig.InterfaceId,
         GatewayIp = minaryConfig.GatewayIp,
@@ -465,8 +456,7 @@
         NetworkStartIp = minaryConfig.StartIp,
         NetworkStopIp = minaryConfig.StopIp,
         MaxNumberSystemsToScan = -1,
-        ObserverClass = this,
-        Communicator = this.communicator
+        ObserverClass = this
       };
 
       return arpScanConfig;

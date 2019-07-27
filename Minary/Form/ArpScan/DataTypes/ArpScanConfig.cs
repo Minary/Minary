@@ -1,7 +1,6 @@
 ﻿namespace Minary.Form.ArpScan.DataTypes
 {
   using Minary.DataTypes.ArpScan;
-  using SharpPcap;
 
 
   public class ArpScanConfig
@@ -24,10 +23,6 @@
     public int MaxNumberSystemsToScan { get; set; }
 
     public IObserverArpRequest ObserverClass { get; set; }
-
-    public ICaptureDevice Communicator { get; set; }
-
-//    public PacketDotNet.LivePacketDevice device;
     
     #endregion
 

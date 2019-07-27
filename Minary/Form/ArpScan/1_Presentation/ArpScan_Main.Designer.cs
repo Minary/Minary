@@ -47,7 +47,6 @@
       this.bt_Scan = new System.Windows.Forms.Button();
       this.pb_ArpScan = new System.Windows.Forms.ProgressBar();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
-      this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
       this.cb_SelectAll = new System.Windows.Forms.CheckBox();
       this.ss_ArpScan = new System.Windows.Forms.StatusStrip();
       this.tssl_CurrentIpLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -106,8 +105,8 @@
       this.dgv_Targets.Size = new System.Drawing.Size(1096, 323);
       this.dgv_Targets.TabIndex = 0;
       this.dgv_Targets.TabStop = false;
-      this.dgv_Targets.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Dgv_Targets_MouseDown);
-      this.dgv_Targets.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Dgv_Targets_MouseUp);
+      this.dgv_Targets.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DGV_Targets_MouseDown);
+      this.dgv_Targets.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DGV_Targets_MouseUp);
       // 
       // gb_Range
       // 
@@ -164,7 +163,7 @@
       this.tb_Netrange2.Name = "tb_Netrange2";
       this.tb_Netrange2.Size = new System.Drawing.Size(148, 26);
       this.tb_Netrange2.TabIndex = 6;
-      this.tb_Netrange2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Tb_Netrange2_KeyUp);
+      this.tb_Netrange2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TB_Netrange2_KeyUp);
       // 
       // tb_Netrange1
       // 
@@ -241,12 +240,6 @@
       this.bgw_ArpScanSender.WorkerSupportsCancellation = true;
       this.bgw_ArpScanSender.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanSender_DoWork);
       this.bgw_ArpScanSender.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanSender_RunWorkerCompleted);
-      // 
-      // bgw_ArpScanListener
-      // 
-      this.bgw_ArpScanListener.WorkerSupportsCancellation = true;
-      this.bgw_ArpScanListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanListener_DoWork);
-      this.bgw_ArpScanListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanListener_RunWorkerCompleted);
       // 
       // cb_SelectAll
       // 
@@ -365,7 +358,6 @@
     private System.Windows.Forms.Button bt_Scan;
     private System.Windows.Forms.ProgressBar pb_ArpScan;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
-    private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
     private System.Windows.Forms.CheckBox cb_SelectAll;
     private System.Windows.Forms.StatusStrip ss_ArpScan;
     private System.Windows.Forms.ToolStripStatusLabel tssl_CurrentIpLabel;

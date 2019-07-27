@@ -128,16 +128,10 @@
     <Reference Include="NativeWindowsLib">
       <HintPath>LIBRARIES\NativeWindowsLib.dll</HintPath>
     </Reference>
-    <Reference Include="PacketDotNet, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PacketDotNet.1.0.1\lib\net45\PacketDotNet.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RestSharp, Version=106.2.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.2.1\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpPcap, Version=4.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpPcap.4.6.1\lib\netstandard2.0\SharpPcap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -184,7 +178,6 @@
     <Compile Include="DataTypes\Interface\Updates\IObservable.cs" />
     <Compile Include="DataTypes\Interface\Updates\IObserver.cs" />
     <Compile Include="DataTypes\Struct\MinaryConfig.cs" />
-    <Compile Include="Domain\ArpScan\PcapHandler.cs" />
     <Compile Include="Domain\ArpScan\ReplyListener.cs" />
     <Compile Include="Domain\ArpScan\ArpScanner.cs" />
     <Compile Include="Common\WinRegistry.cs" />

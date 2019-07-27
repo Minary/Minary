@@ -6,7 +6,6 @@
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Form.GuiAdvanced;
   using Minary.LogConsole.Main;
-  using SharpPcap.LibPcap;
   using System;
   using System.ComponentModel;
   using System.Linq;
@@ -78,9 +77,9 @@
       this.dgv_Targets.Columns.Add(columnVendor);
       
       this.dgv_Targets.DataSource = this.TargetList;
-      this.dgv_Targets.CurrentCellDirtyStateChanged += new EventHandler(this.Dgv_CurrentCellDirtyStateChanged);
-      this.dgv_Targets.CellValueChanged += new DataGridViewCellEventHandler(this.Dgv_CellValueChanged);
-      this.dgv_Targets.CellClick += new DataGridViewCellEventHandler(this.Dgv_CellClick);
+      this.dgv_Targets.CurrentCellDirtyStateChanged += new EventHandler(this.DGV_CurrentCellDirtyStateChanged);
+      this.dgv_Targets.CellValueChanged += new DataGridViewCellEventHandler(this.DGV_CellValueChanged);
+      this.dgv_Targets.CellClick += new DataGridViewCellEventHandler(this.DGV_CellClick);
 
       // Set the owner to keep this form in the foreground/topmost
       this.Owner = owner;
@@ -114,16 +113,13 @@
         this.gatewayIp = minaryConfig.GatewayIp;
         this.localIp = minaryConfig.LocalIp;
         this.localMac = minaryConfig.LocalMac;
-
-        var devices = LibPcapLiveDeviceList.Instance;
-        var theDevice = devices.Where(elem => elem.Name.Contains(this.interfaceId)).First();
-
+        
         this.targetStringList = targetStringList;
 
         this.tb_Subnet1.Text = this.startIp;
         this.tb_Subnet2.Text = this.stopIp;
 
-         this.tb_Netrange1.Text = this.startIp;
+        this.tb_Netrange1.Text = this.startIp;
         this.tb_Netrange2.Text = this.stopIp;
 
         this.rb_Subnet.Checked = true;
@@ -132,12 +128,6 @@
       catch (Exception ex)
       {
         LogCons.Inst.Write(LogLevel.Error, "ArpScan.ShowDialog(EXC1): {0}", ex.Message);
-      }
-
-      // Start ARP packet listener BGW
-      if (this.bgw_ArpScanListener.IsBusy == false)
-      {
-        this.bgw_ArpScanListener.RunWorkerAsync();
       }
 
       try
