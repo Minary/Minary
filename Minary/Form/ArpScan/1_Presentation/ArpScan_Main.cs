@@ -2,13 +2,13 @@
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
+  using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Form.GuiAdvanced;
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
-  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -26,6 +26,10 @@
     private string localMac;
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
     private MinaryMain minaryMain;
+
+    private ArpScanConfig arpScanConfig = null;
+    private ArpScanner arpScanner = null;
+    private ReplyListener replyListener = null;
 
     #endregion
 
@@ -86,6 +90,15 @@
 
       // Keep Minary's main object 
       this.minaryMain = owner;
+
+      // Create member objects
+      this.arpScanner = new ArpScanner();
+      this.replyListener = new ReplyListener();
+
+      // Register observers
+      this.arpScanner.AddObserverArpRequest(this);
+      this.arpScanner.AddObserverCurrentIp(this);
+      this.replyListener.AddObserver(this);
     }
 
 
@@ -169,6 +182,7 @@
       this.bt_Close.Enabled = true;
       this.rb_Netrange.Enabled = true;
       this.rb_Subnet.Enabled = true;
+      this.cb_SelectAll.Enabled = true;
 
       if (this.rb_Netrange.Checked)
       {
@@ -234,6 +248,7 @@
       this.bt_Close.Enabled = false;
       this.rb_Netrange.Enabled = false;
       this.rb_Subnet.Enabled = false;
+      this.cb_SelectAll.Enabled = true;
 
       if (this.rb_Netrange.Checked)
       {

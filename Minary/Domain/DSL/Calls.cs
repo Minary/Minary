@@ -44,11 +44,10 @@
 
       this.onArpScanDone = onArpScanDone;
       LogCons.Inst.Write(LogLevel.Info, "Calls interface: ScanNetwork()");
-      DataTypes.Struct.MinaryConfig minaryConfig = this.minaryMain.MinaryTaskFacade.GetCurrentMinaryConfig();
 
       try
       {
-        this.arpScanHandler.ShowArpScanGui(this.minaryMain.targetList, minaryConfig, false);
+        this.arpScanHandler.ShowArpScanGui(this.minaryMain.targetList, this.minaryMain.MinaryTaskFacade.CurrentMinaryConfig, false);
         this.arpScanHandler.StartArpScan(this.OnScanDone);
       }
       catch (Exception ex)

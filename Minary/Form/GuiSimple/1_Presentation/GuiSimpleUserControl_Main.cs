@@ -1,5 +1,6 @@
 ﻿namespace Minary.Form.GuiSimple.Presentation
 {
+  using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
   using Minary.Form.GuiAdvanced;
@@ -15,6 +16,8 @@
     private MinaryMain minaryObj;
     protected BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
+    private ArpScanner arpScanner = null;
+    public ReplyListener replyListener = null;
 
     #endregion
 
@@ -68,6 +71,13 @@
 
       // Initialize DGV data source list
       this.dgv_GuiSimple.DataSource = this.targetStringList;
+
+      // Create member objects
+      this.arpScanner = new ArpScanner();
+      this.replyListener = new ReplyListener();
+
+      // Register observers
+      this.replyListener.AddObserver(this);
     }
 
     #endregion

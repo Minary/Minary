@@ -121,19 +121,21 @@
     /// 
     /// </summary>
     /// <returns></returns>
-    public MinaryConfig GetCurrentMinaryConfig()
+    public MinaryConfig CurrentMinaryConfig
     {
-      MinaryConfig config = new MinaryConfig()
-                                {
-                                  InterfaceId = this.minaryMain.GetCurrentInterface(),
-                                  StartIp = this.minaryMain.NetworkStartIp,
-                                  StopIp = this.minaryMain.NetworkStopIp,
-                                  GatewayIp = this.minaryMain.CurrentGatewayIp,
-                                  LocalIp = this.minaryMain.CurrentLocalIp,
-                                  LocalMac = this.minaryMain.CurrentLocalMac
-                                };
-
-      return config;
+      get
+      {
+        return new MinaryConfig()
+        {
+          InterfaceId = this.minaryMain.GetCurrentInterface(),
+          StartIp = this.minaryMain.NetworkStartIp,
+          StopIp = this.minaryMain.NetworkStopIp,
+          GatewayIp = this.minaryMain.CurrentGatewayIp,
+          LocalIp = this.minaryMain.CurrentLocalIp,
+          LocalMac = this.minaryMain.CurrentLocalMac
+        };
+      }
+      set { }    
     }
 
     #endregion

@@ -18,9 +18,6 @@
 
     #region MEMBERS
     
-    protected ArpScanConfig arpScanConfig = null;
-    private ArpScanner arpScanner = null;
-    public ReplyListener replyListener = null;
 
     #endregion
 
@@ -116,40 +113,6 @@
       }
 
       this.targetStringList.Clear();
-
-      // Configure ARP scan object
-      //this.arpScanner.Config = this.GetArpScanConfig();
-      // Instanciate ARP scanner object
-      try
-      {
-        this.arpScanConfig = this.GetArpScanConfig();
-        this.arpScanner = new ArpScanner(this.arpScanConfig);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/GuiSimpleUserControl_VisibleChanged(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
-      }
-
-      try
-      {
-        this.replyListener = new ReplyListener(this.arpScanConfig);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanListener(EXCEPTION1): {ex.Message}");
-        return;
-      }
-
-      try
-      {
-        this.replyListener.AddObserver(this);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"GuiSimpleUserControl/BGW_ArpScanListener(EXCEPTION2): {ex.Message}");
-        return;
-      }
-
       this.StartArpScanListener();
       this.StartArpScanSender();
       this.StartRemoveInactiveSystems();
@@ -287,7 +250,8 @@
 
         try
         {
-          this.arpScanner.StartScanning();
+          var arpScanConfig = this.GetArpScanConfig();
+          this.arpScanner.StartScanning(arpScanConfig);
         }
         catch (Exception ex)
         {
@@ -444,7 +408,7 @@
 
     private ArpScanConfig GetArpScanConfig()
     {
-      DataTypes.Struct.MinaryConfig minaryConfig = this.minaryObj.MinaryTaskFacade.GetCurrentMinaryConfig();
+      DataTypes.Struct.MinaryConfig minaryConfig = this.minaryObj.MinaryTaskFacade.CurrentMinaryConfig;
 
       // Populate ArpScanConfig object with values
       var arpScanConfig = new ArpScanConfig()

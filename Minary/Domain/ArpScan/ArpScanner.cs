@@ -1,50 +1,34 @@
 ﻿namespace Minary.Domain.ArpScan
 {
     using Minary.DataTypes.ArpScan;
-    using Minary.DataTypes.Enum;
     using Minary.Form.ArpScan.DataTypes;
-    using Minary.LogConsole.Main;
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Net;
-    using System.Net.NetworkInformation;
 
 
     public class ArpScanner : IObservableArpRequest, IObservableArpCurrentIp
     {
 
         #region MEMBERS
-
-        private ArpScanConfig arpScanConfig;
-
+    
         private List<IObserverArpRequest> observersArpRequest = new List<IObserverArpRequest>();
         private List<IObserverArpCurrentIp> observersCurrentIp = new List<IObserverArpCurrentIp>();
 
         #endregion
 
 
-        #region PROPERTIES
-
-        public ArpScanConfig Config { get; set; }
-
-        #endregion
-
-
         #region PUBLIC
 
-        public ArpScanner(ArpScanConfig arpScanConfig)
+        public ArpScanner()
         {
-            this.arpScanConfig = arpScanConfig;
         }
 
 
-        public void StartScanning()
+        public void StartScanning(ArpScanConfig arpScanConfig)
         {
             int percentageCounter = 10;
-            // this.arpScanConfig.NetworkStartIp);
-            // this.arpScanConfig.NetworkStopIp);
+            // arpScanConfig.NetworkStartIp);
+            // arpScanConfig.NetworkStopIp);
 
             // this.NotifyProgressBarArpRequest(currentPercentage);
             // this.NotifyProgressCurrentIp(currIpStr);

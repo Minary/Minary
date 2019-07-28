@@ -59,8 +59,8 @@
           {
             // Determine vendor
             string vendor = this.macVendorHandler.GetVendorByMac(systemData.MacAddress);
-            if (systemData.IpAddress != this.arpScanConfig.GatewayIp &&
-                systemData.IpAddress != this.arpScanConfig.LocalIp)
+            if (systemData.IpAddress != this.minaryObj.MinaryTaskFacade.CurrentMinaryConfig.GatewayIp &&
+                systemData.IpAddress != this.minaryObj.MinaryTaskFacade.CurrentMinaryConfig.LocalIp)
             {
               this.targetStringList.Add(new SystemFoundSimple(systemData.MacAddress, systemData.IpAddress));
               LogCons.Inst.Write(LogLevel.Info, $"GuiSimpleUserControl/UpdateNewRecord(): Found new target system {systemData.MacAddress}/{systemData.IpAddress}");

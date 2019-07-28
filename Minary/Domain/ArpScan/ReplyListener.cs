@@ -10,7 +10,6 @@
 
     #region MEMBERS
 
-    private ArpScanConfig arpScanConfig;
     private List<IObserverArpResponse> observers = new List<IObserverArpResponse>();
 
     #endregion
@@ -18,9 +17,8 @@
 
     #region PUBLIC
 
-    public ReplyListener(ArpScanConfig arpScanConfig)
+    public ReplyListener()
     {
-      this.arpScanConfig = arpScanConfig;
     }
 
     #endregion

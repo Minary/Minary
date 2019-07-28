@@ -7,7 +7,6 @@
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
-  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -16,9 +15,6 @@
 
     #region MEMBERS
 
-    private ArpScanConfig arpScanConfig = null;
-    private ArpScanner arpScanner = null;
-    private ReplyListener replyListener = null;
     private Action onScanDoneCallback;
 
     #endregion
@@ -402,23 +398,8 @@
     {
       try
       {
-        this.arpScanner = new ArpScanner(arpScanConfig);
-        this.replyListener = new ReplyListener(this.arpScanConfig);
-      }
-      catch (Exception ex)
-      {
-        LogCons.Inst.Write(LogLevel.Error, $"BGW_ArpScanSender(EXCEPTION): {ex.Message}\r\n{ex.StackTrace}");
-        this.SetArpScanGuiOnStopped();
-      }
-
-      try
-      {
-        this.arpScanner.AddObserverArpRequest(this);
-        this.arpScanner.AddObserverCurrentIp(this);
-
-        this.replyListener.AddObserver(this);
-
-        this.arpScanner.StartScanning();
+        var arpScanConfig = this.GetArpScanConfig();
+        this.arpScanner.StartScanning(arpScanConfig);
       }
       catch (Exception ex)
       {
@@ -482,9 +463,6 @@
         this.pb_ArpScan.Value = 0;
         this.pb_ArpScan.Step = 10;
 
-        // Determine ARP scan configuration
-        this.arpScanConfig = this.GetArpScanConfig();
-
         // Initiate start
         this.TargetList.Clear();
         this.SetArpScanGuiOnStarted();
@@ -510,17 +488,16 @@
       }
 
       // Populate ArpScanConfig object with values
-      var arpScanConfig = new ArpScanConfig()
-      {
-        InterfaceId = this.interfaceId,
-        GatewayIp = this.gatewayIp,
-        LocalIp = this.localIp,
-        LocalMac = this.localMac?.Replace('-', ':'),
-        NetworkStartIp = startIp,
-        NetworkStopIp = stopIp,
-        MaxNumberSystemsToScan = -1,
-        ObserverClass = this
-      };
+      var arpScanConfig = new ArpScanConfig {
+                InterfaceId = this.interfaceId,
+                GatewayIp = this.gatewayIp,
+                LocalIp = this.localIp,
+                LocalMac = this.localMac?.Replace('-', ':'),
+                NetworkStartIp = startIp,
+                NetworkStopIp = stopIp,
+                MaxNumberSystemsToScan = -1,
+                ObserverClass = this
+        };
 
       return arpScanConfig;
     }
