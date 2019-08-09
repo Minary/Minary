@@ -251,7 +251,7 @@
         try
         {
           var arpScanConfig = this.GetArpScanConfig();
-          this.arpScanner.StartScanning(arpScanConfig);
+          this.arpScanner.StartArpScan(arpScanConfig);
         }
         catch (Exception ex)
         {

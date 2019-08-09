@@ -61,6 +61,11 @@ public static readonly string HttpReverseProxyBinaryPath = Path.Combine(HttpReve
 public static readonly string HttpReverseProxyName = "HttpReverseProxy";
 public static readonly string HttpReverseProxyCertrifcateDir = Path.Combine(HttpReverseProxyServiceDir, "Certificates");
 
+// Service: ArpScan
+public static readonly string ArpScanServiceDir = Path.Combine(AttackServicesPluginsDir, "ArpScan");
+public static readonly string ArpScanBinaryPath = Path.Combine(ArpScanServiceDir, "ArpScan.exe");
+public static readonly string ArpScanProcessName = "ArpScan";
+
 // Registry
 public static readonly string RegistrySoftwareName = "Minary";
 public static readonly string BasisKey = $@"Software\{Config.RegistrySoftwareName}";

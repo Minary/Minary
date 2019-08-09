@@ -26,13 +26,13 @@
 
     #region INTERFACE: IObservableArpResponse
 
-    public void AddObserver(IObserverArpResponse observer)
+    public void AddObserverArpResponse(IObserverArpResponse observer)
     {
       this.observers.Add(observer);
     }
 
 
-    public void NotifyNewRecord(SystemFound systemData)
+    public void NotifyArpResponseNewRecord(SystemFound systemData)
     {
       this.observers.ForEach(elem => elem.UpdateNewRecord(systemData));
     }

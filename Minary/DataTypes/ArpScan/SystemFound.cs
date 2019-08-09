@@ -1,7 +1,6 @@
 ﻿namespace Minary.DataTypes.ArpScan
 {
 
-
   public struct SystemFound
   {
 

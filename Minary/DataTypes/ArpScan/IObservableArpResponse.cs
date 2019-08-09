@@ -4,8 +4,8 @@
 
   public interface IObservableArpResponse
   {
-    void AddObserver(IObserverArpResponse observer);
+    void AddObserverArpResponse(IObserverArpResponse observer);
 
-    void NotifyNewRecord(SystemFound systemData);
+    void NotifyArpResponseNewRecord(SystemFound systemData);
   }
 }

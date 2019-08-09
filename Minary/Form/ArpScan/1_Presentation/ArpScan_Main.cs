@@ -17,7 +17,7 @@
 
     #region MEMBERS
 
-    private BindingList<string> targetStringList;
+    private BindingList<string>targetStringList;
     private string interfaceId;
     private string startIp;
     private string stopIp;
@@ -27,9 +27,9 @@
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
     private MinaryMain minaryMain;
 
-    private ArpScanConfig arpScanConfig = null;
-    private ArpScanner arpScanner = null;
-    private ReplyListener replyListener = null;
+//private ArpScanConfig arpScanConfig = null;
+    private Task.ArpScan arpScanner = null;
+//private ReplyListener replyListener = null;
 
     #endregion
 
@@ -92,13 +92,14 @@
       this.minaryMain = owner;
 
       // Create member objects
-      this.arpScanner = new ArpScanner();
-      this.replyListener = new ReplyListener();
+      this.arpScanner = new Task.ArpScan();
+//this.replyListener = new ReplyListener();
 
       // Register observers
-      this.arpScanner.AddObserverArpRequest(this);
       this.arpScanner.AddObserverCurrentIp(this);
-      this.replyListener.AddObserver(this);
+      this.arpScanner.AddObserverArpRequest(this);
+      this.arpScanner.AddObserverArpResponse(this);
+//this.replyListener.AddObserverArpResponse(this);
     }
 
 

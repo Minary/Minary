@@ -189,7 +189,6 @@
     <Compile Include="DataTypes\Interface\Updates\IObserver.cs" />
     <Compile Include="DataTypes\Struct\MinaryConfig.cs" />
     <Compile Include="Domain\ArpScan\ReplyListener.cs" />
-    <Compile Include="Domain\ArpScan\ArpScanner.cs" />
     <Compile Include="Common\WinRegistry.cs" />
     <Compile Include="DataTypes\Enum\MinaryFileType.cs" />
     <Compile Include="DataTypes\Enum\MinaryState.cs" />
@@ -220,6 +219,7 @@
     <Compile Include="Form\ArpScan\1_Presentation\ArpScan_Main.Designer.cs">
       <DependentUpon>ArpScan_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\ArpScan\3_Infrastructure\ArpScan.cs" />
     <Compile Include="Form\ArpScan\DataTypes\ArpScanConfig.cs" />
     <Compile Include="Form\ArpScan\DataTypes\ScanSystem.cs" />
     <Compile Include="Form\ArpScan\DataTypes\TargetRecord.cs" />

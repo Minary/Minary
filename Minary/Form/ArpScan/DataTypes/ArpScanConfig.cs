@@ -1,7 +1,10 @@
 ﻿namespace Minary.Form.ArpScan.DataTypes
 {
   using Minary.DataTypes.ArpScan;
+  using System;
 
+
+  public delegate void OnDataCallback(string data);
 
   public class ArpScanConfig
   {
@@ -21,6 +24,12 @@
     public string NetworkStopIp { get; set; }
 
     public int MaxNumberSystemsToScan { get; set; }
+
+    public Action OnArpScanStopped { get; set; }
+
+    public OnDataCallback OnDataReceived { get; set; }
+
+    public bool IsDebuggingOn { get; set; }
 
     public IObserverArpRequest ObserverClass { get; set; }
     

@@ -2,7 +2,6 @@
 {
   using Minary.Common;
   using Minary.DataTypes.Enum;
-  using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using System;
@@ -399,7 +398,7 @@
       try
       {
         var arpScanConfig = this.GetArpScanConfig();
-        this.arpScanner.StartScanning(arpScanConfig);
+        this.arpScanner.StartArpScan(arpScanConfig);
       }
       catch (Exception ex)
       {
@@ -496,11 +495,15 @@
                 NetworkStartIp = startIp,
                 NetworkStopIp = stopIp,
                 MaxNumberSystemsToScan = -1,
-                ObserverClass = this
-        };
+                ObserverClass = this,
+                IsDebuggingOn = Debugging.IsDebuggingOn,
+                OnArpScanStopped = this.SetArpScanGuiOnStopped,
+                //OnDataReceived = 
+      };
 
       return arpScanConfig;
     }
+
 
     #endregion
 

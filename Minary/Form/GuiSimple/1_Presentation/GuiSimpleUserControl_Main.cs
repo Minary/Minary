@@ -3,6 +3,7 @@
   using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
+  using Minary.Form.ArpScan.Task;
   using Minary.Form.GuiAdvanced;
   using System.ComponentModel;
   using System.Windows.Forms;
@@ -16,7 +17,7 @@
     private MinaryMain minaryObj;
     protected BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
-    private ArpScanner arpScanner = null;
+    private ArpScan arpScanner = null;
     public ReplyListener replyListener = null;
 
     #endregion
@@ -73,11 +74,11 @@
       this.dgv_GuiSimple.DataSource = this.targetStringList;
 
       // Create member objects
-      this.arpScanner = new ArpScanner();
+      this.arpScanner = new ArpScan();
       this.replyListener = new ReplyListener();
 
       // Register observers
-      this.replyListener.AddObserver(this);
+      this.replyListener.AddObserverArpResponse(this);
     }
 
     #endregion
