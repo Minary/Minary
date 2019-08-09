@@ -383,7 +383,7 @@
         this.pb_ArpScan.PerformStep();
       }
 
-      this.SetArpScanGuiOnStopped();
+//this.SetArpScanGuiOnStopped();
 
       // Call caller callback function after scan has completed.
       if (this.onScanDoneCallback != null)
@@ -417,18 +417,21 @@
     {
       if (e.Error != null)
       {
-        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(): Completed with error");
+        LogCons.Inst.Write(LogLevel.Error, "BGW_ArpScanListener(): Start completed with error");
+        this.SetArpScanGuiOnStopped();
       }
-      else if (e.Cancelled == true)
-      {
-        LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Completed by cancellation");
-      }
+      //else if (e.Cancelled == true)
+      //{
+      //  LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Start completed by cancellation");
+      //}
       else
       {
         LogCons.Inst.Write(LogLevel.Info, "BGW_ArpScanListener(): Started ARP Scan Listener successfully");
+        this.IsCancellationPending = false;
+        this.IsStopped = false;
       }
     }
-    
+
     #endregion
 
 
@@ -440,20 +443,20 @@
       this.onScanDoneCallback = onScanDoneCallback;
 
       // Initiate ARP scan cancellation
-      if (this.bgw_ArpScanSender.IsBusy == true &&
-          this.bgw_ArpScanSender.CancellationPending == false)
+      if (this.IsStopped == false &&
+          this.IsCancellationPending == false)
       {
-        LogCons.Inst.Write(LogLevel.Info, "ArpScan: Cancel running ARP scan");
-        this.bgw_ArpScanSender.CancelAsync();
+        LogCons.Inst.Write(LogLevel.Info, "ArpScan: Cancelling running ARP scan");
+        this.arpScanner.StopArpScan();
       }
-      else if (this.bgw_ArpScanSender.IsBusy == true &&
-               this.bgw_ArpScanSender.CancellationPending == true)
+      else if (this.IsStopped == false &&
+               this.IsCancellationPending == true)
       {
         LogCons.Inst.Write(LogLevel.Info, "ArpScan: Cancellation running");
       }
       else
       {
-        LogCons.Inst.Write(LogLevel.Info, "ArpScan: ArpScan started");
+        LogCons.Inst.Write(LogLevel.Info, "ArpScan: Starting ArpScan");
         this.cb_SelectAll.Checked = false;
 
         // Set Progress bar structure

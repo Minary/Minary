@@ -93,13 +93,11 @@
 
       // Create member objects
       this.arpScanner = new Task.ArpScan();
-//this.replyListener = new ReplyListener();
 
       // Register observers
       this.arpScanner.AddObserverCurrentIp(this);
       this.arpScanner.AddObserverArpRequest(this);
       this.arpScanner.AddObserverArpResponse(this);
-//this.replyListener.AddObserverArpResponse(this);
     }
 
 
@@ -202,8 +200,11 @@
       this.pb_ArpScan.MarqueeAnimationSpeed = 0;
 
       // Set cancellation/stopping status
-      this.IsCancellationPending = true;
+      this.IsCancellationPending = false;
       this.IsStopped = true;
+
+
+      LogCons.Inst.Write(LogLevel.Info, "SetArpScanGuiOnStopped(): Stopped ARP Scan");
     }
 
 

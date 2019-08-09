@@ -39,6 +39,7 @@
     /// </summary>
     public void StopArpScan()
     {
+      this.infrastructure.StopArpScan();
     }
 
 
@@ -84,7 +85,7 @@
       }
 
       // Assign an Update and OnStop function pointers
-      arpConfig.OnArpScanStopped = OnArpScanStopped;
+      //arpConfig.OnArpScanStopped = OnArpScanStopped;
       arpConfig.OnDataReceived = OnArpScanData;
 
       this.infrastructure.StartArpScan(arpConfig);

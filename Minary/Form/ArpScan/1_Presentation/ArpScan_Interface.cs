@@ -15,7 +15,7 @@
 
     public bool IsCancellationPending { get { return this.bgw_ArpScanSender.CancellationPending; } set { this.bgw_ArpScanSender.CancelAsync(); } }
 
-    public bool IsStopped { get; set; } = false;
+    public bool IsStopped { get; set; } = true;
 
     #endregion
 
