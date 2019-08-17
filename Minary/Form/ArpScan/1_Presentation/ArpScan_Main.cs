@@ -2,7 +2,6 @@
 {
   using Minary.DataTypes.Enum;
   using Minary.DataTypes.Struct;
-  using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.Form.GuiAdvanced;

@@ -131,8 +131,17 @@
         // Send all newly found systems to all observers
         foreach (var tmpSystem in packetEntries)
         {
-          var newSystem = new SystemFound(tmpSystem.MacAddress, tmpSystem.IpAddress);
-          this.NotifyArpResponseNewRecord(newSystem);
+          var tmpType = tmpSystem.Type.ToLower().Trim();
+          var newSystem = new SystemFound(tmpSystem.MacAddress, tmpSystem.IpAddress, tmpSystem.Type);
+
+          if (tmpType == "reply")
+          {
+            this.NotifyArpResponseNewRecord(newSystem);
+          }
+          else if (tmpType == "request")
+          {
+            this.NotifyProgressCurrentIp(newSystem.IpAddress);
+          }
         }
       }
       catch (Exception ex)

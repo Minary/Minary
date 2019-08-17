@@ -10,15 +10,18 @@
 
     public string IpAddress { get; set; }
 
+    public string Type { get; set; }
+
     #endregion
 
 
     #region PUBLIC
 
-    public SystemFound(string macAddress, string ipAddress)
+    public SystemFound(string macAddress, string ipAddress, string type)
     {
       this.MacAddress = macAddress;
       this.IpAddress = ipAddress;
+      this.Type = type;
     }
 
     #endregion
