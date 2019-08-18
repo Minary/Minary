@@ -6,6 +6,7 @@
   using Minary.LogConsole.Main;
   using System;
   using System.ComponentModel;
+  using System.Net;
   using System.Windows.Forms;
 
 
@@ -15,6 +16,7 @@
     #region MEMBERS
 
     private Action onScanDoneCallback;
+    private ArpScanConfig currentArpScanConfig;
 
     #endregion
 
@@ -392,13 +394,11 @@
       }
     }
 
-
     private void BGW_ArpScanSender_DoWork(object sender, DoWorkEventArgs e)
     {
       try
       {
-        var arpScanConfig = this.GetArpScanConfig();
-        this.arpScanner.StartArpScan(arpScanConfig);
+        this.arpScanner.StartArpScan(this.currentArpScanConfig);
       }
       catch (Exception ex)
       {
@@ -441,6 +441,7 @@
     {
       // Assign callers "done event". Important! For DSL calls!
       this.onScanDoneCallback = onScanDoneCallback;
+      this.currentArpScanConfig = this.GetArpScanConfig();
 
       // Initiate ARP scan cancellation
       if (this.IsStopped == false &&
@@ -457,8 +458,9 @@
       else
       {
         LogCons.Inst.Write(LogLevel.Info, "ArpScan: Starting ArpScan");
-        this.cb_SelectAll.Checked = false;
 
+        this.cb_SelectAll.Checked = false;
+        
         // Set Progress bar structure
         this.pb_ArpScan.Maximum = 100;
         this.pb_ArpScan.Minimum = 0;
@@ -490,6 +492,9 @@
       }
 
       // Populate ArpScanConfig object with values
+      var tmpStartIpLong = this.CastIp(startIp);
+      var tmpStopIpLong = this.CastIp(stopIp);
+
       var arpScanConfig = new ArpScanConfig {
                 InterfaceId = this.interfaceId,
                 GatewayIp = this.gatewayIp,
@@ -501,13 +506,31 @@
                 ObserverClass = this,
                 IsDebuggingOn = Debugging.IsDebuggingOn,
                 OnArpScanStopped = this.SetArpScanGuiOnStopped,
-                //OnDataReceived = 
+                NetworkStartIpUint = tmpStartIpLong,
+                NetworkStopIpUint = tmpStopIpLong,
+                StartStopRange = tmpStopIpLong - tmpStartIpLong,
+                StartStopCounter = 0
       };
 
       return arpScanConfig;
     }
 
 
+    private uint CastIp(string ip)
+    {
+      IPAddress address = IPAddress.Parse(ip);
+      byte[] addressBytes = address.GetAddressBytes();
+
+      // This restriction is implicit in your existing code, but
+      // it would currently just lose data...
+      if (addressBytes.Length != 4)
+      {
+        throw new ArgumentException("Must be an IPv4 address");
+      }
+
+      int networkOrder = BitConverter.ToInt32(addressBytes, 0);
+      return (uint)IPAddress.NetworkToHostOrder(networkOrder);
+    }
     #endregion
 
   }

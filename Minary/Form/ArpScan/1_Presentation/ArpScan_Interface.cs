@@ -87,6 +87,7 @@
         return;
       }
 
+      // Set current IP in ARP scan GUI
       if (string.IsNullOrEmpty(currentIp) ||
           Regex.Match(currentIp, @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").Success == false)
       {
@@ -94,6 +95,13 @@
       }
 
       this.tssl_CurrentIpValue.Text = currentIp;
+
+      // Set progres bar
+      this.currentArpScanConfig.StartStopCounter++;
+      float percentage = (float)100/this.currentArpScanConfig.StartStopRange * this.currentArpScanConfig.StartStopCounter;
+      this.pb_ArpScan.Value = Convert.ToInt32(percentage);
+
+
     }
 
     #endregion

@@ -21,7 +21,15 @@
 
     public string NetworkStartIp { get; set; }
 
+    public uint NetworkStartIpUint { get; set; }
+
     public string NetworkStopIp { get; set; }
+
+    public uint NetworkStopIpUint { get; set; }
+
+    public uint StartStopRange { get; set; }
+
+    public uint StartStopCounter { get; set; }
 
     public int MaxNumberSystemsToScan { get; set; }
 
