@@ -95,7 +95,6 @@
 
       // Register observers
       this.arpScanner.AddObserverCurrentIp(this);
-      this.arpScanner.AddObserverArpRequest(this);
       this.arpScanner.AddObserverArpResponse(this);
     }
 

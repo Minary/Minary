@@ -419,8 +419,7 @@
         LocalMac = minaryConfig.LocalMac?.Replace('-', ':'),
         NetworkStartIp = minaryConfig.StartIp,
         NetworkStopIp = minaryConfig.StopIp,
-        MaxNumberSystemsToScan = -1,
-        ObserverClass = this
+        TotalSystemsToScan = 0
       };
 
       return arpScanConfig;

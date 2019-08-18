@@ -27,19 +27,15 @@
 
     public uint NetworkStopIpUint { get; set; }
 
-    public uint StartStopRange { get; set; }
-
     public uint StartStopCounter { get; set; }
 
-    public int MaxNumberSystemsToScan { get; set; }
+    public uint TotalSystemsToScan { get; set; }
 
     public Action OnArpScanStopped { get; set; }
 
     public OnDataCallback OnDataReceived { get; set; }
 
     public bool IsDebuggingOn { get; set; }
-
-    public IObserverArpRequest ObserverClass { get; set; }
     
     #endregion
 

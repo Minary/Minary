@@ -10,7 +10,7 @@
   using System.Xml.Linq;
 
 
-  public class ArpScan : IObservableArpRequest, IObservableArpCurrentIp, IObservableArpResponse
+  public class ArpScan : IObservableArpCurrentIp, IObservableArpResponse
   {
 
     #region MEMBERS
@@ -77,11 +77,11 @@
       startIpInt = IpHelper.IPAddressToInt(startIp);
       stopIpInt = IpHelper.IPAddressToInt(stopIp);
 
-      if (stopIpInt - startIpInt > arpConfig.MaxNumberSystemsToScan && 
-          arpConfig.MaxNumberSystemsToScan > 0)
+      if (stopIpInt - startIpInt > arpConfig.TotalSystemsToScan && 
+          arpConfig.TotalSystemsToScan > 0)
       {
-        int tmpStopIpInt = startIpInt + arpConfig.MaxNumberSystemsToScan;
-        arpConfig.NetworkStopIp = IpHelper.IntToIpString(tmpStopIpInt);
+        uint tmpStopIpInt = (uint)startIpInt + arpConfig.TotalSystemsToScan;
+        arpConfig.NetworkStopIp = IpHelper.UIntToIpString(tmpStopIpInt);
       }
 
       // Assign an Update and OnStop function pointers
@@ -171,21 +171,6 @@
 
     #endregion
 
-
-    #region INTERFACE: IObservableArpRequest
-
-    public void AddObserverArpRequest(IObserverArpRequest observer)
-    {
-      this.observersArpRequest.Add(observer);
-    }
-
-
-    public void NotifyProgressBarArpRequest(int progress)
-    {
-      this.observersArpRequest.ForEach(elem => elem.UpdateProgressbar(progress));
-    }
-
-    #endregion
 
 
     #region INTERFACE: IObservableCurrentIP

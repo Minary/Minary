@@ -25,11 +25,28 @@
     }
 
 
+
+    public static uint CastIp(string ip)
+    {
+      IPAddress address = IPAddress.Parse(ip);
+      byte[] addressBytes = address.GetAddressBytes();
+
+      // This restriction is implicit in your existing code, but
+      // it would currently just lose data...
+      if (addressBytes.Length != 4)
+      {
+        throw new ArgumentException("Must be an IPv4 address");
+      }
+
+      int networkOrder = BitConverter.ToInt32(addressBytes, 0);
+      return (uint)IPAddress.NetworkToHostOrder(networkOrder);
+    }
+
+
+
     public static IPAddress IntToIPAddress(int ipAddressInt)
     {
-      var ipAddress = new IPAddress(ipAddressInt);
-
-      return ipAddress;
+      return new IPAddress(ipAddressInt);
     }
 
 
@@ -40,6 +57,18 @@
 
       return ipAddressString;
     }
+
+
+    public static string UIntToIpString(uint ipAddressInt)
+    {
+      var ipAddress = new System.Net.IPAddress(BitConverter.GetBytes(ipAddressInt));
+      var ipAddressString = ipAddress.ToString();
+
+      return ipAddressString;
+    }
+
+
+
  
 
     /// <summary>

@@ -8,7 +8,7 @@
   using System.Text.RegularExpressions;
 
 
-  public partial class ArpScan : IObserverArpRequest, IObserverArpResponse, IObserverArpCurrentIp
+  public partial class ArpScan : IObserverArpResponse, IObserverArpCurrentIp
   {
 
     #region PROPERTIES
@@ -16,24 +16,6 @@
     public bool IsCancellationPending { get { return this.bgw_ArpScanSender.CancellationPending; } set { this.bgw_ArpScanSender.CancelAsync(); } }
 
     public bool IsStopped { get; set; } = true;
-
-    #endregion
-
-
-    #region INTERFACE: IObserverArpRequest
-
-    public delegate void UpdateProgressBarDelegate(int progress);
-    public void UpdateProgressbar(int progress)
-    {
-      if (this.InvokeRequired)
-      {
-        this.BeginInvoke(new UpdateProgressBarDelegate(this.UpdateProgressbar), new object[] { progress });
-        return;
-      }
-
-      LogCons.Inst.Write(LogLevel.Debug, "UpdateProgressbar: NewProgress={0}", progress);
-      this.pb_ArpScan.PerformStep();
-    }
 
     #endregion
 
@@ -98,7 +80,8 @@
 
       // Set progres bar
       this.currentArpScanConfig.StartStopCounter++;
-      float percentage = (float)100/this.currentArpScanConfig.StartStopRange * this.currentArpScanConfig.StartStopCounter;
+      float percentage = (float)100/this.currentArpScanConfig.TotalSystemsToScan * this.currentArpScanConfig.StartStopCounter;
+// this.pb_ArpScan.PerformStep();
       this.pb_ArpScan.Value = Convert.ToInt32(percentage);
 
 
