@@ -74,6 +74,8 @@
       // Create member objects
       this.arpScanner = new ArpScan();
 
+      // Register observers
+      this.arpScanner.AddObserverArpResponse(this);
     }
 
     #endregion

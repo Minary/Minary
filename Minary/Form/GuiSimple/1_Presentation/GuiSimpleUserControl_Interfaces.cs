@@ -50,6 +50,11 @@
         return;
       }
 
+      if (systemData.Type != "reply")
+      {
+        return;
+      }
+
       lock (this.targetStringList)
       {
         // Add new record line if system does not exist

@@ -31,6 +31,11 @@
         return;
       }
 
+      if (systemData.Type != "reply")
+      {
+        return;
+      }
+
       if (this.targetStringList.Contains(systemData.IpAddress) == true)
       {
         LogCons.Inst.Write(LogLevel.Debug, $"ArpScan.UpdateTextBox(): {systemData.MacAddress}/{systemData.IpAddress} already exists");

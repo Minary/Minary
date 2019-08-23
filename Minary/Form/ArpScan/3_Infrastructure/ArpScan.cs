@@ -1,11 +1,15 @@
 ﻿namespace Minary.Form.ArpScan.Infrastructure
 {
+  using Minary.DataTypes.Enum;
+  using Minary.DataTypes.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using System;
   using System.Diagnostics;
   using System.IO;
+  using System.Linq;
   using System.Text.RegularExpressions;
   using System.Threading;
+  using System.Xml.Linq;
 
 
   public class ArpScan
@@ -136,6 +140,12 @@ private string arpScanProcName = "ArpScan";
     /// <param name="e"></param>
     private void OnDataRecived(object sender, DataReceivedEventArgs e)
     {
+      var type = string.Empty;
+      var ipAddress = string.Empty;
+      var macAddress = string.Empty;
+      var vendor = string.Empty;
+      var note = string.Empty;
+
       if (string.IsNullOrEmpty(e.Data))
       {
         return;
@@ -148,12 +158,63 @@ private string arpScanProcName = "ArpScan";
       else if (e.Data == "</arp>")
       {
         this.data += e.Data.Trim();
-        if (Regex.Match(this.data, @"(<arp>.*?</arp>)", RegexOptions.IgnoreCase).Success)
+        if (Regex.Match(this.data, @"(<arp>.*?</arp>)", RegexOptions.IgnoreCase).Success == false)
         {
-          this.arpScanConf.OnDataReceived(this.data);
           this.data = string.Empty;
+          return;
         }
+        
+        try
+        {
+          var systemData = this.ParseSystemDataFromXml(this.data);
+
+          if (systemData.Type == "request")
+          {
+            this.arpScanConf.OnRequestSent(systemData.IpAddress);
+          }
+          else if (systemData.Type == "reply")
+          {
+            this.arpScanConf.OnReplyDataReceived(systemData);
+          }
+        }
+        catch
+        {
+        }
+
+        this.data = string.Empty;
       }
+    }
+
+
+    private SystemFound ParseSystemDataFromXml(string data)
+    {
+        // Extract newly detected system
+        XDocument xmlContent = XDocument.Parse(data);
+        var packetEntries = from service in xmlContent.Descendants("arp")
+                            select new
+                            {
+                              Type = service.Element("type").Value,
+                              IpAddress = service.Element("ip").Value,
+                              MacAddress = service.Element("mac").Value
+                            };
+
+        if (packetEntries == null)
+        {
+          throw new Exception("Could not parse data from XML structure.");
+        }
+        else if (packetEntries.Count() <= 0)
+        {
+          throw new Exception("Could not create an object from the XML structure");
+        }
+        else if(packetEntries.Count() > 1)
+        {
+          throw new Exception("More than one object was generated from the XML structure");
+        }
+
+        var tmpType = packetEntries.First();
+        var newSystem = new SystemFound(tmpType.MacAddress, tmpType.IpAddress, tmpType.Type.ToLower().Trim());
+
+        return newSystem;
     }
 
     #endregion

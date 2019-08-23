@@ -4,7 +4,10 @@
   using System;
 
 
-  public delegate void OnDataCallback(string data);
+  public delegate void OnReplyDataCallback(SystemFound newSystem);
+
+  public delegate void OnRequestSentCallback(string requestData);
+
 
   public class ArpScanConfig
   {
@@ -33,7 +36,10 @@
 
     public Action OnArpScanStopped { get; set; }
 
-    public OnDataCallback OnDataReceived { get; set; }
+
+    public OnReplyDataCallback OnReplyDataReceived { get; set; }
+
+    public OnRequestSentCallback OnRequestSent { get; set; }
 
     public bool IsDebuggingOn { get; set; }
     

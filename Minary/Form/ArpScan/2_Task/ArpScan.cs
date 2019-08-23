@@ -1,13 +1,10 @@
 ﻿namespace Minary.Form.ArpScan.Task
 {
   using Minary.DataTypes.ArpScan;
-  using Minary.DataTypes.Enum;
   using Minary.Form.ArpScan.DataTypes;
   using System;
   using System.Collections.Generic;
-  using System.Linq;
   using System.Net;
-  using System.Xml.Linq;
 
 
   public class ArpScan : IObservableArpCurrentIp, IObservableArpResponse
@@ -84,9 +81,10 @@
         arpConfig.NetworkStopIp = IpHelper.UIntToIpString(tmpStopIpInt);
       }
 
-      // Assign an Update and OnStop function pointers
-      //arpConfig.OnArpScanStopped = OnArpScanStopped;
-      arpConfig.OnDataReceived = OnArpScanData;
+// Assign an Update and OnStop function pointers
+//arpConfig.OnArpScanStopped = OnArpScanStopped;
+      arpConfig.OnReplyDataReceived = this.NotifyArpResponseNewRecord;
+      arpConfig.OnRequestSent = this.NotifyProgressCurrentIp;
 
       this.infrastructure.StartArpScan(arpConfig);
     }
@@ -94,63 +92,6 @@
     #endregion
 
 
-    #region PRIVATE ARP scan events
-
-    private delegate void OnArpScanStoppedDelegate();
-    private void OnArpScanStopped()
-    {
-    }
-    
-
-    private delegate void OnArpScanDataDelegate(string data);
-    private void OnArpScanData(string data)
-    {
-      var type = string.Empty;
-      var ipAddress = string.Empty;
-      var macAddress = string.Empty;
-      var vendor = string.Empty;
-      var note = string.Empty;
-
-      try
-      {
-        // Extract newly detected system
-        XDocument xmlContent = XDocument.Parse(data);
-        var packetEntries = from service in xmlContent.Descendants("arp")
-                            select new
-                            {
-                              Type = service.Element("type").Value,
-                              IpAddress = service.Element("ip").Value,
-                              MacAddress = service.Element("mac").Value
-                            };
-
-        if (packetEntries == null)
-        {
-          return;
-        }
-
-        // Send all newly found systems to all observers
-        foreach (var tmpSystem in packetEntries)
-        {
-          var tmpType = tmpSystem.Type.ToLower().Trim();
-          var newSystem = new SystemFound(tmpSystem.MacAddress, tmpSystem.IpAddress, tmpSystem.Type);
-
-          if (tmpType == "reply")
-          {
-            this.NotifyArpResponseNewRecord(newSystem);
-          }
-          else if (tmpType == "request")
-          {
-            this.NotifyProgressCurrentIp(newSystem.IpAddress);
-          }
-        }
-      }
-      catch (Exception ex)
-      {
-        LogConsole.Main.LogCons.Inst.Write(LogLevel.Error, ex.StackTrace);
-      }
-    }
-
-    #endregion
 
 
     #region INTERFACE: IObservableArpNewRecord
