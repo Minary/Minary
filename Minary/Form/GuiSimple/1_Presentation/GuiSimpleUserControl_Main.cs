@@ -1,6 +1,5 @@
 ﻿namespace Minary.Form.GuiSimple.Presentation
 {
-  using Minary.Domain.ArpScan;
   using Minary.Domain.MacVendor;
   using Minary.DataTypes.ArpScan;
   using Minary.Form.ArpScan.Task;
@@ -18,7 +17,6 @@
     protected BindingList<SystemFoundSimple> targetStringList = new BindingList<SystemFoundSimple>();
     private MacVendorHandler macVendorHandler = new MacVendorHandler();
     private ArpScan arpScanner = null;
-    public ReplyListener replyListener = null;
 
     #endregion
 
@@ -75,10 +73,7 @@
 
       // Create member objects
       this.arpScanner = new ArpScan();
-      this.replyListener = new ReplyListener();
 
-      // Register observers
-      this.replyListener.AddObserverArpResponse(this);
     }
 
     #endregion

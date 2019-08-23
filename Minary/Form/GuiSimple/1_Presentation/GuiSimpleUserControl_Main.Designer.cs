@@ -31,7 +31,6 @@
       this.components = new System.ComponentModel.Container();
       this.dgv_GuiSimple = new System.Windows.Forms.DataGridView();
       this.bgw_ArpScanSender = new System.ComponentModel.BackgroundWorker();
-      this.bgw_ArpScanListener = new System.ComponentModel.BackgroundWorker();
       this.bgw_RemoveInactiveSystems = new System.ComponentModel.BackgroundWorker();
       this.cms_TargetActions = new System.Windows.Forms.ContextMenuStrip(this.components);
       this.openInMiniBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,12 +67,6 @@
       this.bgw_ArpScanSender.WorkerSupportsCancellation = true;
       this.bgw_ArpScanSender.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanSender_DoWork);
       this.bgw_ArpScanSender.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanSender_RunWorkerCompleted);
-      // 
-      // bgw_ArpScanListener
-      // 
-      this.bgw_ArpScanListener.WorkerSupportsCancellation = true;
-      this.bgw_ArpScanListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BGW_ArpScanListener_DoWork);
-      this.bgw_ArpScanListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BGW_ArpScanListener_RunWorkerCompleted);
       // 
       // bgw_RemoveInactiveSystems
       // 
@@ -114,7 +107,6 @@
 
     private System.Windows.Forms.DataGridView dgv_GuiSimple;
     private System.ComponentModel.BackgroundWorker bgw_ArpScanSender;
-    private System.ComponentModel.BackgroundWorker bgw_ArpScanListener;
     private System.ComponentModel.BackgroundWorker bgw_RemoveInactiveSystems;
     private System.Windows.Forms.ContextMenuStrip cms_TargetActions;
     private System.Windows.Forms.ToolStripMenuItem openInMiniBrowserToolStripMenuItem;

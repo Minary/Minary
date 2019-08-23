@@ -2,14 +2,12 @@
 {
   using Minary.MiniBrowser;
   using Minary.DataTypes.Enum;
-  using Minary.Domain.ArpScan;
   using Minary.Form.ArpScan.DataTypes;
   using Minary.LogConsole.Main;
   using MinaryLib.AttackService.Class;
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
-  using System.Linq;
   using System.Windows.Forms;
 
 
@@ -104,7 +102,6 @@
           this.Disposing == true)
       {
         this.bgw_ArpScanSender.CancelAsync();
-        this.bgw_ArpScanListener.CancelAsync();
         this.bgw_RemoveInactiveSystems.CancelAsync();
         this.minaryObj?.MinaryAttackServiceHandler?.StopAllServices();
         LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/GuiSimpleUserControl_VisibleChanged: GuiSimple/ARPScan/AttackServices  stopped");
@@ -113,7 +110,6 @@
       }
 
       this.targetStringList.Clear();
-      this.StartArpScanListener();
       this.StartArpScanSender();
       this.StartRemoveInactiveSystems();
 
@@ -271,36 +267,6 @@
     #endregion
 
 
-    #region EVENTS: BGW_ArpScanListener
-
-    private void BGW_ArpScanListener_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      if (e.Error != null)
-      {
-        LogCons.Inst.Write(LogLevel.Error, "GuiSimpleUserControl/BGW_ArpScanListener(): Completed with error");
-      }
-      else if (e.Cancelled == true)
-      {
-        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Completed by cancellation");
-      }
-      else
-      {
-        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Completed successfully");
-      }
-    }
-
-
-    private void BGW_ArpScanListener_DoWork(object sender, DoWorkEventArgs e)
-    {
-      LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Background worker started");
-
-
-      LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/BGW_ArpScanListener(): Background worker stopped");
-    }
-
-    #endregion
-
-
     #region EVENTS: BGW_RemoveInactiveSystems
 
     private void BGW_RemoveInactiveSystems_DoWork(object sender, DoWorkEventArgs e)
@@ -347,21 +313,6 @@
 
 
     #region PRIVATE
-
-    private void StartArpScanListener(Action onScanDoneCallback = null)
-    {
-      // Initiate ARP scan cancellation
-      if (this.bgw_ArpScanListener.IsBusy == true)
-      {
-        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: ArpScanListener is already running");
-      }
-      else
-      {
-        LogCons.Inst.Write(LogLevel.Info, "GuiSimpleUserControl/ArpScan: ArpScanListener started");
-        this.bgw_ArpScanListener.RunWorkerAsync();
-      }
-    }
-
 
     private void StartArpScanSender(Action onScanDoneCallback = null)
     {
