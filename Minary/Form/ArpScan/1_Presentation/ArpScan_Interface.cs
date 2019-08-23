@@ -81,8 +81,15 @@
       // Set progres bar
       this.currentArpScanConfig.StartStopCounter++;
       float percentage = (float)100/this.currentArpScanConfig.TotalSystemsToScan * this.currentArpScanConfig.StartStopCounter;
-// this.pb_ArpScan.PerformStep();
-      this.pb_ArpScan.Value = Convert.ToInt32(percentage);
+      // this.pb_ArpScan.PerformStep();
+      var newPercentage = Convert.ToInt32(percentage);
+      if (newPercentage > 100)
+      {
+          LogCons.Inst.Write(LogLevel.Debug, $"UpdateCurrentIp(): New percentage value is above 100: {newPercentage}");
+          newPercentage = 100;
+        }
+
+      this.pb_ArpScan.Value = newPercentage;
 
 
     }
