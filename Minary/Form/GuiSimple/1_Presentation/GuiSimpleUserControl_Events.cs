@@ -360,6 +360,8 @@
     private ArpScanConfig GetArpScanConfig()
     {
       DataTypes.Struct.MinaryConfig minaryConfig = this.minaryObj.MinaryTaskFacade.CurrentMinaryConfig;
+      var tmpStartIpLong = IpHelper.CastIp(minaryConfig.StartIp);
+      var tmpStopIpLong = IpHelper.CastIp(minaryConfig.StopIp);
 
       // Populate ArpScanConfig object with values
       var arpScanConfig = new ArpScanConfig()
@@ -368,9 +370,15 @@
         GatewayIp = minaryConfig.GatewayIp,
         LocalIp = minaryConfig.LocalIp,
         LocalMac = minaryConfig.LocalMac?.Replace('-', ':'),
+        NetworkStartIpUint = tmpStartIpLong,
+        NetworkStopIpUint = tmpStopIpLong,
         NetworkStartIp = minaryConfig.StartIp,
         NetworkStopIp = minaryConfig.StopIp,
-        TotalSystemsToScan = 0
+        TotalSystemsToScan = tmpStopIpLong - tmpStartIpLong,
+        IsDebuggingOn = Minary.Common.Debugging.IsDebuggingOn,
+//        OnArpScanStopped = this.SetArpScanGuiOnStopped,
+//        OnDataReceived
+//        StartStopCounter = 0
       };
 
       return arpScanConfig;
