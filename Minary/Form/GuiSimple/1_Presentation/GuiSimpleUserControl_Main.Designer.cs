@@ -53,6 +53,7 @@
       this.dgv_GuiSimple.Margin = new System.Windows.Forms.Padding(10);
       this.dgv_GuiSimple.Name = "dgv_GuiSimple";
       this.dgv_GuiSimple.RowHeadersVisible = false;
+      this.dgv_GuiSimple.RowHeadersWidth = 62;
       this.dgv_GuiSimple.RowTemplate.Height = 28;
       this.dgv_GuiSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.dgv_GuiSimple.Size = new System.Drawing.Size(1343, 761);
@@ -80,12 +81,12 @@
       this.cms_TargetActions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openInMiniBrowserToolStripMenuItem});
       this.cms_TargetActions.Name = "cms_TargetActions";
-      this.cms_TargetActions.Size = new System.Drawing.Size(256, 67);
+      this.cms_TargetActions.Size = new System.Drawing.Size(256, 36);
       // 
       // openInMiniBrowserToolStripMenuItem
       // 
       this.openInMiniBrowserToolStripMenuItem.Name = "openInMiniBrowserToolStripMenuItem";
-      this.openInMiniBrowserToolStripMenuItem.Size = new System.Drawing.Size(255, 30);
+      this.openInMiniBrowserToolStripMenuItem.Size = new System.Drawing.Size(255, 32);
       this.openInMiniBrowserToolStripMenuItem.Text = "Open in Mini browser";
       this.openInMiniBrowserToolStripMenuItem.Click += new System.EventHandler(this.TSMI_OpenInMiniBrowser_Click);
       // 

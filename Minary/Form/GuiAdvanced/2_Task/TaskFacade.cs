@@ -127,7 +127,8 @@
       {
         return new MinaryConfig()
         {
-          InterfaceId = this.minaryMain.GetCurrentInterface(),
+//          InterfaceId = this.minaryMain.GetCurrentInterface(),
+          InterfaceId = this.minaryMain.CurrentInterfaceId,
           StartIp = this.minaryMain.NetworkStartIp,
           StopIp = this.minaryMain.NetworkStopIp,
           GatewayIp = this.minaryMain.CurrentGatewayIp,
