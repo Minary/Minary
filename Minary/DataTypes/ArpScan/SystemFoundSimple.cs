@@ -9,9 +9,9 @@
 
     #region MEMBERS
 
-    public string macAddress = string.Empty;
-    public string ipAddress = string.Empty;
-    public DateTime lastSeen = DateTime.Now;
+    private string macAddress = string.Empty;
+    private string ipAddress = string.Empty;
+    private DateTime lastSeen = DateTime.Now;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
