@@ -12,6 +12,7 @@
     private string macAddress = string.Empty;
     private string ipAddress = string.Empty;
     private DateTime lastSeen = DateTime.Now;
+    private string lastSeenSpan = string.Empty;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -49,6 +50,17 @@
       {
         this.lastSeen = value;
         this.NotifyPropertyChanged("LastSeen");
+      }
+    }
+
+
+    public string LastSeenSpan
+    {
+      get { return this.lastSeenSpan; }
+      set
+      {
+        this.lastSeenSpan = value;
+        this.NotifyPropertyChanged("LastSeenSpan");
       }
     }
 

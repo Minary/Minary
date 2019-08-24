@@ -60,13 +60,24 @@
       var columnLastSeen = new DataGridViewTextBoxColumn();
       columnLastSeen.DataPropertyName = "LastSeen";
       columnLastSeen.Name = "LastSeen";
-      columnLastSeen.HeaderText = "Last seen";
+      columnLastSeen.HeaderText = "Last seen time";
       columnLastSeen.Visible = true;
       columnLastSeen.ReadOnly = true;
-      columnLastSeen.Width = 100;
-      columnLastSeen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+      columnLastSeen.Width = 300;
       columnLastSeen.DefaultCellStyle.Format = "yyyy.MM.dd HH:mm:ss";
       this.dgv_GuiSimple.Columns.Add(columnLastSeen);
+
+      var columnLastSeenSpan = new DataGridViewTextBoxColumn();
+      columnLastSeenSpan.DataPropertyName = "LastSeenSpan";
+      columnLastSeenSpan.Name = "LastSeenSpan";
+      columnLastSeenSpan.HeaderText = "Last seen since (hours:minutes:seconds)";
+      columnLastSeenSpan.Visible = true;
+      columnLastSeenSpan.ReadOnly = true;
+      columnLastSeenSpan.Width = 30;
+      columnLastSeenSpan.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+      this.dgv_GuiSimple.Columns.Add(columnLastSeenSpan);
+
+
 
       // Initialize DGV data source list
       this.dgv_GuiSimple.DataSource = this.targetStringList;

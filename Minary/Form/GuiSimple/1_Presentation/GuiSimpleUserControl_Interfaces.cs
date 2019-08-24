@@ -85,7 +85,17 @@
         var rec = this.targetStringList.Where(elem => elem.MacAddress == systemData.MacAddress).FirstOrDefault();
         if (rec != null)
         {
-          rec.LastSeen = DateTime.Now;
+          var now = DateTime.Now;
+          TimeSpan span = now.Subtract(rec.LastSeen);
+          rec.LastSeen = now;
+          try
+          {
+            rec.LastSeenSpan = span.ToString(@"hh\:mm\:ss");
+          }
+          catch (Exception ex)
+          {
+            var la = ex.Message;
+          }
         }
       }
     }
