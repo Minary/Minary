@@ -74,8 +74,15 @@
     /// 
     /// </summary>
     /// <param name="appTitle"></param>
+    public delegate void SetAppTitleDelegate(string appTitle);
     public void SetAppTitle(string appTitle)
     {
+      if (this.InvokeRequired == true)
+      {
+        this.BeginInvoke(new SetAppTitleDelegate(this.SetAppTitle), new object[] { appTitle });
+        return;
+      }
+
       if (appTitle.Length > 0)
       {
         this.Text = $"{Config.ApplicationName}  {Config.MinaryVersion:0.0} ({appTitle})";
