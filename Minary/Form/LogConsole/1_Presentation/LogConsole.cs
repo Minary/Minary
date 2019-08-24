@@ -17,6 +17,7 @@
     private Task.LogConsole logConsoleTask;
     private LogLevel currentLevel;
     private ToolStripMenuItem currentLevelObject;
+    private const string TITLE_BASIS = "Minary Log";
 
     #endregion
 
@@ -129,6 +130,7 @@
       e.Cancel = true;
     }
 
+
     /// <summary>
     /// Hide Sessions GUI on Escape.
     /// </summary>
@@ -141,15 +143,6 @@
         this.Hide();
         return false;
       }
-      else if (keyData == (Keys.Control | Keys.R))
-      {
-        lock (this)
-        {
-          instance.tb_LogContent.Clear();
-        }
-
-        return false;
-      }
       else
       {
         return base.ProcessDialogKey(keyData);
@@ -157,7 +150,7 @@
     }
 
 
-    private void LoglevelToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_Loglevel_Click(object sender, EventArgs e)
     {
       var clickedItem = sender as ToolStripMenuItem;
       if (clickedItem != null)
@@ -191,7 +184,7 @@
     }
 
 
-    private void ClearLogToolStripMenuItem_Click(object sender, EventArgs e)
+    private void TSMI_ClearLog_Click(object sender, EventArgs e)
     {
       lock (this)
       {
@@ -199,11 +192,41 @@
       }
     }
 
+
+    private void TSMI_Close_Click(object sender, EventArgs e)
+    {
+      this.Hide();
+    }
+
+
+    private void TSMI_LogLevel_Debug_Click(object sender, EventArgs e)
+    {
+      SetLogLevel(LogLevel.Debug);
+    }
+
+
+    private void TSMI_LogLevel_Info_Click(object sender, EventArgs e)
+    {
+      SetLogLevel(LogLevel.Info);
+    }
+
+
+    private void TSMI_LogLevel_Warning_Click(object sender, EventArgs e)
+    {
+      SetLogLevel(LogLevel.Warning);
+    }
+
+
+    private void TSMI_LogLevel_Error_Click(object sender, EventArgs e)
+    {
+      SetLogLevel(LogLevel.Error);
+    }
+
     #endregion
 
 
     #region PRIVATE
-
+       
     private LogCons()
     {
       this.InitializeComponent();
@@ -217,6 +240,43 @@
       // The parent (Main GUI) must not have any visual/behavioral
       // influence on the log console
       this.Owner = null;
+
+      // Get last loglevel 
+      string tmpLevel = Common.WinRegistry.GetValue($@"Logging", "Level");
+      tmpLevel = string.IsNullOrEmpty(tmpLevel) == false ? tmpLevel : "info";
+
+      switch (tmpLevel.Trim().ToLower())
+      {
+        case "debug":
+          this.SetLogLevel(LogLevel.Debug);
+          break;
+
+        case "info":
+          this.SetLogLevel(LogLevel.Info);
+          break;
+
+        case "warning":
+          this.SetLogLevel(LogLevel.Warning);
+          break;
+
+        case "error":
+          this.SetLogLevel(LogLevel.Error);
+          break;
+
+        default:
+          this.SetLogLevel(LogLevel.Info);
+          break;
+      }
+
+      this.Text = $"{TITLE_BASIS}:   Level {this.currentLevel.ToString()}";
+    }
+
+
+    private void SetLogLevel(LogLevel logLevel)
+    {
+      this.currentLevel = logLevel;
+      Common.WinRegistry.CreateOrUpdateValue($@"Software\{Minary.Config.ApplicationName}\Logging", "Level", this.currentLevel.ToString());
+      this.Text = $"{TITLE_BASIS}:   Level {this.currentLevel.ToString()}";
     }
 
     #endregion

@@ -77,8 +77,6 @@
       columnLastSeenSpan.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
       this.dgv_GuiSimple.Columns.Add(columnLastSeenSpan);
 
-
-
       // Initialize DGV data source list
       this.dgv_GuiSimple.DataSource = this.targetStringList;
 
