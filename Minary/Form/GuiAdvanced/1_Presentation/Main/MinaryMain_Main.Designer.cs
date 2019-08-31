@@ -76,9 +76,10 @@
       this.tsmi_ResetMinary = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Settings = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Beep = new System.Windows.Forms.ToolStripMenuItem();
-      this.tsmi_Debugging = new System.Windows.Forms.ToolStripMenuItem();
+      this.TSMI_Debugging = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_GuiSimple = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Attack = new System.Windows.Forms.ToolStripMenuItem();
+      this.TSMI_Verbose = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_Template = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_LoadTemplate = new System.Windows.Forms.ToolStripMenuItem();
       this.tsmi_CreateTemplate = new System.Windows.Forms.ToolStripMenuItem();
@@ -113,22 +114,19 @@
       this.gb_Interfaces.Controls.Add(this.lab_Interface);
       this.gb_Interfaces.Controls.Add(this.lab_StartIP);
       this.gb_Interfaces.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.gb_Interfaces.Location = new System.Drawing.Point(593, 35);
-      this.gb_Interfaces.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.gb_Interfaces.Location = new System.Drawing.Point(395, 23);
       this.gb_Interfaces.Name = "gb_Interfaces";
-      this.gb_Interfaces.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.gb_Interfaces.Size = new System.Drawing.Size(600, 162);
+      this.gb_Interfaces.Size = new System.Drawing.Size(400, 105);
       this.gb_Interfaces.TabIndex = 2;
       this.gb_Interfaces.TabStop = false;
       // 
       // tb_TemplateName
       // 
       this.tb_TemplateName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.tb_TemplateName.Location = new System.Drawing.Point(150, 111);
-      this.tb_TemplateName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tb_TemplateName.Location = new System.Drawing.Point(100, 72);
       this.tb_TemplateName.Name = "tb_TemplateName";
       this.tb_TemplateName.ReadOnly = true;
-      this.tb_TemplateName.Size = new System.Drawing.Size(415, 26);
+      this.tb_TemplateName.Size = new System.Drawing.Size(278, 26);
       this.tb_TemplateName.TabIndex = 10;
       this.tb_TemplateName.TabStop = false;
       // 
@@ -136,8 +134,7 @@
       // 
       this.l_Template.AutoSize = true;
       this.l_Template.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_Template.Location = new System.Drawing.Point(14, 115);
-      this.l_Template.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.l_Template.Location = new System.Drawing.Point(9, 75);
       this.l_Template.Name = "l_Template";
       this.l_Template.Size = new System.Drawing.Size(86, 20);
       this.l_Template.TabIndex = 11;
@@ -147,8 +144,7 @@
       // 
       this.l_NetrangeSeparator.AutoSize = true;
       this.l_NetrangeSeparator.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_NetrangeSeparator.Location = new System.Drawing.Point(352, 75);
-      this.l_NetrangeSeparator.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.l_NetrangeSeparator.Location = new System.Drawing.Point(235, 49);
       this.l_NetrangeSeparator.Name = "l_NetrangeSeparator";
       this.l_NetrangeSeparator.Size = new System.Drawing.Size(15, 20);
       this.l_NetrangeSeparator.TabIndex = 9;
@@ -160,32 +156,29 @@
       this.cb_Interfaces.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
       this.cb_Interfaces.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.cb_Interfaces.FormattingEnabled = true;
-      this.cb_Interfaces.Location = new System.Drawing.Point(147, 26);
-      this.cb_Interfaces.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.cb_Interfaces.Location = new System.Drawing.Point(98, 17);
       this.cb_Interfaces.Name = "cb_Interfaces";
-      this.cb_Interfaces.Size = new System.Drawing.Size(418, 28);
+      this.cb_Interfaces.Size = new System.Drawing.Size(280, 28);
       this.cb_Interfaces.TabIndex = 3;
       this.cb_Interfaces.SelectedIndexChanged += new System.EventHandler(this.CB_Interfaces_SelectedIndexChanged);
       // 
       // tb_NetworkStopIp
       // 
       this.tb_NetworkStopIp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.tb_NetworkStopIp.Location = new System.Drawing.Point(376, 69);
-      this.tb_NetworkStopIp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tb_NetworkStopIp.Location = new System.Drawing.Point(251, 45);
       this.tb_NetworkStopIp.Name = "tb_NetworkStopIp";
       this.tb_NetworkStopIp.ReadOnly = true;
-      this.tb_NetworkStopIp.Size = new System.Drawing.Size(188, 26);
+      this.tb_NetworkStopIp.Size = new System.Drawing.Size(127, 26);
       this.tb_NetworkStopIp.TabIndex = 0;
       this.tb_NetworkStopIp.TabStop = false;
       // 
       // tb_NetworkStartIp
       // 
       this.tb_NetworkStartIp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.tb_NetworkStartIp.Location = new System.Drawing.Point(150, 69);
-      this.tb_NetworkStartIp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tb_NetworkStartIp.Location = new System.Drawing.Point(100, 45);
       this.tb_NetworkStartIp.Name = "tb_NetworkStartIp";
       this.tb_NetworkStartIp.ReadOnly = true;
-      this.tb_NetworkStartIp.Size = new System.Drawing.Size(192, 26);
+      this.tb_NetworkStartIp.Size = new System.Drawing.Size(129, 26);
       this.tb_NetworkStartIp.TabIndex = 0;
       this.tb_NetworkStartIp.TabStop = false;
       // 
@@ -193,8 +186,7 @@
       // 
       this.lab_Interface.AutoSize = true;
       this.lab_Interface.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lab_Interface.Location = new System.Drawing.Point(14, 31);
-      this.lab_Interface.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.lab_Interface.Location = new System.Drawing.Point(9, 20);
       this.lab_Interface.Name = "lab_Interface";
       this.lab_Interface.Size = new System.Drawing.Size(83, 20);
       this.lab_Interface.TabIndex = 0;
@@ -204,8 +196,7 @@
       // 
       this.lab_StartIP.AutoSize = true;
       this.lab_StartIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lab_StartIP.Location = new System.Drawing.Point(14, 74);
-      this.lab_StartIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.lab_StartIP.Location = new System.Drawing.Point(9, 48);
       this.lab_StartIP.Name = "lab_StartIP";
       this.lab_StartIP.Size = new System.Drawing.Size(91, 20);
       this.lab_StartIP.TabIndex = 0;
@@ -217,10 +208,10 @@
       this.bt_Attack.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bt_Attack.BackgroundImage")));
       this.bt_Attack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_Attack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_Attack.Location = new System.Drawing.Point(1418, 44);
+      this.bt_Attack.Location = new System.Drawing.Point(945, 29);
       this.bt_Attack.Margin = new System.Windows.Forms.Padding(0);
       this.bt_Attack.Name = "bt_Attack";
-      this.bt_Attack.Size = new System.Drawing.Size(184, 151);
+      this.bt_Attack.Size = new System.Drawing.Size(123, 98);
       this.bt_Attack.TabIndex = 6;
       this.bt_Attack.UseVisualStyleBackColor = true;
       this.bt_Attack.Click += new System.EventHandler(this.BT_Attack_Click);
@@ -231,10 +222,10 @@
       this.bt_ScanLan.BackgroundImage = global::Minary.Properties.Resources.FA_Scan;
       this.bt_ScanLan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.bt_ScanLan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-      this.bt_ScanLan.Location = new System.Drawing.Point(1213, 44);
+      this.bt_ScanLan.Location = new System.Drawing.Point(809, 29);
       this.bt_ScanLan.Margin = new System.Windows.Forms.Padding(0);
       this.bt_ScanLan.Name = "bt_ScanLan";
-      this.bt_ScanLan.Size = new System.Drawing.Size(184, 151);
+      this.bt_ScanLan.Size = new System.Drawing.Size(123, 98);
       this.bt_ScanLan.TabIndex = 5;
       this.bt_ScanLan.UseVisualStyleBackColor = true;
       this.bt_ScanLan.Click += new System.EventHandler(this.BT_ScanLan_Click);
@@ -249,21 +240,18 @@
       this.gb_TargetRange.Controls.Add(this.l_GatewayIP);
       this.gb_TargetRange.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
       this.gb_TargetRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.gb_TargetRange.Location = new System.Drawing.Point(18, 35);
-      this.gb_TargetRange.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.gb_TargetRange.Location = new System.Drawing.Point(12, 23);
       this.gb_TargetRange.Name = "gb_TargetRange";
-      this.gb_TargetRange.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.gb_TargetRange.Size = new System.Drawing.Size(549, 162);
+      this.gb_TargetRange.Size = new System.Drawing.Size(366, 105);
       this.gb_TargetRange.TabIndex = 1;
       this.gb_TargetRange.TabStop = false;
       // 
       // tb_GatewayMac
       // 
-      this.tb_GatewayMac.Location = new System.Drawing.Point(164, 69);
-      this.tb_GatewayMac.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tb_GatewayMac.Location = new System.Drawing.Point(109, 45);
       this.tb_GatewayMac.Name = "tb_GatewayMac";
       this.tb_GatewayMac.ReadOnly = true;
-      this.tb_GatewayMac.Size = new System.Drawing.Size(358, 26);
+      this.tb_GatewayMac.Size = new System.Drawing.Size(240, 26);
       this.tb_GatewayMac.TabIndex = 13;
       this.tb_GatewayMac.TabStop = false;
       // 
@@ -271,8 +259,7 @@
       // 
       this.l_GatewayMAC.AutoSize = true;
       this.l_GatewayMAC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_GatewayMAC.Location = new System.Drawing.Point(21, 74);
-      this.l_GatewayMAC.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.l_GatewayMAC.Location = new System.Drawing.Point(14, 48);
       this.l_GatewayMAC.Name = "l_GatewayMAC";
       this.l_GatewayMAC.Size = new System.Drawing.Size(127, 20);
       this.l_GatewayMAC.TabIndex = 12;
@@ -280,11 +267,10 @@
       // 
       // tb_Vendor
       // 
-      this.tb_Vendor.Location = new System.Drawing.Point(164, 111);
-      this.tb_Vendor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tb_Vendor.Location = new System.Drawing.Point(109, 72);
       this.tb_Vendor.Name = "tb_Vendor";
       this.tb_Vendor.ReadOnly = true;
-      this.tb_Vendor.Size = new System.Drawing.Size(358, 26);
+      this.tb_Vendor.Size = new System.Drawing.Size(240, 26);
       this.tb_Vendor.TabIndex = 11;
       this.tb_Vendor.TabStop = false;
       // 
@@ -292,8 +278,7 @@
       // 
       this.l_VendorTitle.AutoSize = true;
       this.l_VendorTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_VendorTitle.Location = new System.Drawing.Point(21, 115);
-      this.l_VendorTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.l_VendorTitle.Location = new System.Drawing.Point(14, 75);
       this.l_VendorTitle.Name = "l_VendorTitle";
       this.l_VendorTitle.Size = new System.Drawing.Size(68, 20);
       this.l_VendorTitle.TabIndex = 10;
@@ -301,11 +286,10 @@
       // 
       // tb_GatewayIp
       // 
-      this.tb_GatewayIp.Location = new System.Drawing.Point(164, 28);
-      this.tb_GatewayIp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tb_GatewayIp.Location = new System.Drawing.Point(109, 18);
       this.tb_GatewayIp.Name = "tb_GatewayIp";
       this.tb_GatewayIp.ReadOnly = true;
-      this.tb_GatewayIp.Size = new System.Drawing.Size(358, 26);
+      this.tb_GatewayIp.Size = new System.Drawing.Size(240, 26);
       this.tb_GatewayIp.TabIndex = 0;
       this.tb_GatewayIp.TabStop = false;
       // 
@@ -313,8 +297,7 @@
       // 
       this.l_GatewayIP.AutoSize = true;
       this.l_GatewayIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.l_GatewayIP.Location = new System.Drawing.Point(21, 31);
-      this.l_GatewayIP.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      this.l_GatewayIP.Location = new System.Drawing.Point(14, 20);
       this.l_GatewayIP.Name = "l_GatewayIP";
       this.l_GatewayIP.Size = new System.Drawing.Size(104, 20);
       this.l_GatewayIP.TabIndex = 0;
@@ -329,12 +312,11 @@
       this.tc_Plugins.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.tc_Plugins.ImageList = this.il_PluginStat;
       this.tc_Plugins.ItemSize = new System.Drawing.Size(79, 23);
-      this.tc_Plugins.Location = new System.Drawing.Point(18, 218);
-      this.tc_Plugins.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.tc_Plugins.Location = new System.Drawing.Point(12, 142);
       this.tc_Plugins.Multiline = true;
       this.tc_Plugins.Name = "tc_Plugins";
       this.tc_Plugins.SelectedIndex = 0;
-      this.tc_Plugins.Size = new System.Drawing.Size(1584, 640);
+      this.tc_Plugins.Size = new System.Drawing.Size(1056, 416);
       this.tc_Plugins.TabIndex = 7;
       // 
       // tp_MinaryPluginCatalog
@@ -343,10 +325,9 @@
       this.tp_MinaryPluginCatalog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
       this.tp_MinaryPluginCatalog.Controls.Add(this.dgv_MainPlugins);
       this.tp_MinaryPluginCatalog.Location = new System.Drawing.Point(4, 27);
-      this.tp_MinaryPluginCatalog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.tp_MinaryPluginCatalog.Name = "tp_MinaryPluginCatalog";
-      this.tp_MinaryPluginCatalog.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.tp_MinaryPluginCatalog.Size = new System.Drawing.Size(1576, 609);
+      this.tp_MinaryPluginCatalog.Padding = new System.Windows.Forms.Padding(3);
+      this.tp_MinaryPluginCatalog.Size = new System.Drawing.Size(1048, 385);
       this.tp_MinaryPluginCatalog.TabIndex = 0;
       this.tp_MinaryPluginCatalog.Text = "Minary";
       // 
@@ -384,8 +365,7 @@
       this.dgv_MainPlugins.DefaultCellStyle = dataGridViewCellStyle2;
       this.dgv_MainPlugins.EnableHeadersVisualStyles = false;
       this.dgv_MainPlugins.GridColor = System.Drawing.Color.White;
-      this.dgv_MainPlugins.Location = new System.Drawing.Point(69, 31);
-      this.dgv_MainPlugins.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.dgv_MainPlugins.Location = new System.Drawing.Point(46, 20);
       this.dgv_MainPlugins.MultiSelect = false;
       this.dgv_MainPlugins.Name = "dgv_MainPlugins";
       this.dgv_MainPlugins.ReadOnly = true;
@@ -398,6 +378,7 @@
       dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.dgv_MainPlugins.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
       this.dgv_MainPlugins.RowHeadersVisible = false;
+      this.dgv_MainPlugins.RowHeadersWidth = 62;
       dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.dgv_MainPlugins.RowsDefaultCellStyle = dataGridViewCellStyle4;
       this.dgv_MainPlugins.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -406,7 +387,7 @@
       this.dgv_MainPlugins.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
       this.dgv_MainPlugins.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
       this.dgv_MainPlugins.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.dgv_MainPlugins.Size = new System.Drawing.Size(1470, 518);
+      this.dgv_MainPlugins.Size = new System.Drawing.Size(980, 337);
       this.dgv_MainPlugins.TabIndex = 0;
       this.dgv_MainPlugins.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_MainPlugins_CellContentClick);
       this.dgv_MainPlugins.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.DGV_MainPlugins_DataError);
@@ -430,8 +411,7 @@
             this.tsmi_Help});
       this.ms_MainWindow.Location = new System.Drawing.Point(0, 0);
       this.ms_MainWindow.Name = "ms_MainWindow";
-      this.ms_MainWindow.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-      this.ms_MainWindow.Size = new System.Drawing.Size(1622, 35);
+      this.ms_MainWindow.Size = new System.Drawing.Size(1081, 33);
       this.ms_MainWindow.TabIndex = 0;
       this.ms_MainWindow.Text = "ms_MainGUI";
       // 
@@ -441,20 +421,20 @@
             this.tsmi_Exit,
             this.tsmi_ResetMinary});
       this.tsmi_File.Name = "tsmi_File";
-      this.tsmi_File.Size = new System.Drawing.Size(50, 29);
+      this.tsmi_File.Size = new System.Drawing.Size(54, 29);
       this.tsmi_File.Text = "File";
       // 
       // tsmi_Exit
       // 
       this.tsmi_Exit.Name = "tsmi_Exit";
-      this.tsmi_Exit.Size = new System.Drawing.Size(197, 30);
+      this.tsmi_Exit.Size = new System.Drawing.Size(215, 34);
       this.tsmi_Exit.Text = "Exit";
       this.tsmi_Exit.Click += new System.EventHandler(this.TSMI_ExitTool_Click);
       // 
       // tsmi_ResetMinary
       // 
       this.tsmi_ResetMinary.Name = "tsmi_ResetMinary";
-      this.tsmi_ResetMinary.Size = new System.Drawing.Size(197, 30);
+      this.tsmi_ResetMinary.Size = new System.Drawing.Size(215, 34);
       this.tsmi_ResetMinary.Text = "Reset Minary";
       this.tsmi_ResetMinary.Click += new System.EventHandler(this.TSMI_ResetAllPlugins_Click);
       // 
@@ -462,34 +442,35 @@
       // 
       this.tsmi_Settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_Beep,
-            this.tsmi_Debugging,
+            this.TSMI_Debugging,
             this.tsmi_GuiSimple,
-            this.tsmi_Attack});
+            this.tsmi_Attack,
+            this.TSMI_Verbose});
       this.tsmi_Settings.Name = "tsmi_Settings";
-      this.tsmi_Settings.Size = new System.Drawing.Size(88, 29);
+      this.tsmi_Settings.Size = new System.Drawing.Size(92, 29);
       this.tsmi_Settings.Text = "Settings";
       // 
       // tsmi_Beep
       // 
       this.tsmi_Beep.Name = "tsmi_Beep";
       this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-      this.tsmi_Beep.Size = new System.Drawing.Size(295, 30);
+      this.tsmi_Beep.Size = new System.Drawing.Size(313, 34);
       this.tsmi_Beep.Text = "Beep (off)";
       this.tsmi_Beep.Click += new System.EventHandler(this.TSMI_BeepToolStrip_Click);
       // 
       // tsmi_Debugging
       // 
-      this.tsmi_Debugging.Name = "tsmi_Debugging";
-      this.tsmi_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-      this.tsmi_Debugging.Size = new System.Drawing.Size(295, 30);
-      this.tsmi_Debugging.Text = "Debugging (off)";
-      this.tsmi_Debugging.Click += new System.EventHandler(this.TSMI_DebugginOn_Click);
+      this.TSMI_Debugging.Name = "tsmi_Debugging";
+      this.TSMI_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+      this.TSMI_Debugging.Size = new System.Drawing.Size(313, 34);
+      this.TSMI_Debugging.Text = "Debugging (off)";
+      this.TSMI_Debugging.Click += new System.EventHandler(this.TSMI_DebugginOn_Click);
       // 
       // tsmi_GuiSimple
       // 
       this.tsmi_GuiSimple.Name = "tsmi_GuiSimple";
       this.tsmi_GuiSimple.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-      this.tsmi_GuiSimple.Size = new System.Drawing.Size(295, 30);
+      this.tsmi_GuiSimple.Size = new System.Drawing.Size(313, 34);
       this.tsmi_GuiSimple.Text = "Simple GUI (off)";
       this.tsmi_GuiSimple.Click += new System.EventHandler(this.TSMI_GuiSimple_Click);
       // 
@@ -497,9 +478,17 @@
       // 
       this.tsmi_Attack.Name = "tsmi_Attack";
       this.tsmi_Attack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-      this.tsmi_Attack.Size = new System.Drawing.Size(295, 30);
+      this.tsmi_Attack.Size = new System.Drawing.Size(313, 34);
       this.tsmi_Attack.Text = "Attack  (stopped)";
       this.tsmi_Attack.Click += new System.EventHandler(this.TSMI_Attack_Click);
+      // 
+      // TSMI_Verbose
+      // 
+      this.TSMI_Verbose.Name = "TSMI_Verbose";
+      this.TSMI_Verbose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+      this.TSMI_Verbose.Size = new System.Drawing.Size(313, 34);
+      this.TSMI_Verbose.Text = "Verbose (off)";
+      this.TSMI_Verbose.Click += new System.EventHandler(this.TSMI_Verbose_Click);
       // 
       // tsmi_Template
       // 
@@ -508,7 +497,7 @@
             this.tsmi_CreateTemplate,
             this.tsmi_UnloadTemplate});
       this.tsmi_Template.Name = "tsmi_Template";
-      this.tsmi_Template.Size = new System.Drawing.Size(95, 29);
+      this.tsmi_Template.Size = new System.Drawing.Size(99, 29);
       this.tsmi_Template.Text = "Template";
       // 
       // tsmi_LoadTemplate
@@ -516,7 +505,7 @@
       this.tsmi_LoadTemplate.Name = "tsmi_LoadTemplate";
       this.tsmi_LoadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.O)));
-      this.tsmi_LoadTemplate.Size = new System.Drawing.Size(273, 30);
+      this.tsmi_LoadTemplate.Size = new System.Drawing.Size(291, 34);
       this.tsmi_LoadTemplate.Text = "Load ...";
       this.tsmi_LoadTemplate.Click += new System.EventHandler(this.TSMI_LoadTemplate_Click);
       // 
@@ -525,7 +514,7 @@
       this.tsmi_CreateTemplate.Name = "tsmi_CreateTemplate";
       this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.C)));
-      this.tsmi_CreateTemplate.Size = new System.Drawing.Size(273, 30);
+      this.tsmi_CreateTemplate.Size = new System.Drawing.Size(291, 34);
       this.tsmi_CreateTemplate.Text = "Create ...";
       this.tsmi_CreateTemplate.Click += new System.EventHandler(this.TSMI_CreateTemplate_Click);
       // 
@@ -534,7 +523,7 @@
       this.tsmi_UnloadTemplate.Name = "tsmi_UnloadTemplate";
       this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.U)));
-      this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(273, 30);
+      this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(291, 34);
       this.tsmi_UnloadTemplate.Text = "Unload ";
       this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.TSMI_UnloadTemplate_Click);
       // 
@@ -546,14 +535,14 @@
             this.tsmi_TlsSslCertificates,
             this.tsmi_ArpScan});
       this.tsmi_Tools.Name = "tsmi_Tools";
-      this.tsmi_Tools.Size = new System.Drawing.Size(65, 29);
+      this.tsmi_Tools.Size = new System.Drawing.Size(69, 29);
       this.tsmi_Tools.Text = "Tools";
       // 
       // tsmi_Minibrowser
       // 
       this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
       this.tsmi_Minibrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-      this.tsmi_Minibrowser.Size = new System.Drawing.Size(360, 30);
+      this.tsmi_Minibrowser.Size = new System.Drawing.Size(378, 34);
       this.tsmi_Minibrowser.Text = "Minibrowser ...";
       this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
       // 
@@ -561,14 +550,14 @@
       // 
       this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
       this.tsmi_DetectInterfaces.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(360, 30);
+      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(378, 34);
       this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
       this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.TSMI_SearchNetworkInterfaces_Click);
       // 
       // tsmi_TlsSslCertificates
       // 
       this.tsmi_TlsSslCertificates.Name = "tsmi_TlsSslCertificates";
-      this.tsmi_TlsSslCertificates.Size = new System.Drawing.Size(360, 30);
+      this.tsmi_TlsSslCertificates.Size = new System.Drawing.Size(378, 34);
       this.tsmi_TlsSslCertificates.Text = "TLS/SSL certificates";
       this.tsmi_TlsSslCertificates.Click += new System.EventHandler(this.TSMI_ServerCert_Click);
       // 
@@ -576,7 +565,7 @@
       // 
       this.tsmi_ArpScan.Name = "tsmi_ArpScan";
       this.tsmi_ArpScan.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-      this.tsmi_ArpScan.Size = new System.Drawing.Size(360, 30);
+      this.tsmi_ArpScan.Size = new System.Drawing.Size(378, 34);
       this.tsmi_ArpScan.Text = "ARP scan";
       this.tsmi_ArpScan.Click += new System.EventHandler(this.TSMI_ArpScan_Click);
       // 
@@ -586,13 +575,13 @@
             this.tsmi_GetUpdates,
             this.tsmi_LogConsole});
       this.tsmi_Help.Name = "tsmi_Help";
-      this.tsmi_Help.Size = new System.Drawing.Size(61, 29);
+      this.tsmi_Help.Size = new System.Drawing.Size(65, 29);
       this.tsmi_Help.Text = "Help";
       // 
       // tsmi_GetUpdates
       // 
       this.tsmi_GetUpdates.Name = "tsmi_GetUpdates";
-      this.tsmi_GetUpdates.Size = new System.Drawing.Size(268, 30);
+      this.tsmi_GetUpdates.Size = new System.Drawing.Size(286, 34);
       this.tsmi_GetUpdates.Text = "Check for updates ...";
       this.tsmi_GetUpdates.Click += new System.EventHandler(this.TSMI_GetUpdatesTool_Click);
       // 
@@ -600,7 +589,7 @@
       // 
       this.tsmi_LogConsole.Name = "tsmi_LogConsole";
       this.tsmi_LogConsole.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-      this.tsmi_LogConsole.Size = new System.Drawing.Size(268, 30);
+      this.tsmi_LogConsole.Size = new System.Drawing.Size(286, 34);
       this.tsmi_LogConsole.Text = "Log console ...";
       this.tsmi_LogConsole.Click += new System.EventHandler(this.TSMI_LogConsoleTool_Click);
       // 
@@ -621,16 +610,17 @@
       // flp_AttackServices
       // 
       this.flp_AttackServices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.flp_AttackServices.Location = new System.Drawing.Point(22, 866);
+      this.flp_AttackServices.Location = new System.Drawing.Point(15, 563);
+      this.flp_AttackServices.Margin = new System.Windows.Forms.Padding(2);
       this.flp_AttackServices.Name = "flp_AttackServices";
-      this.flp_AttackServices.Size = new System.Drawing.Size(1576, 28);
+      this.flp_AttackServices.Size = new System.Drawing.Size(1051, 18);
       this.flp_AttackServices.TabIndex = 0;
       // 
       // MinaryMain
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1622, 906);
+      this.ClientSize = new System.Drawing.Size(1081, 589);
       this.Controls.Add(this.flp_AttackServices);
       this.Controls.Add(this.tc_Plugins);
       this.Controls.Add(this.gb_TargetRange);
@@ -640,8 +630,7 @@
       this.Controls.Add(this.ms_MainWindow);
       this.Icon = global::Minary.Properties.Resources.Minary;
       this.MainMenuStrip = this.ms_MainWindow;
-      this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.MinimumSize = new System.Drawing.Size(1644, 934);
+      this.MinimumSize = new System.Drawing.Size(1103, 627);
       this.Name = "MinaryMain";
       this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
       this.Text = " Minary ";
@@ -703,11 +692,12 @@
     private System.Windows.Forms.ToolStripMenuItem tsmi_DetectInterfaces;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Settings;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Beep;
-    private System.Windows.Forms.ToolStripMenuItem tsmi_Debugging;
+    private System.Windows.Forms.ToolStripMenuItem TSMI_Debugging;
     private System.Windows.Forms.FlowLayoutPanel flp_AttackServices;
     private System.Windows.Forms.ToolStripMenuItem tsmi_GuiSimple;
     private System.Windows.Forms.ToolStripMenuItem tsmi_TlsSslCertificates;
     private System.Windows.Forms.ToolStripMenuItem tsmi_Attack;
     private System.Windows.Forms.ToolStripMenuItem tsmi_ArpScan;
+    private System.Windows.Forms.ToolStripMenuItem TSMI_Verbose;
   }
 }

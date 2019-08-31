@@ -40,6 +40,7 @@
     private Minary.Form.GuiAdvanced.TaskFacade minaryTaskFacade;
     private Dictionary<string, PictureBox> attackServiceMap = new Dictionary<string, PictureBox>();
     private GuiSimpleUserControl guiSimple;
+    private bool isVerboseOn = false;
 
     // GUI handlers
     private ArpScan.Presentation.ArpScan arpScanHandler;
@@ -210,17 +211,17 @@
       // Set current Debugging mode in GUI
       if (Debugging.IsDebuggingOn)
       {
-        this.tsmi_Debugging.Text = "Debugging (on)";
+        this.TSMI_Debugging.Text = "Debugging (on)";
         this.SetAppTitle("Debugging");
       }
       else
       {
-        this.tsmi_Debugging.Text = "Debugging (off)";
+        this.TSMI_Debugging.Text = "Debugging (off)";
         this.SetAppTitle(string.Empty);
       }
 
       // Set current GuiSimple mode in MainForm
-      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Config.IsGuiSimpleOn?"on":"off");
+      this.TSMI_Debugging.Text = string.Format("Debugging ({0})", Config.IsGuiSimpleOn?"on":"off");
 
       // Populate network interface.
       this.LoadNicSettings();

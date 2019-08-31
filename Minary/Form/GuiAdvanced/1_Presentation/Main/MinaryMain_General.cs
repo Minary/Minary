@@ -101,7 +101,7 @@
     public void SetDebuggingStatus(bool isOn)
     {
       Debugging.IsDebuggingOn = isOn;
-      this.tsmi_Debugging.Text = string.Format("Debugging ({0})", Debugging.IsDebuggingOn == true ? "on" : "off");
+      this.TSMI_Debugging.Text = string.Format("Debugging ({0})", Debugging.IsDebuggingOn == true ? "on" : "off");
       this.SetAppTitle(Debugging.IsDebuggingOn == true ? "Debugging" : string.Empty);
     }
 
@@ -190,6 +190,16 @@
       this.tabPageHandler.HideAllTabPages();
       this.tabPageHandler.ShowAllTabPages();
       this.pluginHandler.ResetAllPlugins();
+    }
+
+
+    public void SwitchVerboseStatus()
+    {
+      this.isVerboseOn = !this.isVerboseOn;
+      var isVerboseOnStr = this.isVerboseOn ? "on" : "off";
+      LogCons.Inst.Write(LogLevel.Debug, $"Verbose is {isVerboseOnStr}");
+      this.TSMI_Verbose.Text = $"Verbose ({isVerboseOnStr})";
+      this.pluginHandler.SetVerboseStatusAllPlugins(this.isVerboseOn);
     }
 
     #endregion

@@ -12,6 +12,7 @@
   using System.ComponentModel;
   using System.IO;
   using System.Net.NetworkInformation;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
 
 
@@ -127,6 +128,13 @@
 
 
     #region TSMI
+
+
+    private void TSMI_Verbose_Click(object sender, EventArgs e)
+    {
+      Task.Run(() => this.SwitchVerboseStatus());
+    }
+
 
     /// <summary>
     ///

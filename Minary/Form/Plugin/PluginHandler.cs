@@ -261,6 +261,22 @@
       this.TabPagesCatalog[pluginName].IsActive = false;
     }
 
+
+    public void SetVerboseStatusAllPlugins(bool isVerboseOn)
+    {
+      foreach (var key in this.TabPagesCatalog.Keys)
+      {
+        try
+        {
+          this.TabPagesCatalog[key].PluginObject.OnVerbose(isVerboseOn);
+        }
+        catch (Exception ex)
+        {
+          LogCons.Inst.Write(LogLevel.Error, $"PluginHandler.ResetAllPlugins(EXC): Exception occurred while resetting plugin \"{key}\": {ex.Message}\r\n{ex.StackTrace}");
+        }
+      }
+    }
+
     #endregion
 
 

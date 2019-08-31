@@ -207,7 +207,7 @@
       this.tsmi_Exit.Enabled = false;
       this.tsmi_ResetMinary.Enabled = false;
       this.tsmi_DetectInterfaces.Enabled = false;
-      this.tsmi_Debugging.Enabled = false;
+      this.TSMI_Debugging.Enabled = false;
       this.tsmi_LoadTemplate.Enabled = false;
       this.tsmi_CreateTemplate.Enabled = false;
       this.tsmi_UnloadTemplate.Enabled = false;
@@ -229,7 +229,7 @@
       this.tsmi_Exit.Enabled = true;
       this.tsmi_ResetMinary.Enabled = true;
       this.tsmi_DetectInterfaces.Enabled = true;
-      this.tsmi_Debugging.Enabled = true;
+      this.TSMI_Debugging.Enabled = true;
       this.tsmi_LoadTemplate.Enabled = true;
       this.tsmi_CreateTemplate.Enabled = true;
       this.tsmi_UnloadTemplate.Enabled = true;

@@ -185,6 +185,11 @@
       }
     }
 
+
+    public void OnVerbose(bool isVerboseOn)
+    {
+    }
+
     #endregion
 
   }
