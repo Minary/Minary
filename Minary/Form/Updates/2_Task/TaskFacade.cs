@@ -78,28 +78,24 @@
       var response = client.Execute<Release>(new RestRequest());
 
       // Process errors
-      if (response.ErrorException.Message.ToLower().Contains("ssl/tls"))
+      if (response.ErrorException != null &&
+          string.IsNullOrEmpty(response.ErrorException.Message) == false &&
+          response.ErrorException.Message.ToLower().Contains("ssl/tls"))
       {
         throw new Exception("Cannot crate a secure SSL/TLS connection to GitHub");
       }
-      else
-      {
-        throw new Exception(response.ErrorException.Message);
-      }
+      //else
+      //{
+      //  throw new Exception(response.ErrorException.Message);
+      //}
 
       var release = response.Data;
 
       // Verify if version structure is correct
       if (string.IsNullOrEmpty(release?.TagName) ||
-          Regex.Match(release.TagName, @"v?\d+\.\d+\.\d+", RegexOptions.IgnoreCase).Success == false)
+          Regex.Match(release.TagName, @"v?\d+", RegexOptions.IgnoreCase).Success == false)
       {
         throw new Exception($"Version number has an invalid structure: {release.TagName}");
-      }
-
-      // Remove leading "v" from the release tag
-      if (Regex.Match(release.TagName, @"v\d+\.\d+\.\d+", RegexOptions.IgnoreCase).Success == true)
-      {
-        release.TagName = release.TagName.TrimStart(new char[] { 'v', 'V' });
       }
 
       // Compare current and latest version.
@@ -120,24 +116,45 @@
 
     private static long DetermineVersion(string versionString)
     {
-      int[] versionArray = new int[3];
-      MatchCollection versionMatches = Regex.Matches(versionString, @"^(\d+)\.(\d+)\.(\d+)");
+      int[] versionArray = new int[4];
 
+      if (string.IsNullOrEmpty(versionString) == true)
+      {
+        throw new Exception($"Invalid version string: {versionString}");
+      }
+
+      versionString = versionString.Trim();
+      if (Regex.Match(versionString, @"^v?\d+$").Success)
+      {
+        versionString += ".0";
+      }
+
+      versionString = versionString.Trim();
+      if (Regex.Match(versionString, @"^v?\d+\.\d+$").Success)
+      {
+        versionString += ".0";
+      }
+
+      if (Regex.Match(versionString, @"^v?\d+\.\d+\.\d+$").Success)
+      {
+        versionString += ".0";
+      }
+
+      MatchCollection versionMatches = Regex.Matches(versionString, @"^v?(\d+)\.(\d+)\.(\d+)\.(\d+)");
       if (versionMatches.Count != 1)
       {
         throw new Exception("Pattern not found");
       }
 
-      foreach (int i in Enumerable.Range(0, 3))
+      foreach (int i in Enumerable.Range(0, 4))
       {
         versionArray[i] = Convert.ToInt32(versionMatches[0].Groups[i + 1].Value);
       }
 
-      long versionInt = (versionArray[0] + 1) * 1000000 + (versionArray[1] + 1) * 1000 + (versionArray[2] + 1) * 1;
+      long versionInt = (versionArray[0]) * 1000000000 + (versionArray[1]) * 1000000 + (versionArray[2]) * 1000 + (versionArray[3]) * 1;
 
       return versionInt;
     }
-
     #endregion
 
 
