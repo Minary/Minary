@@ -182,6 +182,14 @@
       columnType.Visible = true;
       this.dgv_MainPlugins.Columns.Add(columnType);
 
+      DataGridViewTextBoxColumn columnAttackService = new DataGridViewTextBoxColumn();
+      columnAttackService.DataPropertyName = "AttackService";
+      columnAttackService.Name = "AttackService";
+      columnAttackService.HeaderText = "Service";
+      columnAttackService.Visible = true;
+      columnAttackService.Width = 200;
+      this.dgv_MainPlugins.Columns.Add(columnAttackService);
+
       DataGridViewTextBoxColumn columnPluginDescription = new DataGridViewTextBoxColumn();
       columnPluginDescription.DataPropertyName = "PluginDescription";
       columnPluginDescription.HeaderText = "Description";

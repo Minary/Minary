@@ -367,7 +367,7 @@
         this.minaryMain.MinaryTabPageHandler.AddTabPageToCatalog(newPluginIPlugin.Config.PluginName, newPluginIPlugin, newPluginTabPage);
 
         // Add new plugin to Minary plugins TabPage
-        this.minaryMain.UsedPlugins.Add(new PluginTableRecord(newPluginIPlugin.Config.PluginName, newPluginIPlugin.Config.PluginType, newPluginIPlugin.Config.PluginDescription, "0"));
+        this.minaryMain.UsedPlugins.Add(new PluginTableRecord(newPluginIPlugin.Config.PluginName, newPluginIPlugin.Config.PluginType, newPluginIPlugin.Config.AttackServiceDependency, newPluginIPlugin.Config.PluginDescription, "0"));
 
         // Call plugin initialization methods
         this.TabPagesCatalog[newPluginIPlugin.Config.PluginName].PluginObject.OnInit();

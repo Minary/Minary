@@ -9,6 +9,7 @@
 
     private string pluginName;
     private string pluginType;
+    private string attackService;
     private string pluginDescription;
     private string active;
 
@@ -17,10 +18,11 @@
     #endregion
 
 
-    public PluginTableRecord(string pluginName, string pluginType, string pluginDescription, string active)
+    public PluginTableRecord(string pluginName, string pluginType, string attackService, string pluginDescription, string active)
     {
       this.pluginName = pluginName;
       this.pluginType = pluginType;
+      this.attackService = attackService;
       this.pluginDescription = pluginDescription;
       this.active = active;
     }
@@ -44,6 +46,17 @@
       {
         this.pluginType = value;
         this.NotifyPropertyChanged("PluginType");
+      }
+    }
+
+
+    public string AttackService
+    {
+      get { return this.attackService; }
+      set
+      {
+        this.attackService = value;
+        this.NotifyPropertyChanged("AttackService");
       }
     }
 
