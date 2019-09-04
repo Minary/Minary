@@ -96,6 +96,9 @@
 
     public NetworkInterfaceHandler NetworkHandler { get { return this.nicHandler; } set { } }
 
+
+    public TextBox TemplateName { get { return this.tb_TemplateName; } set { } }
+
     #endregion
 
 

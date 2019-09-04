@@ -114,6 +114,7 @@
       try
       {
         this.SaveTemplateToFile(newTemplateData);
+        this.minaryMain.TemplateName.Text = newTemplateData.TemplateConfig.Name;
       }
       catch (Exception ex)
       {
