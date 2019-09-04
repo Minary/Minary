@@ -176,7 +176,15 @@
     /// <param name="e"></param>
     private void BT_Scan_Click(object sender, EventArgs e)
     {
-      this.StartArpScan();
+      try
+      {
+        this.StartArpScan();
+      }
+      catch (Exception ex)
+      {
+        LogCons.Inst.Write(LogLevel.Error, $"ArpScan.BT_Scan_Click(): {ex.Message}");
+        MessageDialog.Inst.ShowWarning(string.Empty, $"Error occurred: {ex.Message}", this, MessageBoxButtons.OK);
+      }
     }
 
 
