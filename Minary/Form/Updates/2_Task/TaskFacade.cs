@@ -30,7 +30,7 @@
     {
       System.Threading.Tasks.Task.Run(() =>
       {
-        UpdateData updateMetaData = new UpdateData();
+        var updateMetaData = new UpdateData();
 
         try
         {
@@ -65,7 +65,7 @@
     /// <returns></returns>
     public UpdateData FetchUpdateInformationFromServer()
     {
-      UpdateData updateData = new UpdateData();
+      var updateData = new UpdateData();
 
       // Ignore all https certificat errors
       // Reason: Reasons
@@ -79,15 +79,21 @@
 
       // Process errors
       if (response.ErrorException != null &&
-          string.IsNullOrEmpty(response.ErrorException.Message) == false &&
-          response.ErrorException.Message.ToLower().Contains("ssl/tls"))
+          string.IsNullOrEmpty(response.ErrorException.Message) == false)
       {
-        throw new Exception("Cannot crate a secure SSL/TLS connection to GitHub");
+        if (response.ErrorException.Message.ToLower().Contains("ssl/tls"))
+        {
+          throw new Exception("Cannot crate a secure SSL/TLS connection to GitHub");
+        }
+        else if (((System.Net.WebException)((RestSharp.RestResponseBase)response).ErrorException).Status == System.Net.WebExceptionStatus.NameResolutionFailure)
+        {
+          throw new Exception("Could not resolve Github server name");
+        }
+        else
+        {
+          throw new Exception($"Unknown error occurred: {response.ErrorException.Message}");
+        }
       }
-      //else
-      //{
-      //  throw new Exception(response.ErrorException.Message);
-      //}
 
       var release = response.Data;
 
