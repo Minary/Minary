@@ -8,6 +8,7 @@
   using Minary.LogConsole.Main;
   using System;
   using System.Collections;
+  using System.Linq;
   using System.Net.NetworkInformation;
 
 
@@ -16,14 +17,14 @@
 
     #region MEMBERS
 
-    private MinaryMain minaryInstance;
+    private MinaryMain minaryMain;
 
     #endregion
 
 
     #region PROPERTIES
 
-    public LastConnectionState LastState { get; set; }
+    public OperationalStatus LastNetworkOperState { get; set; }
 
     public ArrayList Interfaces { get; set; }
 
@@ -36,7 +37,7 @@
 
     public NetworkInterfaceHandler(MinaryMain minaryMain)
     {
-      this.minaryInstance = minaryMain;
+      this.minaryMain = minaryMain;
       this.Interfaces = new ArrayList();
       this.LoadInterfaces();
 
@@ -199,38 +200,69 @@
     void AddressChangedCallback(object sender, EventArgs e)
     {
       var message = string.Empty;
-      var currentNetConfig = this.GetInterfaceById(this.minaryInstance.CurrentInterfaceId);
+      var currentNetConfig = this.GetInterfaceById(this.minaryMain.CurrentInterfaceId);
 
       // Network connection is up
-      if (NetworkInterface.GetIsNetworkAvailable() == true &&
-          NetworkInterface.GetAllNetworkInterfaces().Length > 0)
-      {
-        if (this.LastState == LastConnectionState.Connected)
-        {
-          return;
-        }
+      //if (NetworkInterface.GetIsNetworkAvailable() == true &&
+      //    NetworkInterface.GetAllNetworkInterfaces().Length > 0)
+      //{
+      //  if (this.LastState == LastConnectionState.Connected)
+      //  {
+      //    return;
+      //  }
 
-        this.LastState = LastConnectionState.Connected;
-        this.minaryInstance.SetMinaryState();
-        this.minaryInstance.LoadNicSettings();
-        MessageDialog.Inst.ShowInformation("Network connection", "A new network connection was detected", this.minaryInstance);
+      //  this.LastState = LastConnectionState.Connected;
+      //  this.minaryInstance.SetMinaryState();
+      //  this.minaryInstance.LoadNicSettings();
+      //  MessageDialog.Inst.ShowInformation("Network connection", "A new network connection was detected", this.minaryInstance);
+      //  return;
+      //}
+
+      //if (this.LastState == LastConnectionState.Disconnected)
+      //{
+      //  return;
+      //}
+
+      var networkIfcList = NetworkInterface.GetAllNetworkInterfaces();
+      if (networkIfcList == null || networkIfcList.Count() <= 0)
+      {
+        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): No network interfaces found");
         return;
       }
 
-      if (this.LastState == LastConnectionState.Disconnected)
+      var currentIfc = networkIfcList.Where(elem => elem.Id == minaryMain.CurrentInterfaceId).FirstOrDefault();
+      if (currentIfc == null)
       {
+        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): No interface with the id '{minaryMain.CurrentInterfaceId}' found!");
         return;
       }
 
-      // If the network connection down adjust Minary state
-      // and stop running attack.
-      this.LastState = LastConnectionState.Disconnected;
-      this.minaryInstance.SetMinaryState();
-      this.minaryInstance.ClearCurrentNetworkState();
-      this.minaryInstance.StopAttack();
-      MessageDialog.Inst.ShowWarning("Network connection", "The network connection was lost", this.minaryInstance);
+      if (currentIfc.OperationalStatus == this.LastNetworkOperState)
+      {
+        LogCons.Inst.Write(LogLevel.Debug, $"AddressChangedCallback(): The network operational state did not change.");
+        return;
+      }
 
-      return;
+      if (currentIfc.OperationalStatus == OperationalStatus.Up)
+      {
+        this.minaryMain.LoadNicSettings();
+        MessageDialog.Inst.ShowWarning("Network connection", "The network connection is up", this.minaryMain);
+      }
+      else if (currentIfc.OperationalStatus == OperationalStatus.Down)
+      {
+        this.minaryMain.ClearCurrentNetworkState();
+        this.minaryMain.StopAttack();
+        MessageDialog.Inst.ShowWarning("Network connection", "The network connection is down", this.minaryMain);
+      }
+      else
+      {
+        this.minaryMain.ClearCurrentNetworkState();
+        this.minaryMain.StopAttack();
+        MessageDialog.Inst.ShowWarning("Network connection", $"The network connection has the state {currentIfc.OperationalStatus.ToString()}", this.minaryMain);
+      }
+      
+      this.LastNetworkOperState = currentIfc.OperationalStatus;
+      this.minaryMain.SetMinaryState();
     }
 
     #endregion
