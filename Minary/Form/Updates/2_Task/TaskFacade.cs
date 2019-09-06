@@ -9,7 +9,6 @@
   using RestSharp;
   using System;
   using System.Linq;
-  using System.Net.Security;
   using System.Collections.Generic;
   using System.Text.RegularExpressions;
 
