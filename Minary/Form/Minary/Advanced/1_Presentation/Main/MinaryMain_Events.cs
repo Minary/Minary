@@ -526,6 +526,7 @@
           this.CurrentInterfaceId = interfaceStruct.Id;
 
           this.currentInterfaceIndex = this.cb_Interfaces.SelectedIndex;
+          this.SetNewNetworkIfcStatus(OperationalStatus.Up);
         }
       }
       catch (Exception ex)

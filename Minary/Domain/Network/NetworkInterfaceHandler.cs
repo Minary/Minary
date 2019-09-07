@@ -24,8 +24,6 @@
 
     #region PROPERTIES
 
-    public OperationalStatus LastNetworkOperState { get; set; }
-
     public ArrayList Interfaces { get; set; }
 
     public NetworkInterface[] AllAttachednetworkInterfaces { get; set; }
@@ -197,71 +195,55 @@
     }
 
 
-    void AddressChangedCallback(object sender, EventArgs e)
+    public OperationalStatus GetIfcOperationalStatus(string ifcId)
     {
-      var message = string.Empty;
-      var currentNetConfig = this.GetInterfaceById(this.minaryMain.CurrentInterfaceId);
-
-      // Network connection is up
-      //if (NetworkInterface.GetIsNetworkAvailable() == true &&
-      //    NetworkInterface.GetAllNetworkInterfaces().Length > 0)
-      //{
-      //  if (this.LastState == LastConnectionState.Connected)
-      //  {
-      //    return;
-      //  }
-
-      //  this.LastState = LastConnectionState.Connected;
-      //  this.minaryInstance.SetMinaryState();
-      //  this.minaryInstance.LoadNicSettings();
-      //  MessageDialog.Inst.ShowInformation("Network connection", "A new network connection was detected", this.minaryInstance);
-      //  return;
-      //}
-
-      //if (this.LastState == LastConnectionState.Disconnected)
-      //{
-      //  return;
-      //}
-
       var networkIfcList = NetworkInterface.GetAllNetworkInterfaces();
       if (networkIfcList == null || networkIfcList.Count() <= 0)
       {
-        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): No network interfaces found");
-        return;
+        minaryMain.SetNewNetworkIfcStatus(OperationalStatus.Unknown);
+        LogCons.Inst.Write(LogLevel.Warning, $"GetIfcOperationalStatus(): No network interfaces found");
+        return OperationalStatus.Unknown;
       }
 
-      var currentIfc = networkIfcList.Where(elem => elem.Id == minaryMain.CurrentInterfaceId).FirstOrDefault();
+      var currentIfc = networkIfcList.Where(elem => elem.Id == ifcId).FirstOrDefault();
       if (currentIfc == null)
       {
-        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): No interface with the id '{minaryMain.CurrentInterfaceId}' found!");
-        return;
+        minaryMain.SetNewNetworkIfcStatus(OperationalStatus.Unknown);
+        LogCons.Inst.Write(LogLevel.Warning, $"GetIfcOperationalStatus(): No interface with the id '{minaryMain.CurrentInterfaceId}' found!");
+        return OperationalStatus.Unknown;
       }
 
-      if (currentIfc.OperationalStatus == this.LastNetworkOperState)
-      {
-        LogCons.Inst.Write(LogLevel.Debug, $"AddressChangedCallback(): The network operational state did not change.");
-        return;
-      }
+      return currentIfc.OperationalStatus;
+    }
 
-      if (currentIfc.OperationalStatus == OperationalStatus.Up)
+
+    public void AddressChangedCallback(object sender, EventArgs e)
+    {
+      this.minaryMain.LoadNicSettings();
+      var currentIfcStatus = this.GetIfcOperationalStatus(minaryMain.CurrentInterfaceId);
+
+      if (currentIfcStatus == OperationalStatus.Up)
       {
+        minaryMain.SetNewNetworkIfcStatus(OperationalStatus.Up);
         this.minaryMain.LoadNicSettings();
-        MessageDialog.Inst.ShowWarning("Network connection", "The network connection is up", this.minaryMain);
+        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): Network connection is up");
       }
-      else if (currentIfc.OperationalStatus == OperationalStatus.Down)
+      else if (currentIfcStatus == OperationalStatus.Down)
       {
+        minaryMain.SetNewNetworkIfcStatus(OperationalStatus.Down);
         this.minaryMain.ClearCurrentNetworkState();
         this.minaryMain.StopAttack();
-        MessageDialog.Inst.ShowWarning("Network connection", "The network connection is down", this.minaryMain);
+        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): Network connection is down");
       }
       else
       {
+        minaryMain.SetNewNetworkIfcStatus(currentIfcStatus);
         this.minaryMain.ClearCurrentNetworkState();
         this.minaryMain.StopAttack();
-        MessageDialog.Inst.ShowWarning("Network connection", $"The network connection has the state {currentIfc.OperationalStatus.ToString()}", this.minaryMain);
+
+        LogCons.Inst.Write(LogLevel.Warning, $"AddressChangedCallback(): Network connection is {currentIfcStatus.ToString()}");
       }
       
-      this.LastNetworkOperState = currentIfc.OperationalStatus;
       this.minaryMain.SetMinaryState();
     }
 

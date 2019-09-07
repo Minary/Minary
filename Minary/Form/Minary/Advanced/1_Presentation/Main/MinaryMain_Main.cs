@@ -19,6 +19,7 @@
   using System.Collections.Generic;
   using System.ComponentModel;
   using System.Linq;
+  using System.Net.NetworkInformation;
   using System.Threading.Tasks;
   using System.Windows.Forms;
   using TemplateTask = Template.Task;
@@ -79,7 +80,7 @@
     public string NetworkStartIp { get { return this.tb_NetworkStartIp.Text; } set { } }
 
     public string NetworkStopIp { get { return this.tb_NetworkStopIp.Text; } set { } }
-
+    
 
     // Handlers
     public Minary.Form.GuiAdvanced.TaskFacade MinaryTaskFacade { get { return this.minaryTaskFacade; } }
@@ -382,6 +383,31 @@
 
       // Set neutral attack service state
       this.SetNewAttackServiceState(attackServiceName, ServiceStatus.NotRunning);
+    }
+
+
+    private delegate void SetNewNetworkIfcStatusDelegate(OperationalStatus newStatus);
+    public void SetNewNetworkIfcStatus(OperationalStatus newStatus)
+    {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new SetNewNetworkIfcStatusDelegate(this.SetNewNetworkIfcStatus), new object[] { newStatus });
+        return;
+      }
+
+      this.l_IfcStatus.Text = newStatus.ToString();
+      if (newStatus == OperationalStatus.Up)
+      {
+        this.l_IfcStatus.BackColor = System.Drawing.Color.FromArgb(192, 255, 192);
+      }
+      else if (newStatus == OperationalStatus.Down)
+      {
+        this.l_IfcStatus.BackColor = System.Drawing.Color.FromArgb(255, 192, 128);
+      }
+      else
+      {
+        this.l_IfcStatus.BackColor = System.Drawing.Color.FromArgb(255, 128, 128);
+      }
     }
 
     #endregion
