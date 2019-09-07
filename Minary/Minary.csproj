@@ -264,7 +264,7 @@
     <Compile Include="Domain\DSL\Calls.cs" />
     <Compile Include="Domain\DSL\Config.cs" />
     <Compile Include="Domain\DSL\CurrentSystemSettings.cs" />
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Task\MinaryMain_Tasks.cs">
+    <Compile Include="Form\Minary\Advanced\1_Presentation\Task\MinaryMain_Tasks.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\LogConsole\1_Presentation\LogConsole_Main.cs">
@@ -281,22 +281,22 @@
     <Compile Include="DataTypes\Interface\LogConsole\IObserver.cs" />
     <Compile Include="Domain\MacVendor\MacVendorHandler.cs" />
     <Compile Include="DataTypes\Enum\LogLevel.cs" />
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Events.cs">
+    <Compile Include="Form\Minary\Advanced\1_Presentation\Main\MinaryMain_Events.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_General.cs">
+    <Compile Include="Form\Minary\Advanced\1_Presentation\Main\MinaryMain_General.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Interface.cs">
+    <Compile Include="Form\Minary\Advanced\1_Presentation\Main\MinaryMain_Interface.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.cs">
+    <Compile Include="Form\Minary\Simple\1_Presentation\GuiSimpleUserControl_Main.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.Designer.cs">
+    <Compile Include="Form\Minary\Simple\1_Presentation\GuiSimpleUserControl_Main.Designer.cs">
       <DependentUpon>GuiSimpleUserControl_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\GuiAdvanced\2_Task\TaskFacade.cs">
+    <Compile Include="Form\Minary\Advanced\2_Task\TaskFacade.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Form\LogConsole\1_Presentation\LogConsole_Interfaces.cs">
@@ -312,10 +312,10 @@
     <Compile Include="Form\Plugin\TabPageHandler.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Events.cs">
+    <Compile Include="Form\Minary\Simple\1_Presentation\GuiSimpleUserControl_Events.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Interfaces.cs">
+    <Compile Include="Form\Minary\Simple\1_Presentation\GuiSimpleUserControl_Interfaces.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Form\Template\1_Presentation\CreateTemplate.cs">
@@ -344,10 +344,10 @@
       <DependentUpon>FormCheckNewVersion.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.cs">
+    <Compile Include="Form\Minary\Advanced\1_Presentation\Main\MinaryMain_Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.Designer.cs">
+    <Compile Include="Form\Minary\Advanced\1_Presentation\Main\MinaryMain_Main.Designer.cs">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Network\NetworkFunctions.cs" />
@@ -386,11 +386,11 @@
       <DependentUpon>LogConsole_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\GuiAdvanced\1_Presentation\Main\MinaryMain_Main.resx">
+    <EmbeddedResource Include="Form\Minary\Advanced\1_Presentation\Main\MinaryMain_Main.resx">
       <DependentUpon>MinaryMain_Main.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\GuiSimple\1_Presentation\GuiSimpleUserControl_Main.resx">
+    <EmbeddedResource Include="Form\Minary\Simple\1_Presentation\GuiSimpleUserControl_Main.resx">
       <DependentUpon>GuiSimpleUserControl_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Updates\1_Presentation\FormCheckNewVersion.resx">
@@ -412,7 +412,7 @@
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="app.manifest" />
-    <None Include="Form\GuiAdvanced\1_Presentation\app.config" />
+    <None Include="Form\Minary\Advanced\1_Presentation\app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
