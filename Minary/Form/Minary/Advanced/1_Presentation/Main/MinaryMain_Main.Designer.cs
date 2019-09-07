@@ -414,6 +414,7 @@
       // 
       // ms_MainWindow
       // 
+      this.ms_MainWindow.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
       this.ms_MainWindow.ImageScalingSize = new System.Drawing.Size(20, 20);
       this.ms_MainWindow.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi_File,
@@ -440,14 +441,15 @@
       // tsmi_Exit
       // 
       this.tsmi_Exit.Name = "tsmi_Exit";
-      this.tsmi_Exit.Size = new System.Drawing.Size(215, 34);
+      this.tsmi_Exit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+      this.tsmi_Exit.Size = new System.Drawing.Size(270, 34);
       this.tsmi_Exit.Text = "Exit";
       this.tsmi_Exit.Click += new System.EventHandler(this.TSMI_ExitTool_Click);
       // 
       // tsmi_ResetMinary
       // 
       this.tsmi_ResetMinary.Name = "tsmi_ResetMinary";
-      this.tsmi_ResetMinary.Size = new System.Drawing.Size(215, 34);
+      this.tsmi_ResetMinary.Size = new System.Drawing.Size(270, 34);
       this.tsmi_ResetMinary.Text = "Reset Minary";
       this.tsmi_ResetMinary.Click += new System.EventHandler(this.TSMI_ResetAllPlugins_Click);
       // 
@@ -466,40 +468,40 @@
       // tsmi_Beep
       // 
       this.tsmi_Beep.Name = "tsmi_Beep";
-      this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-      this.tsmi_Beep.Size = new System.Drawing.Size(313, 34);
+      this.tsmi_Beep.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.B)));
+      this.tsmi_Beep.Size = new System.Drawing.Size(308, 34);
       this.tsmi_Beep.Text = "Beep (off)";
       this.tsmi_Beep.Click += new System.EventHandler(this.TSMI_BeepToolStrip_Click);
       // 
       // TSMI_Debugging
       // 
       this.TSMI_Debugging.Name = "TSMI_Debugging";
-      this.TSMI_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-      this.TSMI_Debugging.Size = new System.Drawing.Size(313, 34);
+      this.TSMI_Debugging.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
+      this.TSMI_Debugging.Size = new System.Drawing.Size(308, 34);
       this.TSMI_Debugging.Text = "Debugging (off)";
       this.TSMI_Debugging.Click += new System.EventHandler(this.TSMI_DebugginOn_Click);
       // 
       // tsmi_GuiSimple
       // 
       this.tsmi_GuiSimple.Name = "tsmi_GuiSimple";
-      this.tsmi_GuiSimple.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-      this.tsmi_GuiSimple.Size = new System.Drawing.Size(313, 34);
+      this.tsmi_GuiSimple.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+      this.tsmi_GuiSimple.Size = new System.Drawing.Size(308, 34);
       this.tsmi_GuiSimple.Text = "Simple GUI (off)";
       this.tsmi_GuiSimple.Click += new System.EventHandler(this.TSMI_GuiSimple_Click);
       // 
       // tsmi_Attack
       // 
       this.tsmi_Attack.Name = "tsmi_Attack";
-      this.tsmi_Attack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-      this.tsmi_Attack.Size = new System.Drawing.Size(313, 34);
+      this.tsmi_Attack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.X)));
+      this.tsmi_Attack.Size = new System.Drawing.Size(308, 34);
       this.tsmi_Attack.Text = "Attack  (stopped)";
       this.tsmi_Attack.Click += new System.EventHandler(this.TSMI_Attack_Click);
       // 
       // TSMI_Verbose
       // 
       this.TSMI_Verbose.Name = "TSMI_Verbose";
-      this.TSMI_Verbose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-      this.TSMI_Verbose.Size = new System.Drawing.Size(313, 34);
+      this.TSMI_Verbose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.V)));
+      this.TSMI_Verbose.Size = new System.Drawing.Size(308, 34);
       this.TSMI_Verbose.Text = "Verbose (off)";
       this.TSMI_Verbose.Click += new System.EventHandler(this.TSMI_Verbose_Click);
       // 
@@ -516,27 +518,24 @@
       // tsmi_LoadTemplate
       // 
       this.tsmi_LoadTemplate.Name = "tsmi_LoadTemplate";
-      this.tsmi_LoadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.O)));
-      this.tsmi_LoadTemplate.Size = new System.Drawing.Size(291, 34);
+      this.tsmi_LoadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
+      this.tsmi_LoadTemplate.Size = new System.Drawing.Size(270, 34);
       this.tsmi_LoadTemplate.Text = "Load ...";
       this.tsmi_LoadTemplate.Click += new System.EventHandler(this.TSMI_LoadTemplate_Click);
       // 
       // tsmi_CreateTemplate
       // 
       this.tsmi_CreateTemplate.Name = "tsmi_CreateTemplate";
-      this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.C)));
-      this.tsmi_CreateTemplate.Size = new System.Drawing.Size(291, 34);
+      this.tsmi_CreateTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
+      this.tsmi_CreateTemplate.Size = new System.Drawing.Size(270, 34);
       this.tsmi_CreateTemplate.Text = "Create ...";
       this.tsmi_CreateTemplate.Click += new System.EventHandler(this.TSMI_CreateTemplate_Click);
       // 
       // tsmi_UnloadTemplate
       // 
       this.tsmi_UnloadTemplate.Name = "tsmi_UnloadTemplate";
-      this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.U)));
-      this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(291, 34);
+      this.tsmi_UnloadTemplate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.U)));
+      this.tsmi_UnloadTemplate.Size = new System.Drawing.Size(270, 34);
       this.tsmi_UnloadTemplate.Text = "Unload ";
       this.tsmi_UnloadTemplate.Click += new System.EventHandler(this.TSMI_UnloadTemplate_Click);
       // 
@@ -554,31 +553,31 @@
       // tsmi_Minibrowser
       // 
       this.tsmi_Minibrowser.Name = "tsmi_Minibrowser";
-      this.tsmi_Minibrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-      this.tsmi_Minibrowser.Size = new System.Drawing.Size(378, 34);
+      this.tsmi_Minibrowser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
+      this.tsmi_Minibrowser.Size = new System.Drawing.Size(373, 34);
       this.tsmi_Minibrowser.Text = "Minibrowser ...";
       this.tsmi_Minibrowser.Click += new System.EventHandler(this.TSMI_Minibrowser_Click);
       // 
       // tsmi_DetectInterfaces
       // 
       this.tsmi_DetectInterfaces.Name = "tsmi_DetectInterfaces";
-      this.tsmi_DetectInterfaces.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(378, 34);
+      this.tsmi_DetectInterfaces.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
+      this.tsmi_DetectInterfaces.Size = new System.Drawing.Size(373, 34);
       this.tsmi_DetectInterfaces.Text = "Detect network interfaces";
       this.tsmi_DetectInterfaces.Click += new System.EventHandler(this.TSMI_SearchNetworkInterfaces_Click);
       // 
       // tsmi_TlsSslCertificates
       // 
       this.tsmi_TlsSslCertificates.Name = "tsmi_TlsSslCertificates";
-      this.tsmi_TlsSslCertificates.Size = new System.Drawing.Size(378, 34);
+      this.tsmi_TlsSslCertificates.Size = new System.Drawing.Size(373, 34);
       this.tsmi_TlsSslCertificates.Text = "TLS/SSL certificates";
       this.tsmi_TlsSslCertificates.Click += new System.EventHandler(this.TSMI_ServerCert_Click);
       // 
       // tsmi_ArpScan
       // 
       this.tsmi_ArpScan.Name = "tsmi_ArpScan";
-      this.tsmi_ArpScan.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-      this.tsmi_ArpScan.Size = new System.Drawing.Size(378, 34);
+      this.tsmi_ArpScan.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.A)));
+      this.tsmi_ArpScan.Size = new System.Drawing.Size(373, 34);
       this.tsmi_ArpScan.Text = "ARP scan";
       this.tsmi_ArpScan.Click += new System.EventHandler(this.TSMI_ArpScan_Click);
       // 
@@ -594,16 +593,16 @@
       // tsmi_GetUpdates
       // 
       this.tsmi_GetUpdates.Name = "tsmi_GetUpdates";
-      this.tsmi_GetUpdates.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
-      this.tsmi_GetUpdates.Size = new System.Drawing.Size(338, 34);
+      this.tsmi_GetUpdates.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.U)));
+      this.tsmi_GetUpdates.Size = new System.Drawing.Size(333, 34);
       this.tsmi_GetUpdates.Text = "Check for updates ...";
       this.tsmi_GetUpdates.Click += new System.EventHandler(this.TSMI_GetUpdatesTool_Click);
       // 
       // tsmi_LogConsole
       // 
       this.tsmi_LogConsole.Name = "tsmi_LogConsole";
-      this.tsmi_LogConsole.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-      this.tsmi_LogConsole.Size = new System.Drawing.Size(338, 34);
+      this.tsmi_LogConsole.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.L)));
+      this.tsmi_LogConsole.Size = new System.Drawing.Size(333, 34);
       this.tsmi_LogConsole.Text = "Log console ...";
       this.tsmi_LogConsole.Click += new System.EventHandler(this.TSMI_LogConsoleTool_Click);
       // 
