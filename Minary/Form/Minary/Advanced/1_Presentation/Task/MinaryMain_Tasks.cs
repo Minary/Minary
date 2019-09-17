@@ -213,6 +213,7 @@
       this.tsmi_UnloadTemplate.Enabled = false;
       this.tsmi_GuiSimple.Enabled = false;
       this.tsmi_TlsSslCertificates.Enabled = false;
+      this.tsmi_ArpScan.Enabled = false;
     }
 
 
@@ -235,6 +236,7 @@
       this.tsmi_UnloadTemplate.Enabled = true;
       this.tsmi_GuiSimple.Enabled = true;
       this.tsmi_TlsSslCertificates.Enabled = true;
+      this.tsmi_ArpScan.Enabled = true;
     }
 
 
